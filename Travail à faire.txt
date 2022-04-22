@@ -1,0 +1,8 @@
+-Menu
+	-Interface graphique et Gestion du menu avec Animations
+		- Jouer
+		- Règles
+		- Options
+		- Quitter
+-Tutoriel
+-Jeu
