@@ -38,11 +38,19 @@ public class Boat extends Pawn {
     /**
      * 
      */
-    public Player returnOwner() {
-        Player boatOwner = new Player();
+    public Boolean isOwnedBy(Player player) {
+        int[] color = new int[4];
         int i = 0;
-        return boatOwner;
-        // TODO implement here
-    }
+        int maxAt = 0;
 
+        for (i = 0; i < this.explorerList.size(); i++) {
+            color[this.explorerList.get(i).color] += 1;
+        }
+
+        for (i = 0; i < color.length; i++) {
+            maxAt = color[i] > color[maxAt] ? i : maxAt;
+        }
+
+        return (color[player.color] >= color[maxAt]);
+    }
 }

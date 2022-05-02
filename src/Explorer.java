@@ -9,7 +9,10 @@ public class Explorer extends Pawn {
     /**
      * Default constructor
      */
-    public Explorer() {
+    public Explorer(int color, int treasureValue) {
+        this.color = color;
+        this.treasureValue = treasureValue;
+        this.status = 0;
     }
 
     /**
@@ -25,13 +28,13 @@ public class Explorer extends Pawn {
     /**
      * 
      */
-    public void status;
+    public int status;
 
     /**
      * 
      */
-    public void changeStatus() {
-        // TODO implement here
+    public void setStatus(int newStatus) {
+        this.status = newStatus;
     }
 
 }

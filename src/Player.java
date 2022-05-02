@@ -15,12 +15,12 @@ public class Player {
     /**
      * 
      */
-    public void pseudo;
+    public String pseudo;
 
     /**
      * 
      */
-    public void color;
+    public int color;
 
     /**
      * 
@@ -31,9 +31,6 @@ public class Player {
      * 
      */
     public void tileList;
-
-
-
 
     /**
      * 
