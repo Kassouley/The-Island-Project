@@ -15,18 +15,17 @@ public class Explorer extends Pawn {
     /**
      * 
      */
-    public void color;
+    public int color;
 
     /**
      * 
      */
-    public void treasureValue;
+    public int treasureValue;
 
     /**
      * 
      */
     public void status;
-
 
     /**
      * 
