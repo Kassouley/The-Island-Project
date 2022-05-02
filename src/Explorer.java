@@ -18,23 +18,58 @@ public class Explorer extends Pawn {
     /**
      * 
      */
-    public int color;
+    private int color;
 
     /**
      * 
      */
-    public int treasureValue;
+    private int treasureValue;
 
     /**
      * 
      */
-    public int status;
+    private int status;
+
+    /**
+     * 
+     */
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    /**
+     * 
+     */
+    public int getColor() {
+        return this.color;
+    }
+
+    /**
+     * 
+     */
+    public void setTreasureValue(int treasureValue) {
+        this.treasureValue = treasureValue;
+    }
+
+    /**
+     * 
+     */
+    public int getTreasureValue(int treasureValue) {
+        return this.treasureValue;
+    }
 
     /**
      * 
      */
     public void setStatus(int newStatus) {
         this.status = newStatus;
+    }
+
+    /**
+     * 
+     */
+    public int getStatus(int newStatus) {
+        return this.status;
     }
 
 }

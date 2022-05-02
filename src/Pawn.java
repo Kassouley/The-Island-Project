@@ -12,12 +12,10 @@ public class Pawn {
     public Pawn() {
     }
 
-
-
     /**
      * 
      */
-    public void move() {
+    public void move(Board board, Hexagon newPosition) {
         // TODO implement here
     }
 

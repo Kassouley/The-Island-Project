@@ -38,6 +38,20 @@ public class Boat extends Pawn {
     /**
      * 
      */
+    public void addExplorer(Explorer explorer) {
+        this.explorerList.add(explorer);
+    }
+
+    /**
+     * 
+     */
+    public void removeExplorer(Explorer explorer) {
+        this.explorerList.remove(explorer);
+    }
+
+    /**
+     * 
+     */
     public Boolean isOwnedBy(Player player) {
         int[] color = new int[4];
         int i = 0;
