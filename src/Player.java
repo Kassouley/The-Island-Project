@@ -20,7 +20,7 @@ public class Player {
     /**
      * 
      */
-    public int color;
+    public Color color;
 
     /**
      * 

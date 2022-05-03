@@ -13,9 +13,10 @@
 import java.util.*;
 
 /**
+ * <p>
  * Gestion des bateaux du jeu The Island
- * explication supplémentaire si nécessaire
- * 
+ * </p>
+ *
  * @version 1.0
  *
  * @see Pawn.java
@@ -24,52 +25,89 @@ import java.util.*;
 public class Boat extends Pawn {
 
     /**
-     * Default constructor
+     * <p>
+     * Constructeur par défaut
+     * </p>
      */
     public Boat() {
         this.explorerList = new ArrayList<Explorer>();
     }
 
     /**
+     * <p>
+     * Liste des explorateur présent sur le bateau.
+     * </p>
      * 
+     * @see Explorer.java
      */
     public List<Explorer> explorerList;
 
     /**
+     * <p>
+     * Ajoute un explorateur sur le bateau
+     * </p>
      * 
+     * @param explorer l'explorateur à ajouter sur le bateau
+     * @since 1.0
+     * @see Explorer.java
      */
     public void addExplorer(Explorer explorer) {
         this.explorerList.add(explorer);
     }
 
     /**
+     * <p>
+     * Retire un explorateur du bateau
+     * </p>
      * 
+     * @param explorer l'explorateur à retirer du bateau
+     * @since 1.0
+     * @see Explorer.java
      */
     public void removeExplorer(Explorer explorer) {
         this.explorerList.remove(explorer);
     }
 
     /**
+     * <p>
+     * Permet de savoir qui peut controler le bateau.
+     * </p>
+     * <p>
+     * La méthode compte le nombre d'explorateur d'un joueur sur le bateau.
+     * Si ce nombre est maximum alors il peut controler le bateau.
+     * </p>
      * 
+     * @param player joueur qui souhaite controler le bateau
+     * @return Vrai, si le nombre d'exploreur de la couleur du joueur est maximum,
+     *         faux sinon.
+     * @since 1.0
+     * @see Player.java
      */
     public Boolean isOwnedBy(Player player) {
-        int[] color = new int[4];
+        int[] colorCount = new int[4];
         int i = 0;
         int maxAt = 0;
 
         for (i = 0; i < this.explorerList.size(); i++) {
-            color[this.explorerList.get(i).getColor()] += 1;
+            colorCount[this.explorerList.get(i).getColor().ordinal()] += 1;
         }
 
-        for (i = 0; i < color.length; i++) {
-            maxAt = color[i] > color[maxAt] ? i : maxAt;
+        for (i = 0; i < colorCount.length; i++) {
+            maxAt = colorCount[i] > colorCount[maxAt] ? i : maxAt;
         }
 
-        return (color[player.color] >= color[maxAt]);
+        return (colorCount[player.color.ordinal()] >= colorCount[maxAt]);
     }
 
     /**
+     * <p>
+     * Fait couler un bateau choisit et retire tout les explorateurs à bord.
+     * </p>
      * 
+     * @param board Plateau dans lequel le bateau est retiré du jeu
+     * @since 1.0
+     * @see Board.java
+     * @see Explorer.java
      */
     public void sunk(Board board) {
         for (Explorer explorer : this.explorerList) {
