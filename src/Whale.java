@@ -12,12 +12,17 @@ public class Whale extends Pawn {
     public Whale() {
     }
 
-
     /**
      * 
      */
-    public void makeEffect() {
-        // TODO implement here
+    public void makeEffect(Board board, Hexagon hexagon) {
+        for (Pawn p : hexagon.getPawnsList()) {
+            if (p instanceof Boat) {
+                Boat boat = (Boat) p;
+                if (!boat.explorerList.isEmpty()) {
+                    boat.sunk(board);
+                }
+            }
+        }
     }
-
 }

@@ -12,27 +12,27 @@ public class Pawn {
     public Pawn() {
     }
 
-
-
     /**
      * 
      */
-    public void move() {
+    public void move(Board board, Hexagon newPosition) {
         // TODO implement here
     }
 
     /**
      * 
      */
-    public void remove() {
-        // TODO implement here
+    public void removeFromBoard(Board board) {
+        board.getPawnsOnBoard().remove(this);
+        board.getUnusedPawns().add(this);
     }
 
     /**
      * 
      */
-    public void add() {
-        // TODO implement here
+    public void addToBoard(Board board) {
+        board.getPawnsOnBoard().add(this);
+        board.getUnusedPawns().remove(this);
     }
 
 }

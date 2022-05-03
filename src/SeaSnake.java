@@ -12,12 +12,14 @@ public class SeaSnake extends Pawn {
     public SeaSnake() {
     }
 
-
     /**
      * 
      */
-    public void makeEffect() {
-        // TODO implement here
+    public void makeEffect(Board board, Hexagon hexagon) {
+        Whale whaleEffect = new Whale();
+        Shark sharkEffect = new Shark();
+        whaleEffect.makeEffect(board, hexagon);
+        sharkEffect.makeEffect(board, hexagon);
     }
 
 }

@@ -15,12 +15,40 @@ public class Board {
     /**
      * 
      */
-    public void pawnsOnBoard;
+    private List<Pawn> unusedPawns;
 
+    /**
+     * 
+     */
+    public List<Pawn> pawnsOnBoard;
 
+    /**
+     * 
+     */
+    public void setPawnsOnBoard(List<Pawn> pawnsOnBoard) {
+        this.pawnsOnBoard = pawnsOnBoard;
+    }
 
+    /**
+     * 
+     */
+    public List<Pawn> getPawnsOnBoard() {
+        return this.pawnsOnBoard;
+    }
 
+    /**
+     * 
+     */
+    public void setUnusedPawns(List<Pawn> unusedPawns) {
+        this.unusedPawns = unusedPawns;
+    }
 
+    /**
+     * 
+     */
+    public List<Pawn> getUnusedPawns() {
+        return this.unusedPawns;
+    }
 
     /**
      * 
