@@ -96,7 +96,7 @@ public class Boat extends Pawn {
             maxAt = colorCount[i] > colorCount[maxAt] ? i : maxAt;
         }
 
-        return (colorCount[player.color.ordinal()] >= colorCount[maxAt]);
+        return (colorCount[player.getColor().ordinal()] >= colorCount[maxAt]);
     }
 
     /**

@@ -15,11 +15,6 @@ public class Board {
     /**
      * 
      */
-    private List<Pawn> unusedPawns;
-
-    /**
-     * 
-     */
     public List<Pawn> pawnsOnBoard;
 
     /**
@@ -34,20 +29,6 @@ public class Board {
      */
     public List<Pawn> getPawnsOnBoard() {
         return this.pawnsOnBoard;
-    }
-
-    /**
-     * 
-     */
-    public void setUnusedPawns(List<Pawn> unusedPawns) {
-        this.unusedPawns = unusedPawns;
-    }
-
-    /**
-     * 
-     */
-    public List<Pawn> getUnusedPawns() {
-        return this.unusedPawns;
     }
 
     /**

@@ -62,29 +62,11 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Mutateur de la couleur de l'explorateur.
-     * </p>
-     */
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    /**
-     * <p>
      * Accesseur de la couleur de l'explorateur.
      * </p>
      */
     public Color getColor() {
         return this.color;
-    }
-
-    /**
-     * <p>
-     * Mutateur de la valeur de trésor de l'explorateur.
-     * </p>
-     */
-    public void setTreasureValue(int treasureValue) {
-        this.treasureValue = treasureValue;
     }
 
     /**
