@@ -58,7 +58,7 @@ public class Boat extends Pawn {
         int maxAt = 0;
 
         for (i = 0; i < this.explorerList.size(); i++) {
-            color[this.explorerList.get(i).color] += 1;
+            color[this.explorerList.get(i).getColor()] += 1;
         }
 
         for (i = 0; i < color.length; i++) {
@@ -66,5 +66,15 @@ public class Boat extends Pawn {
         }
 
         return (color[player.color] >= color[maxAt]);
+    }
+
+    /**
+     * 
+     */
+    public void sunk(Board board) {
+        for (Explorer explorer : this.explorerList) {
+            explorer.getOff(this);
+        }
+        this.removeFromBoard(board);
     }
 }

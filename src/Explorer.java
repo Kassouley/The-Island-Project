@@ -72,4 +72,18 @@ public class Explorer extends Pawn {
         return this.status;
     }
 
+    /**
+     * 
+     */
+    public void getOn(Boat boat) {
+        // todo
+    }
+
+    /**
+     * 
+     */
+    public void getOff(Boat boat) {
+        // todo
+    }
+
 }
