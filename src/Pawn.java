@@ -15,8 +15,9 @@ public class Pawn {
     /**
      * 
      */
-    public void move(Board board, Hexagon newPosition) {
-        // TODO implement here
+    public void move(Hexagon oldPosition, Hexagon newPosition) {
+        oldPosition.getPawnsList().remove(this);
+        newPosition.getPawnsList().add(this);
     }
 
     /**

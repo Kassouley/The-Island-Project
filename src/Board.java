@@ -12,6 +12,8 @@ public class Board {
     public Board() {
     }
 
+    private Hexagon[][] hexagons;
+
     /**
      * 
      */

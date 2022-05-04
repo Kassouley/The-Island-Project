@@ -100,26 +100,81 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Place l'explorateur sur un bateau.
+     * Déplace l'explorateur d'une case vers une autre case.
      * </p>
      * 
-     * @param boat bateau sur lequel est placé l'explorateur.
+     * @param oldPosition case où se trouvait l'explorateur.
+     * @param newPosition case vers laquel est déplacé l'explorateur.
      * @since 1.0
      */
-    public void getOn(Boat boat) {
-        // todo
+    public void move(Hexagon oldPosition, Hexagon newPosition) {
+        oldPosition.getPawnsList().remove(this);
+        switch (newPosition.type) {
+            case 1:
+                this.status = ExplorerStatus.NORMAL;
+                break;
+            case 2:
+                this.status = ExplorerStatus.SWIMMER;
+            default:
+                break;
+        }
+        newPosition.getPawnsList().add(this);
     }
 
     /**
      * <p>
-     * Retire l'explorateur d'un bateau.
+     * Déplace l'explorateur d'une case vers un bateau.
      * </p>
      * 
-     * @param boat bateau dans lequel est retiré l'explorateur.
+     * @param oldPosition case où se trouvait l'explorateur.
+     * @param boat        bateau sur lequel est déplacé l'explorateur.
      * @since 1.0
      */
-    public void getOff(Boat boat) {
-        // todo
+    public void move(Hexagon oldPosition, Boat boat) {
+        oldPosition.getPawnsList().remove(this);
+        this.status = ExplorerStatus.ONBOAT;
+        boat.addExplorer(this);
+    }
+
+    /**
+     * <p>
+     * Déplace l'explorateur d'un bateau vers une position.
+     * </p>
+     * 
+     * @param boat        bateau dans lequel est retiré l'explorateur.
+     * @param newPosition case vers lequel est déplacé l'explorateur.
+     * @since 1.0
+     */
+    public void move(Boat boat, Hexagon newPosition) {
+        boat.removeExplorer(this);
+        switch (newPosition.type) {
+            case 1:
+                this.status = ExplorerStatus.NORMAL;
+                break;
+            case 2:
+                this.status = ExplorerStatus.SWIMMER;
+                break;
+            case 3:
+                this.status = ExplorerStatus.SAVED;
+                break;
+            default:
+                break;
+        }
+        newPosition.getPawnsList().add(this);
+    }
+
+    /**
+     * <p>
+     * Déplace l'explorateur d'un bateau vers un autre bateau.
+     * </p>
+     * 
+     * @param oldBoat bateau dans lequel est retiré l'explorateur.
+     * @param newBoat bateau vers lequel se déplace l'explorateur.
+     * @since 1.0
+     */
+    public void move(Boat oldBoat, Boat newBoat) {
+        oldBoat.removeExplorer(this);
+        newBoat.addExplorer(this);
     }
 
 }

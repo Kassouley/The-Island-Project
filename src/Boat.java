@@ -109,9 +109,9 @@ public class Boat extends Pawn {
      * @see Board.java
      * @see Explorer.java
      */
-    public void sunk(Board board) {
+    public void sunk(Board board, Hexagon BoatPosition) {
         for (Explorer explorer : this.explorerList) {
-            explorer.getOff(this);
+            explorer.move(this, BoatPosition);
         }
         this.removeFromBoard(board);
     }
