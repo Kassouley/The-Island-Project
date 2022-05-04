@@ -14,6 +14,7 @@ public class Player {
         this.color = color;
         this.explorerList = new ArrayList<Explorer>();
         this.isBot = isBot;
+        this.moveLeft = 3;
     }
 
     /**
@@ -40,6 +41,11 @@ public class Player {
      * 
      */
     private boolean isBot;
+
+    /**
+     * 
+     */
+    private int moveLeft;
 
     /**
      * 
@@ -107,6 +113,33 @@ public class Player {
             Explorer explorer = new Explorer(this.color, i);
             this.explorerList.add(explorer);
         }
+    }
+
+    /**
+     * 
+     */
+    public void removeOneMove() {
+        if (this.moveLeft > 0) {
+            this.moveLeft -= 1;
+        }
+    }
+
+    /**
+     * 
+     */
+    public void setMoveLeft(int moveLeft) {
+        if (moveLeft > 0) {
+            this.moveLeft = moveLeft;
+        } else {
+            System.out.println("Erreur : un nombre de coup ne peut être ni négatif ni nul");
+        }
+    }
+
+    /**
+     * 
+     */
+    public int getMoveLeft() {
+        return this.moveLeft;
     }
 
 }

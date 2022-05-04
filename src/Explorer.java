@@ -110,10 +110,10 @@ public class Explorer extends Pawn {
     public void move(Hexagon oldPosition, Hexagon newPosition) {
         oldPosition.getPawnsList().remove(this);
         switch (newPosition.type) {
-            case 1:
+            case TILES:
                 this.status = ExplorerStatus.NORMAL;
                 break;
-            case 2:
+            case SEA:
                 this.status = ExplorerStatus.SWIMMER;
             default:
                 break;
@@ -148,13 +148,13 @@ public class Explorer extends Pawn {
     public void move(Boat boat, Hexagon newPosition) {
         boat.removeExplorer(this);
         switch (newPosition.type) {
-            case 1:
+            case TILES:
                 this.status = ExplorerStatus.NORMAL;
                 break;
-            case 2:
+            case SEA:
                 this.status = ExplorerStatus.SWIMMER;
                 break;
-            case 3:
+            case ISLAND:
                 this.status = ExplorerStatus.SAVED;
                 break;
             default:

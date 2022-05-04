@@ -114,5 +114,6 @@ public class Boat extends Pawn {
             explorer.move(this, BoatPosition);
         }
         this.removeFromBoard(board);
+
     }
 }
