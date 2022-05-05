@@ -10,6 +10,7 @@ public class Game {
     public Game(Player[] players) {
         this.board = new Board();
         this.players = players;
+        this.turnNumber = 0;
     }
 
     /**
@@ -21,6 +22,11 @@ public class Game {
      * 
      */
     private Player[] players;
+
+    /**
+     * 
+     */
+    private int turnNumber;
 
     /**
      * 
@@ -58,6 +64,28 @@ public class Game {
      */
     public Player[] getPlayers() {
         return this.players;
+    }
+
+    /**
+     * 
+     */
+    public void nextTurn() {
+        this.turnNumber++;
+        this.players[this.turnNumber % 4].setMoveLeft(3);
+    }
+
+    /**
+     * 
+     */
+    public int getTurn() {
+        return this.turnNumber;
+    }
+
+    /**
+     * 
+     */
+    public int getRound() {
+        return this.turnNumber / 4;
     }
 
     /**
