@@ -92,6 +92,13 @@ public class Player {
     /**
      * 
      */
+    public void returnChoosenHexagon() {
+        // TODO implement here
+    }
+
+    /**
+     * 
+     */
     public void returnChoosenPawn() {
         // TODO implement here
     }
