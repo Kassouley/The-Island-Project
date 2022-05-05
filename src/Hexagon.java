@@ -15,7 +15,7 @@ public class Hexagon {
     /**
      * 
      */
-    public int type;
+    public HexagonType type;
 
     /**
      * 
@@ -25,14 +25,14 @@ public class Hexagon {
     /**
      * 
      */
-    public void setType(int type) {
+    public void setType(HexagonType type) {
         this.type = type;
     }
 
     /**
      * 
      */
-    public int getType() {
+    public HexagonType getType() {
         return this.type;
     }
 

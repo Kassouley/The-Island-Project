@@ -1,3 +1,3 @@
 public enum ExplorerStatus {
-    NORMAL, SWIMMER, DEAD, SAVED
+    NORMAL, SWIMMER, DEAD, SAVED, ONBOAT
 }

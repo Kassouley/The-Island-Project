@@ -20,7 +20,7 @@ public class Shark extends Pawn {
             if (p instanceof Explorer) {
                 Explorer explorer = (Explorer) p;
                 explorer.removeFromBoard(board);
-                explorer.setStatus(ExplorerStatus.DEAD); // mort
+                explorer.setStatus(ExplorerStatus.DEAD);
             }
         }
     }

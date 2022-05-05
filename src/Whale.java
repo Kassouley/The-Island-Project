@@ -20,7 +20,7 @@ public class Whale extends Pawn {
             if (p instanceof Boat) {
                 Boat boat = (Boat) p;
                 if (!boat.explorerList.isEmpty()) {
-                    boat.sunk(board);
+                    boat.sunk(board, hexagon);
                 }
             }
         }
