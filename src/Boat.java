@@ -3,9 +3,9 @@
  *
  * Description   : Gestion des bateaux du jeu The Island 
  *
- * Version       : 1.0
+ * Version       : 2.0
  *
- * Date          : 01/05/2022
+ * Date          : 07/05/2022
  * 
  * Copyright     : Lucas Neto
  */
@@ -17,7 +17,7 @@ import java.util.*;
  * Gestion des bateaux du jeu The Island
  * </p>
  *
- * @version 1.0
+ * @version 2.0
  *
  * @see Pawn.java
  * @author Lucas Neto
@@ -57,10 +57,22 @@ public class Boat extends Pawn {
 
     /**
      * <p>
-     * Retire un explorateur du bateau
+     * Vérifie si le bateau est plein ou non
      * </p>
      * 
-     * @param explorer l'explorateur à retirer du bateau
+     * @return vrai si le nombre d'exploreur dessus est >= 3, faux sinon.
+     * @since 1.0
+     */
+    public boolean isFull() {
+        return (this.explorerList.size() >= 3);
+    }
+
+    /**
+     * <p>
+     * Retire un explorateur du bateau.
+     * </p>
+     * 
+     * @param explorer l'explorateur à retirer du bateau.
      * @since 1.0
      * @see Explorer.java
      */
@@ -104,15 +116,16 @@ public class Boat extends Pawn {
      * Fait couler un bateau choisit et retire tout les explorateurs à bord.
      * </p>
      * 
-     * @param board Plateau dans lequel le bateau est retiré du jeu
-     * @since 1.0
-     * @see Board.java
+     * @param boatPosition Case où se situe le bateau à retiré du jeu
+     * @since 2.0
      * @see Explorer.java
      */
     public void sunk(Hexagon boatPosition) {
         for (Explorer explorer : this.explorerList) {
-            explorer.move(this, boatPosition);
+            boatPosition.addPawn(explorer);
+            explorer.setStatus(ExplorerStatus.SWIMMER);
         }
-        boatPosition.getPawnsList().remove(this);
+        this.explorerList.clear();
+        boatPosition.removePawn(this);
     }
 }

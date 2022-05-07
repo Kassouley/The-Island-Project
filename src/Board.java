@@ -17,25 +17,6 @@ public class Board {
     /**
      * 
      */
-    public List<Pawn> pawnsOnBoard;
-
-    /**
-     * 
-     */
-    public void setPawnsOnBoard(List<Pawn> pawnsOnBoard) {
-        this.pawnsOnBoard = pawnsOnBoard;
-    }
-
-    /**
-     * 
-     */
-    public List<Pawn> getPawnsOnBoard() {
-        return this.pawnsOnBoard;
-    }
-
-    /**
-     * 
-     */
     public void init() {
         // TODO implement here
     }

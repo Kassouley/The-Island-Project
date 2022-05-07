@@ -1,28 +1,49 @@
-
-import java.util.*;
+/*
+ * Nom de classe : Shark
+ *
+ * Description   : Gestion des requins du jeu The Island
+ *
+ * Version       : 2.0
+ *
+ * Date          : 07/05/2022
+ * 
+ * Copyright     : Lucas Neto
+ */
 
 /**
+ * <p>
+ * Gestion des requins du jeu The Island
+ * </p>
+ *
+ * @version 2.0
  * 
+ * @see EffectPawn.java
+ * @author Lucas Neto
  */
-public class Shark extends Pawn {
+public class Shark extends EffectPawn {
 
     /**
-     * Default constructor
+     * <p>
+     * Constructeur par défaut
+     * </p>
      */
     public Shark() {
     }
 
     /**
+     * <p>
+     * Réalise l'effet du requin et tue les explorateurs.
+     * </p>
+     * 
+     * @param hexagon Case dans laquel est réalisé l'effet.
+     * @since 1.0
      * 
      */
-    public void makeEffect(Board board, Hexagon hexagon) {
-        for (Pawn p : hexagon.getPawnsList()) {
-            if (p instanceof Explorer) {
-                Explorer explorer = (Explorer) p;
-                explorer.removeFromBoard(board);
-                explorer.setStatus(ExplorerStatus.DEAD);
-            }
+    public void makeEffect(Hexagon hexagon) {
+        for (Explorer e : hexagon.getExplorerList()) {
+            e.setStatus(ExplorerStatus.DEAD);
         }
+        hexagon.getExplorerList().clear();
     }
 
 }
