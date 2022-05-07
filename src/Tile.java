@@ -15,14 +15,12 @@ public class Tile {
     /**
      * 
      */
-    public void type;
+    public int type;
 
     /**
      * 
      */
-    public void effect;
-
-
+    public int effect;
 
     /**
      * 

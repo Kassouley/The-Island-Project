@@ -3,21 +3,19 @@
  *
  * Description   : Gestion des explorateurs du jeu The Island 
  *
- * Version       : 1.0
+ * Version       : 2.0
  *
- * Date          : 01/05/2022
+ * Date          : 07/05/2022
  * 
  * Copyright     : Lucas Neto
  */
-
-import java.util.*;
 
 /**
  * <p>
  * Gestion des explorateurs du jeu The Island
  * </p>
  *
- * @version 1.0
+ * @version 2.0
  *
  * @see Pawn.java
  * @author Lucas Neto
@@ -108,17 +106,24 @@ public class Explorer extends Pawn {
      * @since 1.0
      */
     public void move(Hexagon oldPosition, Hexagon newPosition) {
-        oldPosition.getPawnsList().remove(this);
+        oldPosition.removePawn(this);
         switch (newPosition.type) {
             case TILES:
                 this.status = ExplorerStatus.NORMAL;
+                newPosition.addPawn(this);
                 break;
             case SEA:
-                this.status = ExplorerStatus.SWIMMER;
+                if (!newPosition.getSeaSnakeList().isEmpty() ||
+                        !newPosition.getSharkList().isEmpty()) {
+                    this.status = ExplorerStatus.DEAD;
+                } else {
+                    this.status = ExplorerStatus.SWIMMER;
+                    newPosition.addPawn(this);
+                }
+                break;
             default:
                 break;
         }
-        newPosition.getPawnsList().add(this);
     }
 
     /**
@@ -126,14 +131,19 @@ public class Explorer extends Pawn {
      * Déplace l'explorateur d'une case vers un bateau.
      * </p>
      * 
-     * @param oldPosition case où se trouvait l'explorateur.
-     * @param boat        bateau sur lequel est déplacé l'explorateur.
-     * @since 1.0
+     * @param oldPosition  case où se trouvait l'explorateur.
+     * @param boat         bateau sur lequel est déplacé l'explorateur.
+     * @param boatPosition Case où se situe le bateau destination.
+     * @since 2.0
      */
-    public void move(Hexagon oldPosition, Boat boat) {
-        oldPosition.getPawnsList().remove(this);
-        this.status = ExplorerStatus.ONBOAT;
+    public void move(Hexagon oldPosition, Boat boat, Hexagon boatPosition) {
+        oldPosition.removePawn(this);
         boat.addExplorer(this);
+        this.status = ExplorerStatus.ONBOAT;
+
+        if (!boatPosition.getWhaleList().isEmpty()) {
+            boatPosition.getWhaleList().get(0).makeEffect(boatPosition);
+        }
     }
 
     /**
@@ -149,18 +159,25 @@ public class Explorer extends Pawn {
         boat.removeExplorer(this);
         switch (newPosition.type) {
             case TILES:
+                // Move impossible
                 this.status = ExplorerStatus.NORMAL;
+                newPosition.addPawn(this);
                 break;
             case SEA:
-                this.status = ExplorerStatus.SWIMMER;
+                if (!newPosition.getSharkList().isEmpty()) {
+                    this.status = ExplorerStatus.DEAD;
+                } else {
+                    this.status = ExplorerStatus.SWIMMER;
+                    newPosition.addPawn(this);
+                }
                 break;
             case ISLAND:
                 this.status = ExplorerStatus.SAVED;
+                newPosition.addPawn(this);
                 break;
             default:
                 break;
         }
-        newPosition.getPawnsList().add(this);
     }
 
     /**
@@ -168,13 +185,17 @@ public class Explorer extends Pawn {
      * Déplace l'explorateur d'un bateau vers un autre bateau.
      * </p>
      * 
-     * @param oldBoat bateau dans lequel est retiré l'explorateur.
-     * @param newBoat bateau vers lequel se déplace l'explorateur.
-     * @since 1.0
+     * @param oldBoat         bateau dans lequel est retiré l'explorateur.
+     * @param newBoat         bateau vers lequel se déplace l'explorateur.
+     * @param newBoatPosition Case où se situe le bateau destination.
+     * @since 2.0
      */
-    public void move(Boat oldBoat, Boat newBoat) {
+    public void move(Boat oldBoat, Boat newBoat, Hexagon newBoatPosition) {
         oldBoat.removeExplorer(this);
         newBoat.addExplorer(this);
+        if (!newBoatPosition.getWhaleList().isEmpty()) {
+            newBoatPosition.getWhaleList().get(0).makeEffect(newBoatPosition);
+        }
     }
 
 }
