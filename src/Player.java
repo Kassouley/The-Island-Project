@@ -1,13 +1,32 @@
+/*
+ * Nom de classe : Player
+ *
+ * Description   : Gestion des joueurs du jeu The Island
+ *
+ * Version       : 1.0
+ *
+ * Date          : 05/05/2022
+ * 
+ * Copyright     : Lucas Neto
+ */
 
 import java.util.*;
 
 /**
- * 
+ * <p>
+ * Gestion des joueurs du jeu The Island
+ * </p>
+ *
+ * @version 1.0
+ *
+ * @author Lucas Neto
  */
 public class Player {
 
     /**
-     * Default constructor
+     * <p>
+     * Constructeur par défaut
+     * </p>
      */
     public Player(String pseudo, Color color, boolean isBot) {
         this.pseudo = pseudo;
@@ -18,72 +37,102 @@ public class Player {
     }
 
     /**
-     * 
+     * <p>
+     * Pseudo du joueur
+     * </p>
      */
     private String pseudo;
 
     /**
-     * 
+     * <p>
+     * Couleur du joueur
+     * </p>
      */
     private Color color;
 
     /**
+     * <p>
+     * Liste des explorateurs du joueur
+     * </p>
      * 
+     * @see Color.java
      */
     private List<Explorer> explorerList;
 
     /**
-     * 
+     * <p>
+     * Liste des tuiles du joueur
+     * </p>
      */
     private List<Tile> tileList;
 
     /**
-     * 
+     * <p>
+     * Booléen ordinateur
+     * </p>
      */
     private boolean isBot;
 
     /**
-     * 
+     * <p>
+     * Coup restant du joueur
+     * </p>
      */
     private int moveLeft;
 
     /**
-     * 
+     * <p>
+     * Mutateur du pseudo du joueur.
+     * </p>
      */
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
     }
 
     /**
-     * 
+     * <p>
+     * Accesseur du pseudo du joueur.
+     * </p>
      */
     public String getPseudo() {
         return this.pseudo;
     }
 
     /**
+     * <p>
+     * Mutateur de la couleur du joueur.
+     * </p>
      * 
+     * @see Color.java
      */
     public void setColor(Color color) {
         this.color = color;
     }
 
     /**
+     * <p>
+     * Accesseur du pseudo du joueur.
+     * </p>
      * 
+     * @see Color.java
      */
     public Color getColor() {
         return this.color;
     }
 
     /**
-     * 
+     * <p>
+     * Mutateur du status ordinateur du joueur.
+     * </p>
      */
     public void setBot(boolean bool) {
         this.isBot = bool;
     }
 
     /**
-     * 
+     * <p>
+     * Accesseur du status ordinateur du joueur.
+     * </p>
      */
     public boolean isBot() {
         return this.isBot;
@@ -111,7 +160,9 @@ public class Player {
     }
 
     /**
-     * 
+     * <p>
+     * Initialise les explorateurs du joueur.
+     * </p>
      */
     public void initPlayerExplorer() {
 
@@ -123,7 +174,9 @@ public class Player {
     }
 
     /**
-     * 
+     * <p>
+     * Retire un coup des coups restant du joueur.
+     * </p>
      */
     public void removeOneMove() {
         if (this.moveLeft > 0) {
@@ -132,7 +185,9 @@ public class Player {
     }
 
     /**
-     * 
+     * <p>
+     * Mutateur des coups restant du joueur.
+     * </p>
      */
     public void setMoveLeft(int moveLeft) {
         if (moveLeft > 0) {
@@ -143,7 +198,9 @@ public class Player {
     }
 
     /**
-     * 
+     * <p>
+     * Accesseur des coups restant du joueur.
+     * </p>
      */
     public int getMoveLeft() {
         return this.moveLeft;

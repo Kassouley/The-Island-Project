@@ -103,7 +103,7 @@ public class Explorer extends Pawn {
      * 
      * @param oldPosition case où se trouvait l'explorateur.
      * @param newPosition case vers laquel est déplacé l'explorateur.
-     * @since 1.0
+     * @since 2.0
      */
     public void move(Hexagon oldPosition, Hexagon newPosition) {
         oldPosition.removePawn(this);
@@ -120,6 +120,10 @@ public class Explorer extends Pawn {
                     this.status = ExplorerStatus.SWIMMER;
                     newPosition.addPawn(this);
                 }
+                break;
+            case ISLAND:
+                this.status = ExplorerStatus.SAVED;
+                newPosition.addPawn(this);
                 break;
             default:
                 break;
@@ -143,6 +147,9 @@ public class Explorer extends Pawn {
 
         if (!boatPosition.getWhaleList().isEmpty()) {
             boatPosition.getWhaleList().get(0).makeEffect(boatPosition);
+        }
+        if (!boatPosition.getSeaSnakeList().isEmpty()) {
+            boatPosition.getSeaSnakeList().get(0).makeEffect(boatPosition);
         }
     }
 
@@ -195,6 +202,9 @@ public class Explorer extends Pawn {
         newBoat.addExplorer(this);
         if (!newBoatPosition.getWhaleList().isEmpty()) {
             newBoatPosition.getWhaleList().get(0).makeEffect(newBoatPosition);
+        }
+        if (!newBoatPosition.getSeaSnakeList().isEmpty()) {
+            newBoatPosition.getSeaSnakeList().get(0).makeEffect(newBoatPosition);
         }
     }
 
