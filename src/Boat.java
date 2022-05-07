@@ -128,4 +128,26 @@ public class Boat extends Pawn {
         this.explorerList.clear();
         boatPosition.removePawn(this);
     }
+
+    /**
+     * <p>
+     * Déplace le bateau d'une case vers une autre case.
+     * </p>
+     * 
+     * @param oldPosition case où se trouvait le bateau.
+     * @param newPosition case vers laquel est déplacé le bateau.
+     * @since 2.0
+     */
+    public void move(Hexagon oldPosition, Hexagon newPosition) {
+        oldPosition.removePawn(this);
+        newPosition.addPawn(this);
+        if (!this.explorerList.isEmpty()) {
+            if (!newPosition.getWhaleList().isEmpty()) {
+                newPosition.getWhaleList().get(0).makeEffect(newPosition);
+            }
+            if (!newPosition.getSeaSnakeList().isEmpty()) {
+                newPosition.getSeaSnakeList().get(0).makeEffect(newPosition);
+            }
+        }
+    }
 }
