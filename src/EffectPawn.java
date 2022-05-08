@@ -5,7 +5,7 @@
  *
  * Version       : 1.0
  *
- * Date          : 01/05/2022
+ * Date          : 06/05/2022
  * 
  * Copyright     : Lucas Neto
  */
@@ -45,11 +45,11 @@ public class EffectPawn extends Pawn {
 
     /**
      * <p>
-     * Déplace le pion en réalisant son effet
+     * Déplace le pion en réalisant son effet.
      * </p>
      * 
-     * @param oldPosition Ancienne case du pion
-     * @param newPosition Nouvelle case du pion
+     * @param oldPosition Ancienne case du pion.
+     * @param newPosition Nouvelle case du pion.
      * @since 1.0
      */
     public void move(Hexagon oldPosition, Hexagon newPosition) {

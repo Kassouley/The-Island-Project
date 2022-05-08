@@ -126,6 +126,7 @@ public class Explorer extends Pawn {
                 newPosition.addPawn(this);
                 break;
             default:
+                System.out.println("Error : Hexagon type doesn't set.");
                 break;
         }
     }
@@ -183,6 +184,7 @@ public class Explorer extends Pawn {
                 newPosition.addPawn(this);
                 break;
             default:
+                System.out.println("Error : Hexagon type doesn't set.");
                 break;
         }
     }

@@ -193,7 +193,7 @@ public class Player {
         if (moveLeft > 0) {
             this.moveLeft = moveLeft;
         } else {
-            System.out.println("Erreur : un nombre de coup ne peut être ni négatif ni nul");
+            System.out.println("Error : the number of move left cant be negative or zero.");
         }
     }
 
