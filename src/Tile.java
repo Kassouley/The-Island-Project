@@ -1,11 +1,9 @@
-package fr.koraizon.theisland;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import fr.koraizon.theisland.enums.TilesEffect;
-import fr.koraizon.theisland.enums.TilesType;
+import TilesEffect;
+import TilesType;
 
 @SuppressWarnings("serial")
 public class Tiles extends JLabel{
