@@ -95,7 +95,7 @@ public class Boat extends Pawn {
      * @since 1.0
      * @see Player.java
      */
-    public Boolean isOwnedBy(Player player) {
+    public boolean isOwnedBy(Player player) {
         int[] colorCount = new int[4];
         int i = 0;
         int maxAt = 0;
