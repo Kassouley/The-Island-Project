@@ -6,10 +6,8 @@ import java.util.*;
  */
 public class Tile {
 
-   
-   	private TilesType type;
+	private TilesType type;
 	private TilesEffect effect;
-
 
 	/**
 	* Default constructor
@@ -30,11 +28,11 @@ public class Tile {
 	*/
 	public void setType(TilesType type) {
 		this.type = type;
-		if(type == TilesType.BEACH) {
+		if (type == TilesType.BEACH) {
 			this.setIcon(new ImageIcon(Tiles.class.getResource("/sprites/Plage.png")));
-		} else if(type == TilesType.FOREST) {
+		} else if (type == TilesType.FOREST) {
 			this.setIcon(new ImageIcon(Tiles.class.getResource("/sprites/Foret.png")));
-		} else if(type == TilesType.MONTAINS){
+		} else if (type == TilesType.MONTAINS) {
 			this.setIcon(new ImageIcon(Tiles.class.getResource("/sprites/Montagne.png")));
 		} else {
 			this.setIcon(null);
@@ -61,17 +59,18 @@ public class Tile {
 	public void setPosition(int x, int y) {
 		this.setBounds(x, y, 90, 90);
 	}
-	
+
 	/**
 	* 
 	*/
-	public void discover(/*board*/) {
-		/*if(board[i][j].tile.getType() == Verte){
-		 * 	board[i][j].tile.applyeffect()
-		 * 	removeFromBoard tile
+	public void discover(/* board */) {
+		/*
+		 * if(board[i][j].tile.getType() == Verte){
+		 * board[i][j].tile.applyeffect()
+		 * removeFromBoard tile
 		 * }
 		 * else
-		 *	putInHands ( board[i][j].tile)
+		 * putInHands ( board[i][j].tile)
 		 */
 	}
 
@@ -79,115 +78,139 @@ public class Tile {
 	* 
 	*/
 	public void applyEffect() {
-		switch(this.effect) {
-		case WHALE : this.whaleEffect(); break;
-		case WHALE_DEATH : this.whaleDeathEffect();break;
-		case WHALE_LOST :this.whaleLostEffect(); break;
-		case BOAT_MOVE : this.boatMoveEffect();break;
-		case BOAT : this.boatEffect();break;
-		case DOLPHIN_MOVE :this.dolphinMoveEffect(); break;
-		case SHARK : this.sharkEffect();break;
-		case SHARK_DEATH : this.sharkDeathEffect(); break;
-		case SHARK_LOST : this.sharkLostEffect(); break;
-		case SEASNAKE_LOST : this.seasnakeLostEffect();break;
-		case WHIRLPOOL : this.whirlpoolEffect(); break;
-		case VOLCANO : this.volcanoEffect(); break;
-		default : break;
+		switch (this.effect) {
+			case WHALE:
+				this.whaleEffect();
+				break;
+			case WHALE_DEATH:
+				this.whaleDeathEffect();
+				break;
+			case WHALE_LOST:
+				this.whaleLostEffect();
+				break;
+			case BOAT_MOVE:
+				this.boatMoveEffect();
+				break;
+			case BOAT:
+				this.boatEffect();
+				break;
+			case DOLPHIN_MOVE:
+				this.dolphinMoveEffect();
+				break;
+			case SHARK:
+				this.sharkEffect();
+				break;
+			case SHARK_DEATH:
+				this.sharkDeathEffect();
+				break;
+			case SHARK_LOST:
+				this.sharkLostEffect();
+				break;
+			case SEASNAKE_LOST:
+				this.seasnakeLostEffect();
+				break;
+			case WHIRLPOOL:
+				this.whirlpoolEffect();
+				break;
+			case VOLCANO:
+				this.volcanoEffect();
+				break;
+			default:
+				break;
 		}
 	}
 
 	/**
 	* 
-	*/    
-	public void whaleEffect(/*board*/) {
-		//selectionner une case de mer Uniquement
-		//Point(i,j)
-		//board[i][j]listePions.addToBoard(whale)	
+	*/
+	public void whaleEffect(Hexagon tilePosition) {
+		Whale w = new Whale();
+		tilePosition.addPawn(w);
 	}
 
 	/**
 	* 
 	*/
-	public void whaleDeathEffect(/*board*/) {
-		//board[i][j].listePions.removeFromBoard(whale)
+	public void whaleDeathEffect(/* board */) {
+		// board[i][j].listePions.removeFromBoard(whale)
 	}
 
 	/**
 	* 
 	*/
-	public void whaleLostEffect(/*board*/) {
-		//selectionner une baleine
-		//selectionne la case ou on veut la deplacer (mer inoccupée)
+	public void whaleLostEffect(/* board */) {
+		// selectionner une baleine
+		// selectionne la case ou on veut la deplacer (mer inoccupée)
 	}
 
 	/**
 	* 
 	*/
 	public void boatMoveEffect() {
-		//selectionnne un bateau
-		//le de placer de 1 a 3 cases
+		// selectionnne un bateau
+		// le de placer de 1 a 3 cases
 	}
 
 	/**
 	* 
 	*/
 	public void boatEffect() {
-		//board[i][j].tuiles = MER
-		//board[i][j].listePions.addToBoard(boat)
+		// board[i][j].tuiles = MER
+		// board[i][j].listePions.addToBoard(boat)
 	}
 
 	/**
 	* 
 	*/
 	public void dolphinMoveEffect() {
-		//selectionnne un nageur
-		//le de placer de 1 a 3 cases
+		// selectionnne un nageur
+		// le de placer de 1 a 3 cases
 	}
 
 	/**
 	* 
 	*/
 	public void sharkEffect() {
-		//board[i][j].tuiles = MER
-		//board[i][j].listePions.addToBoard(shark)
+		// board[i][j].tuiles = MER
+		// board[i][j].listePions.addToBoard(shark)
 	}
 
 	/**
 	* 
 	*/
 	public void sharkDeathEffect() {
-		//board[i][j].listePions.removeFromBoard(shark)
+		// board[i][j].listePions.removeFromBoard(shark)
 	}
 
 	/**
 	* 
 	*/
 	public void sharkLostEffect() {
-		//selectionner un requin
-		//selectionne la case ou on veut la deplacer (mer inoccupée)
+		// selectionner un requin
+		// selectionne la case ou on veut la deplacer (mer inoccupée)
 	}
 
 	/**
 	* 
 	*/
 	public void seasnakeLostEffect() {
-		//selectionner un seasnake
-		//selectionne la case ou on veut la deplacer (mer inoccupée)
+		// selectionner un seasnake
+		// selectionne la case ou on veut la deplacer (mer inoccupée)
 	}
 
 	/**
 	* 
 	*/
 	public void whirlpoolEffect() {
-		//if(board[i][j].tuile=MER)
-		//for(i=0;i<len(board[i][j].listePions);i++) removeFromBoard(pion)
+		// if(board[i][j].tuile=MER)
+		// for(i=0;i<len(board[i][j].listePions);i++) removeFromBoard(pion)
 	}
 
 	/**
 	* 
 	*/
 	public void volcanoEffect() {
-		//endgame
+		// endgame
 	}
 
 }
