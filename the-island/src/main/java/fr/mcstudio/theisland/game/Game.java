@@ -1,12 +1,6 @@
-<<<<<<< Updated upstream
 package fr.mcstudio.theisland.game;
 
 import fr.mcstudio.theisland.board.*;
-=======
-import fr.mcstudio.theisland.game.*;
-import fr.mcstudio.theisland.board.*;
-import java.util.*;
->>>>>>> Stashed changes
 
 /**
  * 
