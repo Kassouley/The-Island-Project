@@ -1,4 +1,4 @@
-package fr.koraizon.theisland;
+package fr.mcstudio.theisland.board;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,18 +6,19 @@ import java.util.List;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-import fr.koraizon.theisland.enums.HexagonType;
+import fr.mcstudio.theisland.enums.HexagonType;
+import fr.mcstudio.theisland.pawns.*;
+import fr.mcstudio.theisland.tiles.*;
 
 @SuppressWarnings("serial")
-public class Hexagon extends JPanel{
-
+public class Hexagon extends JPanel {
 
     /**
      * 
      */
     /**
      * <p>
-     * Constructeur par défaut
+     * Constructeur par dï¿½faut
      * </p>
      */
     public Hexagon(JLayeredPane plateauPane) {
@@ -28,11 +29,10 @@ public class Hexagon extends JPanel{
         this.boat = null;
         plateauPane.setLayer(this, 2);
     }
-    
+
     private Tile tile;
 
-
-	/**
+    /**
      * 
      */
     private HexagonType type;
@@ -62,15 +62,14 @@ public class Hexagon extends JPanel{
      */
     private Boat boat;
 
-
     public Tile getTile() {
-		return tile;
-	}
+        return tile;
+    }
 
-	public void setTile(Tile tile) {
-		this.tile = tile;
-	}
-    
+    public void setTile(Tile tile) {
+        this.tile = tile;
+    }
+
     /**
      * 
      */
@@ -228,9 +227,9 @@ public class Hexagon extends JPanel{
         return this.boat;
     }
 
-	public void setPosition(int x, int y) {
+    public void setPosition(int x, int y) {
 
-		this.setBounds(x, y, 90, 90);
-		
-	}
+        this.setBounds(x, y, 90, 90);
+
+    }
 }

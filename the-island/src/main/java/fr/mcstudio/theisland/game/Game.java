@@ -1,4 +1,6 @@
-import java.util.*;
+package fr.mcstudio.theisland.game;
+
+import fr.mcstudio.theisland.board.*;
 
 /**
  * 
@@ -8,7 +10,7 @@ public class Game {
      * Default constructor
      */
     public Game(Player[] players) {
-        this.board = new Board();
+        // this.board = new Board();
         this.players = players;
         this.turnNumber = 0;
     }

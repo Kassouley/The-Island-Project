@@ -10,6 +10,10 @@
  * Copyright     : Lucas Neto
  */
 
+package fr.mcstudio.theisland.pawns;
+
+import fr.mcstudio.theisland.board.Hexagon;
+
 /**
  * <p>
  * Gestion des baleine du jeu The Island

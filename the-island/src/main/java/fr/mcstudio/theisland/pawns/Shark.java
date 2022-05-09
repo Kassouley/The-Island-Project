@@ -10,6 +10,11 @@
  * Copyright     : Lucas Neto
  */
 
+package fr.mcstudio.theisland.pawns;
+
+import fr.mcstudio.theisland.board.Hexagon;
+import fr.mcstudio.theisland.enums.ExplorerStatus;
+
 /**
  * <p>
  * Gestion des requins du jeu The Island

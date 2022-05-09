@@ -10,6 +10,10 @@
  * Copyright     : Lucas Neto
  */
 
+package fr.mcstudio.theisland.pawns;
+
+import fr.mcstudio.theisland.board.Hexagon;
+
 /**
  * <p>
  * Gestion des serpents de mer du jeu The Island

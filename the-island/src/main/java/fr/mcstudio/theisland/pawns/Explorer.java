@@ -10,6 +10,11 @@
  * Copyright     : Lucas Neto
  */
 
+package fr.mcstudio.theisland.pawns;
+
+import fr.mcstudio.theisland.board.Hexagon;
+import fr.mcstudio.theisland.enums.*;
+
 /**
  * <p>
  * Gestion des explorateurs du jeu The Island
@@ -107,7 +112,7 @@ public class Explorer extends Pawn {
      */
     public void move(Hexagon oldPosition, Hexagon newPosition) {
         oldPosition.removePawn(this);
-        switch (newPosition.type) {
+        switch (newPosition.getType()) {
             case TILES:
                 this.status = ExplorerStatus.NORMAL;
                 newPosition.addPawn(this);
@@ -165,7 +170,7 @@ public class Explorer extends Pawn {
      */
     public void move(Boat boat, Hexagon newPosition) {
         boat.removeExplorer(this);
-        switch (newPosition.type) {
+        switch (newPosition.getType()) {
             case TILES:
                 // Move impossible
                 this.status = ExplorerStatus.NORMAL;

@@ -10,6 +10,11 @@
  * Copyright     : Lucas Neto
  */
 
+package fr.mcstudio.theisland.pawns;
+
+import fr.mcstudio.theisland.enums.*;
+import fr.mcstudio.theisland.board.Hexagon;
+import fr.mcstudio.theisland.game.Player;
 import java.util.*;
 
 /**

@@ -1,3 +1,5 @@
+package fr.mcstudio.theisland.enums;
+
 /**
  * <p>
  * Énumeration des couleurs des types d'hexagone

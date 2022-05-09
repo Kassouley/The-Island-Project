@@ -1,19 +1,22 @@
 
-import java.util.*;
+package fr.mcstudio.theisland.tiles;
+
+import fr.mcstudio.theisland.enums.*;
+import javax.swing.*;
 
 /**
  * 
  */
-public class Tile {
+public class Tile extends JLabel {
 
 	private TilesType type;
 	private TilesEffect effect;
 
 	/**
-	* Default constructor
-	*/
-	public Tiles() {
-		this.setHorizontalAlignment(SwingConstants.CENTER);		
+	 * Default constructor
+	 */
+	public Tile() {
+		this.setHorizontalAlignment(SwingConstants.CENTER);
 	}
 
 	/**
@@ -29,11 +32,11 @@ public class Tile {
 	public void setType(TilesType type) {
 		this.type = type;
 		if (type == TilesType.BEACH) {
-			this.setIcon(new ImageIcon(Tiles.class.getResource("/sprites/Plage.png")));
+			this.setIcon(new ImageIcon(Tile.class.getResource("/sprites/Plage.png")));
 		} else if (type == TilesType.FOREST) {
-			this.setIcon(new ImageIcon(Tiles.class.getResource("/sprites/Foret.png")));
+			this.setIcon(new ImageIcon(Tile.class.getResource("/sprites/Foret.png")));
 		} else if (type == TilesType.MONTAINS) {
-			this.setIcon(new ImageIcon(Tiles.class.getResource("/sprites/Montagne.png")));
+			this.setIcon(new ImageIcon(Tile.class.getResource("/sprites/Montagne.png")));
 		} else {
 			this.setIcon(null);
 		}
@@ -80,7 +83,7 @@ public class Tile {
 	public void applyEffect() {
 		switch (this.effect) {
 			case WHALE:
-				this.whaleEffect();
+				// this.whaleEffect();
 				break;
 			case WHALE_DEATH:
 				this.whaleDeathEffect();
@@ -123,10 +126,12 @@ public class Tile {
 	/**
 	* 
 	*/
-	public void whaleEffect(Hexagon tilePosition) {
-		Whale w = new Whale();
-		tilePosition.addPawn(w);
-	}
+	/*
+	 * public void whaleEffect(Hexagon tilePosition) {
+	 * Whale w = new Whale();
+	 * tilePosition.addPawn(w);
+	 * }
+	 */
 
 	/**
 	* 

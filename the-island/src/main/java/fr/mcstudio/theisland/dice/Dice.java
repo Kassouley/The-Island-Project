@@ -10,7 +10,8 @@
  * Copyright     : Loïk Simon
  */
 
-import java.awt.EventQueue;
+package fr.mcstudio.theisland.dice;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,22 +29,21 @@ import javax.swing.JPanel;
  */
 public class Dice {
 
-    /**
+	/**
 	 * <p>
 	 * Constructeur par défaut
 	 * </p>
 	 */
 	public Dice() {
-		this.seaSnakeList.add(new DiceAnimation("Images/Animation/seaSnake/seaSnake1.gif"));
-		this.seaSnakeList.add(new DiceAnimation("Images/Animation/seaSnake/seaSnake2.gif"));
-		this.sharkList.add(new DiceAnimation("Images/Animation/shark/shark1.gif"));
-		this.sharkList.add(new DiceAnimation("Images/Animation/shark/shark2.gif"));
-		this.whaleList.add(new DiceAnimation("Images/Animation/whale/whale1.gif"));
-		this.whaleList.add(new DiceAnimation("Images/Animation/whale/whale2.gif"));
+		this.seaSnakeList.add(new DiceAnimation("img/Animation/seaSnake/seaSnake1.gif"));
+		this.seaSnakeList.add(new DiceAnimation("img/Animation/seaSnake/seaSnake2.gif"));
+		this.sharkList.add(new DiceAnimation("img/Animation/shark/shark1.gif"));
+		this.sharkList.add(new DiceAnimation("img/Animation/shark/shark2.gif"));
+		this.whaleList.add(new DiceAnimation("img/Animation/whale/whale1.gif"));
+		this.whaleList.add(new DiceAnimation("img/Animation/whale/whale2.gif"));
 	}
 
-
-    /**
+	/**
 	 * <p>
 	 * Retourne le résultat d'un lancé de dé sous forme de int.
 	 * </p>
@@ -54,14 +54,14 @@ public class Dice {
 		return (int) ((Math.random() * (3 - 1)) + 1);
 	}
 
-    /**
+	/**
 	 * <p>
 	 * Lance une animation du dé.
 	 * </p>
 	 * 
 	 * @param panelAnimation JPanel sur lequel placer l'animation.
-	 * @param layeredPane JLayeredPane sur lequel placer le JPanel d'animation.
-	 * @param result Résultat du dé à animer.
+	 * @param layeredPane    JLayeredPane sur lequel placer le JPanel d'animation.
+	 * @param result         Résultat du dé à animer.
 	 * @since 1.0
 	 */
 	public void startAnimation(JPanel panelAnimation, JLayeredPane layeredPane, int result) {
@@ -81,7 +81,7 @@ public class Dice {
 				animationNumber = (int) (Math.random() * this.whaleList.size());
 				panelAnimation.add(this.whaleList.get(animationNumber).getLabel());
 				break;
-		
+
 			default:
 				System.err.print("Dans Dice.java, dice.startAnimation : résultat non compatible");
 				break;
@@ -90,36 +90,37 @@ public class Dice {
 		layeredPane.add(panelAnimation, 3);
 	}
 
-    /**
+	/**
 	 * <p>
 	 * Arrête l'animation du dé.
 	 * </p>
 	 * 
 	 * @param panelAnimation JPanel sur lequel est placé l'animation.
-	 * @param layeredPane JLayeredPane sur lequel est placé le JPanel d'animation.
+	 * @param layeredPane    JLayeredPane sur lequel est placé le JPanel
+	 *                       d'animation.
 	 * @since 1.0
 	 */
 	public void endAnimation(JPanel panelAnimation, JLayeredPane layeredPane) {
 		panelAnimation.setVisible(false);
 		panelAnimation.repaint();
-		EventQueue.invokeLater(() -> layeredPane.remove(panelAnimation));
+		layeredPane.remove(panelAnimation);
 	}
 
-    /**
+	/**
 	 * <p>
 	 * Liste de d'animation du résultat "seaSnake".
 	 * </p>
 	 */
 	private List<DiceAnimation> seaSnakeList = new ArrayList<DiceAnimation>();
 
-    /**
+	/**
 	 * <p>
 	 * Liste de d'animation du résultat "shark".
 	 * </p>
 	 */
 	private List<DiceAnimation> sharkList = new ArrayList<DiceAnimation>();
 
-    /**
+	/**
 	 * <p>
 	 * Liste de d'animation du résultat "whale".
 	 * </p>

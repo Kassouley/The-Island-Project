@@ -1,12 +1,12 @@
-package fr.koraizon.theisland;
+package fr.mcstudio.theisland.board;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
 @SuppressWarnings("serial")
-public class ActionInfo extends JLabel{
-	
+public class ActionInfo extends JLabel {
+
 	public ActionInfo(JLayeredPane actionInfoPane) {
 		super();
 		actionInfoPane.setLayer(this, 0);

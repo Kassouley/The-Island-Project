@@ -1,11 +1,11 @@
-package fr.koraizon.theisland;
+package fr.mcstudio.theisland.board;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
 @SuppressWarnings("serial")
-public class PlayerInfo extends JLabel{
+public class PlayerInfo extends JLabel {
 
 	public PlayerInfo(JLayeredPane playerInfoPane) {
 		super();
@@ -14,7 +14,5 @@ public class PlayerInfo extends JLabel{
 		this.setIcon(new ImageIcon(PlayerInfo.class.getResource("/sprites/PlayerInfo.png")));
 		playerInfoPane.add(this);
 	}
-	
-	
-	
+
 }

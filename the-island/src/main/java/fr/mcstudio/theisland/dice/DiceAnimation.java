@@ -10,6 +10,8 @@
  * Copyright     : Loïk Simon
  */
 
+package fr.mcstudio.theisland.dice;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -23,7 +25,7 @@ import javax.swing.JLabel;
  * @author Loïk Simon
  */
 public class DiceAnimation {
-	
+
 	/**
 	 * <p>
 	 * Constructeur par défaut
@@ -34,7 +36,7 @@ public class DiceAnimation {
 	public DiceAnimation(String path) {
 		this.label = new JLabel(new ImageIcon(path));
 	}
-	
+
 	/**
 	 * <p>
 	 * Accesseur pour le JLabel d'animation.

@@ -1,4 +1,4 @@
-package fr.koraizon.theisland.enums;
+package fr.mcstudio.theisland.enums;
 
 public enum TilesType {
 	BEACH, FOREST, MONTAINS;
