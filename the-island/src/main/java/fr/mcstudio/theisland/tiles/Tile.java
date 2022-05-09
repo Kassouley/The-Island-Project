@@ -123,99 +123,185 @@ public class Tile extends JLabel {
 		}
 	}
 
-	/**
-	* 
-	*/
 	/*
-	 * public void whaleEffect(Hexagon tilePosition) {
-	 * Whale w = new Whale();
-	 * tilePosition.addPawn(w);
-	 * }
+	 * <p>
+	 * Découvre la tuile présente sur la case de la map.
+	 * </p>
+	 * @since1.0
 	 */
-
-	/**
-	* 
-	*/
-	public void whaleDeathEffect(/* board */) {
-		// board[i][j].listePions.removeFromBoard(whale)
+	public void discover(Hexagon tilePosition) {
+		if(tilePosition.effect.getType() == Verte){
+			tilePosition.applyEffect();
+		  	
+		  }
+		  else {
+			  
+			 //mettre la tuile dans la main
+		  }
+		 
 	}
-
-	/**
-	* 
-	*/
-	public void whaleLostEffect(/* board */) {
-		// selectionner une baleine
-		// selectionne la case ou on veut la deplacer (mer inoccupée)
+	/*
+	 * <p>
+	 * Applique l'effet de la tuile.
+	 * </p>
+	 * @since1.0
+	 */
+	public void applyEffect() {
+		switch(this.effect) {
+		case WHALE : this.whaleEffect(); break;
+		case WHALE_DEATH : this.whaleDeathEffect();break;
+		case WHALE_LOST :this.whaleLostEffect(); break;
+		case BOAT_MOVE : this.boatMoveEffect();break;
+		case BOAT : this.boatEffect();break;
+		case DOLPHIN_MOVE :this.dolphinMoveEffect(); break;
+		case SHARK : this.sharkEffect();break;
+		case SHARK_DEATH : this.sharkDeathEffect(); break;
+		case SHARK_LOST : this.sharkLostEffect(); break;
+		case SEASNAKE_LOST : this.seasnakeLostEffect();break;
+		case WHIRLPOOL : this.whirlpoolEffect(); break;
+		case VOLCANO : this.volcanoEffect(); break;
+		default : break;
+		}
 	}
-
+	
 	/**
-	* 
-	*/
+	 * <p>
+	 * Ajoute un pion baleine sur la case choisie.
+	 * Tuile à effet instantanée.
+	 * </p>
+	 * @param tilePosition Tuile actuelle
+	 * @since 1.0
+	 */
+	public void whaleEffect(Hexagon tilePosition) {
+		whale w = new whale();
+		tilePosition.addPawn(w);	
+	}
+	
+	/**
+	 * <p>
+	 * Tue la baleine sur la tuile.
+	 * Tuile défense.
+	 * </p>
+	 * @param tilePosition Tuile actuelle
+	 * @since 1.0
+	 */
+	public void whaleDeathEffect(Hexagon tilePosition) {
+		whale w = new whale();
+		tilePosition.removePawn(w);
+	}
+	
+	/**
+	 * <p>
+	 * Déplace une baleine sur une case de mer vide.
+	 * Tuile en début de tour.
+	 * </p>
+	 */
+	public void whaleLostEffect() {
+		//selectionner une baleine
+		//selectionne la case ou on veut la deplacer (mer inoccupÃ©e)
+	}
+	
+	/**
+	 * <p>
+	 * Déplace un bateau que vous controlez de 1 à 3 cases.
+	 * Tuile en début de tour.
+	 * </p>
+	 */
 	public void boatMoveEffect() {
-		// selectionnne un bateau
-		// le de placer de 1 a 3 cases
+		//selectionnne un bateau
+		//le de placer de 1 a 3 cases
 	}
-
+	
 	/**
-	* 
-	*/
-	public void boatEffect() {
-		// board[i][j].tuiles = MER
-		// board[i][j].listePions.addToBoard(boat)
+	 * <p>
+	 * Ajoute un bateau sur la case de la tuile.
+	 * Tuile instantanée.
+	 * </p>
+	 * @param tilePosition Tuile actuelle
+	 */
+	public void boatEffect(Hexagon tilePosition) {
+		boat b = new boat();
+		tilePosition.addPawn(b);
 	}
-
+	
 	/**
-	* 
-	*/
+	 * <p>
+	 * Déplace un nageur de 1 à 3 cases.
+	 * Tuile en début de tour.
+	 * </p>
+	 */
 	public void dolphinMoveEffect() {
-		// selectionnne un nageur
-		// le de placer de 1 a 3 cases
+		//selectionnne un nageur
+		//le de placer de 1 a 3 cases
 	}
-
+	
 	/**
-	* 
-	*/
-	public void sharkEffect() {
-		// board[i][j].tuiles = MER
-		// board[i][j].listePions.addToBoard(shark)
+	 * <p>
+	 * Ajoute un requin sur la case de la tuile.
+	 * Tuile instantanée.
+	 * </p>
+	 * @param tilePosition Tuile actuelle
+	 */
+	public void sharkEffect(Hexagon tilePosition) {
+		shark s = new shark();
+		tilePosition.addPawn(s);
 	}
-
+	
 	/**
-	* 
-	*/
-	public void sharkDeathEffect() {
-		// board[i][j].listePions.removeFromBoard(shark)
+	 * <p>
+	 * Tue le requin sur la tuile.
+	 * Tuile défense.
+	 * </p>
+	 * @param tilePosition Tuile actuelle
+	 */
+	public void sharkDeathEffect(Hexagon tilePosition) {
+		shark s = new shark();
+		tilePosition.removePawn(s);
 	}
-
+	
 	/**
-	* 
-	*/
+	 * <p>
+	 * Déplace un requin sur une case de mer vide.
+	 * Tuile en début de tour. 
+	 * </p>
+	 */
 	public void sharkLostEffect() {
-		// selectionner un requin
-		// selectionne la case ou on veut la deplacer (mer inoccupée)
+		//selectionner un requin
+		//selectionne la case ou on veut la deplacer (mer inoccupÃ©e)
 	}
-
+	
 	/**
-	* 
-	*/
+	 * <p>
+	 * Déplace un serpent de mer sur une case de mer vide.
+	 * Tuile en début de tour.
+	 * </p>
+	 */
 	public void seasnakeLostEffect() {
-		// selectionner un seasnake
-		// selectionne la case ou on veut la deplacer (mer inoccupée)
+		//selectionner un seasnake
+		//selectionne la case ou on veut la deplacer (mer inoccupÃ©e)
 	}
-
+	
 	/**
-	* 
-	*/
+	 * <p>
+	 * Retire tout les pions sur les cases de mer aux alentours et sur cette tuile.
+	 * Tuile instantanée.
+	 * </p>
+	 */
 	public void whirlpoolEffect() {
-		// if(board[i][j].tuile=MER)
-		// for(i=0;i<len(board[i][j].listePions);i++) removeFromBoard(pion)
+		//if(board[i][j].tuile=MER)
+		//for(i=0;i<len(board[i][j].listePions);i++) removeFromBoard(pion)
 	}
-
+	
 	/**
-	* 
-	*/
+	 * <p>
+	 * Fin de la partie.
+	 * Tuile instantanée.
+	 * </p>
+	 */
 	public void volcanoEffect() {
-		// endgame
+		//endgame
 	}
 
+	
+	
 }
