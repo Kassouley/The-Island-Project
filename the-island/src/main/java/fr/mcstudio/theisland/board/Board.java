@@ -9,8 +9,15 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+<<<<<<< Updated upstream
 import fr.mcstudio.theisland.enums.*;
 import fr.mcstudio.theisland.tiles.*;
+=======
+import fr.mcstudio.theisland.enums.Color;
+import fr.mcstudio.theisland.enums.HexagonType;
+import fr.mcstudio.theisland.enums.TilesEffect;
+import fr.mcstudio.theisland.enums.TilesType;
+>>>>>>> Stashed changes
 
 @SuppressWarnings("serial")
 public class Board extends JLabel {
@@ -81,10 +88,22 @@ public class Board extends JLabel {
 
 			}
 		}
+<<<<<<< Updated upstream
 	}
 
 	public List<Tile> CreateTiles() {
 		List<Tile> tiles = new ArrayList<Tile>();
+=======
+		hexagons[7][7].addPawn(new Explorer(Color.BLUE, 1));
+		hexagons[7][7].addPawn(new Explorer(Color.BLUE, 1));
+		hexagons[7][7].addPawn(new Explorer(Color.BLUE, 1));
+		hexagons[7][7].addPawn(new Explorer(Color.BLUE, 1));
+
+	}
+
+	public List<Tile> CreateTiles() {
+		List<Tile> tiles = new ArrayList<>();
+>>>>>>> Stashed changes
 
 		for (int i = 0; i < 16; i++) {
 			Tile tile = new Tile();
