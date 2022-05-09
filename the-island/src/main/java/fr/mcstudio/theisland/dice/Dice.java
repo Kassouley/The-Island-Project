@@ -34,12 +34,12 @@ public class Dice {
 	 * </p>
 	 */
 	public Dice() {
-		this.seaSnakeList.add(new DiceAnimation("Images/Animation/seaSnake/seaSnake1.gif"));
-		this.seaSnakeList.add(new DiceAnimation("Images/Animation/seaSnake/seaSnake2.gif"));
-		this.sharkList.add(new DiceAnimation("Images/Animation/shark/shark1.gif"));
-		this.sharkList.add(new DiceAnimation("Images/Animation/shark/shark2.gif"));
-		this.whaleList.add(new DiceAnimation("Images/Animation/whale/whale1.gif"));
-		this.whaleList.add(new DiceAnimation("Images/Animation/whale/whale2.gif"));
+		this.seaSnakeList.add(new DiceAnimation("the-island/img/Animation/seaSnake/seaSnake1.gif"));
+		this.seaSnakeList.add(new DiceAnimation("the-island/img/Animation/seaSnake/seaSnake2.gif"));
+		this.sharkList.add(new DiceAnimation("the-island/img/Animation/seaSnake/shark1.gif"));
+		this.sharkList.add(new DiceAnimation("the-island/img/Animation/seaSnake/shark2.gif"));
+		this.whaleList.add(new DiceAnimation("the-island/img/Animation/seaSnake/whale1.gif"));
+		this.whaleList.add(new DiceAnimation("the-island/img/Animation/seaSnake/whale2.gif"));
 	}
 
 
