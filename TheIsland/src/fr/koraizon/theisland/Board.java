@@ -18,26 +18,28 @@ import fr.koraizon.theisland.enums.TilesType;
 public class Board extends JLabel{
 	private Hexagon[][] hexagons = new Hexagon[13][13];
 	
-	public Board(JLayeredPane plateauPane) {
+	JLayeredPane boardPane;
+	
+	public Board(JLayeredPane boardPane) {
 		super();
-		
-		plateauPane.setLayer(this, 0);
+		this.boardPane = boardPane;
+		boardPane.setLayer(this, 0);
 		this.setBounds(0, 0, 1230, 1000);
 		this.setIcon(new ImageIcon(Board.class.getResource("/sprites/Map_90.png")));
-		plateauPane.add(this);
+		boardPane.add(this);
 		
 		JPanel tilesPane = new JPanel();
 		tilesPane.setOpaque(false);
-		plateauPane.setLayer(tilesPane, 1);
+		boardPane.setLayer(tilesPane, 1);
 		tilesPane.setBounds(0, 0, 1230, 1000);
-		plateauPane.add(tilesPane);
+		boardPane.add(tilesPane);
 		tilesPane.setLayout(null);
 		tilesPane.setVisible(true);
 		List<Tile> tilesList = CreateTiles();
 		Random r = new Random();
 		for (int i = 0; i < 13; i++) {
-			for (int j = 0; j < 12; j++) {
-				hexagons[i][j] = new Hexagon(plateauPane);
+			for (int j = 0; j < 13; j++) {
+				hexagons[i][j] = new Hexagon(boardPane, i, j);
 				if(((i != 0 || j != 1) && (i != 1 || j != 1) && (i != 3 || j != 1) && 
 						(i != 9 || j != 1) && (i != 11 || j != 1) && (i != 12 || j != 1) && 
 						(i != 0 || j != 1) && (i != 0 || j != 2) && (i != 12 || j != 2) &&
@@ -59,18 +61,7 @@ public class Board extends JLabel{
 						hexagons[i][j].setType(HexagonType.SEA);
 					}
 
-					if(i%2 == 0) {
-						int positionx = 30 + 90 * j;
-						int positiony = 35 + 70 * i;
-						hexagons[i][j].setPosition(positionx, positiony);
-						hexagons[i][j].getTile().setPosition(positionx, positiony);
-					} else {
-						int positionx = -15 + 90*j;
-						int positiony = 35 + 70 * i;
-						hexagons[i][j].setPosition(positionx, positiony);
-						hexagons[i][j].getTile().setPosition(positionx, positiony);
-					}
-					tilesPane.add(hexagons[i][j].getTile());
+					
 				} else if(i == 0 && j == 1 || i == 1 && j == 1 || i == 2 && j == 0 ||
 						i == 0 && j == 11 || i == 1 && j == 12 || i == 2 && j == 12 ||
 						i == 10 && j == 0 || i == 11 && j == 1 || i == 12 && j == 1 ||
@@ -81,18 +72,30 @@ public class Board extends JLabel{
 					hexagons[i][j].setTile(null);
 					hexagons[i][j].setType(HexagonType.VOID);
 				}
-				
-
+				int positionx = 0;
+				int positiony = 0;
+				if(i%2 == 0) {
+					positionx = 30 + 90 * j;
+					positiony = 35 + 70 * i;
+				} else {
+					positionx = -15 + 90*j;
+					positiony = 35 + 70 * i;
+				}
+				if(hexagons[i][j].getTile() != null) {
+					tilesPane.add(hexagons[i][j].getTile());
+					hexagons[i][j].getTile().setPosition(positionx, positiony);
+				}
 			}
 		}
-		hexagons[7][7].addPawn(new Explorer(Color.BLUE, 1));
-		hexagons[7][7].addPawn(new Explorer(Color.BLUE, 1));
-		hexagons[7][7].addPawn(new Explorer(Color.BLUE, 1));
-		hexagons[7][7].addPawn(new Explorer(Color.BLUE, 1));
+		
+
+		System.out.println(boardPane.getX() + "," + boardPane.getY());
+		//plateauPane.addMouseListener((e) -> getClickedPosition(e));
+		
 		
 	}	
 	
-	public List<Tile> CreateTiles() {
+	private  List<Tile> CreateTiles() {
 		List<Tile> tiles = new ArrayList<>();
 		
 		for (int i = 0; i < 16; i++) {

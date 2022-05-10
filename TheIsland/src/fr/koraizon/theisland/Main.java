@@ -21,25 +21,13 @@ public class Main extends JFrame{
 	        this.setLocationRelativeTo(null);
 	        this.setVisible(true);
 	        
-	        contentPane = new JPanel();
+			contentPane = new JPanel();
 			contentPane.setBorder(null);
 			setContentPane(contentPane);
 			contentPane.setLayout(null);
 			
-			JLayeredPane boardPane = new JLayeredPane();
-			boardPane.setBounds(282, 0, 1230, 1000);
-			contentPane.add(boardPane);
-			board = new Board(boardPane);
-			
-			JLayeredPane playerInfoPane = new JLayeredPane();
-			playerInfoPane.setBounds(0,0, 282, 1000);
-			contentPane.add(playerInfoPane);
-			playerInfo = new PlayerInfo(playerInfoPane);
-			
-			JLayeredPane actionInfoPane = new JLayeredPane();
-			actionInfoPane.setBounds(1512,0, 338, 1000);
-			contentPane.add(actionInfoPane);
-			actionInfo = new ActionInfo(actionInfoPane);
+	        
+	       
 	    }
 
 	public static void main(String[] args) {
@@ -47,11 +35,28 @@ public class Main extends JFrame{
 			public void run() {
 				try {
 					Main main = new Main();
+					
+					JLayeredPane boardPane = new JLayeredPane();
+					boardPane.setBounds(282, 0, 1230, 1000);
+					main.contentPane.add(boardPane);
+					main.board = new Board(boardPane);
+					
+					JLayeredPane playerInfoPane = new JLayeredPane();
+					playerInfoPane.setBounds(0,0, 282, 1000);
+					main.contentPane.add(playerInfoPane);
+					main.playerInfo = new PlayerInfo(playerInfoPane);
+					
+					JLayeredPane actionInfoPane = new JLayeredPane();
+					actionInfoPane.setBounds(1512,0, 338, 1000);
+					main.contentPane.add(actionInfoPane);
+					main.actionInfo = new ActionInfo(actionInfoPane);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
+	
+	
 
 }

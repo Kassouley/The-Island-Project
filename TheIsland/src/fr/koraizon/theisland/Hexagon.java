@@ -1,5 +1,7 @@
 package fr.koraizon.theisland;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,7 @@ import javax.swing.JPanel;
 import fr.koraizon.theisland.enums.HexagonType;
 
 @SuppressWarnings("serial")
-public class Hexagon extends JPanel{
+public class Hexagon{
 
 
     /**
@@ -20,14 +22,40 @@ public class Hexagon extends JPanel{
      * Constructeur par défaut
      * </p>
      */
-    public Hexagon(JLayeredPane plateauPane) {
+    public Hexagon(JLayeredPane boardPane, int ligne, int colonne) {
+    	this.ligne = ligne;
+    	this.colonne = colonne;
         this.explorerList = new ArrayList<Explorer>();
         this.sharkList = new ArrayList<Shark>();
         this.whaleList = new ArrayList<Whale>();
         this.seaSnakeList = new ArrayList<SeaSnake>();
         this.boat = null;
-        plateauPane.setLayer(this, 2);
+
+        boardPane.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//System.out.println(e.getX() + "," + e.getY() + "," + getX() + "," + getY());
+				if(tile != null)
+					if(isInHexagonfloat(e.getX(), e.getY())) {
+						System.out.println("Yay ! " + ligne + " " + colonne);
+					}
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+		  });
     }
+    
+    private int ligne;
+    
+    private int colonne;
     
     private Tile tile;
 
@@ -227,10 +255,27 @@ public class Hexagon extends JPanel{
     public Boat getBoat() {
         return this.boat;
     }
-
-	public void setPosition(int x, int y) {
-
-		this.setBounds(x, y, 90, 90);
+	
+	public boolean isInHexagonfloat (float clickx, float clicky) {
+		if(isInDemiPlan(tile.getX() + 45, tile.getY(), tile.getX(), tile.getY() + 20, clickx, clicky) &&
+				isInDemiPlan(tile.getX() + 89, tile.getY() + 20, tile.getX() + 45, tile.getY(), clickx, clicky) &&
+				isInDemiPlan(tile.getX(), tile.getY() + 69, tile.getX() + 45, tile.getY() + 89, clickx, clicky) &&
+				isInDemiPlan(tile.getX() + 45, tile.getY() + 89, tile.getX() + 89, tile.getY() + 69, clickx, clicky) &&
+				isInDemiPlan(tile.getX(), tile.getY() + 20, tile.getX(), tile.getY() + 69, clickx, clicky) && 
+				isInDemiPlan(tile.getX() + 89, tile.getY() + 69, tile.getX() + 89, tile.getY() + 20, clickx, clicky)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public boolean isInDemiPlan(float ax, float ay, float bx, float by, float clickx, float clicky) {
+		float d = (bx - ax)*(clicky - ay) - (by - ay)*(clickx - ax);
 		
+		if(d <= 0)
+			return true;
+		else 
+			return false;
 	}
 }

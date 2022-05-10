@@ -18,7 +18,11 @@ public class Pawn extends JLabel{
     
     public void setImage(int nbPawns) {
     	if(this instanceof Shark) {
-    		
+    		if(nbPawns == 1) {
+    			
+    		} else {
+    			
+    		}
     	} else if(this instanceof Whale) {
     		
     	} else if(this instanceof SeaSnake) {
