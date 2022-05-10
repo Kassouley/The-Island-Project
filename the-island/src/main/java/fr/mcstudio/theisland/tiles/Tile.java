@@ -83,7 +83,7 @@ public class Tile extends JLabel {
 	public void applyEffect() {
 		switch (this.effect) {
 			case WHALE:
-				// this.whaleEffect();
+				this.whaleEffect();
 				break;
 			case WHALE_DEATH:
 				this.whaleDeathEffect();
