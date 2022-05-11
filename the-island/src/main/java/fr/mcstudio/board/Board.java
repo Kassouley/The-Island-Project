@@ -20,11 +20,11 @@ public class Board extends JLabel{
 	
 	JLayeredPane boardPane;
 	
-	public Board(JLayeredPane boardPane) {
+	public Board(int resolution, JLayeredPane boardPane) {
 		super();
 		this.boardPane = boardPane;
 		boardPane.setLayer(this, 0);
-		this.setBounds(0, 0, 1230, 1000);
+		setBoundsFromResolution(resolution);
 		this.setIcon(new ImageIcon(Board.class.getResource("/Map_90.png")));
 		boardPane.add(this);
 		
@@ -163,5 +163,20 @@ public class Board extends JLabel{
 			tiles.add(tile);
 		}
 		return tiles;
+	}
+	
+
+	private void setBoundsFromResolution(int resolution) {
+		switch(resolution) {
+		case 70:
+			this.setBounds(0, 0, 1230, 1000);
+			break;
+		case 80:
+			this.setBounds(0, 0, 1230, 1000);
+			break;
+		case 90:
+			this.setBounds(0, 0, 1230, 1000);
+			break;
+		}
 	}
 }

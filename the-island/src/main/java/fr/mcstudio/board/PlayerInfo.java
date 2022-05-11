@@ -7,7 +7,7 @@ import javax.swing.JLayeredPane;
 @SuppressWarnings("serial")
 public class PlayerInfo extends JLabel {
 
-	public PlayerInfo(JLayeredPane playerInfoPane) {
+	public PlayerInfo(int resolution, JLayeredPane playerInfoPane) {
 		super();
 		playerInfoPane.setLayer(this, 0);
 		this.setBounds(0, 0, 282, 1000);

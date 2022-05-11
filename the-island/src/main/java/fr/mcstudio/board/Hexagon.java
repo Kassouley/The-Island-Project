@@ -16,7 +16,6 @@ import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.pawns.Whale;
 import fr.mcstudio.tiles.Tile;
 
-@SuppressWarnings("serial")
 public class Hexagon{
 
     /**
@@ -27,6 +26,8 @@ public class Hexagon{
      * Constructeur par d�faut
      * </p>
      */
+	
+	Hexagon hexagon = this;
 	public Hexagon(JLayeredPane boardPane, final int ligne, final int colonne) {
     	this.ligne = ligne;
     	this.colonne = colonne;
@@ -37,6 +38,7 @@ public class Hexagon{
 				if(tile != null)
 					if(isInHexagonfloat(e.getX(), e.getY())) {
 						System.out.println("Yay ! " + ligne + " " + colonne);
+						//tile.applyEffect(hexagon);
 					}
 			}
 
@@ -50,9 +52,11 @@ public class Hexagon{
         });
     }
 
+	@SuppressWarnings("unused")
 	private int ligne;
     
-    private int colonne;
+    @SuppressWarnings("unused")
+	private int colonne;
 	
     private Tile tile;
 

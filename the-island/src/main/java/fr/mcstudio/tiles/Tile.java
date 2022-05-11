@@ -15,9 +15,10 @@ import fr.mcstudio.pawns.Whale;
 /**
  * 
  */
+@SuppressWarnings("serial")
 public class Tile extends JLabel {
 
-	private TilesType type;
+	private TilesType type = null;
 	private TilesEffect effect;
 
 	/**
@@ -88,13 +89,13 @@ public class Tile extends JLabel {
 	/**
 	* 
 	*/
-	/*public void applyEffect() {
+	public void applyEffect(Hexagon tilePosition) {
 		switch (this.effect) {
 			case WHALE:
-				this.whaleEffect();
+				this.whaleEffect(tilePosition);
 				break;
 			case WHALE_DEATH:
-				this.whaleDeathEffect();
+				this.whaleDeathEffect(tilePosition);
 				break;
 			case WHALE_LOST:
 				this.whaleLostEffect();
@@ -103,16 +104,16 @@ public class Tile extends JLabel {
 				this.boatMoveEffect();
 				break;
 			case BOAT:
-				this.boatEffect();
+				this.boatEffect(tilePosition);
 				break;
 			case DOLPHIN_MOVE:
 				this.dolphinMoveEffect();
 				break;
 			case SHARK:
-				this.sharkEffect();
+				this.sharkEffect(tilePosition);
 				break;
 			case SHARK_DEATH:
-				this.sharkDeathEffect();
+				this.sharkDeathEffect(tilePosition);
 				break;
 			case SHARK_LOST:
 				this.sharkLostEffect();
@@ -129,7 +130,7 @@ public class Tile extends JLabel {
 			default:
 				break;
 		}
-	}*/
+	}
 
 	/*
 	 * <p>

@@ -7,7 +7,7 @@ import javax.swing.JLayeredPane;
 @SuppressWarnings("serial")
 public class ActionInfo extends JLabel {
 
-	public ActionInfo(JLayeredPane actionInfoPane) {
+	public ActionInfo(int resolution, JLayeredPane actionInfoPane) {
 		super();
 		actionInfoPane.setLayer(this, 0);
 		this.setBounds(0, 0, 338, 1000);

@@ -24,6 +24,7 @@ import fr.mcstudio.board.Hexagon;
  * @see Pawn.java
  * @author Lucas Neto
  */
+@SuppressWarnings("serial")
 public class EffectPawn extends Pawn {
 
     /**

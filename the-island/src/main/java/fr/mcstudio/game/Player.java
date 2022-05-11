@@ -38,7 +38,6 @@ public class Player {
     public Player(String pseudo, Color color, boolean isBot) {
         this.pseudo = pseudo;
         this.color = color;
-        this.explorerList = new ArrayList<Explorer>();
         this.isBot = isBot;
         this.moveLeft = 3;
     }
@@ -64,14 +63,14 @@ public class Player {
      * 
      * @see Color.java
      */
-    private List<Explorer> explorerList;
+    private List<Explorer> explorerList = new ArrayList<Explorer>();
 
     /**
      * <p>
      * Liste des tuiles du joueur
      * </p>
      */
-    private List<Tile> tileList;
+    private List<Tile> tileList = new ArrayList<Tile>();
 
     /**
      * <p>
@@ -212,5 +211,9 @@ public class Player {
     public int getMoveLeft() {
         return this.moveLeft;
     }
+
+	public List<Tile> getTileList() {
+		return tileList;
+	}
 
 }
