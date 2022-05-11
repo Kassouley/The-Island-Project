@@ -16,7 +16,7 @@ import fr.mcstudio.tiles.Tile;
 
 @SuppressWarnings("serial")
 public class Board extends JLabel{
-	private Hexagon[][] hexagons = new Hexagon[13][13];
+	private Hexagon[][] hexagons = new Hexagon[13][12];
 	
 	JLayeredPane boardPane;
 	
@@ -38,19 +38,19 @@ public class Board extends JLabel{
 		List<Tile> tilesList = CreateTiles();
 		Random r = new Random();
 		for (int i = 0; i < 13; i++) {
-			for (int j = 0; j < 13; j++) {
+			for (int j = 0; j < 12; j++) {
 				hexagons[i][j] = new Hexagon(boardPane, i, j);
-				if(((i != 0 || j != 1) && (i != 1 || j != 1) && (i != 3 || j != 1) && 
-						(i != 9 || j != 1) && (i != 11 || j != 1) && (i != 12 || j != 1) && 
-						(i != 0 || j != 1) && (i != 0 || j != 2) && (i != 12 || j != 2) &&
-						(i != 0 || j != 10) && (i != 12 || j != 10) &&
-						(i != 0 || j != 11)) || 
-						(i == 5 && j == 12) || (i == 7 || j == 12)){
+				if(((i != 0 || j != 0) && (i != 1 || j != 0) && (i != 3 || j != 0) && 
+						(i != 9 || j != 0) && (i != 11 || j != 0) && (i != 12 || j != 0) && 
+						(i != 0 || j != 0) && (i != 0 || j != 1) && (i != 12 || j != 1) &&
+						(i != 0 || j != 9) && (i != 12 || j != 9) &&
+						(i != 0 || j != 10)) || 
+						(i == 5 && j == 11) || (i == 7 || j == 11)){
 					
-					if((((i > 2 && j > 4 && i < 10 && j < 9) || 
-						(i > 4 && j > 2 && i < 8 && j < 11 && (i != 6 || j != 10))) && 
-						(i != 6 || j != 6)) ||
-						(i == 4 && j == 4) || (i == 8 && j == 4)) {
+					if((((i > 2 && j > 3 && i < 10 && j < 8) || 
+						(i > 4 && j > 1 && i < 8 && j < 10 && (i != 6 || j != 9))) && 
+						(i != 6 || j != 5)) ||
+						(i == 4 && j == 3) || (i == 8 && j == 3)) {
 						int n = r.nextInt(tilesList.size());
 						hexagons[i][j].setTile(tilesList.get(n));
 						tilesList.remove(n);
@@ -62,11 +62,9 @@ public class Board extends JLabel{
 					}
 
 					
-				} else if(i == 0 && j == 1 || i == 1 && j == 1 || i == 2 && j == 0 ||
-						i == 0 && j == 11 || i == 1 && j == 12 || i == 2 && j == 12 ||
-						i == 10 && j == 0 || i == 11 && j == 1 || i == 12 && j == 1 ||
-						i == 12 && j == 11 || i == 11 && j == 12 || i == 10 && j == 12 ) {
-					hexagons[i][j].setTile(null);
+				} else if (i == 1 && j == 0 || i == 1 && j == 11 ||
+						i == 11 && j == 0 ||  i == 11 && j == 11) {
+					hexagons[i][j].setTile(new Tile());
 					hexagons[i][j].setType(HexagonType.ISLAND);
 				} else {
 					hexagons[i][j].setTile(null);
@@ -75,10 +73,10 @@ public class Board extends JLabel{
 				int positionx = 0;
 				int positiony = 0;
 				if(i%2 == 0) {
-					positionx = 30 + 90 * j;
+					positionx = 120 + 90 * j;
 					positiony = 35 + 70 * i;
 				} else {
-					positionx = -15 + 90*j;
+					positionx = 75 + 90*j;
 					positiony = 35 + 70 * i;
 				}
 				if(hexagons[i][j].getTile() != null) {
