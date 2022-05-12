@@ -21,6 +21,8 @@ public class Main extends JFrame {
 	private ActionInfo actionInfo;
 	private JPanel contentPane;
 
+	int resolution = 70;
+
 	public Main() {
 		super("The Island");
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -35,24 +37,41 @@ public class Main extends JFrame {
 
 		
 	}
-	int resolution = 90;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					Main main = new Main();
+
+					JLayeredPane playerInfoPane = new JLayeredPane();
+					switch(main.resolution) {
+					case 70:
+						playerInfoPane.setBounds(0, 0, 217, 770);
+						break;
+					case 80:
+						playerInfoPane.setBounds(0, 0, 248, 880);
+						break;
+					case 90:
+						playerInfoPane.setBounds(0, 0, 282, 990);
+						break;
+					default:
+						break;
+					}
+					main.contentPane.add(playerInfoPane);
+					main.playerInfo = new PlayerInfo(main.resolution, playerInfoPane);
+					
 					
 					JLayeredPane boardPane = new JLayeredPane();
 					switch(main.resolution) {
 					case 70:
-						boardPane.setBounds(282, 0, 1230, 1000);
+						boardPane.setBounds(217, 0, 955, 770);
 						break;
 					case 80:
-						boardPane.setBounds(282, 0, 1230, 1000);
+						boardPane.setBounds(248, 0, 1090, 880);
 						break;
 					case 90:
-						boardPane.setBounds(282, 0, 1230, 1000);
+						boardPane.setBounds(282, 0, 1230, 990);
 						break;
 					default:
 						break;
@@ -60,33 +79,17 @@ public class Main extends JFrame {
 					main.contentPane.add(boardPane);
 					main.board = new Board(main.resolution, boardPane);
 
-					JLayeredPane playerInfoPane = new JLayeredPane();
-					switch(main.resolution) {
-					case 70:
-						playerInfoPane.setBounds(0, 0, 282, 1000);
-						break;
-					case 80:
-						playerInfoPane.setBounds(0, 0, 282, 1000);
-						break;
-					case 90:
-						playerInfoPane.setBounds(0, 0, 282, 1000);
-						break;
-					default:
-						break;
-					}
-					main.contentPane.add(playerInfoPane);
-					main.playerInfo = new PlayerInfo(main.resolution, playerInfoPane);
-
+					
 					JLayeredPane actionInfoPane = new JLayeredPane();
 					switch(main.resolution) {
 					case 70:
-						actionInfoPane.setBounds(1512, 0, 338, 1000);
+						actionInfoPane.setBounds(1172, 0, 260, 770);
 						break;
 					case 80:
-						actionInfoPane.setBounds(1512, 0, 338, 1000);
+						actionInfoPane.setBounds(1338, 0, 297, 880);
 						break;
 					case 90:
-						actionInfoPane.setBounds(1512, 0, 338, 1000);
+						actionInfoPane.setBounds(1512, 0, 338, 990);
 						break;
 					default:
 						break;

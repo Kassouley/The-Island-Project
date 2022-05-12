@@ -1,10 +1,13 @@
 
 package fr.mcstudio.tiles;
 
+import java.awt.Image;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
@@ -38,17 +41,31 @@ public class Tile extends JLabel {
 	/**
 	* 
 	*/
-	public void setType(TilesType type) {
+	public void setType(int resolution, TilesType type) {
+		ImageIcon icone = null;
+		Image scaleImage;
 		this.type = type;
 		if (type == TilesType.BEACH) {
-			this.setIcon(new ImageIcon(Tile.class.getResource("/Plage.png")));
+			icone = new ImageIcon(Tile.class.getResource("/Plage.png"));
 		} else if (type == TilesType.FOREST) {
-			this.setIcon(new ImageIcon(Tile.class.getResource("/Foret.png")));
+			icone = new ImageIcon(Tile.class.getResource("/Foret.png"));
 		} else if (type == TilesType.MONTAINS) {
-			this.setIcon(new ImageIcon(Tile.class.getResource("/Montagne.png")));
-		} else {
-			this.setIcon(null);
+			icone = new ImageIcon(Tile.class.getResource("/Montagne.png"));
 		}
+		switch(resolution) {
+		case 70:
+			scaleImage = icone.getImage().getScaledInstance(70, 70,Image.SCALE_SMOOTH);
+			icone.setImage(scaleImage);
+			break;
+		case 80:
+			scaleImage = icone.getImage().getScaledInstance(80, 80,Image.SCALE_SMOOTH);
+			icone.setImage(scaleImage);
+			break;
+		default:
+			break;
+		}
+
+		this.setIcon(icone);
 	}
 
 	/**

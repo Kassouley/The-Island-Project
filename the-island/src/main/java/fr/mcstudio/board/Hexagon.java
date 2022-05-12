@@ -1,7 +1,5 @@
 package fr.mcstudio.board;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,30 +30,10 @@ public class Hexagon{
     	this.ligne = ligne;
     	this.colonne = colonne;
 
-        boardPane.addMouseListener(new MouseListener() {
-
-			public void mouseClicked(MouseEvent e) {
-				if(tile != null)
-					if(isInHexagonfloat(e.getX(), e.getY())) {
-						System.out.println("Yay ! " + ligne + " " + colonne);
-						//tile.applyEffect(hexagon);
-					}
-			}
-
-			public void mousePressed(MouseEvent e) {}
-
-			public void mouseReleased(MouseEvent e) {}
-
-			public void mouseEntered(MouseEvent e) {}
-
-			public void mouseExited(MouseEvent e) {}
-        });
     }
 
-	@SuppressWarnings("unused")
 	private int ligne;
     
-    @SuppressWarnings("unused")
 	private int colonne;
 	
     private Tile tile;
@@ -255,20 +233,61 @@ public class Hexagon{
         return this.boat;
     }
     
-    public boolean isInHexagonfloat (float clickx, float clicky) {
-		if(isInDemiPlan(tile.getX() + 45, tile.getY(), tile.getX(), tile.getY() + 20, clickx, clicky) &&
-				isInDemiPlan(tile.getX() + 89, tile.getY() + 20, tile.getX() + 45, tile.getY(), clickx, clicky) &&
-				isInDemiPlan(tile.getX(), tile.getY() + 69, tile.getX() + 45, tile.getY() + 89, clickx, clicky) &&
-				isInDemiPlan(tile.getX() + 45, tile.getY() + 89, tile.getX() + 89, tile.getY() + 69, clickx, clicky) &&
-				isInDemiPlan(tile.getX(), tile.getY() + 20, tile.getX(), tile.getY() + 69, clickx, clicky) && 
-				isInDemiPlan(tile.getX() + 89, tile.getY() + 69, tile.getX() + 89, tile.getY() + 20, clickx, clicky)) {
-			return true;
+    public boolean isInHexagonfloat (int resolution, float clickx, float clicky) {
+    	
+    	switch(resolution) {
+		case 70:
+			if(isInDemiPlan(tile.getX() + 35, tile.getY(), tile.getX(), tile.getY() + 15, clickx, clicky) &&
+					isInDemiPlan(tile.getX() + 69, tile.getY() + 15, tile.getX() + 35, tile.getY(), clickx, clicky) &&
+					isInDemiPlan(tile.getX(), tile.getY() + 54, tile.getX() + 35, tile.getY() + 69, clickx, clicky) &&
+					isInDemiPlan(tile.getX() + 35, tile.getY() + 69, tile.getX() + 69, tile.getY() + 54, clickx, clicky) &&
+					isInDemiPlan(tile.getX(), tile.getY() + 15, tile.getX(), tile.getY() + 54, clickx, clicky) && 
+					isInDemiPlan(tile.getX() + 69, tile.getY() + 54, tile.getX() + 69, tile.getY() + 15, clickx, clicky)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		case 80:
+			if(isInDemiPlan(tile.getX() + 40, tile.getY(), tile.getX(), tile.getY() + 17, clickx, clicky) &&
+					isInDemiPlan(tile.getX() + 79, tile.getY() + 17, tile.getX() + 40, tile.getY(), clickx, clicky) &&
+					isInDemiPlan(tile.getX(), tile.getY() + 62, tile.getX() + 40, tile.getY() + 79, clickx, clicky) &&
+					isInDemiPlan(tile.getX() + 40, tile.getY() + 79, tile.getX() + 79, tile.getY() + 62, clickx, clicky) &&
+					isInDemiPlan(tile.getX(), tile.getY() + 17, tile.getX(), tile.getY() + 62, clickx, clicky) && 
+					isInDemiPlan(tile.getX() + 79, tile.getY() + 62, tile.getX() + 79, tile.getY() + 17, clickx, clicky)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		case 90:
+			if(isInDemiPlan(tile.getX() + 45, tile.getY(), tile.getX(), tile.getY() + 20, clickx, clicky) &&
+					isInDemiPlan(tile.getX() + 89, tile.getY() + 20, tile.getX() + 45, tile.getY(), clickx, clicky) &&
+					isInDemiPlan(tile.getX(), tile.getY() + 69, tile.getX() + 45, tile.getY() + 89, clickx, clicky) &&
+					isInDemiPlan(tile.getX() + 45, tile.getY() + 89, tile.getX() + 89, tile.getY() + 69, clickx, clicky) &&
+					isInDemiPlan(tile.getX(), tile.getY() + 20, tile.getX(), tile.getY() + 69, clickx, clicky) && 
+					isInDemiPlan(tile.getX() + 89, tile.getY() + 69, tile.getX() + 89, tile.getY() + 20, clickx, clicky)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		default:
+			break;
 		}
-		else {
-			return false;
-		}
+		return false;
+    	
+		
 	}
 	
+	public int getLigne() {
+		return ligne;
+	}
+
+	public int getColonne() {
+		return colonne;
+	}
+
 	public boolean isInDemiPlan(float ax, float ay, float bx, float by, float clickx, float clicky) {
 		float d = (bx - ax)*(clicky - ay) - (by - ay)*(clickx - ax);
 		
