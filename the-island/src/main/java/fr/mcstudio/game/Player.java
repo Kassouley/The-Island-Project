@@ -15,6 +15,7 @@ package fr.mcstudio.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.mcstudio.board.Board;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.tiles.Tile;
@@ -38,7 +39,7 @@ public class Player {
     public Player(String pseudo, Color color, boolean isBot) {
         this.pseudo = pseudo;
         this.color = color;
-        this.explorerList = new ArrayList<Explorer>();
+        this.explorerList = initPlayerExplorer();
         this.isBot = isBot;
         this.moveLeft = 3;
     }
@@ -171,13 +172,14 @@ public class Player {
      * Initialise les explorateurs du joueur.
      * </p>
      */
-    public void initPlayerExplorer() {
-
+    public List<Explorer> initPlayerExplorer() {
+        List<Explorer> explorerList = new ArrayList<Explorer>();
         int[] treasureValue = new int[] { 1, 1, 1, 2, 2, 3, 3, 4, 5, 6 };
         for (int i : treasureValue) {
             Explorer explorer = new Explorer(this.color, i);
-            this.explorerList.add(explorer);
+            explorerList.add(explorer);
         }
+        return explorerList;
     }
 
     /**
@@ -213,4 +215,12 @@ public class Player {
         return this.moveLeft;
     }
 
+    /**
+     * 
+     */
+    public void placeAllExplorers(Board board) {
+        for (Explorer e : this.explorerList) {
+            board.returnHexagon().addPawn(e);
+        }
+    }
 }
