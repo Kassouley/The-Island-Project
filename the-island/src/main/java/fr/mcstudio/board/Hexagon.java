@@ -27,16 +27,16 @@ public class Hexagon{
      * Constructeur par d�faut
      * </p>
      */
-	public Hexagon(JLayeredPane boardPane, final int ligne, final int colonne) {
-    	this.ligne = ligne;
-    	this.colonne = colonne;
+	public Hexagon(JLayeredPane boardPane, final int line, final int colomn) {
+    	this.line = line;
+    	this.colomn = colomn;
 
         boardPane.addMouseListener(new MouseListener() {
 
 			public void mouseClicked(MouseEvent e) {
 				if(tile != null)
 					if(isInHexagonfloat(e.getX(), e.getY())) {
-						System.out.println("Yay ! " + ligne + " " + colonne);
+						System.out.println("Yay ! " + line + " " + colomn);
 					}
 			}
 
@@ -50,9 +50,9 @@ public class Hexagon{
         });
     }
 
-	private int ligne;
+	private int line;
     
-    private int colonne;
+    private int colomn;
 	
     private Tile tile;
 
@@ -273,4 +273,12 @@ public class Hexagon{
 		else 
 			return false;
 	}
+
+    public int getLine() {
+        return this.line;
+    }
+
+    public int getColomn() {
+        return this.colomn;
+    }
 }
