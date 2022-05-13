@@ -169,4 +169,68 @@ public class Board extends JLabel {
 		
 		//todo
 	}
+
+	public Hexagon getTopLeft(Hexagon actualHexagon) {
+        if (actualHexagon.getLine()-1 > 0 && actualHexagon.getLine()%2 == 1) {
+            return this.hexagons[actualHexagon.getLine()-1][actualHexagon.getColomn()];
+        } else if (actualHexagon.getLine()-1 > 0 
+				&& actualHexagon.getColomn()-1 > 0 
+				&& actualHexagon.getLine()%2 == 0) {
+            return this.hexagons[actualHexagon.getLine()-1][actualHexagon.getColomn()-1];
+        } else {
+            return null;
+        }
+    }
+
+    public Hexagon getTopRight(Hexagon actualHexagon) {
+        if (actualHexagon.getLine()-1 > 0 
+				&& actualHexagon.getColomn()+1 < 12 
+				&& actualHexagon.getLine()%2 == 1) {
+            return this.hexagons[actualHexagon.getLine()-1][actualHexagon.getColomn()+1];
+        } else if (actualHexagon.getLine()-1 > 0 && actualHexagon.getLine()%2 == 0) {
+            return this.hexagons[actualHexagon.getLine()-1][actualHexagon.getColomn()];
+        } else {
+            return null;
+        }
+    }
+
+    public Hexagon getLeft(Hexagon actualHexagon) {
+        if (actualHexagon.getColomn()-1 > 0) {
+            return this.hexagons[actualHexagon.getLine()][actualHexagon.getColomn()-1];
+        } else {
+            return null;
+        }
+    }
+
+    public Hexagon getRight(Hexagon actualHexagon) {
+        if (actualHexagon.getColomn()+1 < 12) {
+            return this.hexagons[actualHexagon.getLine()][actualHexagon.getColomn()+1];
+        } else {
+            return null;
+        }
+    }
+
+    public Hexagon getBottomLeft(Hexagon actualHexagon) {
+        if (actualHexagon.getLine()+1 < 13 && actualHexagon.getLine()%2 == 1) {
+            return this.hexagons[actualHexagon.getLine()+1][actualHexagon.getColomn()];
+        } else if (actualHexagon.getLine()+1 < 13 
+				&& actualHexagon.getColomn()-1 > 0 
+				&& actualHexagon.getLine()%2 == 0) {
+            return this.hexagons[actualHexagon.getLine()+1][actualHexagon.getColomn()-1];
+        } else {
+            return null;
+        }
+    }
+
+    public Hexagon getBottomRight(Hexagon actualHexagon) {
+        if (actualHexagon.getLine()+1 < 13 
+				&& actualHexagon.getColomn()+1 < 12 
+				&& actualHexagon.getLine()%2 == 1) {
+			return this.hexagons[actualHexagon.getLine()+1][actualHexagon.getColomn()+1];
+        } else if (actualHexagon.getLine()+1 < 12 && actualHexagon.getLine()%2 == 0) {
+            return this.hexagons[actualHexagon.getLine()+1][actualHexagon.getColomn()];
+        } else {
+            return null;
+        }
+    }
 }
