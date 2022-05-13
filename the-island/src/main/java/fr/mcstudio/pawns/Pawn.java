@@ -11,7 +11,9 @@ import fr.mcstudio.board.Hexagon;
 @SuppressWarnings("serial")
 public class Pawn extends JLabel {
     /**
-     * Default constructor
+     * <p>
+     * Constructeur par défaut.
+     * </p>
      */
     public Pawn() {
     }

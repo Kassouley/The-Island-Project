@@ -16,7 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.mcstudio.board.Board;
+import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
+import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.tiles.Tile;
 
@@ -216,11 +218,22 @@ public class Player {
     }
 
     /**
+     * <p>
+     * Permet au joueur de placer tout ses explorateurs sur une tuile vide.
+     * </p>
      * 
+     * @param board le plateau dans lequel on pose les explorateurs.
      */
     public void placeAllExplorers(Board board) {
         for (Explorer e : this.explorerList) {
-            board.returnHexagon().addPawn(e);
+            Hexagon hexagon;
+            do {
+                hexagon = board.returnHexagon();
+            } while (hexagon.getType() != HexagonType.TILES
+                    || !hexagon.getExplorerList().isEmpty());
+
+            hexagon.addPawn(e);
+            hexagon = null;
         }
     }
 }

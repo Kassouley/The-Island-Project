@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.JLayeredPane;
 
+import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.EffectPawn;
@@ -257,6 +258,7 @@ public class Hexagon {
         return this.boat;
     }
 
+    
     public int getLine() {
         return this.line;
     }
@@ -264,6 +266,12 @@ public class Hexagon {
     public int getColomn() {
         return this.colomn;
 
+     /**
+     * 
+     * @param clickx
+     * @param clicky
+     * @return
+     */
     public boolean isInHexagonfloat(float clickx, float clicky) {
         if (isInDemiPlan(tile.getX() + 45, tile.getY(),
                 tile.getX(), tile.getY() + 20, clickx, clicky)
@@ -283,10 +291,96 @@ public class Hexagon {
         }
     }
 
-    public boolean isInDemiPlan(float ax, float ay, float bx,
-            float by, float clickx, float clicky) {
+    /**
+     * 
+     * @param ax
+     * @param ay
+     * @param bx
+     * @param by
+     * @param clickx
+     * @param clicky
+     * @return
+     */
+    public boolean isInDemiPlan(float ax, float ay, float bx, float by,
+            float clickx, float clicky) {
         float d = (bx - ax) * (clicky - ay) - (by - ay) * (clickx - ax);
 
         return (d <= 0);
+    }
+
+    /**
+     * 
+     */
+    public void displayPawns() {
+        int cmpt = 0;
+
+        if (!this.explorerList.isEmpty()) {
+            for (Explorer e : this.explorerList) {
+                if (e.getColor() == Color.RED) {
+                    
+                }
+                    
+            }
+        }
+        
+        if (!this.whaleList.isEmpty()) {
+            
+        if (!this.sharkList.isEmpty()) {
+            
+        if (!this.seaSnakeList.isEmpty()) {
+            
+        if (this.boat != null) {
+            
+    }
+
+    /**
+     * 
+     */
+    public int returnPawnsTypeNumber() {
+        int cmpt = 0;
+        boolean redSeen = false;
+        boolean blueSeen = false;
+        boolean greenSeen = false;
+        boolean yellowSeen = false;
+
+        if (!this.explorerList.isEmpty()) {
+            for (Explorer e : this.explorerList) {
+                if (e.getColor() == Color.BLUE && !blueSeen) {
+                    cmpt++;
+                    blueSeen = true;
+                } else if (e.getColor() == Color.YELLOW && !yellowSeen) {
+                    cmpt++;
+                    yellowSeen = true;
+                } else if (e.getColor() == Color.GREEN && !greenSeen) {
+                    cmpt++;
+                    greenSeen = true;
+                } else if (e.getColor() == Color.RED && !redSeen) {
+                    cmpt++;
+                    redSeen = true;
+                }
+
+                if (yellowSeen && greenSeen && blueSeen && redSeen) {
+                    break;
+                }
+            }
+        }
+
+        if (!this.whaleList.isEmpty()) {
+            cmpt++;
+        }
+
+        if (!this.sharkList.isEmpty()) {
+            cmpt++;
+        }
+
+        if (!this.seaSnakeList.isEmpty()) {
+            cmpt++;
+        }
+
+        if (this.boat != null) {
+            cmpt++;
+        }
+
+        return cmpt;
     }
 }
