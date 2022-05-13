@@ -109,9 +109,38 @@ public class Hexagon {
 
     /**
      * 
+     * @return
      */
     public HexagonType getType() {
         return this.type;
+    }
+
+    /**
+     * 
+     */
+    public boolean isTiles() {
+        return this.type == HexagonType.TILES;
+    }
+
+    /**
+     * 
+     */
+    public boolean isSea() {
+        return this.type == HexagonType.SEA;
+    }
+
+    /**
+     * 
+     */
+    public boolean isVoid() {
+        return this.type == HexagonType.VOID;
+    }
+
+    /**
+     * 
+     */
+    public boolean isIsland() {
+        return this.type == HexagonType.ISLAND;
     }
 
     /**
@@ -310,8 +339,21 @@ public class Hexagon {
     /**
      * 
      */
+    public boolean isEmpty() {
+        return this.explorerList.isEmpty()
+                && this.sharkList.isEmpty()
+                && this.whaleList.isEmpty()
+                && this.seaSnakeList.isEmpty()
+                && this.boat == null;
+    }
+
+    /**
+     * 
+     */
     public void displayPawns() {
-        //
+        if (!this.isEmpty()) {
+
+        }
 
     }
 
