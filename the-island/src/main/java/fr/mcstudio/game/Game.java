@@ -171,7 +171,7 @@ public class Game {
     /**
      * 
      */
-    public boolean isEndGame() {
+    public boolean isEnd() {
         for (Player player : players) {
             if (player.haveExplorerOnBoard()) {
                 return false;
