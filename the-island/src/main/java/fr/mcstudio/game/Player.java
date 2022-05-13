@@ -19,6 +19,7 @@ import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.HexagonType;
+import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.tiles.Tile;
 
@@ -229,10 +230,36 @@ public class Player {
             Hexagon hexagon;
             do {
                 hexagon = board.returnHexagon();
-            } while (hexagon.getType() != HexagonType.TILES
-                    || !hexagon.getExplorerList().isEmpty());
+            } while (!hexagon.isTiles() || !hexagon.getExplorerList().isEmpty());
 
             hexagon.addPawn(e);
+            hexagon = null;
+        }
+    }
+
+    /**
+     * <p>
+     * Permet au joueur de placer tout ses explorateurs sur une tuile vide.
+     * </p>
+     * 
+     * @param board le plateau dans lequel on pose les explorateurs.
+     */
+    public void placeBoat(Board board) {
+        for (int i = 0; i < 2; i++) {
+            Hexagon hexagon;
+            do {
+                hexagon = board.returnHexagon();
+            } while (!hexagon.isSea()
+                    || hexagon.getBoat() != null
+                    || !board.getBottomLeft(hexagon).isTiles()
+                    || !board.getLeft(hexagon).isTiles()
+                    || !board.getTopLeft(hexagon).isTiles()
+                    || !board.getBottomRight(hexagon).isTiles()
+                    || !board.getRight(hexagon).isTiles()
+                    || !board.getTopRight(hexagon).isTiles());
+
+            Boat b = new Boat();
+            hexagon.addPawn(b);
             hexagon = null;
         }
     }
