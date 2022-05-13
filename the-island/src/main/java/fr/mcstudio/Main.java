@@ -44,6 +44,7 @@ public class Main extends JFrame {
 		actionInfoPane.setBounds(1512, 0, 338, 1000);
 		contentPane.add(actionInfoPane);
 		actionInfo = new ActionInfo(actionInfoPane);
+	
 	}
 
 	public static void main(String[] args) {

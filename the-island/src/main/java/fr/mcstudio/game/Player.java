@@ -15,11 +15,7 @@ package fr.mcstudio.game;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.mcstudio.board.Board;
-import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
-import fr.mcstudio.enums.HexagonType;
-import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.tiles.Tile;
 
@@ -42,7 +38,8 @@ public class Player {
     public Player(String pseudo, Color color, boolean isBot) {
         this.pseudo = pseudo;
         this.color = color;
-        this.explorerList = initPlayerExplorer();
+        this.explorerList = new ArrayList<Explorer>();
+        this.tileList = new ArrayList<Tile>();
         this.isBot = isBot;
         this.moveLeft = 3;
     }
@@ -77,6 +74,14 @@ public class Player {
      */
     private List<Tile> tileList;
 
+    /**
+     * <p>
+     * Accesseur ‡ la liste de tuile du joueur.
+     * </p>
+     */
+    public List<Tile> getTileList() {
+		return tileList;
+	}
     /**
      * <p>
      * Bool√©en ordinateur
@@ -175,14 +180,13 @@ public class Player {
      * Initialise les explorateurs du joueur.
      * </p>
      */
-    public List<Explorer> initPlayerExplorer() {
-        List<Explorer> explorerList = new ArrayList<Explorer>();
+    public void initPlayerExplorer() {
+
         int[] treasureValue = new int[] { 1, 1, 1, 2, 2, 3, 3, 4, 5, 6 };
         for (int i : treasureValue) {
             Explorer explorer = new Explorer(this.color, i);
-            explorerList.add(explorer);
+            this.explorerList.add(explorer);
         }
-        return explorerList;
     }
 
     /**
@@ -218,49 +222,6 @@ public class Player {
         return this.moveLeft;
     }
 
-    /**
-     * <p>
-     * Permet au joueur de placer tout ses explorateurs sur une tuile vide.
-     * </p>
-     * 
-     * @param board le plateau dans lequel on pose les explorateurs.
-     */
-    public void placeAllExplorers(Board board) {
-        for (Explorer e : this.explorerList) {
-            Hexagon hexagon;
-            do {
-                hexagon = board.returnHexagon();
-            } while (!hexagon.isTiles() || !hexagon.getExplorerList().isEmpty());
+	
 
-            hexagon.addPawn(e);
-            hexagon = null;
-        }
-    }
-
-    /**
-     * <p>
-     * Permet au joueur de placer tout ses explorateurs sur une tuile vide.
-     * </p>
-     * 
-     * @param board le plateau dans lequel on pose les explorateurs.
-     */
-    public void placeBoat(Board board) {
-        for (int i = 0; i < 2; i++) {
-            Hexagon hexagon;
-            do {
-                hexagon = board.returnHexagon();
-            } while (!hexagon.isSea()
-                    || hexagon.getBoat() != null
-                    || !board.getBottomLeft(hexagon).isTiles()
-                    || !board.getLeft(hexagon).isTiles()
-                    || !board.getTopLeft(hexagon).isTiles()
-                    || !board.getBottomRight(hexagon).isTiles()
-                    || !board.getRight(hexagon).isTiles()
-                    || !board.getTopRight(hexagon).isTiles());
-
-            Boat b = new Boat();
-            hexagon.addPawn(b);
-            hexagon = null;
-        }
-    }
 }

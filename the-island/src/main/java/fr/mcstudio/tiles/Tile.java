@@ -1,13 +1,18 @@
 
 package fr.mcstudio.tiles;
 
+import java.util.*;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
+import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
+import fr.mcstudio.game.Player;
 import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.pawns.Whale;
@@ -15,10 +20,11 @@ import fr.mcstudio.pawns.Whale;
 /**
  * 
  */
+@SuppressWarnings("serial")
 public class Tile extends JLabel {
 
-	private TilesType type;
-	private TilesEffect effect;
+	private TilesType type = null;
+	private TilesEffect effect = null;
 
 	/**
 	 * Default constructor
@@ -31,7 +37,7 @@ public class Tile extends JLabel {
 	* 
 	*/
 	public TilesType getType() {
-		return this.type;
+			return type;
 	}
 
 	/**
@@ -54,7 +60,7 @@ public class Tile extends JLabel {
 	* 
 	*/
 	public TilesEffect getEffect() {
-		return this.effect;
+		return effect;
 	}
 
 	/**
@@ -72,255 +78,246 @@ public class Tile extends JLabel {
 	}
 
 	/**
-	* 
-	*/
-	public void discover(/* board */) {
-		/*
-		 * if(board[i][j].tile.getType() == Verte){
-		 * board[i][j].tile.applyeffect()
-		 * removeFromBoard tile
-		 * }
-		 * else
-		 * putInHands ( board[i][j].tile)
-		 */
-	}
-
-	/**
-	* 
-	*/
-	/*
-	 * public void applyEffect() {
-	 * switch (this.effect) {
-	 * case WHALE:
-	 * this.whaleEffect();
-	 * break;
-	 * case WHALE_DEATH:
-	 * this.whaleDeathEffect();
-	 * break;
-	 * case WHALE_LOST:
-	 * this.whaleLostEffect();
-	 * break;
-	 * case BOAT_MOVE:
-	 * this.boatMoveEffect();
-	 * break;
-	 * case BOAT:
-	 * this.boatEffect();
-	 * break;
-	 * case DOLPHIN_MOVE:
-	 * this.dolphinMoveEffect();
-	 * break;
-	 * case SHARK:
-	 * this.sharkEffect();
-	 * break;
-	 * case SHARK_DEATH:
-	 * this.sharkDeathEffect();
-	 * break;
-	 * case SHARK_LOST:
-	 * this.sharkLostEffect();
-	 * break;
-	 * case SEASNAKE_LOST:
-	 * this.seasnakeLostEffect();
-	 * break;
-	 * case WHIRLPOOL:
-	 * this.whirlpoolEffect();
-	 * break;
-	 * case VOLCANO:
-	 * this.volcanoEffect();
-	 * break;
-	 * default:
-	 * break;
-	 * }
-	 * }
-	 */
-
-	/*
 	 * <p>
-	 * D√©couvre la tuile pr√©sente sur la case de la map.
+	 * Regarde si il y a une tuile sur l'hexagone cliquÈ
 	 * </p>
-	 * 
 	 * @since1.0
 	 */
-	/*
-	 * public void discover(Hexagon tilePosition) {
-	 * if(tilePosition.effect.getType() == Verte){
-	 * tilePosition.applyEffect();
-	 * 
-	 * }
-	 * else {
-	 * 
-	 * //mettre la tuile dans la main
-	 * }
-	 * 
-	 * }
+	public void discover(Hexagon tilePosition,Player p,Board board) {
+		if(tilePosition.getTile().getType() != null) {
+				flipTile(tilePosition,p,board);
+		}
+		else {
+			System.out.println("Aucune tuile sur la case choisie\n");
+		}
+	}
+	
+	/**
+	 * <p>
+	 * Retourne la tuile prÈsente sur la case choisie de la map.
+	 * </p>
+	 * @since1.0
 	 */
-	/*
+	public void flipTile(Hexagon tilePosition,Player p,Board board) {
+		Hexagon[][] hexagons = board.getHexagons();
+		tilePosition.getTile().applyEffect(tilePosition,board);	
+		/*if(tilePosition.getTile().getEffect().getType() == "Verte"){
+			tilePosition.getTile().applyEffect(tilePosition,hexagon);		  	
+		  }
+		else {
+			  p.getTileList().add(tilePosition.getTile());
+		  }*/
+		
+		//hexagons[tilePosition.getLine()][tilePosition.getColumn()].setType(HexagonType.SEA);
+		//hexagons[tilePosition.getLine()][tilePosition.getColumn()].setTile(null);
+		
+
+		 
+	}
+	
+	/**
 	 * <p>
 	 * Applique l'effet de la tuile.
 	 * </p>
-	 * 
 	 * @since1.0
 	 */
-	/*
-	 * public void applyEffect() {
-	 * switch(this.effect) {
-	 * case WHALE : this.whaleEffect(); break;
-	 * case WHALE_DEATH : this.whaleDeathEffect();break;
-	 * case WHALE_LOST :this.whaleLostEffect(); break;
-	 * case BOAT_MOVE : this.boatMoveEffect();break;
-	 * case BOAT : this.boatEffect();break;
-	 * case DOLPHIN_MOVE :this.dolphinMoveEffect(); break;
-	 * case SHARK : this.sharkEffect();break;
-	 * case SHARK_DEATH : this.sharkDeathEffect(); break;
-	 * case SHARK_LOST : this.sharkLostEffect(); break;
-	 * case SEASNAKE_LOST : this.seasnakeLostEffect();break;
-	 * case WHIRLPOOL : this.whirlpoolEffect(); break;
-	 * case VOLCANO : this.volcanoEffect(); break;
-	 * default : break;
-	 * }
-	 * }
-	 */
-
-	/**
-	 * <p>
-	 * Ajoute un pion baleine sur la case choisie.
-	 * Tuile √† effet instantan√©e.
-	 * </p>
-	 * 
-	 * @param tilePosition Tuile actuelle
-	 * @since 1.0
-	 */
-	public void whaleEffect(Hexagon tilePosition) {
-		Whale w = new Whale();
-		tilePosition.addPawn(w);
+	public void applyEffect(Hexagon tilePosition,Board board) {
+		System.out.println(this.effect);
+		switch(this.effect) {
+		
+		case BOAT_MOVE : this.boatMoveEffect();break;
+		case BOAT : this.boatEffect(tilePosition);break;
+		case DOLPHIN_MOVE :this.dolphinMoveEffect(); break;
+		case SEASNAKE_LOST : this.seasnakeLostEffect();break;
+		case SHARK : this.sharkEffect(tilePosition);break;
+		case SHARK_DEATH : this.sharkDeathEffect(tilePosition); break;
+		case SHARK_LOST : this.sharkLostEffect(); break;
+		case WHIRLPOOL : this.whirlpoolEffect(tilePosition,board); break;
+		case VOLCANO : this.volcanoEffect(); break;
+		case WHALE : this.whaleEffect(tilePosition); break;
+		case WHALE_DEATH : this.whaleDeathEffect(tilePosition);break;
+		case WHALE_LOST :this.whaleLostEffect(); break;
+		default : break;
+		}
 	}
-
+	
+	
+	
 	/**
 	 * <p>
-	 * Tue la baleine sur la tuile.
-	 * Tuile d√©fense.
-	 * </p>
-	 * 
-	 * @param tilePosition Tuile actuelle
-	 * @since 1.0
-	 */
-	public void whaleDeathEffect(Hexagon tilePosition) {
-		Whale w = new Whale();
-		tilePosition.removePawn(w);
-	}
-
-	/**
-	 * <p>
-	 * D√©place une baleine sur une case de mer vide.
-	 * Tuile en d√©but de tour.
-	 * </p>
-	 */
-	public void whaleLostEffect() {
-		// selectionner une baleine
-		// selectionne la case ou on veut la deplacer (mer inoccup√É¬©e)
-	}
-
-	/**
-	 * <p>
-	 * D√©place un bateau que vous controlez de 1 √† 3 cases.
-	 * Tuile en d√©but de tour.
+	 * DÈplace un bateau que vous controlez de 1 ‡ 3 cases.
+	 * Tuile en dÈbut de tour.
 	 * </p>
 	 */
 	public void boatMoveEffect() {
-		// selectionnne un bateau
-		// le de placer de 1 a 3 cases
+		//selectionnne un bateau
+		//le de placer de 1 a 3 cases
 	}
-
+	
 	/**
 	 * <p>
 	 * Ajoute un bateau sur la case de la tuile.
-	 * Tuile instantan√©e.
+	 * Tuile instantanÈe.
 	 * </p>
-	 * 
 	 * @param tilePosition Tuile actuelle
 	 */
 	public void boatEffect(Hexagon tilePosition) {
 		Boat b = new Boat();
 		tilePosition.addPawn(b);
 	}
-
+	
 	/**
 	 * <p>
-	 * D√©place un nageur de 1 √† 3 cases.
-	 * Tuile en d√©but de tour.
+	 * DÈplace un nageur de 1 ‡ 3 cases.
+	 * Tuile en dÈbut de tour.
 	 * </p>
 	 */
 	public void dolphinMoveEffect() {
-		// selectionnne un nageur
-		// le de placer de 1 a 3 cases
+		//selectionnne un nageur
+		//le de placer de 1 a 3 cases
 	}
-
+	
+	/**
+	 * <p>
+	 * DÈplace un serpent de mer sur une case de mer vide.
+	 * Tuile en dÈbut de tour.
+	 * </p>
+	 */
+	public void seasnakeLostEffect() {
+		//selectionner un seasnake
+		//selectionne la case ou on veut la deplacer (mer inoccup√©e)
+	}
+		
 	/**
 	 * <p>
 	 * Ajoute un requin sur la case de la tuile.
-	 * Tuile instantan√©e.
+	 * Tuile instantanÈe.
 	 * </p>
-	 * 
 	 * @param tilePosition Tuile actuelle
 	 */
 	public void sharkEffect(Hexagon tilePosition) {
 		Shark s = new Shark();
 		tilePosition.addPawn(s);
 	}
-
+	
 	/**
 	 * <p>
 	 * Tue le requin sur la tuile.
-	 * Tuile d√©fense.
+	 * Tuile dÈfense.
 	 * </p>
-	 * 
 	 * @param tilePosition Tuile actuelle
 	 */
 	public void sharkDeathEffect(Hexagon tilePosition) {
+		// a changer avec lucas
 		Shark s = new Shark();
 		tilePosition.removePawn(s);
 	}
-
+	
 	/**
 	 * <p>
-	 * D√©place un requin sur une case de mer vide.
-	 * Tuile en d√©but de tour.
+	 * DÈplace un requin sur une case de mer vide.
+	 * Tuile en dÈbut de tour. 
 	 * </p>
 	 */
 	public void sharkLostEffect() {
-		// selectionner un requin
-		// selectionne la case ou on veut la deplacer (mer inoccup√É¬©e)
+		//selectionner un requin
+		//selectionne la case ou on veut la deplacer (mer inoccup√©e)
 	}
-
-	/**
-	 * <p>
-	 * D√©place un serpent de mer sur une case de mer vide.
-	 * Tuile en d√©but de tour.
-	 * </p>
-	 */
-	public void seasnakeLostEffect() {
-		// selectionner un seasnake
-		// selectionne la case ou on veut la deplacer (mer inoccup√É¬©e)
-	}
-
+	
 	/**
 	 * <p>
 	 * Retire tout les pions sur les cases de mer aux alentours et sur cette tuile.
-	 * Tuile instantan√©e.
+	 * Tuile instantanÈe.
 	 * </p>
 	 */
-	public void whirlpoolEffect() {
-		// if(board[i][j].tuile=MER)
-		// for(i=0;i<len(board[i][j].listePions);i++) removeFromBoard(pion)
+	public void whirlpoolEffect(Hexagon tilePosition,Board board) {
+		Hexagon[][] hexagons = board.getHexagons();
+		List<Hexagon> listNeighbors = new ArrayList<Hexagon>();
+
+        listNeighbors.add(tilePosition);
+		listNeighbors = findNeighbors(tilePosition, board);			
+		for(Hexagon hexagon :listNeighbors ) {
+			hexagons[hexagon.getLine()][hexagon.getColumn()].removeAllPawn();
+
+			System.out.println(" ligne = " + hexagon.getLine() +" colonne = : " + hexagon.getColumn() + " coucou toi");
+		}										
+	}
+	
+	/**
+	 * <p>
+	 * Fin de la partie.
+	 * Tuile instantanÈe.
+	 * </p>
+	 */
+	public void volcanoEffect() {
+		//endgame
+	}
+	
+	/**
+	 * <p>
+	 * Ajoute un pion baleine sur la case choisie.
+	 * Tuile ‡ effet instantanÈe.
+	 * </p>
+	 * @param tilePosition Tuile actuelle
+	 * @since1.0
+	 */
+	public void whaleEffect(Hexagon tilePosition) {
+		Whale w = new Whale();
+		tilePosition.addPawn(w);	
+	}
+	
+	/**
+	 * <p>
+	 * Tue la baleine sur la tuile.
+	 * Tuile dÈfense.
+	 * </p>
+	 * @param tilePosition Tuile actuelle
+	 * @since1.0
+	 */
+	public void whaleDeathEffect(Hexagon tilePosition) {
+		//a changer avec lucas
+		Whale w = new Whale();
+		tilePosition.removePawn(w);
+	}
+	
+	/**
+	 * <p>
+	 * DÈplace une baleine sur une case de mer vide.
+	 * Tuile en dÈbut de tour.
+	 * </p>
+	 */
+	public void whaleLostEffect() {
+		//a voir avec kevin pour la selection de case
+		//selectionner une baleine
+		//selectionne la case ou on veut la deplacer (mer inoccup√©e)
 	}
 
 	/**
 	 * <p>
-	 * Fin de la partie.
-	 * Tuile instantan√©e.
+	 * Renvoie tous les voisins d'une tuile dans une liste
 	 * </p>
+	 * @since2.0
 	 */
-	public void volcanoEffect() {
-		// endgame
-	}
+	public List<Hexagon> findNeighbors(Hexagon actualPosition, Board board) {
+        List<Hexagon> tmp = new ArrayList<Hexagon>();
+        List<Hexagon> listHexagon = new ArrayList<Hexagon>();
+        
+        tmp.add(board.getTopLeft(actualPosition));
+        tmp.add(board.getTopRight(actualPosition));
+        tmp.add(board.getLeft(actualPosition));
+        tmp.add(board.getRight(actualPosition));
+        tmp.add(board.getBottomLeft(actualPosition));
+        tmp.add(board.getBottomRight(actualPosition));
 
+        for (Hexagon hexagon : tmp) {
+            if (hexagon != null
+                   && hexagon.getType()== HexagonType.SEA) {
+                listHexagon.add(hexagon);
+            }
+        }
+		return listHexagon;
+    }
+	
+	
+	
 }

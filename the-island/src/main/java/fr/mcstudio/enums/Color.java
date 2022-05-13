@@ -10,5 +10,5 @@ package fr.mcstudio.enums;
  * @author Lucas Neto
  */
 public enum Color {
-    RED, GREEN, YELLOW, BLUE
+    RED, GREEN, YELLOw, BLUE
 }
