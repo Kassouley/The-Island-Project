@@ -257,7 +257,6 @@ public class Hexagon {
         return this.boat;
     }
 
-    
     public int getLine() {
         return this.line;
     }
@@ -266,7 +265,7 @@ public class Hexagon {
         return this.column;
     }
 
-     /**
+    /**
      * 
      * @param clickx
      * @param clicky
@@ -312,25 +311,8 @@ public class Hexagon {
      * 
      */
     public void displayPawns() {
-        int cmpt = 0;
+        //
 
-        if (!this.explorerList.isEmpty()) {
-            for (Explorer e : this.explorerList) {
-                if (e.getColor() == Color.RED) {
-                    
-                }
-                    
-            }
-        }
-        
-        if (!this.whaleList.isEmpty()) {
-            
-        if (!this.sharkList.isEmpty()) {
-            
-        if (!this.seaSnakeList.isEmpty()) {
-            
-        if (this.boat != null) {
-            
     }
 
     /**
