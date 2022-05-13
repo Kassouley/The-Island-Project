@@ -161,6 +161,15 @@ public class Board extends JLabel {
 		return tiles;
 	}
 
+	/**
+	 * 
+	 */
+	public Hexagon returnHexagon() {
+		return this.hexagons[][];
+		
+		//todo
+	}
+
 	public Hexagon getTopLeft(Hexagon actualHexagon) {
 		if (actualHexagon.getLine() - 1 > 0 && actualHexagon.getLine() % 2 == 1) {
 			return this.hexagons[actualHexagon.getLine() - 1][actualHexagon.getColumn()];
