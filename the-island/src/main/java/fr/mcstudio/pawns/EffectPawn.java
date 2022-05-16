@@ -1,7 +1,7 @@
 /*
  * Nom de classe : EffectPawn
  *
- * Description   : Gestion des pions Ã  effet du jeu The Island
+ * Description   : Gestion des pions à effet du jeu The Island
  *
  * Version       : 1.0
  *
@@ -17,10 +17,11 @@ import java.util.List;
 
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
+import fr.mcstudio.enums.HexagonType;
 
 /**
  * <p>
- * Gestion des pions Ã  effet du jeu The Island
+ * Gestion des pions à effet du jeu The Island
  * </p>
  *
  * @version 1.0
@@ -32,7 +33,7 @@ public class EffectPawn extends Pawn {
 
     /**
      * <p>
-     * Constructeur par dÃ©faut
+     * Constructeur par défaut
      * </p>
      */
     public EffectPawn() {
@@ -41,10 +42,10 @@ public class EffectPawn extends Pawn {
 
     /**
      * <p>
-     * RÃ©alise l'effet du pion Ã  effet.
+     * Réalise l'effet du pion à effet.
      * </p>
      * 
-     * @param hexagon Case dans laquel est rÃ©alisÃ© l'effet.
+     * @param hexagon Case dans laquel est réalisé l'effet.
      * @since 1.0
      * 
      */
@@ -53,7 +54,7 @@ public class EffectPawn extends Pawn {
 
     /**
      * <p>
-     * DÃ©place le pion en rÃ©alisant son effet.
+     * Déplace le pion en réalisant son effet.
      * </p>
      * 
      * @param oldPosition Ancienne case du pion.
@@ -80,7 +81,8 @@ public class EffectPawn extends Pawn {
 
         for (Hexagon hexagon : tmp) {
             if (hexagon != null
-                    && !listHexagon.contains(hexagon)) {
+                    && !listHexagon.contains(hexagon)
+                    && hexagon.getType() == HexagonType.SEA) {
                 listHexagon.add(hexagon);
             }
         }

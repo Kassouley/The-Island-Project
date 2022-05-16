@@ -1,13 +1,12 @@
 package fr.mcstudio.board;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JLayeredPane;
 
 import fr.mcstudio.enums.Color;
+import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.EffectPawn;
@@ -18,49 +17,44 @@ import fr.mcstudio.pawns.Whale;
 import fr.mcstudio.tiles.Tile;
 
 @SuppressWarnings("serial")
-public class Hexagon {
+public class Hexagon{
 
     /**
      * 
      */
     /**
      * <p>
-     * Constructeur par dï¿½faut
+     * Constructeur par défaut
      * </p>
      */
+	Hexagon hexagon = this;
+	public Hexagon(JLayeredPane boardPane, final int line, final int column) {
+    	this.line = line;
+    	this.column = column;
 
-    public Hexagon(JLayeredPane boardPane, final int line, final int column) {
-        this.line = line;
-        this.column = column;
-
-        boardPane.addMouseListener(new MouseListener() {
-
-            public void mouseClicked(MouseEvent e) {
-                if (tile != null)
-                    if (isInHexagonfloat(e.getX(), e.getY())) {
-                        System.out.println("Yay ! " + line + " " + column);
-                    }
-            }
-
-            public void mousePressed(MouseEvent e) {
-            }
-
-            public void mouseReleased(MouseEvent e) {
-            }
-
-            public void mouseEntered(MouseEvent e) {
-            }
-
-            public void mouseExited(MouseEvent e) {
-            }
-        });
+       
     }
 
-    private int line;
-
-    private int column;
-
-    private Tile tile;
+	/**
+	 * <p>
+     * Ligne de l'hexagone dans le board
+     * </p>
+     */
+	private int line;
+	
+	/**
+	 * <p>
+     * Colonne de l'hexagone dans le board
+     * </p>
+     */
+	private int column;
+	
+	/**
+	 * <p>
+     * tuile de l'hexagone dans le board
+     * </p>
+     */	
+    private Tile tile = null;
 
     /**
      * 
@@ -68,32 +62,72 @@ public class Hexagon {
     private HexagonType type;
 
     /**
-     * 
+     * <p>
+     * Liste des exploreurs presents sur l'hexagone dans le board
+     * </p>
      */
     private List<Explorer> explorerList = new ArrayList<Explorer>();
 
     /**
-     * 
+     * <p>
+     * Liste des requins presents sur l'hexagone dans le board
+     * </p>
      */
     private List<Shark> sharkList = new ArrayList<Shark>();
 
     /**
-     * 
+     * <p>
+     * Liste des baleines presents sur l'hexagone dans le board
+     * </p>
      */
     private List<Whale> whaleList = new ArrayList<Whale>();
 
     /**
-     * 
+     * <p>
+     * Liste des serpents de mer presents sur l'hexagone dans le board
+     * </p>
      */
     private List<SeaSnake> seaSnakeList = new ArrayList<SeaSnake>();
 
     /**
+     * <p>
      * 
+     * </p>
      */
     private Boat boat = null;
 
+    /**
+     * <p>
+     * 
+     * </p>
+     */
+	public int getLine() {
+		return line;
+	}
+	
+    /**
+     * <p>
+     * 
+     * </p>
+     */
+    public int getColumn() {
+		return column;
+	}
+    
+    /**
+     * <p>
+     * 
+     * </p>
+     */
     public Tile getTile() {
-        return tile;
+    	if(tile == null) {
+    		return null;
+    	}
+    	else {
+    		return tile;
+    	}
+    				
+        
     }
 
     public void setTile(Tile tile) {
@@ -101,20 +135,23 @@ public class Hexagon {
     }
 
     /**
+     * <p>
      * 
+     * </p>
      */
     public void setType(HexagonType type) {
         this.type = type;
     }
 
     /**
+     * <p>
      * 
-     * @return
+     * </p>
      */
     public HexagonType getType() {
         return this.type;
     }
-
+    
     /**
      * 
      */
@@ -144,7 +181,9 @@ public class Hexagon {
     }
 
     /**
-     * 
+     * <p>
+     * Ajoute un explorateur à l'hexagone
+     * </p>
      * @return
      */
     public void addPawn(Explorer e) {
@@ -152,7 +191,9 @@ public class Hexagon {
     }
 
     /**
-     * 
+     * <p>
+     * Ajoute un requin à l'hexagone
+     * </p>
      * @return
      */
     public void addPawn(Shark s) {
@@ -160,7 +201,9 @@ public class Hexagon {
     }
 
     /**
-     * 
+     * <p>
+     * Ajoute une baleine à l'hexagone
+     * </p>
      * @return
      */
     public void addPawn(Whale w) {
@@ -168,7 +211,9 @@ public class Hexagon {
     }
 
     /**
-     * 
+     * <p>
+     * Ajoute un serpent de mer à l'hexagone
+     * </p>
      * @return
      */
     public void addPawn(SeaSnake ss) {
@@ -176,7 +221,9 @@ public class Hexagon {
     }
 
     /**
-     * 
+     * <p>
+     * Ajoute un bateau à l'hexagone
+     * </p>
      * @return
      */
     public void addPawn(Boat b) {
@@ -184,7 +231,9 @@ public class Hexagon {
     }
 
     /**
+     * <p>
      * 
+     * </p>
      * @return
      */
     public void addPawn(EffectPawn ef) {
@@ -198,7 +247,9 @@ public class Hexagon {
     }
 
     /**
-     * 
+     * <p>
+     * Retire l'exploreur de l'hexagone
+     * </p>
      * @return
      */
     public void removePawn(Explorer e) {
@@ -206,7 +257,9 @@ public class Hexagon {
     }
 
     /**
-     * 
+     * <p>
+     * Retire le requin de l'hexagone
+     * </p>
      * @return
      */
     public void removePawn(Shark s) {
@@ -214,7 +267,9 @@ public class Hexagon {
     }
 
     /**
-     * 
+     * <p>
+     * Retire la baleine de l'hexagone
+     * </p>
      * @return
      */
     public void removePawn(Whale w) {
@@ -222,7 +277,9 @@ public class Hexagon {
     }
 
     /**
-     * 
+     * <p>
+     * Retire le serpent de mer de l'hexagone
+     * </p>
      * @return
      */
     public void removePawn(SeaSnake ss) {
@@ -230,7 +287,9 @@ public class Hexagon {
     }
 
     /**
-     * 
+     * <p>
+     *  Retire le bateau de l'hexagone
+     * </p>
      * @return
      */
     public void removePawn(Boat b) {
@@ -238,7 +297,9 @@ public class Hexagon {
     }
 
     /**
+     * <p>
      * 
+     * </p>
      * @return
      */
     public void removePawn(EffectPawn ef) {
@@ -252,159 +313,199 @@ public class Hexagon {
     }
 
     /**
-     * 
+     * <p>
+     * Accesseur au(x) explorateur(s) dans l'hexagone
+     * </p>
      */
     public List<Explorer> getExplorerList() {
         return this.explorerList;
     }
 
     /**
-     * 
+     * <p>
+     * Accesseur au(x) requin(s) dans l'hexagone
+     * </p>
      */
     public List<Shark> getSharkList() {
         return this.sharkList;
     }
 
     /**
-     * 
+     * <p>
+     * Accesseur au(x) baleine(s) dans l'hexagone
+     * </p>
      */
     public List<Whale> getWhaleList() {
         return this.whaleList;
     }
 
     /**
-     * 
+     * <p>
+     * Accesseur au(x) serpent(s) de mer dans l'hexagone
+     * </p>
      */
     public List<SeaSnake> getSeaSnakeList() {
         return this.seaSnakeList;
     }
 
     /**
-     * 
+     * <p>
+     * Accesseur au bateau dans l'hexagone
+     * </p>
      */
     public Boat getBoat() {
         return this.boat;
     }
-
-    public int getLine() {
-        return this.line;
-    }
-
-    public int getColumn() {
-        return this.column;
-    }
-
+    
     /**
+     * <p>
      * 
-     * @param clickx
-     * @param clicky
-     * @return
+     * </p>
+     * @since1.0
      */
-    public boolean isInHexagonfloat(float clickx, float clicky) {
-        if (isInDemiPlan(tile.getX() + 45, tile.getY(),
-                tile.getX(), tile.getY() + 20, clickx, clicky)
-                && isInDemiPlan(tile.getX() + 89, tile.getY() + 20,
-                        tile.getX() + 45, tile.getY(), clickx, clicky)
-                && isInDemiPlan(tile.getX(), tile.getY() + 69, tile.getX() + 45,
-                        tile.getY() + 89, clickx, clicky)
-                && isInDemiPlan(tile.getX() + 45, tile.getY() + 89,
-                        tile.getX() + 89, tile.getY() + 69, clickx, clicky)
-                && isInDemiPlan(tile.getX(), tile.getY() + 20,
-                        tile.getX(), tile.getY() + 69, clickx, clicky)
-                && isInDemiPlan(tile.getX() + 89, tile.getY() + 69,
-                        tile.getX() + 89, tile.getY() + 20, clickx, clicky)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    public boolean isInHexagonfloat (float clickx, float clicky) {
+		if(isInDemiPlan(tile.getX() + 45, tile.getY(), tile.getX(), tile.getY() + 20, clickx, clicky) &&
+				isInDemiPlan(tile.getX() + 89, tile.getY() + 20, tile.getX() + 45, tile.getY(), clickx, clicky) &&
+				isInDemiPlan(tile.getX(), tile.getY() + 69, tile.getX() + 45, tile.getY() + 89, clickx, clicky) &&
+				isInDemiPlan(tile.getX() + 45, tile.getY() + 89, tile.getX() + 89, tile.getY() + 69, clickx, clicky) &&
+				isInDemiPlan(tile.getX(), tile.getY() + 20, tile.getX(), tile.getY() + 69, clickx, clicky) && 
+				isInDemiPlan(tile.getX() + 89, tile.getY() + 69, tile.getX() + 89, tile.getY() + 20, clickx, clicky)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
     /**
+     * <p>
      * 
-     * @param ax
-     * @param ay
-     * @param bx
-     * @param by
-     * @param clickx
-     * @param clicky
-     * @return
+     * </p>
+     * @since1.0
      */
-    public boolean isInDemiPlan(float ax, float ay, float bx, float by,
-            float clickx, float clicky) {
-        float d = (bx - ax) * (clicky - ay) - (by - ay) * (clickx - ax);
-
-        return (d <= 0);
-    }
-
-    /**
-     * 
+	public boolean isInDemiPlan(float ax, float ay, float bx, float by, float clickx, float clicky) {
+		float d = (bx - ax)*(clicky - ay) - (by - ay)*(clickx - ax);
+		
+		if(d <= 0)
+			return true;
+		else 
+			return false;
+	}
+	
+	/**
+     * <p>
+     * Vide la case de tous ses pions
+     * </p>
+     * @since2.0
      */
-    public boolean isEmpty() {
-        return this.explorerList.isEmpty()
-                && this.sharkList.isEmpty()
-                && this.whaleList.isEmpty()
-                && this.seaSnakeList.isEmpty()
-                && this.boat == null;
-    }
-
-    /**
-     * 
+	public void removeAllPawn() {
+		if(!this.explorerList.isEmpty()) {
+			for(Explorer explorer : explorerList) {
+				explorer.setStatus(ExplorerStatus.DEAD);
+			}
+			this.explorerList.clear();
+		}
+		if(!this.seaSnakeList.isEmpty()) {
+			this.seaSnakeList.clear();
+		}
+		if(!this.sharkList.isEmpty()) {
+			this.sharkList.clear();
+		}
+		if(!this.whaleList.isEmpty()) {
+			this.whaleList.clear();
+		}
+		this.boat = null;
+	}
+	
+	/**
+     * <p>
+     * Affecte une tuile mer a un hexagone
+     * </p>
+     * @since2.0
      */
-    public void displayPawns() {
-        if (!this.isEmpty()) {
-
-        }
-
-    }
-
-    /**
-     * 
+	public void removeTile() {
+		this.setTile(new Tile());
+		this.setType(HexagonType.SEA);
+		
+	}
+	
+	/**
+     * <p>
+     * Renvois la pos x de la tuile
+     * </p>
+     * @since2.0
      */
-    public int returnPawnsTypeNumber() {
-        int cmpt = 0;
-        boolean redSeen = false;
-        boolean blueSeen = false;
-        boolean greenSeen = false;
-        boolean yellowSeen = false;
+	public int returnPosTileX() {
+		if(this.line%2 == 0) {
+			return  120 + 90 * this.column;
+		} else {
+			return 75 + 90* this.column;
+		}
+	}
+	
+	/**
+     * <p>
+     * Renvois la pos y de la tuile
+     * </p>
+     * @since2.0
+     */
+	public int returnPosTileY() {
+		if(this.line%2 == 0) {			
+			return 35 + 70 * this.line;
+		} else {
+			return 35 + 70 * this.line;
+		}
+	}
+	
+	 public int returnPawnsTypeNumber() {
+	        int cmpt = 0;
+	        boolean redSeen = false;
+	        boolean blueSeen = false;
+	        boolean greenSeen = false;
+	        boolean yellowSeen = false;
 
-        if (!this.explorerList.isEmpty()) {
-            for (Explorer e : this.explorerList) {
-                if (e.getColor() == Color.BLUE && !blueSeen) {
-                    cmpt++;
-                    blueSeen = true;
-                } else if (e.getColor() == Color.YELLOW && !yellowSeen) {
-                    cmpt++;
-                    yellowSeen = true;
-                } else if (e.getColor() == Color.GREEN && !greenSeen) {
-                    cmpt++;
-                    greenSeen = true;
-                } else if (e.getColor() == Color.RED && !redSeen) {
-                    cmpt++;
-                    redSeen = true;
-                }
+	        if (!this.explorerList.isEmpty()) {
+	            for (Explorer e : this.explorerList) {
+	                if (e.getColor() == Color.BLUE && !blueSeen) {
+	                    cmpt++;
+	                    blueSeen = true;
+	                } else if (e.getColor() == Color.YELLOW && !yellowSeen) {
+	                    cmpt++;
+	                    yellowSeen = true;
+	                } else if (e.getColor() == Color.GREEN && !greenSeen) {
+	                    cmpt++;
+	                    greenSeen = true;
+	                } else if (e.getColor() == Color.RED && !redSeen) {
+	                    cmpt++;
+	                    redSeen = true;
+	                }
 
-                if (yellowSeen && greenSeen && blueSeen && redSeen) {
-                    break;
-                }
-            }
-        }
+	                if (yellowSeen && greenSeen && blueSeen && redSeen) {
+	                    break;
+	                }
+	            }
+	        }
 
-        if (!this.whaleList.isEmpty()) {
-            cmpt++;
-        }
+	        if (!this.whaleList.isEmpty()) {
+	            cmpt++;
+	        }
 
-        if (!this.sharkList.isEmpty()) {
-            cmpt++;
-        }
+	        if (!this.sharkList.isEmpty()) {
+	            cmpt++;
+	        }
 
-        if (!this.seaSnakeList.isEmpty()) {
-            cmpt++;
-        }
+	        if (!this.seaSnakeList.isEmpty()) {
+	            cmpt++;
+	        }
 
-        if (this.boat != null) {
-            cmpt++;
-        }
+	        if (this.boat != null) {
+	            cmpt++;
+	        }
 
-        return cmpt;
-    }
+	        return cmpt;
+	    }
+	
+	
+
+	
 }

@@ -7,12 +7,13 @@ import javax.swing.JLabel;
 
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
+import fr.mcstudio.enums.ExplorerStatus;
 
 @SuppressWarnings("serial")
 public class Pawn extends JLabel {
     /**
      * <p>
-     * Constructeur par dÃ©faut.
+     * Constructeur par défaut.
      * </p>
      */
     public Pawn() {
@@ -49,6 +50,14 @@ public class Pawn extends JLabel {
      */
     public void findPath(Hexagon actualPosition, Board board, int distance, List<Hexagon> listHexagon) {
         listHexagon.clear();
+
+        //---------------------------------------------------------- A changer, faut regarder les movePoint et moveCost je pense
+        if (this instanceof Explorer) {
+            Explorer explorer = (Explorer) this;
+            if (explorer.getStatus() == ExplorerStatus.SWIMMER) {
+                distance = 1;
+            }
+        }
 
         List<Hexagon> tmp = new ArrayList<Hexagon>();
         tmp.add(actualPosition);
