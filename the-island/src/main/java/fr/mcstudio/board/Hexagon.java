@@ -150,6 +150,34 @@ public class Hexagon{
     public HexagonType getType() {
         return this.type;
     }
+    
+    /**
+     * 
+     */
+    public boolean isTiles() {
+        return this.type == HexagonType.TILES;
+    }
+
+    /**
+     * 
+     */
+    public boolean isSea() {
+        return this.type == HexagonType.SEA;
+    }
+
+    /**
+     * 
+     */
+    public boolean isVoid() {
+        return this.type == HexagonType.VOID;
+    }
+
+    /**
+     * 
+     */
+    public boolean isIsland() {
+        return this.type == HexagonType.ISLAND;
+    }
 
     /**
      * <p>

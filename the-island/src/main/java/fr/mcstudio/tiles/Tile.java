@@ -312,7 +312,7 @@ public class Tile extends JLabel {
 
         for (Hexagon hexagon : tmp) {
             if (hexagon != null
-                   && hexagon.getType()== HexagonType.SEA) {
+                   && hexagon.isSea()) {
                 listHexagon.add(hexagon);
             }
         }
