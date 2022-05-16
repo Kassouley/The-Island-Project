@@ -18,6 +18,7 @@ import java.util.List;
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.ExplorerStatus;
+import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.game.Player;
 
 /**
@@ -173,7 +174,8 @@ public class Boat extends Pawn {
             if (hexagon != null
                     && !listHexagon.contains(hexagon)
                     && hexagon.getWhaleList().isEmpty()
-                    && hexagon.getSeaSnakeList().isEmpty()) {
+                    && hexagon.getSeaSnakeList().isEmpty()
+                    && hexagon.getType() == HexagonType.SEA) {
                 listHexagon.add(hexagon);
             }
         }

@@ -17,6 +17,7 @@ import java.util.List;
 
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
+import fr.mcstudio.enums.HexagonType;
 
 /**
  * <p>
@@ -80,7 +81,8 @@ public class EffectPawn extends Pawn {
 
         for (Hexagon hexagon : tmp) {
             if (hexagon != null
-                    && !listHexagon.contains(hexagon)) {
+                    && !listHexagon.contains(hexagon)
+                    && hexagon.getType() == HexagonType.SEA) {
                 listHexagon.add(hexagon);
             }
         }
