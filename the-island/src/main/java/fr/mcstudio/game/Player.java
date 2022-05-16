@@ -18,6 +18,7 @@ import java.util.List;
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
+import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.Explorer;
@@ -36,7 +37,7 @@ public class Player {
 
     /**
      * <p>
-     * Constructeur par défaut
+     * Constructeur par dÃ©faut
      * </p>
      */
     public Player(String pseudo, Color color, boolean isBot) {
@@ -79,11 +80,7 @@ public class Player {
 
     /**
      * <p>
-<<<<<<< HEAD
-     * Booléen ordinateur
-=======
      * BoolÃ©en ordinateur
->>>>>>> 3f2ad53ef15a2a1753327cf9ad131c79f7a59586
      * </p>
      */
     private boolean isBot;
@@ -243,12 +240,12 @@ public class Player {
 
     /**
      * <p>
-     * Permet au joueur de placer tout ses explorateurs sur une tuile vide.
+     * Permet au joueur de placer 2 bateaux sur des tuile de mer.
      * </p>
      * 
-     * @param board le plateau dans lequel on pose les explorateurs.
+     * @param board le plateau dans lequel on pose les bateaux.
      */
-    public void placeBoat(Board board) {
+    public void placeBoats(Board board) {
         for (int i = 0; i < 2; i++) {
             Hexagon hexagon;
             do {
@@ -267,6 +264,17 @@ public class Player {
             hexagon = null;
         }
     }
+
+    /**
+     * 
+     */
+    public boolean haveExplorerOnBoard() {
+        for (Explorer e : this.explorerList) {
+            if (e.getStatus() != ExplorerStatus.DEAD
+                    || e.getStatus() != ExplorerStatus.SAVED) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
-
-

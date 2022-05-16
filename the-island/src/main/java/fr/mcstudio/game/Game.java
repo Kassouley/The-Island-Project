@@ -1,6 +1,8 @@
 package fr.mcstudio.game;
 
 import fr.mcstudio.board.Board;
+import fr.mcstudio.enums.ActionTurn;
+import fr.mcstudio.enums.ActionTurn.*;
 
 /**
  * 
@@ -13,6 +15,8 @@ public class Game {
         // this.board = new Board();
         this.players = players;
         this.turnNumber = 0;
+        this.turnOrder = (int) (Math.random() * 3);
+        this.actionTurn = ActionTurn.PLAY_TILE;
     }
 
     /**
@@ -39,6 +43,16 @@ public class Game {
      * 
      */
     private int finalTimer;
+
+    /**
+     * 
+     */
+    private int turnOrder;
+
+    /**
+     * 
+     */
+    private ActionTurn actionTurn;
 
     /**
      * 
@@ -73,7 +87,23 @@ public class Game {
      */
     public void nextTurn() {
         this.turnNumber++;
-        this.players[this.turnNumber % 4].setMoveLeft(3);
+        this.players[(this.turnOrder + this.turnNumber) % players.length]
+                .setMoveLeft(3);
+        this.actionTurn = ActionTurn.PLAY_TILE;
+    }
+
+    /**
+     * 
+     */
+    public void nextActionTurn() {
+        this.actionTurn = this.actionTurn.next();
+    }
+
+    /**
+     * 
+     */
+    public int getTurnOrder() {
+        return this.turnNumber;
     }
 
     /**
@@ -87,7 +117,7 @@ public class Game {
      * 
      */
     public int getRound() {
-        return this.turnNumber / 4;
+        return this.turnNumber / players.length;
     }
 
     /**
@@ -123,6 +153,31 @@ public class Game {
      */
     public int currentTimer() {
         return 1;
+    }
+
+    /**
+     * 
+     */
+    public void startGame() {
+        for (int i = 0; i < players.length; i++) {
+            // Afficher message "Pose tes pions"
+            players[(this.turnOrder + i) % players.length]
+                    .placeAllExplorers(this.board);
+            players[(this.turnOrder + i) % players.length]
+                    .placeBoats(this.board);
+        }
+    }
+
+    /**
+     * 
+     */
+    public boolean isEnd() {
+        for (Player player : players) {
+            if (player.haveExplorerOnBoard()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
