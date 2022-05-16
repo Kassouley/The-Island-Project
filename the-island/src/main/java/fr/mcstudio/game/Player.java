@@ -36,7 +36,7 @@ public class Player {
 
     /**
      * <p>
-     * Constructeur par dÃ©faut
+     * Constructeur par défaut
      * </p>
      */
     public Player(String pseudo, Color color, boolean isBot) {
@@ -79,7 +79,11 @@ public class Player {
 
     /**
      * <p>
+<<<<<<< HEAD
+     * Booléen ordinateur
+=======
      * BoolÃ©en ordinateur
+>>>>>>> 3f2ad53ef15a2a1753327cf9ad131c79f7a59586
      * </p>
      */
     private boolean isBot;
@@ -264,3 +268,5 @@ public class Player {
         }
     }
 }
+
+

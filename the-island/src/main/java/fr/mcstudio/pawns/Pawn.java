@@ -12,7 +12,7 @@ import fr.mcstudio.board.Hexagon;
 public class Pawn extends JLabel {
     /**
      * <p>
-     * Constructeur par dÃ©faut.
+     * Constructeur par défaut.
      * </p>
      */
     public Pawn() {
