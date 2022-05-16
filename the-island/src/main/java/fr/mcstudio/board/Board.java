@@ -117,7 +117,7 @@ public class Board extends JLabel{
 									//tilesPane.repaint();
 									tilesPane.updateUI();
 									hexagons[i][j].removeTile();
-									hexagons[i][j].getTile().setPosition(hexagons[i][j].posTileX(), hexagons[i][j].posTileY());
+									hexagons[i][j].getTile().setPosition(hexagons[i][j].returnPosTileX(), hexagons[i][j].returnPosTileY());
 
 								}
 							
@@ -135,6 +135,12 @@ public class Board extends JLabel{
 				public void mouseExited(MouseEvent e) {}
 	        });
 	}	
+	
+	public Hexagon returnHexagon() {
+		return this.hexagons[1][1];
+
+		// todo
+	}
 	
 	private  List<Tile> CreateTiles() {
 		List<Tile> tiles = new ArrayList<Tile>();

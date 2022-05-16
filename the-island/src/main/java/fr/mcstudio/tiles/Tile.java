@@ -234,8 +234,9 @@ public class Tile extends JLabel {
 		Hexagon[][] hexagons = board.getHexagons();
 		List<Hexagon> listNeighbors = new ArrayList<Hexagon>();
 
-        listNeighbors.add(tilePosition);
-		listNeighbors = findNeighbors(tilePosition, board);			
+       
+		listNeighbors = findNeighbors(tilePosition, board);		
+		listNeighbors.add(tilePosition);
 		for(Hexagon hexagon :listNeighbors ) {
 			hexagons[hexagon.getLine()][hexagon.getColumn()].removeAllPawn();
 

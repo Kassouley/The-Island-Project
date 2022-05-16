@@ -406,7 +406,7 @@ public class Hexagon{
      * </p>
      * @since2.0
      */
-	public int posTileX() {
+	public int returnPosTileX() {
 		if(this.line%2 == 0) {
 			return  120 + 90 * this.column;
 		} else {
@@ -420,13 +420,14 @@ public class Hexagon{
      * </p>
      * @since2.0
      */
-	public int posTileY() {
+	public int returnPosTileY() {
 		if(this.line%2 == 0) {			
 			return 35 + 70 * this.line;
 		} else {
 			return 35 + 70 * this.line;
 		}
 	}
+	
 	
 
 	
