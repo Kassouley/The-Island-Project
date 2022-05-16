@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.JLayeredPane;
 
+import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.pawns.Boat;
@@ -455,6 +456,54 @@ public class Hexagon{
 			return 35 + 70 * this.line;
 		}
 	}
+	
+	 public int returnPawnsTypeNumber() {
+	        int cmpt = 0;
+	        boolean redSeen = false;
+	        boolean blueSeen = false;
+	        boolean greenSeen = false;
+	        boolean yellowSeen = false;
+
+	        if (!this.explorerList.isEmpty()) {
+	            for (Explorer e : this.explorerList) {
+	                if (e.getColor() == Color.BLUE && !blueSeen) {
+	                    cmpt++;
+	                    blueSeen = true;
+	                } else if (e.getColor() == Color.YELLOW && !yellowSeen) {
+	                    cmpt++;
+	                    yellowSeen = true;
+	                } else if (e.getColor() == Color.GREEN && !greenSeen) {
+	                    cmpt++;
+	                    greenSeen = true;
+	                } else if (e.getColor() == Color.RED && !redSeen) {
+	                    cmpt++;
+	                    redSeen = true;
+	                }
+
+	                if (yellowSeen && greenSeen && blueSeen && redSeen) {
+	                    break;
+	                }
+	            }
+	        }
+
+	        if (!this.whaleList.isEmpty()) {
+	            cmpt++;
+	        }
+
+	        if (!this.sharkList.isEmpty()) {
+	            cmpt++;
+	        }
+
+	        if (!this.seaSnakeList.isEmpty()) {
+	            cmpt++;
+	        }
+
+	        if (this.boat != null) {
+	            cmpt++;
+	        }
+
+	        return cmpt;
+	    }
 	
 	
 
