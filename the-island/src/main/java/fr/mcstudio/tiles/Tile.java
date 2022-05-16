@@ -37,7 +37,7 @@ public class Tile extends JLabel {
 	* 
 	*/
 	public TilesType getType() {
-			return type;
+			return this.type;
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class Tile extends JLabel {
 	* 
 	*/
 	public TilesEffect getEffect() {
-		return effect;
+		return this.effect;
 	}
 
 	/**
