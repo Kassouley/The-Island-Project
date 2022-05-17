@@ -3,6 +3,7 @@ package fr.mcstudio.board;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -67,9 +68,11 @@ public class Board extends JLabel{
 						&& (i != 12 || j != 1) 
 						&& (i != 0 || j != 9) 
 						&& (i != 12 || j != 9) 
-						&& (i != 0 || j != 10)) 
+						&& (i != 0 || j != 10
+						)&& (i != 12 || j != 10)
+						&& j != 11) 
 						|| (i == 5 && j == 11) 
-						|| (i == 7 || j == 11)){
+						|| (i == 7 && j == 11)){
 					
 					if((((i > 2 && j > 3 && i < 10 && j < 8) 
 							|| (i > 4 && j > 1 && i < 8 && j < 10 
@@ -141,6 +144,7 @@ public class Board extends JLabel{
 		}
 		
 
+
 		//plateauPane.addMouseListener((e) -> getClickedPosition(e));
 		
 		boardPane.addMouseListener(new MouseListener() {
@@ -150,7 +154,7 @@ public class Board extends JLabel{
 					for (int j = 0; j < 12; j++) {
 						if(hexagons[i][j].getTile() != null)
 							if(hexagons[i][j].isInHexagonfloat(resolution, e.getX(), e.getY())) {
-								System.out.println("Yay ! " + hexagons[i][j].getLigne() + " " + hexagons[i][j].getColonne());
+								System.out.println("Yay ! " + hexagons[i][j].getLine() + " " + hexagons[i][j].getColumn());
 								//tile.applyEffect(hexagon);
 							}
 					}
@@ -166,6 +170,28 @@ public class Board extends JLabel{
 
 			public void mouseExited(MouseEvent e) {}
         });
+		
+		boardPane.addMouseMotionListener(new MouseMotionListener() {
+
+			@Override
+			public void mouseDragged(MouseEvent e) {}
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				for(int i = 0; i < 13; i ++) {
+					for (int j = 0; j < 12; j++) {
+						if(hexagons[i][j].getTile() != null) {
+							if(hexagons[i][j].isInHexagonfloat(resolution, e.getX(), e.getY())) {
+								hexagons[i][j].setHighlight(true);
+							} else {
+								hexagons[i][j].setHighlight(false);
+							}
+						}
+					}
+				}
+			}
+			
+		});
 		
 	}	
 	

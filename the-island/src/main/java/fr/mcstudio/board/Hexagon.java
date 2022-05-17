@@ -1,8 +1,11 @@
 package fr.mcstudio.board;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
 import fr.mcstudio.enums.HexagonType;
@@ -26,15 +29,21 @@ public class Hexagon{
      */
 	
 	Hexagon hexagon = this;
-	public Hexagon(JLayeredPane boardPane, final int ligne, final int colonne) {
-    	this.ligne = ligne;
-    	this.colonne = colonne;
+	public Hexagon(JLayeredPane boardPane, final int line, final int column) {
+    	this.line = line;
+    	this.column = column;
+
+		highlightLabel.setIcon(new ImageIcon(Board.class.getResource("/HexagonBlanc.png")));
+		highlightLabel.setBackground( new Color(0, 0, 0, 50) );
+		boardPane.setLayer(highlightLabel, 3);
+		boardPane.add(highlightLabel);
+		
 
     }
 
-	private int ligne;
+	private int line;
     
-	private int colonne;
+	private int column;
 	
     private Tile tile;
 
@@ -42,6 +51,11 @@ public class Hexagon{
      * 
      */
     private HexagonType type;
+    
+    private boolean highlight;
+    
+
+    private JLabel highlightLabel = new JLabel();
 
     /**
      * 
@@ -279,14 +293,6 @@ public class Hexagon{
     	
 		
 	}
-	
-	public int getLigne() {
-		return ligne;
-	}
-
-	public int getColonne() {
-		return colonne;
-	}
 
 	public boolean isInDemiPlan(float ax, float ay, float bx, float by, float clickx, float clicky) {
 		float d = (bx - ax)*(clicky - ay) - (by - ay)*(clickx - ax);
@@ -295,5 +301,29 @@ public class Hexagon{
 			return true;
 		else 
 			return false;
+	}
+	
+	public int getLine() {
+		return line;
+	}
+
+	public int getColumn() {
+		return column;
+	}
+
+	public boolean isHighlight() {
+		return highlight;
+	}
+
+	public void setHighlight(boolean highlight) {
+		this.highlight = highlight;
+		if (highlight) {
+			this.highlightLabel.setBounds(tile.getX(), tile.getY(), 90, 90);
+
+			this.highlightLabel.setVisible(true);
+		} else {
+
+			this.highlightLabel.setVisible(false);
+		}
 	}
 }
