@@ -3,6 +3,8 @@ package fr.mcstudio.board;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
 import fr.mcstudio.enums.Color;
@@ -16,7 +18,6 @@ import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.pawns.Whale;
 import fr.mcstudio.tiles.Tile;
 
-@SuppressWarnings("serial")
 public class Hexagon{
 
     /**
@@ -24,7 +25,7 @@ public class Hexagon{
      */
     /**
      * <p>
-     * Constructeur par défaut
+     * Constructeur par dÃ©faut
      * </p>
      */
 	Hexagon hexagon = this;
@@ -32,8 +33,14 @@ public class Hexagon{
     	this.line = line;
     	this.column = column;
 
-       
+		highlightLabel.setIcon(new ImageIcon(Board.class.getResource("/HexagonBlanc.png")));
+		highlightLabel.setBackground( new Color(0, 0, 0, 50) );
+		boardPane.setLayer(highlightLabel, 3);
+		boardPane.add(highlightLabel);
+		
+
     }
+
 
 	/**
 	 * <p>
@@ -60,6 +67,11 @@ public class Hexagon{
      * 
      */
     private HexagonType type;
+    
+    private boolean highlight;
+    
+
+    private JLabel highlightLabel = new JLabel();
 
     /**
      * <p>
@@ -182,7 +194,7 @@ public class Hexagon{
 
     /**
      * <p>
-     * Ajoute un explorateur à l'hexagone
+     * Ajoute un explorateur Ã  l'hexagone
      * </p>
      * @return
      */
@@ -192,7 +204,7 @@ public class Hexagon{
 
     /**
      * <p>
-     * Ajoute un requin à l'hexagone
+     * Ajoute un requin Ã  l'hexagone
      * </p>
      * @return
      */
@@ -202,7 +214,7 @@ public class Hexagon{
 
     /**
      * <p>
-     * Ajoute une baleine à l'hexagone
+     * Ajoute une baleine Ã  l'hexagone
      * </p>
      * @return
      */
@@ -212,7 +224,7 @@ public class Hexagon{
 
     /**
      * <p>
-     * Ajoute un serpent de mer à l'hexagone
+     * Ajoute un serpent de mer Ã  l'hexagone
      * </p>
      * @return
      */
@@ -222,7 +234,7 @@ public class Hexagon{
 
     /**
      * <p>
-     * Ajoute un bateau à l'hexagone
+     * Ajoute un bateau Ã  l'hexagone
      * </p>
      * @return
      */
@@ -357,24 +369,51 @@ public class Hexagon{
         return this.boat;
     }
     
-    /**
-     * <p>
-     * 
-     * </p>
-     * @since1.0
-     */
-    public boolean isInHexagonfloat (float clickx, float clicky) {
-		if(isInDemiPlan(tile.getX() + 45, tile.getY(), tile.getX(), tile.getY() + 20, clickx, clicky) &&
-				isInDemiPlan(tile.getX() + 89, tile.getY() + 20, tile.getX() + 45, tile.getY(), clickx, clicky) &&
-				isInDemiPlan(tile.getX(), tile.getY() + 69, tile.getX() + 45, tile.getY() + 89, clickx, clicky) &&
-				isInDemiPlan(tile.getX() + 45, tile.getY() + 89, tile.getX() + 89, tile.getY() + 69, clickx, clicky) &&
-				isInDemiPlan(tile.getX(), tile.getY() + 20, tile.getX(), tile.getY() + 69, clickx, clicky) && 
-				isInDemiPlan(tile.getX() + 89, tile.getY() + 69, tile.getX() + 89, tile.getY() + 20, clickx, clicky)) {
-			return true;
+    public boolean isInHexagonfloat (int resolution, float clickx, float clicky) {
+    	
+    	switch(resolution) {
+		case 70:
+			if(isInDemiPlan(tile.getX() + 35, tile.getY(), tile.getX(), tile.getY() + 15, clickx, clicky) &&
+					isInDemiPlan(tile.getX() + 69, tile.getY() + 15, tile.getX() + 35, tile.getY(), clickx, clicky) &&
+					isInDemiPlan(tile.getX(), tile.getY() + 54, tile.getX() + 35, tile.getY() + 69, clickx, clicky) &&
+					isInDemiPlan(tile.getX() + 35, tile.getY() + 69, tile.getX() + 69, tile.getY() + 54, clickx, clicky) &&
+					isInDemiPlan(tile.getX(), tile.getY() + 15, tile.getX(), tile.getY() + 54, clickx, clicky) && 
+					isInDemiPlan(tile.getX() + 69, tile.getY() + 54, tile.getX() + 69, tile.getY() + 15, clickx, clicky)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		case 80:
+			if(isInDemiPlan(tile.getX() + 40, tile.getY(), tile.getX(), tile.getY() + 17, clickx, clicky) &&
+					isInDemiPlan(tile.getX() + 79, tile.getY() + 17, tile.getX() + 40, tile.getY(), clickx, clicky) &&
+					isInDemiPlan(tile.getX(), tile.getY() + 62, tile.getX() + 40, tile.getY() + 79, clickx, clicky) &&
+					isInDemiPlan(tile.getX() + 40, tile.getY() + 79, tile.getX() + 79, tile.getY() + 62, clickx, clicky) &&
+					isInDemiPlan(tile.getX(), tile.getY() + 17, tile.getX(), tile.getY() + 62, clickx, clicky) && 
+					isInDemiPlan(tile.getX() + 79, tile.getY() + 62, tile.getX() + 79, tile.getY() + 17, clickx, clicky)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		case 90:
+			if(isInDemiPlan(tile.getX() + 45, tile.getY(), tile.getX(), tile.getY() + 20, clickx, clicky) &&
+					isInDemiPlan(tile.getX() + 89, tile.getY() + 20, tile.getX() + 45, tile.getY(), clickx, clicky) &&
+					isInDemiPlan(tile.getX(), tile.getY() + 69, tile.getX() + 45, tile.getY() + 89, clickx, clicky) &&
+					isInDemiPlan(tile.getX() + 45, tile.getY() + 89, tile.getX() + 89, tile.getY() + 69, clickx, clicky) &&
+					isInDemiPlan(tile.getX(), tile.getY() + 20, tile.getX(), tile.getY() + 69, clickx, clicky) && 
+					isInDemiPlan(tile.getX() + 89, tile.getY() + 69, tile.getX() + 89, tile.getY() + 20, clickx, clicky)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		default:
+			break;
 		}
-		else {
-			return false;
-		}
+		return false;
+    	
+		
 	}
 	
     /**
@@ -392,6 +431,29 @@ public class Hexagon{
 			return false;
 	}
 	
+	public int getLine() {
+		return line;
+	}
+
+	public int getColumn() {
+		return column;
+	}
+
+	public boolean isHighlight() {
+		return highlight;
+	}
+
+	public void setHighlight(boolean highlight) {
+		this.highlight = highlight;
+		if (highlight) {
+			this.highlightLabel.setBounds(tile.getX(), tile.getY(), 90, 90);
+
+			this.highlightLabel.setVisible(true);
+		} else {
+
+			this.highlightLabel.setVisible(false);
+		}
+	}
 	/**
      * <p>
      * Vide la case de tous ses pions

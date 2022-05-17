@@ -69,14 +69,14 @@ public class Player {
      * 
      * @see Color.java
      */
-    private List<Explorer> explorerList;
+    private List<Explorer> explorerList = new ArrayList<Explorer>();
 
     /**
      * <p>
      * Liste des tuiles du joueur
      * </p>
      */
-    private List<Tile> tileList;
+    private List<Tile> tileList = new ArrayList<Tile>();
 
     /**
      * <p>
@@ -218,7 +218,6 @@ public class Player {
     public int getMoveLeft() {
         return this.moveLeft;
     }
-
     /**
      * <p>
      * Permet au joueur de placer tout ses explorateurs sur une tuile vide.

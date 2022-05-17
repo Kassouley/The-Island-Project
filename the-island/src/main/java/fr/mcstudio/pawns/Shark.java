@@ -25,6 +25,7 @@ import fr.mcstudio.enums.ExplorerStatus;
  * @see EffectPawn.java
  * @author Lucas Neto
  */
+@SuppressWarnings("serial")
 public class Shark extends EffectPawn {
 
     /**

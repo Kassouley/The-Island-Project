@@ -24,6 +24,7 @@ import fr.mcstudio.board.Hexagon;
  * @see EffectPawn.java
  * @author Lucas Neto
  */
+@SuppressWarnings("serial")
 public class Whale extends EffectPawn {
 
     /**

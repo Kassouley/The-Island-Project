@@ -1,6 +1,7 @@
 
 package fr.mcstudio.tiles;
 
+import java.awt.Image;
 import java.util.*;
 
 import javax.swing.ImageIcon;
@@ -43,17 +44,31 @@ public class Tile extends JLabel {
 	/**
 	* 
 	*/
-	public void setType(TilesType type) {
+	public void setType(int resolution, TilesType type) {
+		ImageIcon icone = null;
+		Image scaleImage;
 		this.type = type;
 		if (type == TilesType.BEACH) {
-			this.setIcon(new ImageIcon(Tile.class.getResource("/Plage.png")));
+			icone = new ImageIcon(Tile.class.getResource("/Plage.png"));
 		} else if (type == TilesType.FOREST) {
-			this.setIcon(new ImageIcon(Tile.class.getResource("/Foret.png")));
+			icone = new ImageIcon(Tile.class.getResource("/Foret.png"));
 		} else if (type == TilesType.MONTAINS) {
-			this.setIcon(new ImageIcon(Tile.class.getResource("/Montagne.png")));
-		} else {
-			this.setIcon(null);
+			icone = new ImageIcon(Tile.class.getResource("/Montagne.png"));
 		}
+		switch(resolution) {
+		case 70:
+			scaleImage = icone.getImage().getScaledInstance(70, 70,Image.SCALE_SMOOTH);
+			icone.setImage(scaleImage);
+			break;
+		case 80:
+			scaleImage = icone.getImage().getScaledInstance(80, 80,Image.SCALE_SMOOTH);
+			icone.setImage(scaleImage);
+			break;
+		default:
+			break;
+		}
+
+		this.setIcon(icone);
 	}
 
 	/**
@@ -79,7 +94,7 @@ public class Tile extends JLabel {
 
 	/**
 	 * <p>
-	 * Regarde si il y a une tuile sur l'hexagone cliquÈ
+	 * Regarde si il y a une tuile sur l'hexagone cliqu√©
 	 * </p>
 	 * @since1.0
 	 */
@@ -92,9 +107,53 @@ public class Tile extends JLabel {
 		}
 	}
 	
-	/**
+
+	public void applyEffect(Hexagon tilePosition) {
+		switch (this.effect) {
+			case WHALE:
+				this.whaleEffect(tilePosition);
+				break;
+			case WHALE_DEATH:
+				this.whaleDeathEffect(tilePosition);
+				break;
+			case WHALE_LOST:
+				this.whaleLostEffect();
+				break;
+			case BOAT_MOVE:
+				this.boatMoveEffect();
+				break;
+			case BOAT:
+				this.boatEffect(tilePosition);
+				break;
+			case DOLPHIN_MOVE:
+				this.dolphinMoveEffect();
+				break;
+			case SHARK:
+				this.sharkEffect(tilePosition);
+				break;
+			case SHARK_DEATH:
+				this.sharkDeathEffect(tilePosition);
+				break;
+			case SHARK_LOST:
+				this.sharkLostEffect();
+				break;
+			case SEASNAKE_LOST:
+				this.seasnakeLostEffect();
+				break;
+			case WHIRLPOOL:
+				this.whirlpoolEffect();
+				break;
+			case VOLCANO:
+				this.volcanoEffect();
+				break;
+			default:
+				break;
+		}
+	}
+
+	/*
 	 * <p>
-	 * Retourne la tuile prÈsente sur la case choisie de la map.
+	 * Retourne la tuile pr√©sente sur la case choisie de la map.
 	 * </p>
 	 * @since1.0
 	 */
@@ -145,8 +204,8 @@ public class Tile extends JLabel {
 	
 	/**
 	 * <p>
-	 * DÈplace un bateau que vous controlez de 1 ‡ 3 cases.
-	 * Tuile en dÈbut de tour.
+	 * D√©place un bateau que vous controlez de 1 √† 3 cases.
+	 * Tuile en d√©but de tour.
 	 * </p>
 	 */
 	public void boatMoveEffect() {
@@ -157,7 +216,7 @@ public class Tile extends JLabel {
 	/**
 	 * <p>
 	 * Ajoute un bateau sur la case de la tuile.
-	 * Tuile instantanÈe.
+	 * Tuile instantan√©e.
 	 * </p>
 	 * @param tilePosition Tuile actuelle
 	 */
@@ -168,8 +227,8 @@ public class Tile extends JLabel {
 	
 	/**
 	 * <p>
-	 * DÈplace un nageur de 1 ‡ 3 cases.
-	 * Tuile en dÈbut de tour.
+	 * D√©place un nageur de 1 √† 3 cases.
+	 * Tuile en d√©but de tour.
 	 * </p>
 	 */
 	public void dolphinMoveEffect() {
@@ -179,19 +238,19 @@ public class Tile extends JLabel {
 	
 	/**
 	 * <p>
-	 * DÈplace un serpent de mer sur une case de mer vide.
-	 * Tuile en dÈbut de tour.
+	 * D√©place un serpent de mer sur une case de mer vide.
+	 * Tuile en d√©but de tour.
 	 * </p>
 	 */
 	public void seasnakeLostEffect() {
 		//selectionner un seasnake
-		//selectionne la case ou on veut la deplacer (mer inoccup√©e)
+		//selectionne la case ou on veut la deplacer (mer inoccup√É¬©e)
 	}
 		
 	/**
 	 * <p>
 	 * Ajoute un requin sur la case de la tuile.
-	 * Tuile instantanÈe.
+	 * Tuile instantan√©e.
 	 * </p>
 	 * @param tilePosition Tuile actuelle
 	 */
@@ -203,7 +262,7 @@ public class Tile extends JLabel {
 	/**
 	 * <p>
 	 * Tue le requin sur la tuile.
-	 * Tuile dÈfense.
+	 * Tuile d√©fense.
 	 * </p>
 	 * @param tilePosition Tuile actuelle
 	 */
@@ -215,19 +274,19 @@ public class Tile extends JLabel {
 	
 	/**
 	 * <p>
-	 * DÈplace un requin sur une case de mer vide.
-	 * Tuile en dÈbut de tour. 
+	 * D√©place un requin sur une case de mer vide.
+	 * Tuile en d√©but de tour. 
 	 * </p>
 	 */
 	public void sharkLostEffect() {
 		//selectionner un requin
-		//selectionne la case ou on veut la deplacer (mer inoccup√©e)
+		//selectionne la case ou on veut la deplacer (mer inoccup√É¬©e)
 	}
 	
 	/**
 	 * <p>
 	 * Retire tout les pions sur les cases de mer aux alentours et sur cette tuile.
-	 * Tuile instantanÈe.
+	 * Tuile instantan√©e.
 	 * </p>
 	 */
 	public void whirlpoolEffect(Hexagon tilePosition,Board board) {
@@ -247,7 +306,7 @@ public class Tile extends JLabel {
 	/**
 	 * <p>
 	 * Fin de la partie.
-	 * Tuile instantanÈe.
+	 * Tuile instantan√©e.
 	 * </p>
 	 */
 	public void volcanoEffect() {
@@ -257,7 +316,7 @@ public class Tile extends JLabel {
 	/**
 	 * <p>
 	 * Ajoute un pion baleine sur la case choisie.
-	 * Tuile ‡ effet instantanÈe.
+	 * Tuile √† effet instantan√©e.
 	 * </p>
 	 * @param tilePosition Tuile actuelle
 	 * @since1.0
@@ -270,7 +329,7 @@ public class Tile extends JLabel {
 	/**
 	 * <p>
 	 * Tue la baleine sur la tuile.
-	 * Tuile dÈfense.
+	 * Tuile d√©fense.
 	 * </p>
 	 * @param tilePosition Tuile actuelle
 	 * @since1.0
@@ -283,14 +342,14 @@ public class Tile extends JLabel {
 	
 	/**
 	 * <p>
-	 * DÈplace une baleine sur une case de mer vide.
-	 * Tuile en dÈbut de tour.
+	 * D√©place une baleine sur une case de mer vide.
+	 * Tuile en d√©but de tour.
 	 * </p>
 	 */
 	public void whaleLostEffect() {
 		//a voir avec kevin pour la selection de case
 		//selectionner une baleine
-		//selectionne la case ou on veut la deplacer (mer inoccup√©e)
+		//selectionne la case ou on veut la deplacer (mer inoccup√É¬©e)
 	}
 
 	/**

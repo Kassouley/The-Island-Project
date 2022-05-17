@@ -31,6 +31,7 @@ import fr.mcstudio.game.Player;
  * @see Pawn.java
  * @author Lucas Neto
  */
+@SuppressWarnings("serial")
 public class Boat extends Pawn {
 
     /**

@@ -30,6 +30,7 @@ import fr.mcstudio.enums.ExplorerStatus;
  * @see Pawn.java
  * @author Lucas Neto
  */
+@SuppressWarnings("serial")
 public class Explorer extends Pawn {
 
     /**
