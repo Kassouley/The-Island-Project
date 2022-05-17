@@ -34,7 +34,6 @@ public class Hexagon{
     	this.column = column;
 
 		highlightLabel.setIcon(new ImageIcon(Board.class.getResource("/HexagonBlanc.png")));
-		highlightLabel.setBackground( new Color(0, 0, 0, 50) );
 		boardPane.setLayer(highlightLabel, 3);
 		boardPane.add(highlightLabel);
 		
@@ -108,24 +107,6 @@ public class Hexagon{
      */
     private Boat boat = null;
 
-    /**
-     * <p>
-     * 
-     * </p>
-     */
-	public int getLine() {
-		return line;
-	}
-	
-    /**
-     * <p>
-     * 
-     * </p>
-     */
-    public int getColumn() {
-		return column;
-	}
-    
     /**
      * <p>
      * 
