@@ -158,7 +158,7 @@ public class Game {
     /**
      * 
      */
-    public void startGame() {
+    /*public void startGame() {
         for (int i = 0; i < players.length; i++) {
             // Afficher message "Pose tes pions"
             players[(this.turnOrder + i) % players.length]
@@ -166,7 +166,7 @@ public class Game {
             players[(this.turnOrder + i) % players.length]
                     .placeBoats(this.board);
         }
-    }
+    }*/
 
     /**
      * 

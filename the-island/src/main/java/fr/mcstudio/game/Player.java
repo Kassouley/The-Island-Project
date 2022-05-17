@@ -225,7 +225,7 @@ public class Player {
      * 
      * @param board le plateau dans lequel on pose les explorateurs.
      */
-    public void placeAllExplorers(Board board) {
+    /*public void placeAllExplorers(Board board) {
         for (Explorer e : this.explorerList) {
             Hexagon hexagon;
             do {
@@ -235,7 +235,7 @@ public class Player {
             hexagon.addPawn(e);
             hexagon = null;
         }
-    }
+    }*/
 
     /**
      * <p>
@@ -244,7 +244,7 @@ public class Player {
      * 
      * @param board le plateau dans lequel on pose les bateaux.
      */
-    public void placeBoats(Board board) {
+   /* public void placeBoats(Board board) {
         for (int i = 0; i < 2; i++) {
             Hexagon hexagon;
             do {
@@ -262,7 +262,7 @@ public class Player {
             hexagon.addPawn(b);
             hexagon = null;
         }
-    }
+    }*/
 
     /**
      * 

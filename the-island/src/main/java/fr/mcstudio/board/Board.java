@@ -106,46 +106,10 @@ public class Board extends JLabel{
 					hexagons[i][j].setTile(null);
 					hexagons[i][j].setType(HexagonType.VOID);
 				}
-				int positionx = 0;
-				int positiony = 0;
-				if(i%2 == 0) {
-					switch(resolution) {
-					case 70:
-						positionx = 82 + 70*j;
-						positiony = 16 + 54 * i;
-						break;
-					case 80:
-						positionx = 100 + 80*j;
-						positiony = 24 + 62 * i;
-						break;
-					case 90:
-						positionx = 120 + 90 * j;
-						positiony = 31 + 70 * i;
-						break;
-					default:
-						break;
-					}
-				} else {
-					switch(resolution) {
-					case 70:
-						positionx = 47 + 70*j;
-						positiony = 16 + 54 * i;
-						break;
-					case 80:
-						positionx = 60 + 80*j;
-						positiony = 24 + 62 * i;
-						break;
-					case 90:
-						positionx = 75 + 90*j;
-						positiony = 31 + 70 * i;
-						break;
-					default:
-						break;
-					}
-				}
+				
 				if(hexagons[i][j].getTile() != null) {
 					tilesPane.add(hexagons[i][j].getTile());
-					hexagons[i][j].getTile().setPosition(positionx, positiony);
+					hexagons[i][j].getTile().setPosition(hexagons[i][j].returnPosTileX(resolution), hexagons[i][j].returnPosTileY(resolution));
 				}
 			}
 		}
@@ -168,7 +132,7 @@ public class Board extends JLabel{
 									//tilesPane.repaint();
 									tilesPane.updateUI();
 									hexagons[i][j].removeTile();
-									hexagons[i][j].getTile().setPosition(hexagons[i][j].returnPosTileX(), hexagons[i][j].returnPosTileY());
+									hexagons[i][j].getTile().setPosition(hexagons[i][j].returnPosTileX(resolution), hexagons[i][j].returnPosTileY(resolution));
 								//tile.applyEffect(hexagon);
 							}
 					}
@@ -305,6 +269,7 @@ public class Board extends JLabel{
 		}
 
 	    this.setIcon(icone);
+	}
 	public Hexagon getTopLeft(Hexagon actualHexagon) {
 		if (actualHexagon.getLine() - 1 > 0 && actualHexagon.getLine() % 2 == 0) {
 			return this.hexagons[actualHexagon.getLine() - 1][actualHexagon.getColumn()];

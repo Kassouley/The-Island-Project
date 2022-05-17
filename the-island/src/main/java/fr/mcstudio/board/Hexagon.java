@@ -32,9 +32,8 @@ public class Hexagon{
 	public Hexagon(JLayeredPane boardPane, final int line, final int column) {
     	this.line = line;
     	this.column = column;
-
+    	initHighlight();
 		highlightLabel.setIcon(new ImageIcon(Board.class.getResource("/HexagonBlanc.png")));
-		highlightLabel.setBackground( new Color(0, 0, 0, 50) );
 		boardPane.setLayer(highlightLabel, 3);
 		boardPane.add(highlightLabel);
 		
@@ -108,23 +107,6 @@ public class Hexagon{
      */
     private Boat boat = null;
 
-    /**
-     * <p>
-     * 
-     * </p>
-     */
-	public int getLine() {
-		return line;
-	}
-	
-    /**
-     * <p>
-     * 
-     * </p>
-     */
-    public int getColumn() {
-		return column;
-	}
     
     /**
      * <p>
@@ -497,12 +479,31 @@ public class Hexagon{
      * </p>
      * @since2.0
      */
-	public int returnPosTileX() {
+	public int returnPosTileX(int resolution) {
 		if(this.line%2 == 0) {
-			return  120 + 90 * this.column;
+			switch(resolution) {
+			case 70:
+				return 82 + 70*this.column;
+			case 80:
+				return 100 + 80*this.column;
+			case 90:
+				return 120 + 90 * this.column;
+			default:
+				break;
+			}
 		} else {
-			return 75 + 90* this.column;
+			switch(resolution) {
+			case 70:
+				return 47 + 70*this.column;
+			case 80:
+				return 60 + 80*this.column;
+			case 90:
+				return 75 + 90*this.column;
+			default:
+				break;
+			}
 		}
+		return 0;
 	}
 	
 	/**
@@ -511,12 +512,31 @@ public class Hexagon{
      * </p>
      * @since2.0
      */
-	public int returnPosTileY() {
-		if(this.line%2 == 0) {			
-			return 35 + 70 * this.line;
+	public int returnPosTileY(int resolution) {
+		if(this.line%2 == 0) {		
+			switch(resolution) {
+			case 70:
+				return 16 + 54 * this.line;
+			case 80:
+				return 24 + 62 * this.line;
+			case 90:
+				return 31 + 70 * this.line;
+			default:
+				break;
+			}
 		} else {
-			return 35 + 70 * this.line;
+			switch(resolution) {
+			case 70:
+				return 16 + 54 * this.line;
+			case 80:
+				return 24 + 62 * this.line;
+			case 90:
+				return 31 + 70 * this.line;
+			default:
+				break;
+			}
 		}
+		return 0;
 	}
 	
 	 public int returnPawnsTypeNumber() {
