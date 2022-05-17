@@ -108,7 +108,7 @@ public class Tile extends JLabel {
 	}
 	
 
-	public void applyEffect(Hexagon tilePosition) {
+	/*public void applyEffect(Hexagon tilePosition) {
 		switch (this.effect) {
 			case WHALE:
 				this.whaleEffect(tilePosition);
@@ -149,7 +149,7 @@ public class Tile extends JLabel {
 			default:
 				break;
 		}
-	}
+	}*/
 
 	/*
 	 * <p>

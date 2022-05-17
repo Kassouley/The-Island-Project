@@ -1,9 +1,9 @@
 package fr.mcstudio.board;
 
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -30,7 +30,7 @@ public class Board extends JLabel{
 	JLayeredPane boardPane;
 	
 	Board board;
-	public Board(int resolution, JLayeredPane boardPane) {
+	public Board(final int resolution, JLayeredPane boardPane) {
 		super();
 		this.board = this;
 		this.boardPane = boardPane;
@@ -305,6 +305,8 @@ public class Board extends JLabel{
 		}
 
 	    this.setIcon(icone);
+	}
+	
 	public Hexagon getTopLeft(Hexagon actualHexagon) {
 		if (actualHexagon.getLine() - 1 > 0 && actualHexagon.getLine() % 2 == 0) {
 			return this.hexagons[actualHexagon.getLine() - 1][actualHexagon.getColumn()];

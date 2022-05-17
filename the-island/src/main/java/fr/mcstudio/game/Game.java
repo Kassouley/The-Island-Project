@@ -159,13 +159,13 @@ public class Game {
      * 
      */
     public void startGame() {
-        for (int i = 0; i < players.length; i++) {
+        /*for (int i = 0; i < players.length; i++) {
             // Afficher message "Pose tes pions"
             players[(this.turnOrder + i) % players.length]
                     .placeAllExplorers(this.board);
             players[(this.turnOrder + i) % players.length]
                     .placeBoats(this.board);
-        }
+        }*/
     }
 
     /**
