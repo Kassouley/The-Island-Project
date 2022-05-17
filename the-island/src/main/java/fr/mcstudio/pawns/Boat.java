@@ -15,8 +15,10 @@ package fr.mcstudio.pawns;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.ExplorerStatus;
+import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.game.Player;
 
 /**
@@ -34,7 +36,7 @@ public class Boat extends Pawn {
 
     /**
      * <p>
-     * Constructeur par dÃ©faut
+     * Constructeur par défaut
      * </p>
      */
     public Boat() {
@@ -43,7 +45,7 @@ public class Boat extends Pawn {
 
     /**
      * <p>
-     * Liste des explorateur prÃ©sent sur le bateau.
+     * Liste des explorateur présent sur le bateau.
      * </p>
      * 
      * @see Explorer.java
@@ -55,7 +57,7 @@ public class Boat extends Pawn {
      * Ajoute un explorateur sur le bateau
      * </p>
      * 
-     * @param explorer l'explorateur Ã  ajouter sur le bateau
+     * @param explorer l'explorateur à ajouter sur le bateau
      * @since 1.0
      * @see Explorer.java
      */
@@ -65,7 +67,7 @@ public class Boat extends Pawn {
 
     /**
      * <p>
-     * VÃ©rifie si le bateau est plein ou non
+     * Vérifie si le bateau est plein ou non
      * </p>
      * 
      * @return vrai si le nombre d'exploreur dessus est >= 3, faux sinon.
@@ -80,7 +82,7 @@ public class Boat extends Pawn {
      * Retire un explorateur du bateau.
      * </p>
      * 
-     * @param explorer l'explorateur Ã  retirer du bateau.
+     * @param explorer l'explorateur à retirer du bateau.
      * @since 1.0
      * @see Explorer.java
      */
@@ -93,7 +95,7 @@ public class Boat extends Pawn {
      * Permet de savoir qui peut controler le bateau.
      * </p>
      * <p>
-     * La mÃ©thode compte le nombre d'explorateur d'un joueur sur le bateau.
+     * La méthode compte le nombre d'explorateur d'un joueur sur le bateau.
      * Si ce nombre est maximum alors il peut controler le bateau.
      * </p>
      * 
@@ -121,10 +123,10 @@ public class Boat extends Pawn {
 
     /**
      * <p>
-     * Fait couler un bateau choisit et retire tout les explorateurs Ã  bord.
+     * Fait couler un bateau choisit et retire tout les explorateurs à bord.
      * </p>
      * 
-     * @param boatPosition Case oÃ¹ se situe le bateau Ã  retirÃ© du jeu
+     * @param boatPosition Case où se situe le bateau à retiré du jeu
      * @since 2.0
      * @see Explorer.java
      */
@@ -139,11 +141,11 @@ public class Boat extends Pawn {
 
     /**
      * <p>
-     * DÃ©place le bateau d'une case vers une autre case.
+     * Déplace le bateau d'une case vers une autre case.
      * </p>
      * 
-     * @param oldPosition case oÃ¹ se trouvait le bateau.
-     * @param newPosition case vers laquel est dÃ©placÃ© le bateau.
+     * @param oldPosition case où se trouvait le bateau.
+     * @param newPosition case vers laquel est déplacé le bateau.
      * @since 2.0
      */
     public void move(Hexagon oldPosition, Hexagon newPosition) {
@@ -155,6 +157,27 @@ public class Boat extends Pawn {
             }
             if (!newPosition.getSeaSnakeList().isEmpty()) {
                 newPosition.getSeaSnakeList().get(0).makeEffect(newPosition);
+            }
+        }
+    }
+
+    protected void findPathAux(Hexagon actualPosition, Board board, List<Hexagon> listHexagon) {
+        List<Hexagon> tmp = new ArrayList<Hexagon>();
+
+        tmp.add(board.getTopLeft(actualPosition));
+        tmp.add(board.getTopRight(actualPosition));
+        tmp.add(board.getLeft(actualPosition));
+        tmp.add(board.getRight(actualPosition));
+        tmp.add(board.getBottomLeft(actualPosition));
+        tmp.add(board.getBottomRight(actualPosition));
+
+        for (Hexagon hexagon : tmp) {
+            if (hexagon != null
+                    && !listHexagon.contains(hexagon)
+                    && hexagon.getWhaleList().isEmpty()
+                    && hexagon.getSeaSnakeList().isEmpty()
+                    && hexagon.getType() == HexagonType.SEA) {
+                listHexagon.add(hexagon);
             }
         }
     }

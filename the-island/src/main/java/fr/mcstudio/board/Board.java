@@ -22,10 +22,17 @@ import fr.mcstudio.tiles.Tile;
 public class Board extends JLabel{
 	private Hexagon[][] hexagons = new Hexagon[13][12];
 	
+	public Hexagon[][] getHexagons() {
+		return hexagons;
+	}
+	
+
 	JLayeredPane boardPane;
 	
+	Board board;
 	public Board(int resolution, JLayeredPane boardPane) {
 		super();
+		this.board = this;
 		this.boardPane = boardPane;
 		boardPane.setLayer(this, 0);
 		setBoundsFromResolution(resolution);
@@ -33,7 +40,7 @@ public class Board extends JLabel{
 
         
 		
-		JPanel tilesPane = new JPanel();
+		final JPanel tilesPane = new JPanel();
 		tilesPane.setOpaque(false);
 		boardPane.setLayer(tilesPane, 1);
 		switch(resolution) {
@@ -155,6 +162,13 @@ public class Board extends JLabel{
 						if(hexagons[i][j].getTile() != null)
 							if(hexagons[i][j].isInHexagonfloat(resolution, e.getX(), e.getY())) {
 								System.out.println("Yay ! " + hexagons[i][j].getLine() + " " + hexagons[i][j].getColumn());
+                hexagons[i][j].getTile().discover(hexagons[i][j],null, board);
+									tilesPane.remove(hexagons[i][j].getTile());
+									//tilesPane.revalidate();
+									//tilesPane.repaint();
+									tilesPane.updateUI();
+									hexagons[i][j].removeTile();
+									hexagons[i][j].getTile().setPosition(hexagons[i][j].returnPosTileX(), hexagons[i][j].returnPosTileY());
 								//tile.applyEffect(hexagon);
 							}
 					}
@@ -291,5 +305,67 @@ public class Board extends JLabel{
 		}
 
 	    this.setIcon(icone);
+	public Hexagon getTopLeft(Hexagon actualHexagon) {
+		if (actualHexagon.getLine() - 1 > 0 && actualHexagon.getLine() % 2 == 0) {
+			return this.hexagons[actualHexagon.getLine() - 1][actualHexagon.getColumn()];
+		} else if (actualHexagon.getLine() - 1 > 0
+				&& actualHexagon.getColumn() - 1 > 0
+				&& actualHexagon.getLine() % 2 == 1) {
+			return this.hexagons[actualHexagon.getLine() - 1][actualHexagon.getColumn() - 1];
+		} else {
+			return null;
+		}
+	}
+
+	public Hexagon getTopRight(Hexagon actualHexagon) {
+		if (actualHexagon.getLine() - 1 > 0
+				&& actualHexagon.getColumn() + 1 < 12
+				&& actualHexagon.getLine() % 2 == 0) {
+			return this.hexagons[actualHexagon.getLine() - 1][actualHexagon.getColumn() + 1];
+		} else if (actualHexagon.getLine() - 1 > 0 && actualHexagon.getLine() % 2 == 1) {
+			return this.hexagons[actualHexagon.getLine() - 1][actualHexagon.getColumn()];
+		} else {
+			return null;
+		}
+	}
+
+	public Hexagon getLeft(Hexagon actualHexagon) {
+		if (actualHexagon.getColumn() - 1 > 0) {
+			return this.hexagons[actualHexagon.getLine()][actualHexagon.getColumn() - 1];
+		} else {
+			return null;
+		}
+	}
+
+	public Hexagon getRight(Hexagon actualHexagon) {
+		if (actualHexagon.getColumn() + 1 < 12) {
+			return this.hexagons[actualHexagon.getLine()][actualHexagon.getColumn() + 1];
+		} else {
+			return null;
+		}
+	}
+
+	public Hexagon getBottomLeft(Hexagon actualHexagon) {
+		if (actualHexagon.getLine() + 1 < 13 && actualHexagon.getLine() % 2 == 0) {
+			return this.hexagons[actualHexagon.getLine() + 1][actualHexagon.getColumn()];
+		} else if (actualHexagon.getLine() + 1 < 13
+				&& actualHexagon.getColumn() - 1 > 0
+				&& actualHexagon.getLine() % 2 == 1) {
+			return this.hexagons[actualHexagon.getLine() + 1][actualHexagon.getColumn() - 1];
+		} else {
+			return null;
+		}
+	}
+
+	public Hexagon getBottomRight(Hexagon actualHexagon) {
+		if (actualHexagon.getLine() + 1 < 13
+				&& actualHexagon.getColumn() + 1 < 12
+				&& actualHexagon.getLine() % 2 == 0) {
+			return this.hexagons[actualHexagon.getLine() + 1][actualHexagon.getColumn() + 1];
+		} else if (actualHexagon.getLine() + 1 < 12 && actualHexagon.getLine() % 2 == 1) {
+			return this.hexagons[actualHexagon.getLine() + 1][actualHexagon.getColumn()];
+		} else {
+			return null;
+		}
 	}
 }

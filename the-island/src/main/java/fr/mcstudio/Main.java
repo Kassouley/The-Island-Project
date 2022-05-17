@@ -35,7 +35,6 @@ public class Main extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		
 	}
 
 	public static void main(String[] args) {

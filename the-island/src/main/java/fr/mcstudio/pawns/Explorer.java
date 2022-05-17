@@ -12,6 +12,10 @@
 
 package fr.mcstudio.pawns;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
@@ -31,7 +35,7 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Constructeur par dÃ©faut
+     * Constructeur par défaut
      * </p>
      */
     public Explorer(Color color, int treasureValue) {
@@ -51,7 +55,7 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Valeur du trÃ©sor de l'explorateur.
+     * Valeur du trésor de l'explorateur.
      * </p>
      */
     private int treasureValue;
@@ -76,7 +80,7 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Accesseur de la valeur de trÃ©sor de l'explorateur.
+     * Accesseur de la valeur de trésor de l'explorateur.
      * </p>
      */
     public int getTreasureValue() {
@@ -105,11 +109,11 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * DÃ©place l'explorateur d'une case vers une autre case.
+     * Déplace l'explorateur d'une case vers une autre case.
      * </p>
      * 
-     * @param oldPosition case oÃ¹ se trouvait l'explorateur.
-     * @param newPosition case vers laquel est dÃ©placÃ© l'explorateur.
+     * @param oldPosition case où se trouvait l'explorateur.
+     * @param newPosition case vers laquel est déplacé l'explorateur.
      * @since 2.0
      */
     public void move(Hexagon oldPosition, Hexagon newPosition) {
@@ -140,12 +144,12 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * DÃ©place l'explorateur d'une case vers un bateau.
+     * Déplace l'explorateur d'une case vers un bateau.
      * </p>
      * 
-     * @param oldPosition  case oÃ¹ se trouvait l'explorateur.
-     * @param boat         bateau sur lequel est dÃ©placÃ© l'explorateur.
-     * @param boatPosition Case oÃ¹ se situe le bateau destination.
+     * @param oldPosition  case où se trouvait l'explorateur.
+     * @param boat         bateau sur lequel est déplacé l'explorateur.
+     * @param boatPosition Case où se situe le bateau destination.
      * @since 2.0
      */
     public void move(Hexagon oldPosition, Boat boat, Hexagon boatPosition) {
@@ -163,11 +167,11 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * DÃ©place l'explorateur d'un bateau vers une position.
+     * Déplace l'explorateur d'un bateau vers une position.
      * </p>
      * 
-     * @param boat        bateau dans lequel est retirÃ© l'explorateur.
-     * @param newPosition case vers lequel est dÃ©placÃ© l'explorateur.
+     * @param boat        bateau dans lequel est retiré l'explorateur.
+     * @param newPosition case vers lequel est déplacé l'explorateur.
      * @since 1.0
      */
     public void move(Boat boat, Hexagon newPosition) {
@@ -198,12 +202,12 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * DÃ©place l'explorateur d'un bateau vers un autre bateau.
+     * Déplace l'explorateur d'un bateau vers un autre bateau.
      * </p>
      * 
-     * @param oldBoat         bateau dans lequel est retirÃ© l'explorateur.
-     * @param newBoat         bateau vers lequel se dÃ©place l'explorateur.
-     * @param newBoatPosition Case oÃ¹ se situe le bateau destination.
+     * @param oldBoat         bateau dans lequel est retiré l'explorateur.
+     * @param newBoat         bateau vers lequel se déplace l'explorateur.
+     * @param newBoatPosition Case où se situe le bateau destination.
      * @since 2.0
      */
     public void move(Boat oldBoat, Boat newBoat, Hexagon newBoatPosition) {
@@ -217,4 +221,23 @@ public class Explorer extends Pawn {
         }
     }
 
+    protected void findPathAux(Hexagon actualPosition, Board board, List<Hexagon> listHexagon) {
+        List<Hexagon> tmp = new ArrayList<Hexagon>();
+
+        tmp.add(board.getTopLeft(actualPosition));
+        tmp.add(board.getTopRight(actualPosition));
+        tmp.add(board.getLeft(actualPosition));
+        tmp.add(board.getRight(actualPosition));
+        tmp.add(board.getBottomLeft(actualPosition));
+        tmp.add(board.getBottomRight(actualPosition));
+
+        for (Hexagon hexagon : tmp) {
+            if (hexagon != null
+                    && !listHexagon.contains(hexagon)
+                    && hexagon.getSharkList().isEmpty()
+                    && hexagon.getSeaSnakeList().isEmpty()) {
+                listHexagon.add(hexagon);
+            }
+        }
+    }
 }
