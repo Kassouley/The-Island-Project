@@ -1,5 +1,6 @@
 package fr.mcstudio.board;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +13,7 @@ import javax.swing.JPanel;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonType;
+import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.EffectPawn;
 import fr.mcstudio.pawns.Explorer;
@@ -31,11 +33,11 @@ public class Hexagon {
      * Constructeur par défaut
      * </p>
      */
-    Hexagon hexagon = this;
-
-    public Hexagon(JLayeredPane boardPane, final int line, final int column) {
-        this.line = line;
-        this.column = column;
+	Hexagon hexagon = this;
+	public Hexagon(JLayeredPane boardPane, final int line, final int column) {
+    	this.line = line;
+    	this.column = column;
+		
 
         highlightLabel.setIcon(new ImageIcon(Board.class.getResource("/HexagonBlanc.png")));
         boardPane.setLayer(highlightLabel, 3);
@@ -71,7 +73,8 @@ public class Hexagon {
 
     private boolean highlight;
 
-    private JLabel highlightLabel = new JLabel();
+
+	private JLabel highlightLabel = new JLabel();
 
     /**
      * <p>
@@ -135,6 +138,7 @@ public class Hexagon {
      */
     private Boat boat = null;
 
+    
     /**
      * <p>
      * 
@@ -512,40 +516,67 @@ public class Hexagon {
      * </p>
      * @since1.0
      */
-    public boolean isInDemiPlan(float ax, float ay, float bx, float by, float clickx, float clicky) {
-        float d = (bx - ax) * (clicky - ay) - (by - ay) * (clickx - ax);
+	public boolean isInDemiPlan(float ax, float ay, float bx, float by, float clickx, float clicky) {
+		float d = (bx - ax)*(clicky - ay) - (by - ay)*(clickx - ax);
+		
+		if(d <= 0)
+			return true;
+		else 
+			return false;
+	}
+	
+	public int getLine() {
+		return line;
+	}
 
-        if (d <= 0)
-            return true;
-        else
-            return false;
-    }
+	public int getColumn() {
+		return column;
+	}
 
-    public int getLine() {
-        return line;
-    }
+	public boolean isHighlight() {
+		return highlight;
+	}
 
-    public int getColumn() {
-        return column;
-    }
-
-    public boolean isHighlight() {
-        return highlight;
-    }
-
-    public void setHighlight(boolean highlight) {
-        this.highlight = highlight;
-        if (highlight) {
-            this.highlightLabel.setBounds(tile.getX(), tile.getY(), 90, 90);
-
-            this.highlightLabel.setVisible(true);
-        } else {
-
-            this.highlightLabel.setVisible(false);
-        }
-    }
-
-    /**
+	public void setHighlight(int resolution, JLayeredPane boardPane, boolean highlight, String color) {
+		this.highlight = highlight;
+		if (highlight) {
+			//boardPane.remove(highlightLabel);
+			ImageIcon icone = null;
+			Image scaleImage;
+			if (color == "white") {
+				icone = new ImageIcon(Tile.class.getResource("/HexagonBlanc.png"));
+			} else if (color == "yellow") {
+				icone = new ImageIcon(Tile.class.getResource("/HexagonJaune.png"));
+			} else if (color == "red") {
+				icone = new ImageIcon(Tile.class.getResource("/HexagonRouge.png"));
+			}
+			switch(resolution) {
+			case 70:
+				scaleImage = icone.getImage().getScaledInstance(70, 70,Image.SCALE_SMOOTH);
+				highlightLabel.setBounds(tile.getX(), tile.getY(), 70, 70);
+				icone.setImage(scaleImage);
+				break;
+			case 80:
+				scaleImage = icone.getImage().getScaledInstance(80, 80,Image.SCALE_SMOOTH);
+				highlightLabel.setBounds(tile.getX(), tile.getY(), 80, 80);
+				icone.setImage(scaleImage);
+				break;
+			case 90:
+				highlightLabel.setBounds(tile.getX(), tile.getY(), 90, 90);
+				break;
+			default:
+				break;
+			}
+			boardPane.setLayer(highlightLabel, 4);
+			this.highlightLabel.setIcon(icone);
+			this.highlightLabel.setVisible(true);
+			boardPane.add(highlightLabel);
+		} else {
+			this.highlightLabel.setVisible(false);
+			boardPane.remove(highlightLabel);
+		}
+	}
+	/**
      * <p>
      * Vide la case de tous ses pions
      * </p>
@@ -588,27 +619,65 @@ public class Hexagon {
      * </p>
      * @since2.0
      */
-    public int returnPosTileX() {
-        if (this.line % 2 == 0) {
-            return 120 + 90 * this.column;
-        } else {
-            return 75 + 90 * this.column;
-        }
-    }
-
-    /**
+	public int returnPosTileX(int resolution) {
+		if(this.line%2 == 0) {
+			switch(resolution) {
+			case 70:
+				return 92 + 70*this.column;
+			case 80:
+				return 105 + 80*this.column;
+			case 90:
+				return 120 + 90 * this.column;
+			default:
+				break;
+			}
+		} else {
+			switch(resolution) {
+			case 70:
+				return 57 + 70*this.column;
+			case 80:
+				return 65 + 80*this.column;
+			case 90:
+				return 75 + 90*this.column;
+			default:
+				break;
+			}
+		}
+		return 0;
+	}
+	
+	/**
      * <p>
      * Renvois la pos y de la tuile
      * </p>
      * @since2.0
      */
-    public int returnPosTileY() {
-        if (this.line % 2 == 0) {
-            return 35 + 70 * this.line;
-        } else {
-            return 35 + 70 * this.line;
-        }
-    }
+	public int returnPosTileY(int resolution) {
+		if(this.line%2 == 0) {		
+			switch(resolution) {
+			case 70:
+				return 26 + 54 * this.line;
+			case 80:
+				return 29 + 62 * this.line;
+			case 90:
+				return 31 + 70 * this.line;
+			default:
+				break;
+			}
+		} else {
+			switch(resolution) {
+			case 70:
+				return 26 + 54 * this.line;
+			case 80:
+				return 28 + 62 * this.line;
+			case 90:
+				return 31 + 70 * this.line;
+			default:
+				break;
+			}
+		}
+		return 0;
+	}
 
     public void displayPawns(JPanel pawnPane) {
         List<Pawn> pawnsToDisplay = new ArrayList<Pawn>();

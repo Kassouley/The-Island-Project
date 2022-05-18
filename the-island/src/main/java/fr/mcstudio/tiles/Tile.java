@@ -88,8 +88,8 @@ public class Tile extends JLabel {
 	/**
 	* 
 	*/
-	public void setPosition(int x, int y) {
-		this.setBounds(x, y, 90, 90);
+	public void setPosition(int resolution, int x, int y) {
+		this.setBounds(x, y, resolution, resolution);
 	}
 
 	/**
