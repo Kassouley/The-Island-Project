@@ -1,5 +1,6 @@
 package fr.mcstudio.board;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import javax.swing.JLayeredPane;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonType;
+import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.EffectPawn;
 import fr.mcstudio.pawns.Explorer;
@@ -32,10 +34,7 @@ public class Hexagon{
 	public Hexagon(JLayeredPane boardPane, final int line, final int column) {
     	this.line = line;
     	this.column = column;
-    	initHighlight();
-		highlightLabel.setIcon(new ImageIcon(Board.class.getResource("/HexagonBlanc.png")));
-		boardPane.setLayer(highlightLabel, 3);
-		boardPane.add(highlightLabel);
+		
 		
 
     }
@@ -68,9 +67,9 @@ public class Hexagon{
     private HexagonType type;
     
     private boolean highlight;
-    
 
-    private JLabel highlightLabel = new JLabel();
+
+	private JLabel highlightLabel = new JLabel();
 
     /**
      * <p>
@@ -425,15 +424,43 @@ public class Hexagon{
 		return highlight;
 	}
 
-	public void setHighlight(boolean highlight) {
+	public void setHighlight(int resolution, JLayeredPane boardPane, boolean highlight, String color) {
 		this.highlight = highlight;
 		if (highlight) {
-			this.highlightLabel.setBounds(tile.getX(), tile.getY(), 90, 90);
-
+			//boardPane.remove(highlightLabel);
+			ImageIcon icone = null;
+			Image scaleImage;
+			if (color == "white") {
+				icone = new ImageIcon(Tile.class.getResource("/HexagonBlanc.png"));
+			} else if (color == "yellow") {
+				icone = new ImageIcon(Tile.class.getResource("/HexagonJaune.png"));
+			} else if (color == "red") {
+				icone = new ImageIcon(Tile.class.getResource("/HexagonRouge.png"));
+			}
+			switch(resolution) {
+			case 70:
+				scaleImage = icone.getImage().getScaledInstance(70, 70,Image.SCALE_SMOOTH);
+				highlightLabel.setBounds(tile.getX(), tile.getY(), 70, 70);
+				icone.setImage(scaleImage);
+				break;
+			case 80:
+				scaleImage = icone.getImage().getScaledInstance(80, 80,Image.SCALE_SMOOTH);
+				highlightLabel.setBounds(tile.getX(), tile.getY(), 80, 80);
+				icone.setImage(scaleImage);
+				break;
+			case 90:
+				highlightLabel.setBounds(tile.getX(), tile.getY(), 90, 90);
+				break;
+			default:
+				break;
+			}
+			boardPane.setLayer(highlightLabel, 4);
+			this.highlightLabel.setIcon(icone);
 			this.highlightLabel.setVisible(true);
+			boardPane.add(highlightLabel);
 		} else {
-
 			this.highlightLabel.setVisible(false);
+			boardPane.remove(highlightLabel);
 		}
 	}
 	/**
@@ -483,9 +510,9 @@ public class Hexagon{
 		if(this.line%2 == 0) {
 			switch(resolution) {
 			case 70:
-				return 82 + 70*this.column;
+				return 92 + 70*this.column;
 			case 80:
-				return 100 + 80*this.column;
+				return 105 + 80*this.column;
 			case 90:
 				return 120 + 90 * this.column;
 			default:
@@ -494,9 +521,9 @@ public class Hexagon{
 		} else {
 			switch(resolution) {
 			case 70:
-				return 47 + 70*this.column;
+				return 57 + 70*this.column;
 			case 80:
-				return 60 + 80*this.column;
+				return 65 + 80*this.column;
 			case 90:
 				return 75 + 90*this.column;
 			default:
@@ -516,9 +543,9 @@ public class Hexagon{
 		if(this.line%2 == 0) {		
 			switch(resolution) {
 			case 70:
-				return 16 + 54 * this.line;
+				return 26 + 54 * this.line;
 			case 80:
-				return 24 + 62 * this.line;
+				return 29 + 62 * this.line;
 			case 90:
 				return 31 + 70 * this.line;
 			default:
@@ -527,9 +554,9 @@ public class Hexagon{
 		} else {
 			switch(resolution) {
 			case 70:
-				return 16 + 54 * this.line;
+				return 26 + 54 * this.line;
 			case 80:
-				return 24 + 62 * this.line;
+				return 28 + 62 * this.line;
 			case 90:
 				return 31 + 70 * this.line;
 			default:

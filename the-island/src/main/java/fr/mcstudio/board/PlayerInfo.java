@@ -13,7 +13,6 @@ public class PlayerInfo extends JLabel {
 		super();
 		playerInfoPane.setLayer(this, 0);
 		setBoundsFromResolution(resolution);
-		this.setIcon(new ImageIcon(PlayerInfo.class.getResource("/PlayerInfo.png")));
 		playerInfoPane.add(this);
 	}
 	
