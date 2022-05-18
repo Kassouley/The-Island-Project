@@ -15,6 +15,8 @@ package fr.mcstudio.pawns;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.*;
+
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
@@ -35,7 +37,7 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Constructeur par défaut
+     * Constructeur par dï¿½faut
      * </p>
      */
     public Explorer(Color color, int treasureValue) {
@@ -55,7 +57,7 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Valeur du trésor de l'explorateur.
+     * Valeur du trï¿½sor de l'explorateur.
      * </p>
      */
     private int treasureValue;
@@ -80,7 +82,7 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Accesseur de la valeur de trésor de l'explorateur.
+     * Accesseur de la valeur de trï¿½sor de l'explorateur.
      * </p>
      */
     public int getTreasureValue() {
@@ -109,11 +111,11 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Déplace l'explorateur d'une case vers une autre case.
+     * Dï¿½place l'explorateur d'une case vers une autre case.
      * </p>
      * 
-     * @param oldPosition case où se trouvait l'explorateur.
-     * @param newPosition case vers laquel est déplacé l'explorateur.
+     * @param oldPosition case oï¿½ se trouvait l'explorateur.
+     * @param newPosition case vers laquel est dï¿½placï¿½ l'explorateur.
      * @since 2.0
      */
     public void move(Hexagon oldPosition, Hexagon newPosition) {
@@ -144,12 +146,12 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Déplace l'explorateur d'une case vers un bateau.
+     * Dï¿½place l'explorateur d'une case vers un bateau.
      * </p>
      * 
-     * @param oldPosition  case où se trouvait l'explorateur.
-     * @param boat         bateau sur lequel est déplacé l'explorateur.
-     * @param boatPosition Case où se situe le bateau destination.
+     * @param oldPosition  case oï¿½ se trouvait l'explorateur.
+     * @param boat         bateau sur lequel est dï¿½placï¿½ l'explorateur.
+     * @param boatPosition Case oï¿½ se situe le bateau destination.
      * @since 2.0
      */
     public void move(Hexagon oldPosition, Boat boat, Hexagon boatPosition) {
@@ -167,11 +169,11 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Déplace l'explorateur d'un bateau vers une position.
+     * Dï¿½place l'explorateur d'un bateau vers une position.
      * </p>
      * 
-     * @param boat        bateau dans lequel est retiré l'explorateur.
-     * @param newPosition case vers lequel est déplacé l'explorateur.
+     * @param boat        bateau dans lequel est retirï¿½ l'explorateur.
+     * @param newPosition case vers lequel est dï¿½placï¿½ l'explorateur.
      * @since 1.0
      */
     public void move(Boat boat, Hexagon newPosition) {
@@ -202,12 +204,12 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Déplace l'explorateur d'un bateau vers un autre bateau.
+     * Dï¿½place l'explorateur d'un bateau vers un autre bateau.
      * </p>
      * 
-     * @param oldBoat         bateau dans lequel est retiré l'explorateur.
-     * @param newBoat         bateau vers lequel se déplace l'explorateur.
-     * @param newBoatPosition Case où se situe le bateau destination.
+     * @param oldBoat         bateau dans lequel est retirï¿½ l'explorateur.
+     * @param newBoat         bateau vers lequel se dï¿½place l'explorateur.
+     * @param newBoatPosition Case oï¿½ se situe le bateau destination.
      * @since 2.0
      */
     public void move(Boat oldBoat, Boat newBoat, Hexagon newBoatPosition) {
@@ -238,6 +240,31 @@ public class Explorer extends Pawn {
                     && hexagon.getSeaSnakeList().isEmpty()) {
                 listHexagon.add(hexagon);
             }
+        }
+    }
+
+    public void setImage() {
+        {
+            String explorerPath = "/pion_";
+            String explorerColor = null;
+            switch (this.getColor()) {
+                case RED:
+                    explorerColor = "rouge";
+                    break;
+                case BLUE:
+                    explorerColor = "bleu";
+                    break;
+                case YELLOW:
+                    explorerColor = "jaune";
+                    break;
+                case GREEN:
+                    explorerColor = "vert";
+                    break;
+
+            }
+            explorerPath = explorerPath + explorerColor + ".png";
+            // FIXME on ne peut pas choisir la couleur de l'explorateur dans cette fonction
+            this.setIcon(new ImageIcon(Pawn.class.getResource(explorerPath)));
         }
     }
 }

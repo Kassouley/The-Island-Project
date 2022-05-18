@@ -12,6 +12,8 @@
 
 package fr.mcstudio.pawns;
 
+import javax.swing.ImageIcon;
+
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.ExplorerStatus;
 
@@ -52,4 +54,8 @@ public class Shark extends EffectPawn {
         hexagon.getExplorerList().clear();
     }
 
+    public void setImage() {
+        this.setIcon(new ImageIcon(Pawn.class.getResource("/pion_requin.png")));
+
+    }
 }
