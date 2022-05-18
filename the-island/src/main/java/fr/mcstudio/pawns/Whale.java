@@ -12,6 +12,8 @@
 
 package fr.mcstudio.pawns;
 
+import javax.swing.ImageIcon;
+
 import fr.mcstudio.board.Hexagon;
 
 /**
@@ -54,4 +56,9 @@ public class Whale extends EffectPawn {
             hexagon.getSharkList().get(0).makeEffect(hexagon);
         }
     }
+
+    public void setImage() {
+        this.setIcon(new ImageIcon(Pawn.class.getResource("/pion_baleine.png")));
+    }
+
 }
