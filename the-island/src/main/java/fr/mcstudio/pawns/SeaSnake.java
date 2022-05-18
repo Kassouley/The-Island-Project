@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.mcstudio.board.Board;
+
+import javax.swing.ImageIcon;
+
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.enums.HexagonType;
@@ -59,6 +62,7 @@ public class SeaSnake extends EffectPawn {
         sharkEffect.makeEffect(hexagon);
     }
 
+
     public void findPathAux(Hexagon actualPosition, Board board, PairList<Hexagon,HexagonListType> hexagonPairList) {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
@@ -83,4 +87,9 @@ public class SeaSnake extends EffectPawn {
             }
         }
     }
+
+    public void setImage() {
+        this.setIcon(new ImageIcon(Pawn.class.getResource("/pion_serpent_de_mer.png")));
+    }
+
 }

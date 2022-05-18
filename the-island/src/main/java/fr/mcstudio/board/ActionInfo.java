@@ -13,7 +13,6 @@ public class ActionInfo extends JLabel {
 		super();
 		actionInfoPane.setLayer(this, 0);
 		setBoundsFromResolution(resolution);
-		this.setIcon(new ImageIcon(PlayerInfo.class.getResource("/ActionInfo.png")));
 		actionInfoPane.add(this);
 	}
 	

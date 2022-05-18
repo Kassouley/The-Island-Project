@@ -3,7 +3,7 @@ package fr.mcstudio.pawns;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JLabel;
+import javax.swing.*;
 
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
@@ -29,18 +29,9 @@ public class Pawn extends JLabel {
 
     /**
      * 
-     * @param nbPawns
      */
-    public void setImage(int nbPawns) {
-        if (this instanceof Shark) {
-
-        } else if (this instanceof Whale) {
-
-        } else if (this instanceof SeaSnake) {
-
-        } else if (this instanceof Explorer) {
-
-        }
+    public void setPosition(int x, int y) {
+        this.setBounds(x, y, 90, 90);
     }
 
     /**
@@ -53,7 +44,8 @@ public class Pawn extends JLabel {
     public void findPath(Hexagon actualPosition, Board board, int distance, PairList<Hexagon,HexagonListType> hexagonPairList) {
         hexagonPairList.clear();
 
-        //---------------------------------------------------------- A changer, faut regarder les movePoint et moveCost je pense
+        // ---------------------------------------------------------- A changer, faut
+        // regarder les movePoint et moveCost je pense
         if (this instanceof Explorer) {
             Explorer explorer = (Explorer) this;
             if (explorer.getStatus() == ExplorerStatus.SWIMMER) {

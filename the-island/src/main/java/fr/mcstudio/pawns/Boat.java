@@ -15,6 +15,8 @@ package fr.mcstudio.pawns;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.ExplorerStatus;
@@ -193,5 +195,9 @@ public class Boat extends Pawn {
                 }
             }
         }
+    }
+
+    public void setImage() {
+        this.setIcon(new ImageIcon(Pawn.class.getResource("/pion_bateau.png")));
     }
 }

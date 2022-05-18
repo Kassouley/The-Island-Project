@@ -1,24 +1,29 @@
 package fr.mcstudio.board;
 
+import java.awt.Image;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonType;
+import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.EffectPawn;
 import fr.mcstudio.pawns.Explorer;
+import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
 import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.pawns.Whale;
 import fr.mcstudio.tiles.Tile;
 
-public class Hexagon{
+public class Hexagon {
 
     /**
      * 
@@ -32,45 +37,44 @@ public class Hexagon{
 	public Hexagon(JLayeredPane boardPane, final int line, final int column) {
     	this.line = line;
     	this.column = column;
-
-		highlightLabel.setIcon(new ImageIcon(Board.class.getResource("/HexagonBlanc.png")));
-		boardPane.setLayer(highlightLabel, 3);
-		boardPane.add(highlightLabel);
 		
+
+        highlightLabel.setIcon(new ImageIcon(Board.class.getResource("/HexagonBlanc.png")));
+        boardPane.setLayer(highlightLabel, 3);
+        boardPane.add(highlightLabel);
 
     }
 
-
-	/**
-	 * <p>
+    /**
+     * <p>
      * Ligne de l'hexagone dans le board
      * </p>
      */
-	private int line;
-	
-	/**
-	 * <p>
+    private int line;
+
+    /**
+     * <p>
      * Colonne de l'hexagone dans le board
      * </p>
      */
-	private int column;
-	
-	/**
-	 * <p>
+    private int column;
+
+    /**
+     * <p>
      * tuile de l'hexagone dans le board
      * </p>
-     */	
+     */
     private Tile tile = null;
 
     /**
      * 
      */
     private HexagonType type;
-    
-    private boolean highlight;
-    
 
-    private JLabel highlightLabel = new JLabel();
+    private boolean highlight;
+
+
+	private JLabel highlightLabel = new JLabel();
 
     /**
      * <p>
@@ -79,6 +83,33 @@ public class Hexagon{
      */
     private List<Explorer> explorerList = new ArrayList<Explorer>();
 
+    /**
+     * <p>
+     * Liste des exploreurs bleus presents sur l'hexagone dans le board
+     * </p>
+     */
+    private List<Explorer> blueExplorerList = new ArrayList<Explorer>();
+
+    /**
+     * <p>
+     * Liste des exploreurs jaunes presents sur l'hexagone dans le board
+     * </p>
+     */
+    private List<Explorer> yellowExplorerList = new ArrayList<Explorer>();
+
+    /**
+     * <p>
+     * Liste des exploreurs rouges presents sur l'hexagone dans le board
+     * </p>
+     */
+    private List<Explorer> redExplorerList = new ArrayList<Explorer>();
+
+    /**
+     * <p>
+     * Liste des exploreurs verts presents sur l'hexagone dans le board
+     * </p>
+     */
+    private List<Explorer> greenExplorerList = new ArrayList<Explorer>();
     /**
      * <p>
      * Liste des requins presents sur l'hexagone dans le board
@@ -107,20 +138,19 @@ public class Hexagon{
      */
     private Boat boat = null;
 
+    
     /**
      * <p>
      * 
      * </p>
      */
     public Tile getTile() {
-    	if(tile == null) {
-    		return null;
-    	}
-    	else {
-    		return tile;
-    	}
-    				
-        
+        if (tile == null) {
+            return null;
+        } else {
+            return tile;
+        }
+
     }
 
     public void setTile(Tile tile) {
@@ -144,7 +174,7 @@ public class Hexagon{
     public HexagonType getType() {
         return this.type;
     }
-    
+
     /**
      * 
      */
@@ -177,6 +207,7 @@ public class Hexagon{
      * <p>
      * Ajoute un explorateur à l'hexagone
      * </p>
+     * 
      * @return
      */
     public void addPawn(Explorer e) {
@@ -187,6 +218,7 @@ public class Hexagon{
      * <p>
      * Ajoute un requin à l'hexagone
      * </p>
+     * 
      * @return
      */
     public void addPawn(Shark s) {
@@ -197,6 +229,7 @@ public class Hexagon{
      * <p>
      * Ajoute une baleine à l'hexagone
      * </p>
+     * 
      * @return
      */
     public void addPawn(Whale w) {
@@ -207,6 +240,7 @@ public class Hexagon{
      * <p>
      * Ajoute un serpent de mer à l'hexagone
      * </p>
+     * 
      * @return
      */
     public void addPawn(SeaSnake ss) {
@@ -217,6 +251,7 @@ public class Hexagon{
      * <p>
      * Ajoute un bateau à l'hexagone
      * </p>
+     * 
      * @return
      */
     public void addPawn(Boat b) {
@@ -227,6 +262,7 @@ public class Hexagon{
      * <p>
      * 
      * </p>
+     * 
      * @return
      */
     public void addPawn(EffectPawn ef) {
@@ -243,6 +279,7 @@ public class Hexagon{
      * <p>
      * Retire l'exploreur de l'hexagone
      * </p>
+     * 
      * @return
      */
     public void removePawn(Explorer e) {
@@ -253,6 +290,7 @@ public class Hexagon{
      * <p>
      * Retire le requin de l'hexagone
      * </p>
+     * 
      * @return
      */
     public void removePawn(Shark s) {
@@ -263,6 +301,7 @@ public class Hexagon{
      * <p>
      * Retire la baleine de l'hexagone
      * </p>
+     * 
      * @return
      */
     public void removePawn(Whale w) {
@@ -273,6 +312,7 @@ public class Hexagon{
      * <p>
      * Retire le serpent de mer de l'hexagone
      * </p>
+     * 
      * @return
      */
     public void removePawn(SeaSnake ss) {
@@ -281,8 +321,9 @@ public class Hexagon{
 
     /**
      * <p>
-     *  Retire le bateau de l'hexagone
+     * Retire le bateau de l'hexagone
      * </p>
+     * 
      * @return
      */
     public void removePawn(Boat b) {
@@ -293,6 +334,7 @@ public class Hexagon{
      * <p>
      * 
      * </p>
+     * 
      * @return
      */
     public void removePawn(EffectPawn ef) {
@@ -312,6 +354,66 @@ public class Hexagon{
      */
     public List<Explorer> getExplorerList() {
         return this.explorerList;
+    }
+
+    /**
+     * <p>
+     * Accesseur au(x) explorateur(s) dans l'hexagone
+     * </p>
+     */
+    public List<Explorer> getBlueExplorerList() {
+        this.blueExplorerList.clear();
+        for (Explorer e : this.explorerList) {
+            if (e.getColor() == Color.BLUE) {
+                this.blueExplorerList.add(e);
+            }
+        }
+        return this.blueExplorerList;
+    }
+
+    /**
+     * <p>
+     * Accesseur au(x) explorateur(s) dans l'hexagone
+     * </p>
+     */
+    public List<Explorer> getGreenExplorerList() {
+        this.greenExplorerList.clear();
+        for (Explorer e : this.explorerList) {
+            if (e.getColor() == Color.GREEN) {
+                this.greenExplorerList.add(e);
+            }
+        }
+        return this.greenExplorerList;
+    }
+
+    /**
+     * <p>
+     * Accesseur au(x) explorateur(s) dans l'hexagone
+     * </p>
+     */
+    public List<Explorer> getRedExplorerList() {
+        this.redExplorerList.clear();
+        for (Explorer e : this.explorerList) {
+            if (e.getColor() == Color.RED) {
+                this.redExplorerList.add(e);
+            }
+        }
+        return this.redExplorerList;
+    }
+
+    /**
+     * <p>
+     * Accesseur au(x) explorateur(s) dans l'hexagone
+     * </p>
+     */
+    public List<Explorer> getYellowExplorerList() {
+        this.yellowExplorerList.clear();
+        for (Explorer e : this.explorerList) {
+            if (e.getColor() == Color.YELLOW) {
+                this.yellowExplorerList.add(e);
+            }
+        }
+        return this.yellowExplorerList;
     }
 
     /**
@@ -349,54 +451,65 @@ public class Hexagon{
     public Boat getBoat() {
         return this.boat;
     }
-    
-    public boolean isInHexagonfloat (int resolution, float clickx, float clicky) {
-    	
-    	switch(resolution) {
-		case 70:
-			if(isInDemiPlan(tile.getX() + 35, tile.getY(), tile.getX(), tile.getY() + 15, clickx, clicky) &&
-					isInDemiPlan(tile.getX() + 69, tile.getY() + 15, tile.getX() + 35, tile.getY(), clickx, clicky) &&
-					isInDemiPlan(tile.getX(), tile.getY() + 54, tile.getX() + 35, tile.getY() + 69, clickx, clicky) &&
-					isInDemiPlan(tile.getX() + 35, tile.getY() + 69, tile.getX() + 69, tile.getY() + 54, clickx, clicky) &&
-					isInDemiPlan(tile.getX(), tile.getY() + 15, tile.getX(), tile.getY() + 54, clickx, clicky) && 
-					isInDemiPlan(tile.getX() + 69, tile.getY() + 54, tile.getX() + 69, tile.getY() + 15, clickx, clicky)) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		case 80:
-			if(isInDemiPlan(tile.getX() + 40, tile.getY(), tile.getX(), tile.getY() + 17, clickx, clicky) &&
-					isInDemiPlan(tile.getX() + 79, tile.getY() + 17, tile.getX() + 40, tile.getY(), clickx, clicky) &&
-					isInDemiPlan(tile.getX(), tile.getY() + 62, tile.getX() + 40, tile.getY() + 79, clickx, clicky) &&
-					isInDemiPlan(tile.getX() + 40, tile.getY() + 79, tile.getX() + 79, tile.getY() + 62, clickx, clicky) &&
-					isInDemiPlan(tile.getX(), tile.getY() + 17, tile.getX(), tile.getY() + 62, clickx, clicky) && 
-					isInDemiPlan(tile.getX() + 79, tile.getY() + 62, tile.getX() + 79, tile.getY() + 17, clickx, clicky)) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		case 90:
-			if(isInDemiPlan(tile.getX() + 45, tile.getY(), tile.getX(), tile.getY() + 20, clickx, clicky) &&
-					isInDemiPlan(tile.getX() + 89, tile.getY() + 20, tile.getX() + 45, tile.getY(), clickx, clicky) &&
-					isInDemiPlan(tile.getX(), tile.getY() + 69, tile.getX() + 45, tile.getY() + 89, clickx, clicky) &&
-					isInDemiPlan(tile.getX() + 45, tile.getY() + 89, tile.getX() + 89, tile.getY() + 69, clickx, clicky) &&
-					isInDemiPlan(tile.getX(), tile.getY() + 20, tile.getX(), tile.getY() + 69, clickx, clicky) && 
-					isInDemiPlan(tile.getX() + 89, tile.getY() + 69, tile.getX() + 89, tile.getY() + 20, clickx, clicky)) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		default:
-			break;
-		}
-		return false;
-    	
-		
-	}
-	
+
+    public boolean isInHexagonfloat(int resolution, float clickx, float clicky) {
+
+        switch (resolution) {
+            case 70:
+                if (isInDemiPlan(tile.getX() + 35, tile.getY(), tile.getX(), tile.getY() + 15, clickx, clicky) &&
+                        isInDemiPlan(tile.getX() + 69, tile.getY() + 15, tile.getX() + 35, tile.getY(), clickx, clicky)
+                        &&
+                        isInDemiPlan(tile.getX(), tile.getY() + 54, tile.getX() + 35, tile.getY() + 69, clickx, clicky)
+                        &&
+                        isInDemiPlan(tile.getX() + 35, tile.getY() + 69, tile.getX() + 69, tile.getY() + 54, clickx,
+                                clicky)
+                        &&
+                        isInDemiPlan(tile.getX(), tile.getY() + 15, tile.getX(), tile.getY() + 54, clickx, clicky) &&
+                        isInDemiPlan(tile.getX() + 69, tile.getY() + 54, tile.getX() + 69, tile.getY() + 15, clickx,
+                                clicky)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            case 80:
+                if (isInDemiPlan(tile.getX() + 40, tile.getY(), tile.getX(), tile.getY() + 17, clickx, clicky) &&
+                        isInDemiPlan(tile.getX() + 79, tile.getY() + 17, tile.getX() + 40, tile.getY(), clickx, clicky)
+                        &&
+                        isInDemiPlan(tile.getX(), tile.getY() + 62, tile.getX() + 40, tile.getY() + 79, clickx, clicky)
+                        &&
+                        isInDemiPlan(tile.getX() + 40, tile.getY() + 79, tile.getX() + 79, tile.getY() + 62, clickx,
+                                clicky)
+                        &&
+                        isInDemiPlan(tile.getX(), tile.getY() + 17, tile.getX(), tile.getY() + 62, clickx, clicky) &&
+                        isInDemiPlan(tile.getX() + 79, tile.getY() + 62, tile.getX() + 79, tile.getY() + 17, clickx,
+                                clicky)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            case 90:
+                if (isInDemiPlan(tile.getX() + 45, tile.getY(), tile.getX(), tile.getY() + 20, clickx, clicky) &&
+                        isInDemiPlan(tile.getX() + 89, tile.getY() + 20, tile.getX() + 45, tile.getY(), clickx, clicky)
+                        &&
+                        isInDemiPlan(tile.getX(), tile.getY() + 69, tile.getX() + 45, tile.getY() + 89, clickx, clicky)
+                        &&
+                        isInDemiPlan(tile.getX() + 45, tile.getY() + 89, tile.getX() + 89, tile.getY() + 69, clickx,
+                                clicky)
+                        &&
+                        isInDemiPlan(tile.getX(), tile.getY() + 20, tile.getX(), tile.getY() + 69, clickx, clicky) &&
+                        isInDemiPlan(tile.getX() + 89, tile.getY() + 69, tile.getX() + 89, tile.getY() + 20, clickx,
+                                clicky)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            default:
+                break;
+        }
+        return false;
+
+    }
+
     /**
      * <p>
      * 
@@ -424,15 +537,43 @@ public class Hexagon{
 		return highlight;
 	}
 
-	public void setHighlight(boolean highlight) {
+	public void setHighlight(int resolution, JLayeredPane boardPane, boolean highlight, String color) {
 		this.highlight = highlight;
 		if (highlight) {
-			this.highlightLabel.setBounds(tile.getX(), tile.getY(), 90, 90);
-
+			//boardPane.remove(highlightLabel);
+			ImageIcon icone = null;
+			Image scaleImage;
+			if (color == "white") {
+				icone = new ImageIcon(Tile.class.getResource("/HexagonBlanc.png"));
+			} else if (color == "yellow") {
+				icone = new ImageIcon(Tile.class.getResource("/HexagonJaune.png"));
+			} else if (color == "red") {
+				icone = new ImageIcon(Tile.class.getResource("/HexagonRouge.png"));
+			}
+			switch(resolution) {
+			case 70:
+				scaleImage = icone.getImage().getScaledInstance(70, 70,Image.SCALE_SMOOTH);
+				highlightLabel.setBounds(tile.getX(), tile.getY(), 70, 70);
+				icone.setImage(scaleImage);
+				break;
+			case 80:
+				scaleImage = icone.getImage().getScaledInstance(80, 80,Image.SCALE_SMOOTH);
+				highlightLabel.setBounds(tile.getX(), tile.getY(), 80, 80);
+				icone.setImage(scaleImage);
+				break;
+			case 90:
+				highlightLabel.setBounds(tile.getX(), tile.getY(), 90, 90);
+				break;
+			default:
+				break;
+			}
+			boardPane.setLayer(highlightLabel, 4);
+			this.highlightLabel.setIcon(icone);
 			this.highlightLabel.setVisible(true);
+			boardPane.add(highlightLabel);
 		} else {
-
 			this.highlightLabel.setVisible(false);
+			boardPane.remove(highlightLabel);
 		}
 	}
 	/**
@@ -441,49 +582,68 @@ public class Hexagon{
      * </p>
      * @since2.0
      */
-	public void removeAllPawn() {
-		if(!this.explorerList.isEmpty()) {
-			for(Explorer explorer : explorerList) {
-				explorer.setStatus(ExplorerStatus.DEAD);
-			}
-			this.explorerList.clear();
-		}
-		if(!this.seaSnakeList.isEmpty()) {
-			this.seaSnakeList.clear();
-		}
-		if(!this.sharkList.isEmpty()) {
-			this.sharkList.clear();
-		}
-		if(!this.whaleList.isEmpty()) {
-			this.whaleList.clear();
-		}
-		this.boat = null;
-	}
-	
-	/**
+    public void removeAllPawn() {
+        if (!this.explorerList.isEmpty()) {
+            for (Explorer explorer : explorerList) {
+                explorer.setStatus(ExplorerStatus.DEAD);
+            }
+            this.explorerList.clear();
+        }
+        if (!this.seaSnakeList.isEmpty()) {
+            this.seaSnakeList.clear();
+        }
+        if (!this.sharkList.isEmpty()) {
+            this.sharkList.clear();
+        }
+        if (!this.whaleList.isEmpty()) {
+            this.whaleList.clear();
+        }
+        this.boat = null;
+    }
+
+    /**
      * <p>
      * Affecte une tuile mer a un hexagone
      * </p>
      * @since2.0
      */
-	public void removeTile() {
-		this.setTile(new Tile());
-		this.setType(HexagonType.SEA);
-		
-	}
-	
-	/**
+    public void removeTile() {
+        this.setTile(new Tile());
+        this.setType(HexagonType.SEA);
+
+    }
+
+    /**
      * <p>
      * Renvois la pos x de la tuile
      * </p>
      * @since2.0
      */
-	public int returnPosTileX() {
+	public int returnPosTileX(int resolution) {
 		if(this.line%2 == 0) {
-			return  120 + 90 * this.column;
+			switch(resolution) {
+			case 70:
+				return 92 + 70*this.column;
+			case 80:
+				return 105 + 80*this.column;
+			case 90:
+				return 120 + 90 * this.column;
+			default:
+				break;
+			}
 		} else {
-			return 75 + 90* this.column;
+			switch(resolution) {
+			case 70:
+				return 57 + 70*this.column;
+			case 80:
+				return 65 + 80*this.column;
+			case 90:
+				return 75 + 90*this.column;
+			default:
+				break;
+			}
 		}
+		return 0;
 	}
 	
 	/**
@@ -492,63 +652,171 @@ public class Hexagon{
      * </p>
      * @since2.0
      */
-	public int returnPosTileY() {
-		if(this.line%2 == 0) {			
-			return 35 + 70 * this.line;
+	public int returnPosTileY(int resolution) {
+		if(this.line%2 == 0) {		
+			switch(resolution) {
+			case 70:
+				return 26 + 54 * this.line;
+			case 80:
+				return 29 + 62 * this.line;
+			case 90:
+				return 31 + 70 * this.line;
+			default:
+				break;
+			}
 		} else {
-			return 35 + 70 * this.line;
+			switch(resolution) {
+			case 70:
+				return 26 + 54 * this.line;
+			case 80:
+				return 28 + 62 * this.line;
+			case 90:
+				return 31 + 70 * this.line;
+			default:
+				break;
+			}
 		}
+		return 0;
 	}
-	
-	 public int returnPawnsTypeNumber() {
-	        int cmpt = 0;
-	        boolean redSeen = false;
-	        boolean blueSeen = false;
-	        boolean greenSeen = false;
-	        boolean yellowSeen = false;
 
-	        if (!this.explorerList.isEmpty()) {
-	            for (Explorer e : this.explorerList) {
-	                if (e.getColor() == Color.BLUE && !blueSeen) {
-	                    cmpt++;
-	                    blueSeen = true;
-	                } else if (e.getColor() == Color.YELLOW && !yellowSeen) {
-	                    cmpt++;
-	                    yellowSeen = true;
-	                } else if (e.getColor() == Color.GREEN && !greenSeen) {
-	                    cmpt++;
-	                    greenSeen = true;
-	                } else if (e.getColor() == Color.RED && !redSeen) {
-	                    cmpt++;
-	                    redSeen = true;
-	                }
+    public void displayPawns(JPanel pawnPane) {
+        List<Pawn> pawnsToDisplay = new ArrayList<Pawn>();
+        List<Integer> x = new ArrayList<Integer>();
+        List<Integer> y = new ArrayList<Integer>();
 
-	                if (yellowSeen && greenSeen && blueSeen && redSeen) {
-	                    break;
-	                }
-	            }
-	        }
+        if (!this.sharkList.isEmpty()) {
+            Shark s = new Shark();
+            s.setImage();
+            if (this.sharkList.size() > 1) {
+                JLabel textDisplay = new JLabel(Integer.toString(
+                        this.sharkList.size()));
+            }
+            pawnsToDisplay.add(s);
 
-	        if (!this.whaleList.isEmpty()) {
-	            cmpt++;
-	        }
+        }
+        if (!this.whaleList.isEmpty()) {
+            Whale w = new Whale();
+            w.setImage();
+            if (this.whaleList.size() > 1) {
+                JLabel textDisplay = new JLabel(Integer.toString(
+                        this.whaleList.size()));
+            }
+            pawnsToDisplay.add(w);
 
-	        if (!this.sharkList.isEmpty()) {
-	            cmpt++;
-	        }
+        }
+        if (!this.seaSnakeList.isEmpty()) {
+            SeaSnake ss = new SeaSnake();
+            ss.setImage();
+            if (this.seaSnakeList.size() > 1) {
+                JLabel textDisplay = new JLabel(Integer.toString(
+                        this.seaSnakeList.size()));
+            }
+            pawnsToDisplay.add(ss);
 
-	        if (!this.seaSnakeList.isEmpty()) {
-	            cmpt++;
-	        }
+        }
+        if (this.boat != null) {
+            this.boat.setImage();
+            pawnsToDisplay.add(this.boat);
+        }
+        if (!this.explorerList.isEmpty()) {
+            boolean yellowSeen = false;
+            boolean redSeen = false;
+            boolean blueSeen = false;
+            boolean greenSeen = false;
 
-	        if (this.boat != null) {
-	            cmpt++;
-	        }
+            for (Explorer e : this.explorerList) {
+                if (!greenSeen && e.getColor() == Color.GREEN) {
+                    greenSeen = true;
+                    pawnsToDisplay.add(e);
 
-	        return cmpt;
-	    }
-	
-	
+                } else if (!redSeen && e.getColor() == Color.RED) {
+                    redSeen = true;
+                    pawnsToDisplay.add(e);
 
-	
+                } else if (!blueSeen && e.getColor() == Color.BLUE) {
+                    blueSeen = true;
+                    pawnsToDisplay.add(e);
+
+                } else if (!yellowSeen && e.getColor() == Color.YELLOW) {
+                    yellowSeen = true;
+                    pawnsToDisplay.add(e);
+                }
+
+                if (yellowSeen && blueSeen && redSeen && greenSeen) {
+                    break;
+                }
+            }
+        }
+
+        switch (pawnsToDisplay.size()) {
+            case 1:
+                x.add(11);
+                y.add(11);
+                break;
+            case 2:
+                x.add(11);
+                x.add(5);
+                y.add(11);
+                y.add(39);
+
+                break;
+            case 3:
+                x.add(11);
+                x.add(5);
+                x.add(5);
+                y.add(11);
+                y.add(39);
+                y.add(39);
+
+                break;
+            case 4:
+                x.add(11);
+                x.add(5);
+                x.add(5);
+                x.add(5);
+                y.add(11);
+                y.add(11);
+                y.add(39);
+                y.add(39);
+
+                break;
+            case 5:
+                x.add(11);
+                x.add(5);
+                x.add(5);
+                x.add(5);
+                x.add(5);
+                y.add(11);
+                y.add(11);
+                y.add(39);
+                y.add(39);
+                y.add(39);
+
+                break;
+            case 6:
+                x.add(11);
+                x.add(5);
+                x.add(5);
+                x.add(5);
+                x.add(5);
+                x.add(5);
+                y.add(11);
+                y.add(11);
+                y.add(39);
+                y.add(39);
+                y.add(39);
+                y.add(39);
+
+                break;
+
+            default:
+                break;
+        }
+
+        for (int i = 0; i < pawnsToDisplay.size(); i++) {
+            pawnsToDisplay.get(i).setPosition(x.get(i), y.get(i));
+            pawnPane.add(pawnsToDisplay.get(i));
+        }
+
+    }
 }

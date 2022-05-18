@@ -15,6 +15,8 @@ package fr.mcstudio.pawns;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.*;
+
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
@@ -247,6 +249,31 @@ public class Explorer extends Pawn {
                 }
                 
             }
+        }
+    }
+
+    public void setImage() {
+        {
+            String explorerPath = "/pion_";
+            String explorerColor = null;
+            switch (this.getColor()) {
+                case RED:
+                    explorerColor = "rouge";
+                    break;
+                case BLUE:
+                    explorerColor = "bleu";
+                    break;
+                case YELLOW:
+                    explorerColor = "jaune";
+                    break;
+                case GREEN:
+                    explorerColor = "vert";
+                    break;
+
+            }
+            explorerPath = explorerPath + explorerColor + ".png";
+            // FIXME on ne peut pas choisir la couleur de l'explorateur dans cette fonction
+            this.setIcon(new ImageIcon(Pawn.class.getResource(explorerPath)));
         }
     }
 }
