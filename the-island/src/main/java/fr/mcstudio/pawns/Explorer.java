@@ -19,6 +19,9 @@ import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
+import fr.mcstudio.enums.HexagonListType;
+import fr.mcstudio.util.Pair;
+import fr.mcstudio.util.PairList;
 
 /**
  * <p>
@@ -35,7 +38,7 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Constructeur par défaut
+     * Constructeur par dï¿½faut
      * </p>
      */
     public Explorer(Color color, int treasureValue) {
@@ -55,7 +58,7 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Valeur du trésor de l'explorateur.
+     * Valeur du trï¿½sor de l'explorateur.
      * </p>
      */
     private int treasureValue;
@@ -80,7 +83,7 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Accesseur de la valeur de trésor de l'explorateur.
+     * Accesseur de la valeur de trï¿½sor de l'explorateur.
      * </p>
      */
     public int getTreasureValue() {
@@ -109,11 +112,11 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Déplace l'explorateur d'une case vers une autre case.
+     * Dï¿½place l'explorateur d'une case vers une autre case.
      * </p>
      * 
-     * @param oldPosition case où se trouvait l'explorateur.
-     * @param newPosition case vers laquel est déplacé l'explorateur.
+     * @param oldPosition case oï¿½ se trouvait l'explorateur.
+     * @param newPosition case vers laquel est dï¿½placï¿½ l'explorateur.
      * @since 2.0
      */
     public void move(Hexagon oldPosition, Hexagon newPosition) {
@@ -144,12 +147,12 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Déplace l'explorateur d'une case vers un bateau.
+     * Dï¿½place l'explorateur d'une case vers un bateau.
      * </p>
      * 
-     * @param oldPosition  case où se trouvait l'explorateur.
-     * @param boat         bateau sur lequel est déplacé l'explorateur.
-     * @param boatPosition Case où se situe le bateau destination.
+     * @param oldPosition  case oï¿½ se trouvait l'explorateur.
+     * @param boat         bateau sur lequel est dï¿½placï¿½ l'explorateur.
+     * @param boatPosition Case oï¿½ se situe le bateau destination.
      * @since 2.0
      */
     public void move(Hexagon oldPosition, Boat boat, Hexagon boatPosition) {
@@ -167,11 +170,11 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Déplace l'explorateur d'un bateau vers une position.
+     * Dï¿½place l'explorateur d'un bateau vers une position.
      * </p>
      * 
-     * @param boat        bateau dans lequel est retiré l'explorateur.
-     * @param newPosition case vers lequel est déplacé l'explorateur.
+     * @param boat        bateau dans lequel est retirï¿½ l'explorateur.
+     * @param newPosition case vers lequel est dï¿½placï¿½ l'explorateur.
      * @since 1.0
      */
     public void move(Boat boat, Hexagon newPosition) {
@@ -202,12 +205,12 @@ public class Explorer extends Pawn {
 
     /**
      * <p>
-     * Déplace l'explorateur d'un bateau vers un autre bateau.
+     * Dï¿½place l'explorateur d'un bateau vers un autre bateau.
      * </p>
      * 
-     * @param oldBoat         bateau dans lequel est retiré l'explorateur.
-     * @param newBoat         bateau vers lequel se déplace l'explorateur.
-     * @param newBoatPosition Case où se situe le bateau destination.
+     * @param oldBoat         bateau dans lequel est retirï¿½ l'explorateur.
+     * @param newBoat         bateau vers lequel se dï¿½place l'explorateur.
+     * @param newBoatPosition Case oï¿½ se situe le bateau destination.
      * @since 2.0
      */
     public void move(Boat oldBoat, Boat newBoat, Hexagon newBoatPosition) {
@@ -221,7 +224,7 @@ public class Explorer extends Pawn {
         }
     }
 
-    protected void findPathAux(Hexagon actualPosition, Board board, List<Hexagon> listHexagon) {
+    public void findPathAux(Hexagon actualPosition, Board board, PairList<Hexagon,HexagonListType> hexagonPairList) {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
         tmp.add(board.getTopLeft(actualPosition));
@@ -233,10 +236,16 @@ public class Explorer extends Pawn {
 
         for (Hexagon hexagon : tmp) {
             if (hexagon != null
-                    && !listHexagon.contains(hexagon)
-                    && hexagon.getSharkList().isEmpty()
-                    && hexagon.getSeaSnakeList().isEmpty()) {
-                listHexagon.add(hexagon);
+                    && !hexagonPairList.containsInPair(hexagon)) {
+                
+                if (hexagon.getSharkList().isEmpty()
+                        && hexagon.getSeaSnakeList().isEmpty()) {
+
+                    hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.NORMAL));
+                } else {
+                    hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.DEATH));
+                }
+                
             }
         }
     }

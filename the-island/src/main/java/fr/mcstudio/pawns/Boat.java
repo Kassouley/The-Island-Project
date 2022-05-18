@@ -19,7 +19,10 @@ import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonType;
+import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.game.Player;
+import fr.mcstudio.util.Pair;
+import fr.mcstudio.util.PairList;
 
 /**
  * <p>
@@ -36,7 +39,7 @@ public class Boat extends Pawn {
 
     /**
      * <p>
-     * Constructeur par défaut
+     * Constructeur par dï¿½faut
      * </p>
      */
     public Boat() {
@@ -45,7 +48,7 @@ public class Boat extends Pawn {
 
     /**
      * <p>
-     * Liste des explorateur présent sur le bateau.
+     * Liste des explorateur prï¿½sent sur le bateau.
      * </p>
      * 
      * @see Explorer.java
@@ -57,7 +60,7 @@ public class Boat extends Pawn {
      * Ajoute un explorateur sur le bateau
      * </p>
      * 
-     * @param explorer l'explorateur à ajouter sur le bateau
+     * @param explorer l'explorateur ï¿½ ajouter sur le bateau
      * @since 1.0
      * @see Explorer.java
      */
@@ -67,7 +70,7 @@ public class Boat extends Pawn {
 
     /**
      * <p>
-     * Vérifie si le bateau est plein ou non
+     * Vï¿½rifie si le bateau est plein ou non
      * </p>
      * 
      * @return vrai si le nombre d'exploreur dessus est >= 3, faux sinon.
@@ -77,12 +80,16 @@ public class Boat extends Pawn {
         return (this.explorerList.size() >= 3);
     }
 
+    public boolean isEmpty() {
+        return this.explorerList.isEmpty();
+    }
+
     /**
      * <p>
      * Retire un explorateur du bateau.
      * </p>
      * 
-     * @param explorer l'explorateur à retirer du bateau.
+     * @param explorer l'explorateur ï¿½ retirer du bateau.
      * @since 1.0
      * @see Explorer.java
      */
@@ -95,7 +102,7 @@ public class Boat extends Pawn {
      * Permet de savoir qui peut controler le bateau.
      * </p>
      * <p>
-     * La méthode compte le nombre d'explorateur d'un joueur sur le bateau.
+     * La mï¿½thode compte le nombre d'explorateur d'un joueur sur le bateau.
      * Si ce nombre est maximum alors il peut controler le bateau.
      * </p>
      * 
@@ -123,10 +130,10 @@ public class Boat extends Pawn {
 
     /**
      * <p>
-     * Fait couler un bateau choisit et retire tout les explorateurs à bord.
+     * Fait couler un bateau choisit et retire tout les explorateurs ï¿½ bord.
      * </p>
      * 
-     * @param boatPosition Case où se situe le bateau à retiré du jeu
+     * @param boatPosition Case oï¿½ se situe le bateau ï¿½ retirï¿½ du jeu
      * @since 2.0
      * @see Explorer.java
      */
@@ -141,11 +148,11 @@ public class Boat extends Pawn {
 
     /**
      * <p>
-     * Déplace le bateau d'une case vers une autre case.
+     * Dï¿½place le bateau d'une case vers une autre case.
      * </p>
      * 
-     * @param oldPosition case où se trouvait le bateau.
-     * @param newPosition case vers laquel est déplacé le bateau.
+     * @param oldPosition case oï¿½ se trouvait le bateau.
+     * @param newPosition case vers laquel est dï¿½placï¿½ le bateau.
      * @since 2.0
      */
     public void move(Hexagon oldPosition, Hexagon newPosition) {
@@ -161,7 +168,7 @@ public class Boat extends Pawn {
         }
     }
 
-    protected void findPathAux(Hexagon actualPosition, Board board, List<Hexagon> listHexagon) {
+    public void findPathAux(Hexagon actualPosition, Board board, PairList<Hexagon,HexagonListType> hexagonPairList) {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
         tmp.add(board.getTopLeft(actualPosition));
@@ -173,11 +180,17 @@ public class Boat extends Pawn {
 
         for (Hexagon hexagon : tmp) {
             if (hexagon != null
-                    && !listHexagon.contains(hexagon)
-                    && hexagon.getWhaleList().isEmpty()
-                    && hexagon.getSeaSnakeList().isEmpty()
+                    && !hexagonPairList.containsInPair(hexagon)
                     && hexagon.getType() == HexagonType.SEA) {
-                listHexagon.add(hexagon);
+
+                if (this.explorerList.isEmpty()
+                        || (hexagon.getSeaSnakeList().isEmpty()
+                        && hexagon.getWhaleList().isEmpty())) {
+                            
+                    hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.NORMAL));
+                } else {
+                    hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.DEATH));
+                }
             }
         }
     }

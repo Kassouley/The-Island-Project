@@ -1,7 +1,7 @@
 /*
  * Nom de classe : EffectPawn
  *
- * Description   : Gestion des pions à effet du jeu The Island
+ * Description   : Gestion des pions ï¿½ effet du jeu The Island
  *
  * Version       : 1.0
  *
@@ -12,16 +12,11 @@
 
 package fr.mcstudio.pawns;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
-import fr.mcstudio.enums.HexagonType;
 
 /**
  * <p>
- * Gestion des pions à effet du jeu The Island
+ * Gestion des pions ï¿½ effet du jeu The Island
  * </p>
  *
  * @version 1.0
@@ -34,7 +29,7 @@ public class EffectPawn extends Pawn {
 
     /**
      * <p>
-     * Constructeur par défaut
+     * Constructeur par dï¿½faut
      * </p>
      */
     public EffectPawn() {
@@ -43,10 +38,10 @@ public class EffectPawn extends Pawn {
 
     /**
      * <p>
-     * Réalise l'effet du pion à effet.
+     * Rï¿½alise l'effet du pion ï¿½ effet.
      * </p>
      * 
-     * @param hexagon Case dans laquel est réalisé l'effet.
+     * @param hexagon Case dans laquel est rï¿½alisï¿½ l'effet.
      * @since 1.0
      * 
      */
@@ -55,7 +50,7 @@ public class EffectPawn extends Pawn {
 
     /**
      * <p>
-     * Déplace le pion en réalisant son effet.
+     * Dï¿½place le pion en rï¿½alisant son effet.
      * </p>
      * 
      * @param oldPosition Ancienne case du pion.
@@ -67,25 +62,6 @@ public class EffectPawn extends Pawn {
         newPosition.addPawn(this);
         if (!newPosition.getExplorerList().isEmpty() || newPosition.getBoat() != null) {
             this.makeEffect(newPosition);
-        }
-    }
-
-    protected void findPathAux(Hexagon actualPosition, Board board, List<Hexagon> listHexagon) {
-        List<Hexagon> tmp = new ArrayList<Hexagon>();
-
-        tmp.add(board.getTopLeft(actualPosition));
-        tmp.add(board.getTopRight(actualPosition));
-        tmp.add(board.getLeft(actualPosition));
-        tmp.add(board.getRight(actualPosition));
-        tmp.add(board.getBottomLeft(actualPosition));
-        tmp.add(board.getBottomRight(actualPosition));
-
-        for (Hexagon hexagon : tmp) {
-            if (hexagon != null
-                    && !listHexagon.contains(hexagon)
-                    && hexagon.getType() == HexagonType.SEA) {
-                listHexagon.add(hexagon);
-            }
         }
     }
 }
