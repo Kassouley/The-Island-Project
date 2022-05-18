@@ -21,7 +21,10 @@ import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonType;
+import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.game.Player;
+import fr.mcstudio.util.Pair;
+import fr.mcstudio.util.PairList;
 
 /**
  * <p>
@@ -77,6 +80,10 @@ public class Boat extends Pawn {
      */
     public boolean isFull() {
         return (this.explorerList.size() >= 3);
+    }
+
+    public boolean isEmpty() {
+        return this.explorerList.isEmpty();
     }
 
     /**
@@ -163,7 +170,7 @@ public class Boat extends Pawn {
         }
     }
 
-    protected void findPathAux(Hexagon actualPosition, Board board, List<Hexagon> listHexagon) {
+    public void findPathAux(Hexagon actualPosition, Board board, PairList<Hexagon,HexagonListType> hexagonPairList) {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
         tmp.add(board.getTopLeft(actualPosition));
@@ -175,11 +182,17 @@ public class Boat extends Pawn {
 
         for (Hexagon hexagon : tmp) {
             if (hexagon != null
-                    && !listHexagon.contains(hexagon)
-                    && hexagon.getWhaleList().isEmpty()
-                    && hexagon.getSeaSnakeList().isEmpty()
+                    && !hexagonPairList.containsInPair(hexagon)
                     && hexagon.getType() == HexagonType.SEA) {
-                listHexagon.add(hexagon);
+
+                if (this.explorerList.isEmpty()
+                        || (hexagon.getSeaSnakeList().isEmpty()
+                        && hexagon.getWhaleList().isEmpty())) {
+                            
+                    hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.NORMAL));
+                } else {
+                    hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.DEATH));
+                }
             }
         }
     }

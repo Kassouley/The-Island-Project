@@ -21,6 +21,9 @@ import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
+import fr.mcstudio.enums.HexagonListType;
+import fr.mcstudio.util.Pair;
+import fr.mcstudio.util.PairList;
 
 /**
  * <p>
@@ -223,7 +226,7 @@ public class Explorer extends Pawn {
         }
     }
 
-    protected void findPathAux(Hexagon actualPosition, Board board, List<Hexagon> listHexagon) {
+    public void findPathAux(Hexagon actualPosition, Board board, PairList<Hexagon,HexagonListType> hexagonPairList) {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
         tmp.add(board.getTopLeft(actualPosition));
@@ -235,10 +238,16 @@ public class Explorer extends Pawn {
 
         for (Hexagon hexagon : tmp) {
             if (hexagon != null
-                    && !listHexagon.contains(hexagon)
-                    && hexagon.getSharkList().isEmpty()
-                    && hexagon.getSeaSnakeList().isEmpty()) {
-                listHexagon.add(hexagon);
+                    && !hexagonPairList.containsInPair(hexagon)) {
+                
+                if (hexagon.getSharkList().isEmpty()
+                        && hexagon.getSeaSnakeList().isEmpty()) {
+
+                    hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.NORMAL));
+                } else {
+                    hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.DEATH));
+                }
+                
             }
         }
     }
