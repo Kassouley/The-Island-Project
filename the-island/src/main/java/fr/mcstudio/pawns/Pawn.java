@@ -5,12 +5,15 @@ import java.util.List;
 
 import javax.swing.*;
 
+import java.awt.Color;
+import java.awt.Image;
+
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.ExplorerStatus;
 
 @SuppressWarnings("serial")
-public class Pawn extends JLabel {
+public class Pawn extends JPanel {
     /**
      * <p>
      * Constructeur par d�faut.
@@ -18,6 +21,10 @@ public class Pawn extends JLabel {
      */
     public Pawn() {
     }
+
+    private JLabel index;
+
+    private JLabel image;
 
     /**
      * 
@@ -28,8 +35,8 @@ public class Pawn extends JLabel {
     /**
      * 
      */
-    public void setPosition(int x, int y) {
-        this.setBounds(x, y, 90, 90);
+    public void setPosition(int x, int y, int resolution) {
+        this.setBounds(x, y, (int) (68 * ((float) resolution / 90)), (int) (68 * ((float) resolution / 90)));
     }
 
     /**
@@ -77,4 +84,30 @@ public class Pawn extends JLabel {
      */
     private void findPathAux(Hexagon actualPosition, Board board, List<Hexagon> listHexagon) {
     }
+
+    public void createPawnImage(int size, int index) {
+        ImageIcon icon = null;
+        Image scaleImage;
+        if (this instanceof Shark) {
+            icon = new ImageIcon(Pawn.class.getResource("/pion_requin.png"));
+
+        } else if (this instanceof Whale) {
+            icon = new ImageIcon(Pawn.class.getResource("/pion_baleine.png"));
+
+        } else if (this instanceof SeaSnake) {
+            icon = new ImageIcon(Pawn.class.getResource("/pion_serpent_de_mer.png"));
+
+        } else if (this instanceof Boat) {
+            icon = new ImageIcon(Pawn.class.getResource("/pion_bateau.png"));
+
+        }
+        scaleImage = icon.getImage().getScaledInstance(size, size, Image.SCALE_SMOOTH);
+
+        JLabel textDisplay = new JLabel(Integer.toString(index));
+
+        icon.setImage(scaleImage);
+
+        this.setIcon(icon);
+    }
+
 }

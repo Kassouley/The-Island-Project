@@ -23,7 +23,7 @@ import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.pawns.Whale;
 import fr.mcstudio.tiles.Tile;
 
-public class Hexagon {
+public class Hexagon extends JPanel {
 
     /**
      * 
@@ -33,17 +33,26 @@ public class Hexagon {
      * Constructeur par défaut
      * </p>
      */
-	Hexagon hexagon = this;
-	public Hexagon(JLayeredPane boardPane, final int line, final int column) {
-    	this.line = line;
-    	this.column = column;
-		
+    Hexagon hexagon = this;
+
+    public Hexagon(JLayeredPane boardPane, final int line, final int column, int resolution) {
+        super();
+        this.setBounds(this.returnPosTileX(resolution),
+                this.returnPosTileY(resolution),
+                resolution,
+                resolution);
+
+        this.line = line;
+        this.column = column;
+        this.resolution = resolution;
 
         highlightLabel.setIcon(new ImageIcon(Board.class.getResource("/HexagonBlanc.png")));
         boardPane.setLayer(highlightLabel, 3);
         boardPane.add(highlightLabel);
 
     }
+
+    private int resolution;
 
     /**
      * <p>
@@ -73,8 +82,7 @@ public class Hexagon {
 
     private boolean highlight;
 
-
-	private JLabel highlightLabel = new JLabel();
+    private JLabel highlightLabel = new JLabel();
 
     /**
      * <p>
@@ -138,7 +146,6 @@ public class Hexagon {
      */
     private Boat boat = null;
 
-    
     /**
      * <p>
      * 
@@ -516,67 +523,68 @@ public class Hexagon {
      * </p>
      * @since1.0
      */
-	public boolean isInDemiPlan(float ax, float ay, float bx, float by, float clickx, float clicky) {
-		float d = (bx - ax)*(clicky - ay) - (by - ay)*(clickx - ax);
-		
-		if(d <= 0)
-			return true;
-		else 
-			return false;
-	}
-	
-	public int getLine() {
-		return line;
-	}
+    public boolean isInDemiPlan(float ax, float ay, float bx, float by, float clickx, float clicky) {
+        float d = (bx - ax) * (clicky - ay) - (by - ay) * (clickx - ax);
 
-	public int getColumn() {
-		return column;
-	}
+        if (d <= 0)
+            return true;
+        else
+            return false;
+    }
 
-	public boolean isHighlight() {
-		return highlight;
-	}
+    public int getLine() {
+        return line;
+    }
 
-	public void setHighlight(int resolution, JLayeredPane boardPane, boolean highlight, String color) {
-		this.highlight = highlight;
-		if (highlight) {
-			//boardPane.remove(highlightLabel);
-			ImageIcon icone = null;
-			Image scaleImage;
-			if (color == "white") {
-				icone = new ImageIcon(Tile.class.getResource("/HexagonBlanc.png"));
-			} else if (color == "yellow") {
-				icone = new ImageIcon(Tile.class.getResource("/HexagonJaune.png"));
-			} else if (color == "red") {
-				icone = new ImageIcon(Tile.class.getResource("/HexagonRouge.png"));
-			}
-			switch(resolution) {
-			case 70:
-				scaleImage = icone.getImage().getScaledInstance(70, 70,Image.SCALE_SMOOTH);
-				highlightLabel.setBounds(tile.getX(), tile.getY(), 70, 70);
-				icone.setImage(scaleImage);
-				break;
-			case 80:
-				scaleImage = icone.getImage().getScaledInstance(80, 80,Image.SCALE_SMOOTH);
-				highlightLabel.setBounds(tile.getX(), tile.getY(), 80, 80);
-				icone.setImage(scaleImage);
-				break;
-			case 90:
-				highlightLabel.setBounds(tile.getX(), tile.getY(), 90, 90);
-				break;
-			default:
-				break;
-			}
-			boardPane.setLayer(highlightLabel, 4);
-			this.highlightLabel.setIcon(icone);
-			this.highlightLabel.setVisible(true);
-			boardPane.add(highlightLabel);
-		} else {
-			this.highlightLabel.setVisible(false);
-			boardPane.remove(highlightLabel);
-		}
-	}
-	/**
+    public int getColumn() {
+        return column;
+    }
+
+    public boolean isHighlight() {
+        return highlight;
+    }
+
+    public void setHighlight(int resolution, JLayeredPane boardPane, boolean highlight, String color) {
+        this.highlight = highlight;
+        if (highlight) {
+            // boardPane.remove(highlightLabel);
+            ImageIcon icone = null;
+            Image scaleImage;
+            if (color == "white") {
+                icone = new ImageIcon(Tile.class.getResource("/HexagonBlanc.png"));
+            } else if (color == "yellow") {
+                icone = new ImageIcon(Tile.class.getResource("/HexagonJaune.png"));
+            } else if (color == "red") {
+                icone = new ImageIcon(Tile.class.getResource("/HexagonRouge.png"));
+            }
+            switch (resolution) {
+                case 70:
+                    scaleImage = icone.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
+                    highlightLabel.setBounds(tile.getX(), tile.getY(), 70, 70);
+                    icone.setImage(scaleImage);
+                    break;
+                case 80:
+                    scaleImage = icone.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+                    highlightLabel.setBounds(tile.getX(), tile.getY(), 80, 80);
+                    icone.setImage(scaleImage);
+                    break;
+                case 90:
+                    highlightLabel.setBounds(tile.getX(), tile.getY(), 90, 90);
+                    break;
+                default:
+                    break;
+            }
+            boardPane.setLayer(highlightLabel, 4);
+            this.highlightLabel.setIcon(icone);
+            this.highlightLabel.setVisible(true);
+            boardPane.add(highlightLabel);
+        } else {
+            this.highlightLabel.setVisible(false);
+            boardPane.remove(highlightLabel);
+        }
+    }
+
+    /**
      * <p>
      * Vide la case de tous ses pions
      * </p>
@@ -619,65 +627,65 @@ public class Hexagon {
      * </p>
      * @since2.0
      */
-	public int returnPosTileX(int resolution) {
-		if(this.line%2 == 0) {
-			switch(resolution) {
-			case 70:
-				return 92 + 70*this.column;
-			case 80:
-				return 105 + 80*this.column;
-			case 90:
-				return 120 + 90 * this.column;
-			default:
-				break;
-			}
-		} else {
-			switch(resolution) {
-			case 70:
-				return 57 + 70*this.column;
-			case 80:
-				return 65 + 80*this.column;
-			case 90:
-				return 75 + 90*this.column;
-			default:
-				break;
-			}
-		}
-		return 0;
-	}
-	
-	/**
+    public int returnPosTileX(int resolution) {
+        if (this.line % 2 == 0) {
+            switch (resolution) {
+                case 70:
+                    return 92 + 70 * this.column;
+                case 80:
+                    return 105 + 80 * this.column;
+                case 90:
+                    return 120 + 90 * this.column;
+                default:
+                    break;
+            }
+        } else {
+            switch (resolution) {
+                case 70:
+                    return 57 + 70 * this.column;
+                case 80:
+                    return 65 + 80 * this.column;
+                case 90:
+                    return 75 + 90 * this.column;
+                default:
+                    break;
+            }
+        }
+        return 0;
+    }
+
+    /**
      * <p>
      * Renvois la pos y de la tuile
      * </p>
      * @since2.0
      */
-	public int returnPosTileY(int resolution) {
-		if(this.line%2 == 0) {		
-			switch(resolution) {
-			case 70:
-				return 26 + 54 * this.line;
-			case 80:
-				return 29 + 62 * this.line;
-			case 90:
-				return 31 + 70 * this.line;
-			default:
-				break;
-			}
-		} else {
-			switch(resolution) {
-			case 70:
-				return 26 + 54 * this.line;
-			case 80:
-				return 28 + 62 * this.line;
-			case 90:
-				return 31 + 70 * this.line;
-			default:
-				break;
-			}
-		}
-		return 0;
-	}
+    public int returnPosTileY(int resolution) {
+        if (this.line % 2 == 0) {
+            switch (resolution) {
+                case 70:
+                    return 26 + 54 * this.line;
+                case 80:
+                    return 29 + 62 * this.line;
+                case 90:
+                    return 31 + 70 * this.line;
+                default:
+                    break;
+            }
+        } else {
+            switch (resolution) {
+                case 70:
+                    return 26 + 54 * this.line;
+                case 80:
+                    return 28 + 62 * this.line;
+                case 90:
+                    return 31 + 70 * this.line;
+                default:
+                    break;
+            }
+        }
+        return 0;
+    }
 
     public void displayPawns(JPanel pawnPane) {
         List<Pawn> pawnsToDisplay = new ArrayList<Pawn>();
@@ -686,7 +694,7 @@ public class Hexagon {
 
         if (!this.sharkList.isEmpty()) {
             Shark s = new Shark();
-            s.setImage();
+            s.createImage(this.resolution);
             if (this.sharkList.size() > 1) {
                 JLabel textDisplay = new JLabel(Integer.toString(
                         this.sharkList.size()));
@@ -696,7 +704,7 @@ public class Hexagon {
         }
         if (!this.whaleList.isEmpty()) {
             Whale w = new Whale();
-            w.setImage();
+            w.createImage(this.resolution);
             if (this.whaleList.size() > 1) {
                 JLabel textDisplay = new JLabel(Integer.toString(
                         this.whaleList.size()));
@@ -706,7 +714,7 @@ public class Hexagon {
         }
         if (!this.seaSnakeList.isEmpty()) {
             SeaSnake ss = new SeaSnake();
-            ss.setImage();
+            ss.createImage(this.resolution);
             if (this.seaSnakeList.size() > 1) {
                 JLabel textDisplay = new JLabel(Integer.toString(
                         this.seaSnakeList.size()));
@@ -715,7 +723,7 @@ public class Hexagon {
 
         }
         if (this.boat != null) {
-            this.boat.setImage();
+            this.boat.createImage(this.resolution);
             pawnsToDisplay.add(this.boat);
         }
         if (!this.explorerList.isEmpty()) {
@@ -750,62 +758,63 @@ public class Hexagon {
 
         switch (pawnsToDisplay.size()) {
             case 1:
-                x.add(11);
-                y.add(11);
+                x.add((int) (11 * ((float) resolution / (float) 90)));
+                y.add((int) (11 * ((float) resolution / (float) 90)));
                 break;
             case 2:
-                x.add(11);
-                x.add(5);
-                y.add(11);
-                y.add(39);
+                x.add((int) (11 * ((float) resolution / (float) 90)));
+                y.add((int) (11 * ((float) resolution / (float) 90)));
+
+                x.add((int) (11 * ((float) resolution / (float) 90)));
+                y.add((int) (11 * ((float) resolution / (float) 90)));
 
                 break;
             case 3:
-                x.add(11);
-                x.add(5);
-                x.add(5);
-                y.add(11);
-                y.add(39);
-                y.add(39);
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
 
                 break;
             case 4:
-                x.add(11);
-                x.add(5);
-                x.add(5);
-                x.add(5);
-                y.add(11);
-                y.add(11);
-                y.add(39);
-                y.add(39);
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
 
                 break;
             case 5:
-                x.add(11);
-                x.add(5);
-                x.add(5);
-                x.add(5);
-                x.add(5);
-                y.add(11);
-                y.add(11);
-                y.add(39);
-                y.add(39);
-                y.add(39);
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
 
                 break;
             case 6:
-                x.add(11);
-                x.add(5);
-                x.add(5);
-                x.add(5);
-                x.add(5);
-                x.add(5);
-                y.add(11);
-                y.add(11);
-                y.add(39);
-                y.add(39);
-                y.add(39);
-                y.add(39);
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                x.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
+                y.add((int) (11 * ((float) 68 / (float) 90)));
 
                 break;
 
@@ -814,7 +823,8 @@ public class Hexagon {
         }
 
         for (int i = 0; i < pawnsToDisplay.size(); i++) {
-            pawnsToDisplay.get(i).setPosition(x.get(i), y.get(i));
+            pawnsToDisplay.get(i).setPosition(x.get(i) + this.returnPosTileX(this.resolution),
+                    y.get(i) + this.returnPosTileY(this.resolution), this.resolution);
             pawnPane.add(pawnsToDisplay.get(i));
         }
 

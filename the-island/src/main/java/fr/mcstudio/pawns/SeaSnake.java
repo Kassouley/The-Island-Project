@@ -12,8 +12,6 @@
 
 package fr.mcstudio.pawns;
 
-import javax.swing.ImageIcon;
-
 import fr.mcstudio.board.Hexagon;
 
 /**
@@ -51,10 +49,6 @@ public class SeaSnake extends EffectPawn {
         Shark sharkEffect = new Shark();
         whaleEffect.makeEffect(hexagon);
         sharkEffect.makeEffect(hexagon);
-    }
-
-    public void setImage() {
-        this.setIcon(new ImageIcon(Pawn.class.getResource("/pion_serpent_de_mer.png")));
     }
 
 }
