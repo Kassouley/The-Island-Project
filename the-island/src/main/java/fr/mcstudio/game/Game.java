@@ -103,32 +103,48 @@ public class Game {
 						Hexagon hex = board.getHexagons()[i][j];
 						if (!hex.isVoid()) {
 							if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), e.getY() - hex.getY())) {
-	
-								//hex.removeAllPawn();
+								
+								hex.removeAllPawn();
 								System.out.println("Yay ! " + hex.getLine() + " " + hex.getColumn());
 								
 								hex.discover(null, board);
-								//int n = r.nextInt(5);
+								int n = r.nextInt(5);
 								//System.out.println(n);
-								/*switch(n) {
+								switch(n) {
 									case 1:
 										Shark shark = new Shark();
 										hex.addPawn(shark);
 									case 2:
 										SeaSnake ss = new SeaSnake();
+										SeaSnake ss1 = new SeaSnake();
+										SeaSnake ss2 = new SeaSnake();
 										hex.addPawn(ss);
+										hex.addPawn(ss1);
+										hex.addPawn(ss2);
 									case 3:
-										Explorer ex = new Explorer(Color.RED, 0);
+										Explorer ex = new Explorer(Color.YELLOW, 0);
+										Explorer ex1 = new Explorer(Color.YELLOW, 0);
 										hex.addPawn(ex);
+										hex.addPawn(ex1);
 									case 4:
 										Explorer ex2 = new Explorer(Color.BLUE, 0);
+										Explorer ex21= new Explorer(Color.BLUE, 0);
+										Explorer ex22 = new Explorer(Color.BLUE, 0);
+										Explorer ex23 = new Explorer(Color.BLUE, 0);
 										hex.addPawn(ex2);
+										hex.addPawn(ex21);
+										hex.addPawn(ex22);
+										hex.addPawn(ex23);
 									case 0:
 										Explorer ex3 = new Explorer(Color.GREEN, 0);
+										Explorer ex31 = new Explorer(Color.GREEN, 0);
+										Explorer ex32 = new Explorer(Color.GREEN, 0);
 										hex.addPawn(ex3);
+										hex.addPawn(ex31);
+										hex.addPawn(ex32);
 									default:
 										break;
-								}*/
+								}
 								hex.displayPawns();
 							}
 						}
