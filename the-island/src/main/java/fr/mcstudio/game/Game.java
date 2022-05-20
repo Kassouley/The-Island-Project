@@ -31,7 +31,9 @@ public class Game {
     	this.contentPane = contentPane;
         this.players = players;
         this.turnNumber = 0;
-        this.turnOrder = (int) (Math.random() * 3);
+        this.turnOrder = (int) (Math.random() * players.length);
+        
+        //A set comme vous voulez pour effectuer des test sur les differentes actions
         this.actionTurn = ActionTurn.PLAY_TILE;
         
         initializeBoard();
@@ -124,19 +126,17 @@ public class Game {
 							if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), e.getY() - hex.getY())) {
 								
 								if(actionTurn == ActionTurn.PLAY_TILE) {
-									//Pour test plus facilement ; les 5 prochaines lignes servent a afficher un pion
-									Explorer yop = new Explorer(Color.RED,5);
+									//Pour test plus facilement ; les 4 prochaines lignes servent a afficher un pion
+									Explorer yop = new Explorer(players[turnOrder].getColor(),5);
 									Shark shark = new Shark();
 									hex.addPawn(shark);
 									hex.addPawn(yop);
 									
-									
+
+									// ActionTurn est le changement d'action, à mettre en commentaire pour test
 									actionTurn = actionTurn.next();
 								}
 								else if(actionTurn== ActionTurn.MOVE_PAWNS) {
-									//Pour test plus facilement ; les 5 prochaines lignes servent a afficher un pion
-									
-									
 									if(!board.getHexagons()[i][j].getExplorerList().isEmpty() && firstClic == true) {										
 										saveHexa = board.getHexagons()[i][j];
 										//--Choix de l'explorateur avec loik 
@@ -144,33 +144,27 @@ public class Game {
 											pawnToMove = explo;
 										}			
 										//--
-										firstClic = false;
-										
+										firstClic = false;	
 									}
 									else if(firstClic == false) {
 										System.out.println("yopi2");
 										pawnToMove.move(saveHexa,hex) ;
 										
 										saveHexa.displayPawns();
-										actionTurn = actionTurn.next();
 										firstClic = true;
 										saveHexa = null;
-									}
-									
-									
+										
+										// ActionTurn est le changement d'action, à mettre en commentaire pour test
+										actionTurn = actionTurn.next();
+									}	
 								}
-								else if(actionTurn== ActionTurn.DISCOVER_TILE){
-									System.out.println("Yay ! " + board.getHexagons()[i][j].getLine() + " " + board.getHexagons()[i][j].getColumn());
-									
+								else if(actionTurn== ActionTurn.DISCOVER_TILE){									
 									hex.discover(players[turnOrder], board);
-									//tilesPane.revalidate();
-									//tilesPane.repaint();
-									
-									
+
+									// ActionTurn est le changement d'action, à mettre en commentaire pour test
 									actionTurn = actionTurn.next();
 								}
 								else if(actionTurn== ActionTurn.MOVE_MONSTER){
-									//Pour test plus facilement ; les 5 prochaines lignes servent a afficher un pion
 									if(!board.getHexagons()[i][j].getSharkList().isEmpty() && firstClic == true) {										
 										saveHexa = board.getHexagons()[i][j];
 										//--Choix du monstre avec loik 
@@ -184,16 +178,19 @@ public class Game {
 									else if(firstClic == false) {
 										System.out.println("yopi2");
 										pawnToMove.move(saveHexa, board.getHexagons()[i][j]) ;
-										
 										saveHexa.displayPawns();
-										actionTurn = actionTurn.next();
 										firstClic = true;
 										saveHexa = null;
+										
+										// ActionTurn est le changement d'action, à mettre en commentaire pour test
+										actionTurn = actionTurn.next();
+										turnOrder = (turnOrder + 1) % players.length;
 									}
 								}
 								System.out.println("Joueur :"+ turnOrder + "; " + players[turnOrder].getPseudo());						
 								System.out.println(actionTurn + "\n");
-
+									
+								
 								hex.displayPawns();
 							}
 						}
