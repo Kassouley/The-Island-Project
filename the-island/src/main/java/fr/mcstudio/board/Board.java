@@ -1,8 +1,5 @@
 package fr.mcstudio.board;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,79 +8,37 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
 
 import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
-import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.tiles.Tile;
 
 @SuppressWarnings("serial")
-public class Board extends JLabel {
+public class Board extends JLayeredPane{
 	private Hexagon[][] hexagons = new Hexagon[13][12];
 
 	public Hexagon[][] getHexagons() {
 		return hexagons;
 	}
 
-	JLayeredPane boardPane;
+	JLabel boardLabel = new JLabel();
 
 	Board board;
 
-	public Board(final int resolution, JLayeredPane boardPane) {
+	public Board(final int resolution) {
 		super();
 		this.board = this;
-		this.boardPane = boardPane;
-		boardPane.setLayer(this, 0);
-		setBoundsFromResolution(resolution);
-		boardPane.add(this);
-
-		final JPanel tilesPane = new JPanel();
-		tilesPane.setOpaque(false);
-		boardPane.setLayer(tilesPane, 1);
-		switch (resolution) {
-			case 70:
-				tilesPane.setBounds(0, 0, 955, 770);
-				break;
-			case 80:
-				tilesPane.setBounds(0, 0, 1090, 880);
-				break;
-			case 90:
-				tilesPane.setBounds(0, 0, 1230, 990);
-				break;
-			default:
-				break;
-		}
-		boardPane.add(tilesPane);
-		tilesPane.setLayout(null);
-		tilesPane.setVisible(true);
-
-		final JPanel pawnPane = new JPanel();
-		pawnPane.setOpaque(false);
-		boardPane.setLayer(pawnPane, 2);
-		switch (resolution) {
-			case 70:
-				pawnPane.setBounds(0, 0, 955, 770);
-				break;
-			case 80:
-				pawnPane.setBounds(0, 0, 1090, 880);
-				break;
-			case 90:
-				pawnPane.setBounds(0, 0, 1230, 990);
-				break;
-			default:
-				break;
-		}
-		boardPane.add(pawnPane);
-		pawnPane.setLayout(null);
-		pawnPane.setVisible(true);
+		setLayer(boardLabel, 0);
+		setPanelBoundsFromResolution(resolution);
+		setLabel();
+		add(boardLabel);
 
 		List<Tile> tilesList = CreateTiles(resolution);
 		Random r = new Random();
 		for (int i = 0; i < 13; i++) {
 			for (int j = 0; j < 12; j++) {
-				hexagons[i][j] = new Hexagon(boardPane, i, j);
+				hexagons[i][j] = new Hexagon(this, i, j, resolution);
 				if (((i != 0 || j != 0)
 						&& (i != 1 || j != 0)
 						&& (i != 3 || j != 0)
@@ -95,14 +50,15 @@ public class Board extends JLabel {
 						&& (i != 12 || j != 1)
 						&& (i != 0 || j != 9)
 						&& (i != 12 || j != 9)
-						&& (i != 0 || j != 10) && (i != 12 || j != 10)
+						&& (i != 0 || j != 10) 
+						&& (i != 12 || j != 10)
 						&& j != 11)
 						|| (i == 5 && j == 11)
 						|| (i == 7 && j == 11)) {
 
 					if ((((i > 2 && j > 3 && i < 10 && j < 8)
 							|| (i > 4 && j > 1 && i < 8 && j < 10
-									&& (i != 6 || j != 9)))
+							&& (i != 6 || j != 9)))
 							&& (i != 6 || j != 5))
 							|| (i == 4 && j == 3)
 							|| (i == 8 && j == 3)) {
@@ -110,96 +66,22 @@ public class Board extends JLabel {
 						hexagons[i][j].setTile(tilesList.get(n));
 						tilesList.remove(n);
 						hexagons[i][j].setType(HexagonType.TILES);
+						hexagons[i][j].getTile().setBounds(0, 0, 
+								resolution, resolution);
+						hexagons[i][j].add(hexagons[i][j].getTile());
+
 					} else {
-						hexagons[i][j].setTile(new Tile());
 						hexagons[i][j].setType(HexagonType.SEA);
 					}
 
 				} else if (i == 1 && j == 0 || i == 1 && j == 11 ||
 						i == 11 && j == 0 || i == 11 && j == 11) {
-					hexagons[i][j].setTile(new Tile());
 					hexagons[i][j].setType(HexagonType.ISLAND);
 				} else {
-					hexagons[i][j].setTile(null);
 					hexagons[i][j].setType(HexagonType.VOID);
-				}
-
-				if (hexagons[i][j].getTile() != null) {
-					hexagons[i][j].getTile().setPosition(resolution, hexagons[i][j].returnPosTileX(resolution),
-							hexagons[i][j].returnPosTileY(resolution));
-
-					tilesPane.add(hexagons[i][j].getTile());
 				}
 			}
 		}
-
-		// plateauPane.addMouseListener((e) -> getClickedPosition(e));
-
-		boardPane.addMouseListener(new MouseListener() {
-
-			public void mouseClicked(MouseEvent e) {
-			}
-
-			public void mousePressed(MouseEvent e) {
-				for (int i = 0; i < 13; i++) {
-					for (int j = 0; j < 12; j++) {
-						if (hexagons[i][j].getTile() != null)
-							if (hexagons[i][j].isInHexagonfloat(resolution, e.getX(), e.getY())) {
-								System.out.println(
-										"Yay ! " + hexagons[i][j].getLine() + " " + hexagons[i][j].getColumn());
-								hexagons[i][j].getTile().discover(hexagons[i][j], null, board);
-								tilesPane.remove(hexagons[i][j].getTile());
-								// tilesPane.revalidate();
-								// tilesPane.repaint();
-								tilesPane.updateUI();
-								hexagons[i][j].removeTile();
-								hexagons[i][j].getTile().setPosition(resolution,
-										hexagons[i][j].returnPosTileX(resolution),
-										hexagons[i][j].returnPosTileY(resolution));
-								// tile.applyEffect(hexagon);
-
-							}
-					}
-				}
-
-			}
-
-			public void mouseReleased(MouseEvent e) {
-			}
-
-			public void mouseEntered(MouseEvent e) {
-			}
-
-			public void mouseExited(MouseEvent e) {
-			}
-		});
-
-		boardPane.addMouseMotionListener(new MouseMotionListener() {
-
-			@Override
-			public void mouseDragged(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				for (int i = 0; i < 13; i++) {
-					for (int j = 0; j < 12; j++) {
-						if (hexagons[i][j].getTile() != null) {
-							if (hexagons[i][j].isInHexagonfloat(resolution, e.getX(), e.getY())) {
-								if (!hexagons[i][j].isHighlight())
-									hexagons[i][j].setHighlight(resolution, boardPane, true, "white");
-
-							} else {
-								if (hexagons[i][j].isHighlight())
-									hexagons[i][j].setHighlight(resolution, boardPane, false, null);
-							}
-						}
-					}
-				}
-			}
-
-		});
-
 	}
 
 	private List<Tile> CreateTiles(int resolution) {
@@ -274,30 +156,29 @@ public class Board extends JLabel {
 		return tiles;
 	}
 
-	private void setBoundsFromResolution(int resolution) {
-		ImageIcon icone = new ImageIcon(Board.class.getResource("/Map_90.png"));
-		Image scaleImage;
+	private void setPanelBoundsFromResolution(int resolution) {
+		
 		switch (resolution) {
 			case 70:
-				this.setBounds(0, 0, 955, 770);
-				scaleImage = icone.getImage().getScaledInstance(955, 770, Image.SCALE_SMOOTH);
-				icone.setImage(scaleImage);
+				setBounds(217, 0, 955, 770);
 				break;
 			case 80:
-				this.setBounds(0, 0, 1090, 880);
-				scaleImage = icone.getImage().getScaledInstance(1090, 880, Image.SCALE_SMOOTH);
-				icone.setImage(scaleImage);
+				setBounds(248, 0, 1090, 880);
 				break;
 			case 90:
-				this.setBounds(0, 0, 1230, 990);
-				scaleImage = icone.getImage().getScaledInstance(1230, 990, Image.SCALE_SMOOTH);
-				icone.setImage(scaleImage);
+				setBounds(282, 0, 1230, 990);
 				break;
 			default:
 				break;
 		}
-
-		this.setIcon(icone);
+	}
+	
+	private void setLabel() {
+		ImageIcon icone = new ImageIcon(Board.class.getResource("/Map_90.png"));
+		Image scaleImage = icone.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);;
+		icone.setImage(scaleImage);
+		boardLabel.setIcon(icone);
+		boardLabel.setBounds(0, 0, getWidth(), getHeight());
 	}
 
 	public Hexagon getTopLeft(Hexagon actualHexagon) {
