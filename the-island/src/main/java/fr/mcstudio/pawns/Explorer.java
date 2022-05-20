@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
+import java.awt.Image;
 
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
@@ -252,28 +253,34 @@ public class Explorer extends Pawn {
         }
     }
 
-    public void setImage() {
-        {
-            String explorerPath = "/pion_";
-            String explorerColor = null;
-            switch (this.getColor()) {
-                case RED:
-                    explorerColor = "rouge";
-                    break;
-                case BLUE:
-                    explorerColor = "bleu";
-                    break;
-                case YELLOW:
-                    explorerColor = "jaune";
-                    break;
-                case GREEN:
-                    explorerColor = "vert";
-                    break;
+    public void createImage(int resolution) {
 
-            }
-            explorerPath = explorerPath + explorerColor + ".png";
-            // FIXME on ne peut pas choisir la couleur de l'explorateur dans cette fonction
-            this.setIcon(new ImageIcon(Pawn.class.getResource(explorerPath)));
+        ImageIcon icon = null;
+        Image scaleImage;
+
+        String explorerPath = "/pion_";
+        String explorerColor = null;
+        switch (this.getColor()) {
+            case RED:
+                explorerColor = "rouge";
+                break;
+            case BLUE:
+                explorerColor = "bleu";
+                break;
+            case YELLOW:
+                explorerColor = "jaune";
+                break;
+            case GREEN:
+                explorerColor = "vert";
+                break;
+
         }
+        explorerPath = explorerPath + explorerColor + ".png";
+
+        icon = new ImageIcon(Pawn.class.getResource(explorerPath));
+        scaleImage = icon.getImage().getScaledInstance(resolution, resolution, Image.SCALE_SMOOTH);
+        icon.setImage(scaleImage);
+
+        this.image.setIcon(icon);
     }
 }

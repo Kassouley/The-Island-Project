@@ -90,8 +90,4 @@ public class Whale extends EffectPawn {
         }
     }
 
-    public void setImage() {
-        this.setIcon(new ImageIcon(Pawn.class.getResource("/pion_baleine.png")));
-    }
-
 }
