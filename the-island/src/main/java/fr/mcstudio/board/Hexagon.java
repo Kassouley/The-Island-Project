@@ -25,9 +25,6 @@ import fr.mcstudio.tiles.Tile;
 public class Hexagon extends JLayeredPane {
 
     /**
-     * 
-     */
-    /**
      * <p>
      * Constructeur par défaut
      * </p>
@@ -49,9 +46,6 @@ public class Hexagon extends JLayeredPane {
 		boardPane.setLayer(this, 1);
 		setOpaque(false);
 		boardPane.add(this);
-        //highlightLabel.setIcon(new ImageIcon(Board.class.getResource("/HexagonBlanc.png")));
-        //boardPane.setLayer(highlightLabel, 3);
-        //add(highlightLabel);
     }
 
     private int resolution;
@@ -85,6 +79,8 @@ public class Hexagon extends JLayeredPane {
     private boolean highlight;
 
     private JLabel highlightLabel = new JLabel();
+    
+    private List<Pawn> pawnsToDisplay = new ArrayList<Pawn>();
 
     /**
      * <p>
@@ -686,7 +682,14 @@ public class Hexagon extends JLayeredPane {
     }
 
     public void displayPawns() {
-        List<Pawn> pawnsToDisplay = new ArrayList<Pawn>();
+    	for(Pawn p : pawnsToDisplay) {
+    		remove(p);
+    	}
+    	//System.out.println("bouh");
+		revalidate();
+		repaint();
+    	pawnsToDisplay.clear();
+        //List<Pawn> pawnsToDisplay = new ArrayList<Pawn>();
         List<Integer> x = new ArrayList<Integer>();
         List<Integer> y = new ArrayList<Integer>();
         int imageSize = 0;
@@ -816,7 +819,7 @@ public class Hexagon extends JLayeredPane {
     
     public void discover(Player p,Board board) {
     	if(getTile() != null) {
-			getTile().flipTile(this,null,board);
+			getTile().flipTile(this,p,board);
 		}
 		else {
 			System.out.println("Aucune tuile sur la case choisie\n");
