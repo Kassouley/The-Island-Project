@@ -7,37 +7,39 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
 @SuppressWarnings("serial")
-public class ActionInfo extends JLabel {
+public class ActionInfo extends JLayeredPane {
+	
+	JLabel actionInfoLabel = new JLabel();
 
-	public ActionInfo(int resolution, JLayeredPane actionInfoPane) {
+	public ActionInfo(int resolution) {
 		super();
-		actionInfoPane.setLayer(this, 0);
-		setBoundsFromResolution(resolution);
-		actionInfoPane.add(this);
+		setLayer(actionInfoLabel, 0);
+		setPanelBoundsFromResolution(resolution);
+		setLabel();
+		add(actionInfoLabel);
 	}
 	
-	private void setBoundsFromResolution(int resolution) {
-		ImageIcon icone = new ImageIcon(Board.class.getResource("/ActionInfo.png"));
-		Image scaleImage;
-		switch(resolution) {
+	private void setPanelBoundsFromResolution(int resolution) {
+		switch (resolution) {
 		case 70:
-			this.setBounds(0, 0, 260, 770);
-			scaleImage = icone.getImage().getScaledInstance(260, 770,Image.SCALE_SMOOTH);
-			icone.setImage(scaleImage);
+			setBounds(1172, 0, 260, 770);
 			break;
 		case 80:
-			this.setBounds(0, 0, 297, 880);
-			scaleImage = icone.getImage().getScaledInstance(297, 880,Image.SCALE_SMOOTH);
-			icone.setImage(scaleImage);
+			setBounds(1338, 0, 297, 880);
 			break;
 		case 90:
-			this.setBounds(0, 0, 338, 990);
-			scaleImage = icone.getImage().getScaledInstance(338, 990,Image.SCALE_SMOOTH);
-			icone.setImage(scaleImage);
+			setBounds(1512, 0, 338, 990);
 			break;
-		default: break;
-		}
-
-	    this.setIcon(icone);
+		default:
+			break;
+	}
+	}
+	
+	private void setLabel() {
+		ImageIcon icone = new ImageIcon(Board.class.getResource("/ActionInfo.png"));
+		Image scaleImage = icone.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);;
+		icone.setImage(scaleImage);
+		actionInfoLabel.setIcon(icone);
+		actionInfoLabel.setBounds(0, 0, getWidth(), getHeight());
 	}
 }

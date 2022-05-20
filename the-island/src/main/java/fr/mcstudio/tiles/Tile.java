@@ -2,7 +2,8 @@
 package fr.mcstudio.tiles;
 
 import java.awt.Image;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -10,7 +11,6 @@ import javax.swing.SwingConstants;
 
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
-import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.game.Player;
@@ -55,19 +55,10 @@ public class Tile extends JLabel {
 		} else if (type == TilesType.MONTAINS) {
 			icone = new ImageIcon(Tile.class.getResource("/Montagne.png"));
 		}
-		switch(resolution) {
-		case 70:
-			scaleImage = icone.getImage().getScaledInstance(70, 70,Image.SCALE_SMOOTH);
-			icone.setImage(scaleImage);
-			break;
-		case 80:
-			scaleImage = icone.getImage().getScaledInstance(80, 80,Image.SCALE_SMOOTH);
-			icone.setImage(scaleImage);
-			break;
-		default:
-			break;
-		}
-
+		
+		scaleImage = icone.getImage().getScaledInstance(resolution, resolution,Image.SCALE_SMOOTH);
+		icone.setImage(scaleImage);
+		
 		this.setIcon(icone);
 	}
 
@@ -85,81 +76,20 @@ public class Tile extends JLabel {
 		this.effect = effect;
 	}
 
-	/**
-	* 
-	*/
-	public void setPosition(int resolution, int x, int y) {
-		this.setBounds(x, y, resolution, resolution);
-	}
-
-	/**
-	 * <p>
-	 * Regarde si il y a une tuile sur l'hexagone cliqué
-	 * </p>
-	 * @since1.0
-	 */
-	public void discover(Hexagon tilePosition,Player p,Board board) {
-		if(tilePosition.getTile().getType() != null) {
-				flipTile(tilePosition,p,board);
-		}
-		else {
-			System.out.println("Aucune tuile sur la case choisie\n");
-		}
-	}
-	
-
-	/*public void applyEffect(Hexagon tilePosition) {
-		switch (this.effect) {
-			case WHALE:
-				this.whaleEffect(tilePosition);
-				break;
-			case WHALE_DEATH:
-				this.whaleDeathEffect(tilePosition);
-				break;
-			case WHALE_LOST:
-				this.whaleLostEffect();
-				break;
-			case BOAT_MOVE:
-				this.boatMoveEffect();
-				break;
-			case BOAT:
-				this.boatEffect(tilePosition);
-				break;
-			case DOLPHIN_MOVE:
-				this.dolphinMoveEffect();
-				break;
-			case SHARK:
-				this.sharkEffect(tilePosition);
-				break;
-			case SHARK_DEATH:
-				this.sharkDeathEffect(tilePosition);
-				break;
-			case SHARK_LOST:
-				this.sharkLostEffect();
-				break;
-			case SEASNAKE_LOST:
-				this.seasnakeLostEffect();
-				break;
-			case WHIRLPOOL:
-				this.whirlpoolEffect();
-				break;
-			case VOLCANO:
-				this.volcanoEffect();
-				break;
-			default:
-				break;
-		}
-	}*/
-
 	/*
 	 * <p>
 	 * Retourne la tuile présente sur la case choisie de la map.
 	 * </p>
 	 * @since1.0
 	 */
-	public void flipTile(Hexagon tilePosition,Player p,Board board) {
-		Hexagon[][] hexagons = board.getHexagons();
-		tilePosition.getTile().applyEffect(tilePosition,board);	
+	public void flipTile(Hexagon hexagon, Player p, Board board) {
+
+		hexagon.getTile().applyEffect(hexagon,board);
+		hexagon.remove(hexagon.getTile());
+		hexagon.revalidate();
+		hexagon.repaint();
+		hexagon.removeTile();
+		
 		/*if(tilePosition.getTile().getEffect().getType() == "Verte"){
 			tilePosition.getTile().applyEffect(tilePosition,hexagon);		  	
 		  }
