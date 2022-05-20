@@ -226,9 +226,15 @@ public class Game {
      */
     public void nextTurn() {
         this.turnNumber++;
-        this.players[(this.turnOrder + this.turnNumber) % players.length]
-                .setMoveLeft(3);
+        this.getCurrentPlayer().setMoveLeft(3);
         this.actionTurn = ActionTurn.PLAY_TILE;
+    }
+
+    /**
+     * 
+     */
+    public Player getCurrentPlayer() {
+        return this.players[(this.turnOrder + this.turnNumber) % players.length];
     }
 
     /**
@@ -236,6 +242,13 @@ public class Game {
      */
     public void nextActionTurn() {
         this.actionTurn = this.actionTurn.next();
+    }
+
+    /**
+     * 
+     */
+    public ActionTurn getActionTurn() {
+        return this.actionTurn;
     }
 
     /**
@@ -297,6 +310,7 @@ public class Game {
     /**
      * 
      */
+
     public void startGame() {
     	
         /*for (int i = 0; i < players.length; i++) {
@@ -307,6 +321,7 @@ public class Game {
                     .placeBoats(this.board);
         }*/
     }
+
 
     /**
      * 
