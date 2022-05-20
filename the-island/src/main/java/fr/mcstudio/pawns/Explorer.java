@@ -272,6 +272,6 @@ public class Explorer extends Pawn {
         scaleImage = icon.getImage().getScaledInstance(resolution, resolution, Image.SCALE_SMOOTH);
         icon.setImage(scaleImage);
 
-        this.setIcon(icon);
+        this.image.setIcon(icon);
     }
 }

@@ -23,6 +23,7 @@ import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.pawns.Whale;
 import fr.mcstudio.tiles.Tile;
 
+@SuppressWarnings("serial")
 public class Hexagon extends JPanel {
 
     /**
@@ -37,6 +38,7 @@ public class Hexagon extends JPanel {
 
     public Hexagon(JLayeredPane boardPane, final int line, final int column, int resolution) {
         super();
+    	this.setLayout(null);
         this.setBounds(this.returnPosTileX(resolution),
                 this.returnPosTileY(resolution),
                 resolution,
@@ -691,43 +693,59 @@ public class Hexagon extends JPanel {
         List<Pawn> pawnsToDisplay = new ArrayList<Pawn>();
         List<Integer> x = new ArrayList<Integer>();
         List<Integer> y = new ArrayList<Integer>();
+        int imageSize = 0;
 
         if (!this.sharkList.isEmpty()) {
             Shark s = new Shark();
-            s.createImage(this.resolution);
+            /*s.createPawnImage(this.resolution);
             if (this.sharkList.size() > 1) {
                 JLabel textDisplay = new JLabel(Integer.toString(
                         this.sharkList.size()));
-            }
+            }*/
             pawnsToDisplay.add(s);
-
         }
         if (!this.whaleList.isEmpty()) {
             Whale w = new Whale();
-            w.createImage(this.resolution);
+            /*w.createPawnImage(this.resolution);
             if (this.whaleList.size() > 1) {
                 JLabel textDisplay = new JLabel(Integer.toString(
                         this.whaleList.size()));
-            }
+            }*/
             pawnsToDisplay.add(w);
-
         }
         if (!this.seaSnakeList.isEmpty()) {
             SeaSnake ss = new SeaSnake();
-            ss.createImage(this.resolution);
+            /*ss.createPawnImage(this.resolution);
             if (this.seaSnakeList.size() > 1) {
                 JLabel textDisplay = new JLabel(Integer.toString(
                         this.seaSnakeList.size()));
-            }
+            }*/
             pawnsToDisplay.add(ss);
-
         }
         if (this.boat != null) {
-            this.boat.createImage(this.resolution);
+        	this.boat = new Boat();
+            //this.boat.createPawnImage(this.resolution);
             pawnsToDisplay.add(this.boat);
         }
         if (!this.explorerList.isEmpty()) {
-            boolean yellowSeen = false;
+        	
+        	if(containsExplorerColor(explorerList, Color.GREEN)) {
+        		Explorer e = new Explorer(Color.GREEN, 0);
+                pawnsToDisplay.add(e);
+        	}
+        	if(containsExplorerColor(explorerList, Color.RED)) {
+        		Explorer e = new Explorer(Color.RED, 0);
+                pawnsToDisplay.add(e);
+        	}
+        	if(containsExplorerColor(explorerList, Color.BLUE)) {
+        		Explorer e = new Explorer(Color.BLUE, 0);
+                pawnsToDisplay.add(e);
+        	}
+        	if(containsExplorerColor(explorerList, Color.YELLOW)) {
+        		Explorer e = new Explorer(Color.YELLOW, 0);
+                pawnsToDisplay.add(e);
+        	}
+            /*boolean yellowSeen = false;
             boolean redSeen = false;
             boolean blueSeen = false;
             boolean greenSeen = false;
@@ -753,80 +771,94 @@ public class Hexagon extends JPanel {
                 if (yellowSeen && blueSeen && redSeen && greenSeen) {
                     break;
                 }
-            }
+            }*/
         }
-
+        float rate = ((float) resolution / (float) 90);
         switch (pawnsToDisplay.size()) {
             case 1:
-                x.add((int) (11 * ((float) resolution / (float) 90)));
-                y.add((int) (11 * ((float) resolution / (float) 90)));
+                x.add((int) (11 * rate));
+                y.add((int) (11 * rate));
+                imageSize = 68;
                 break;
             case 2:
-                x.add((int) (11 * ((float) resolution / (float) 90)));
-                y.add((int) (11 * ((float) resolution / (float) 90)));
-
-                x.add((int) (11 * ((float) resolution / (float) 90)));
-                y.add((int) (11 * ((float) resolution / (float) 90)));
+                x.add((int) (1 * rate));
+                y.add((int) (23 * rate));
+                x.add((int) (46 * rate));
+                y.add((int) (23 * rate));
+                imageSize = 44;
 
                 break;
             case 3:
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
+                x.add((int) (27 * rate));
+                x.add((int) (9 * rate));
+                x.add((int) (45 * rate));
+                y.add((int) (3 * rate));
+                y.add((int) (39 * rate));
+                y.add((int) (39 * rate));
+                imageSize = 36;
 
                 break;
             case 4:
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
+                x.add((int) (15 * rate));
+                x.add((int) (15 * rate));
+                x.add((int) (49 * rate));
+                x.add((int) (49 * rate));
+                y.add((int) (15 * rate));
+                y.add((int) (45 * rate));
+                y.add((int) (15 * rate));
+                y.add((int) (45 * rate));
+                imageSize = 30;
 
                 break;
             case 5:
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
+
+                x.add((int) (30 * rate));
+                x.add((int) (10 * rate));
+                x.add((int) (50 * rate));
+                x.add((int) (10 * rate));
+                x.add((int) (50 * rate));
+                y.add((int) (30 * rate));
+                y.add((int) (10 * rate));
+                y.add((int) (10 * rate));
+                y.add((int) (50 * rate));
+                y.add((int) (50 * rate));
+                imageSize = 30;
 
                 break;
             case 6:
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                x.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
-                y.add((int) (11 * ((float) 68 / (float) 90)));
+                x.add((int) (20 * rate));
+                x.add((int) (45 * rate));
+                x.add((int) (10 * rate));
+                x.add((int) (55 * rate));
+                x.add((int) (20 * rate));
+                x.add((int) (45 * rate));
+                y.add((int) (5 * rate));
+                y.add((int) (5 * rate));
+                y.add((int) (30 * rate));
+                y.add((int) (30 * rate));
+                y.add((int) (55 * rate));
+                y.add((int) (55 * rate));
+                imageSize = 25;
 
                 break;
 
             default:
                 break;
         }
-
         for (int i = 0; i < pawnsToDisplay.size(); i++) {
             pawnsToDisplay.get(i).setPosition(x.get(i) + this.returnPosTileX(this.resolution),
-                    y.get(i) + this.returnPosTileY(this.resolution), this.resolution);
+                    y.get(i) + this.returnPosTileY(this.resolution), resolution, imageSize);
+            pawnsToDisplay.get(i).createPawnImage(this);
             pawnPane.add(pawnsToDisplay.get(i));
         }
 
     }
+    
+    public boolean containsExplorerColor(final List<Explorer> list, final Color color){
+        return list.stream().filter(o -> o.getColor().equals(color)).findFirst().isPresent();
+    }
+    
+    /*public int getExplorerNbInList(final List<Explorer> list, final Color color){
+        return list.stream().filter(o -> o.getColor().equals(color)).findFirst().isPresent();
+    }*/
 }

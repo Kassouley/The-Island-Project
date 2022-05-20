@@ -21,7 +21,7 @@ public class Main extends JFrame {
 	private ActionInfo actionInfo;
 	private JPanel contentPane;
 
-	int resolution = 70;
+	int resolution = 90;
 
 	public Main() {
 		super("The Island");

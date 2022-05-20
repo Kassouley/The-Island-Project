@@ -1,9 +1,9 @@
 package fr.mcstudio.board;
 
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,9 +13,12 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
+import fr.mcstudio.pawns.Explorer;
+import fr.mcstudio.pawns.SeaSnake;
 import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.tiles.Tile;
 
@@ -158,7 +161,15 @@ public class Board extends JLabel {
 										hexagons[i][j].returnPosTileY(resolution));
 								// tile.applyEffect(hexagon);
 								Shark shark = new Shark();
+								SeaSnake ss = new SeaSnake();
+								Explorer ex = new Explorer(Color.RED, 0);
+								Explorer ex2 = new Explorer(Color.BLUE, 0);
+								Explorer ex3 = new Explorer(Color.GREEN, 0);
 								hexagons[i][j].addPawn(shark);
+								hexagons[i][j].addPawn(ss);
+								hexagons[i][j].addPawn(ex);
+								hexagons[i][j].addPawn(ex2);
+								hexagons[i][j].addPawn(ex3);
 								hexagons[i][j].displayPawns(pawnPane);
 
 							}
