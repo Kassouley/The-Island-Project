@@ -3,6 +3,7 @@ package fr.mcstudio.game;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Random;
 
 import javax.swing.JPanel;
 
@@ -38,7 +39,7 @@ public class Game {
     /**
      * 
      */
-
+    private Game game = this;
 	private Board board;
 	private PlayerInfo playerInfo;
 	private ActionInfo actionInfo;
@@ -82,32 +83,70 @@ public class Game {
 
 		board = new Board(resolution);
 		contentPane.add(board);
+		boardClickAction();
 		
+		actionInfo = new ActionInfo(resolution);
+		contentPane.add(actionInfo);
+		actionInfoClickAction();
+    }
+    
+    public void boardClickAction() {
+
 		this.board.addMouseListener(new MouseListener() {
 
 			public void mouseClicked(MouseEvent e) {}
 
 			public void mousePressed(MouseEvent e) {
+				Random r = new Random();
 				for (int i = 0; i < 13; i++) {
 					for (int j = 0; j < 12; j++) {
 						Hexagon hex = board.getHexagons()[i][j];
-						if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), e.getY() - hex.getY())) {
-							System.out.println(
-									"Yay ! " + hex.getLine() + " " + hex.getColumn());
-							
-							hex.discover(null, board);
-							
-							Shark shark = new Shark();
-							SeaSnake ss = new SeaSnake();
-							Explorer ex = new Explorer(Color.RED, 0);
-							Explorer ex2 = new Explorer(Color.BLUE, 0);
-							Explorer ex3 = new Explorer(Color.GREEN, 0);
-							hex.addPawn(shark);
-							hex.addPawn(ss);
-							hex.addPawn(ex);
-							hex.addPawn(ex2);
-							hex.addPawn(ex3);
-							hex.displayPawns();
+						if (!hex.isVoid()) {
+							if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), e.getY() - hex.getY())) {
+								
+								hex.removeAllPawn();
+								System.out.println("Yay ! " + hex.getLine() + " " + hex.getColumn());
+								
+								hex.discover(null, board);
+								int n = r.nextInt(5);
+								//System.out.println(n);
+								switch(n) {
+									case 1:
+										Shark shark = new Shark();
+										hex.addPawn(shark);
+									case 2:
+										SeaSnake ss = new SeaSnake();
+										SeaSnake ss1 = new SeaSnake();
+										SeaSnake ss2 = new SeaSnake();
+										hex.addPawn(ss);
+										hex.addPawn(ss1);
+										hex.addPawn(ss2);
+									case 3:
+										Explorer ex = new Explorer(Color.YELLOW, 0);
+										Explorer ex1 = new Explorer(Color.YELLOW, 0);
+										hex.addPawn(ex);
+										hex.addPawn(ex1);
+									case 4:
+										Explorer ex2 = new Explorer(Color.BLUE, 0);
+										Explorer ex21= new Explorer(Color.BLUE, 0);
+										Explorer ex22 = new Explorer(Color.BLUE, 0);
+										Explorer ex23 = new Explorer(Color.BLUE, 0);
+										hex.addPawn(ex2);
+										hex.addPawn(ex21);
+										hex.addPawn(ex22);
+										hex.addPawn(ex23);
+									case 0:
+										Explorer ex3 = new Explorer(Color.GREEN, 0);
+										Explorer ex31 = new Explorer(Color.GREEN, 0);
+										Explorer ex32 = new Explorer(Color.GREEN, 0);
+										hex.addPawn(ex3);
+										hex.addPawn(ex31);
+										hex.addPawn(ex32);
+									default:
+										break;
+								}
+								hex.displayPawns();
+							}
 						}
 					}
 				}
@@ -144,9 +183,30 @@ public class Game {
 				}
 			}
 		});
+    }
+    
+    public void actionInfoClickAction() {
+    	this.actionInfo.addMouseListener(new MouseListener() {
 
-		actionInfo = new ActionInfo(resolution);
-		contentPane.add(actionInfo);
+			public void mouseClicked(MouseEvent e) {}
+
+			public void mousePressed(MouseEvent e) {}
+
+			public void mouseReleased(MouseEvent e) {}
+
+			public void mouseEntered(MouseEvent e) {}
+
+			public void mouseExited(MouseEvent e) {}
+		});
+
+    	this.actionInfo.addMouseMotionListener(new MouseMotionListener() {
+
+			@Override
+			public void mouseDragged(MouseEvent e) {}
+
+			@Override
+			public void mouseMoved(MouseEvent e) {}
+		});
     }
 
     /**

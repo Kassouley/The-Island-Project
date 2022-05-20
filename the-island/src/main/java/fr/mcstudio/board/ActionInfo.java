@@ -114,22 +114,22 @@ public class ActionInfo extends JLayeredPane {
 		actionInfoPane.setLayer(quitButton, 1);
 		actionInfoPane.add(quitButton);
 
-
+	}
 	
 	private void setPanelBoundsFromResolution(int resolution) {
 		switch (resolution) {
-		case 70:
-			setBounds(1172, 0, 260, 770);
-			break;
-		case 80:
-			setBounds(1338, 0, 297, 880);
-			break;
-		case 90:
-			setBounds(1512, 0, 338, 990);
-			break;
-		default:
-			break;
-	}
+			case 70:
+				setBounds(1172, 0, 260, 770);
+				break;
+			case 80:
+				setBounds(1338, 0, 297, 880);
+				break;
+			case 90:
+				setBounds(1512, 0, 338, 990);
+				break;
+			default:
+				break;
+		}
 	}
 	
 	private void setLabel() {

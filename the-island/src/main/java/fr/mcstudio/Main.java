@@ -14,7 +14,7 @@ public class Main extends JFrame {
 	private Player[] players;
 	private JPanel contentPane;
 
-	int resolution = 90;
+	int resolution = 70;
 
 	public Main() {
 		super("The Island");
@@ -27,7 +27,6 @@ public class Main extends JFrame {
 		contentPane.setBorder(null);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
 	}
 
 	public static void main(String[] args) {

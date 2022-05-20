@@ -25,9 +25,6 @@ import fr.mcstudio.tiles.Tile;
 public class Hexagon extends JLayeredPane {
 
     /**
-     * 
-     */
-    /**
      * <p>
      * Constructeur par défaut
      * </p>
@@ -49,9 +46,6 @@ public class Hexagon extends JLayeredPane {
 		boardPane.setLayer(this, 1);
 		setOpaque(false);
 		boardPane.add(this);
-        //highlightLabel.setIcon(new ImageIcon(Board.class.getResource("/HexagonBlanc.png")));
-        //boardPane.setLayer(highlightLabel, 3);
-        //add(highlightLabel);
     }
 
     private int resolution;
@@ -85,6 +79,8 @@ public class Hexagon extends JLayeredPane {
     private boolean highlight;
 
     private JLabel highlightLabel = new JLabel();
+    
+    private List<Pawn> pawnsToDisplay = new ArrayList<Pawn>();
 
     /**
      * <p>
@@ -686,42 +682,57 @@ public class Hexagon extends JLayeredPane {
     }
 
     public void displayPawns() {
-        List<Pawn> pawnsToDisplay = new ArrayList<Pawn>();
+    	for(Pawn p : pawnsToDisplay) {
+    		remove(p);
+    	}
+		revalidate();
+		repaint();
+    	pawnsToDisplay.clear();
+        //List<Pawn> pawnsToDisplay = new ArrayList<Pawn>();
         List<Integer> x = new ArrayList<Integer>();
         List<Integer> y = new ArrayList<Integer>();
+        List<Integer> index = new ArrayList<Integer>();
         int imageSize = 0;
 
         if (!this.sharkList.isEmpty()) {
             Shark s = new Shark();
+            index.add(this.sharkList.size());
             pawnsToDisplay.add(s);
         }
         if (!this.whaleList.isEmpty()) {
             Whale w = new Whale();
+            index.add(this.whaleList.size());
             pawnsToDisplay.add(w);
         }
         if (!this.seaSnakeList.isEmpty()) {
             SeaSnake ss = new SeaSnake();
+            index.add(this.seaSnakeList.size());
             pawnsToDisplay.add(ss);
         }
         if (this.boat != null) {
         	this.boat = new Boat();
+        	index.add(1);
             pawnsToDisplay.add(this.boat);
         }
         if (!this.explorerList.isEmpty()) {
         	if(containsExplorerColor(explorerList, Color.GREEN)) {
         		Explorer e = new Explorer(Color.GREEN, 0);
+        		index.add(nbExplorerColor(explorerList, Color.GREEN));
                 pawnsToDisplay.add(e);
         	}
         	if(containsExplorerColor(explorerList, Color.RED)) {
         		Explorer e = new Explorer(Color.RED, 0);
+        		index.add(nbExplorerColor(explorerList, Color.RED));
                 pawnsToDisplay.add(e);
         	}
         	if(containsExplorerColor(explorerList, Color.BLUE)) {
         		Explorer e = new Explorer(Color.BLUE, 0);
+        		index.add(nbExplorerColor(explorerList, Color.BLUE));
                 pawnsToDisplay.add(e);
         	}
         	if(containsExplorerColor(explorerList, Color.YELLOW)) {
         		Explorer e = new Explorer(Color.YELLOW, 0);
+        		index.add(nbExplorerColor(explorerList, Color.YELLOW));
                 pawnsToDisplay.add(e);
         	}
         }
@@ -801,7 +812,12 @@ public class Hexagon extends JLayeredPane {
             pawnsToDisplay.get(i).setPosition(x.get(i),
                     y.get(i), resolution, imageSize);
             pawnsToDisplay.get(i).createPawnImage(this);
-            setLayer(pawnsToDisplay.get(i), 2);
+            System.out.println(index.get(i));
+
+    		if(index.get(i) > 1)
+    			pawnsToDisplay.get(i).addIndex(index.get(i), imageSize);
+    		
+            setLayer(pawnsToDisplay.get(i), 1);
             add(pawnsToDisplay.get(i));
         }
     }
@@ -810,13 +826,23 @@ public class Hexagon extends JLayeredPane {
         return list.stream().filter(o -> o.getColor().equals(color)).findFirst().isPresent();
     }
     
+    public int nbExplorerColor(final List<Explorer> list, final Color color) {
+    	int nb = 0;
+    	for(Explorer e : list) {
+    		if(e.getColor() == color) {
+    			nb++;
+    		}
+    	}
+		return nb;
+    }
+    
     /*public int getExplorerNbInList(final List<Explorer> list, final Color color){
         return list.stream().filter(o -> o.getColor().equals(color)).findFirst().isPresent();
     }*/
     
     public void discover(Player p,Board board) {
     	if(getTile() != null) {
-			getTile().flipTile(this,null,board);
+			getTile().flipTile(this,p,board);
 		}
 		else {
 			System.out.println("Aucune tuile sur la case choisie\n");
