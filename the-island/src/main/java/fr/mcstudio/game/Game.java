@@ -1,5 +1,7 @@
 package fr.mcstudio.game;
 
+import javax.swing.Action;
+
 import fr.mcstudio.board.Board;
 import fr.mcstudio.enums.ActionTurn;
 import fr.mcstudio.enums.ActionTurn.*;
@@ -87,9 +89,15 @@ public class Game {
      */
     public void nextTurn() {
         this.turnNumber++;
-        this.players[(this.turnOrder + this.turnNumber) % players.length]
-                .setMoveLeft(3);
+        this.getCurrentPlayer().setMoveLeft(3);
         this.actionTurn = ActionTurn.PLAY_TILE;
+    }
+
+    /**
+     * 
+     */
+    public Player getCurrentPlayer() {
+        return this.players[(this.turnOrder + this.turnNumber) % players.length];
     }
 
     /**
@@ -97,6 +105,13 @@ public class Game {
      */
     public void nextActionTurn() {
         this.actionTurn = this.actionTurn.next();
+    }
+
+    /**
+     * 
+     */
+    public ActionTurn getActionTurn() {
+        return this.actionTurn;
     }
 
     /**
@@ -158,15 +173,17 @@ public class Game {
     /**
      * 
      */
-    /*public void startGame() {
-        for (int i = 0; i < players.length; i++) {
-            // Afficher message "Pose tes pions"
-            players[(this.turnOrder + i) % players.length]
-                    .placeAllExplorers(this.board);
-            players[(this.turnOrder + i) % players.length]
-                    .placeBoats(this.board);
-        }
-    }*/
+    /*
+     * public void startGame() {
+     * for (int i = 0; i < players.length; i++) {
+     * // Afficher message "Pose tes pions"
+     * players[(this.turnOrder + i) % players.length]
+     * .placeAllExplorers(this.board);
+     * players[(this.turnOrder + i) % players.length]
+     * .placeBoats(this.board);
+     * }
+     * }
+     */
 
     /**
      * 

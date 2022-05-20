@@ -124,8 +124,9 @@ public class Board extends JLabel {
 					hexagons[i][j].setType(HexagonType.VOID);
 				}
 
-				if(hexagons[i][j].getTile() != null) {
-					hexagons[i][j].getTile().setPosition(resolution, hexagons[i][j].returnPosTileX(resolution), hexagons[i][j].returnPosTileY(resolution));
+				if (hexagons[i][j].getTile() != null) {
+					hexagons[i][j].getTile().setPosition(resolution, hexagons[i][j].returnPosTileX(resolution),
+							hexagons[i][j].returnPosTileY(resolution));
 
 					tilesPane.add(hexagons[i][j].getTile());
 				}
@@ -136,23 +137,26 @@ public class Board extends JLabel {
 
 		boardPane.addMouseListener(new MouseListener() {
 
-
-			public void mouseClicked(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
+			}
 
 			public void mousePressed(MouseEvent e) {
-				for(int i = 0; i < 13; i ++) {
+				for (int i = 0; i < 13; i++) {
 					for (int j = 0; j < 12; j++) {
-						if(hexagons[i][j].getTile() != null)
-							if(hexagons[i][j].isInHexagonfloat(resolution, e.getX(), e.getY())) {
-								System.out.println("Yay ! " + hexagons[i][j].getLine() + " " + hexagons[i][j].getColumn());
-                hexagons[i][j].getTile().discover(hexagons[i][j],null, board);
-									tilesPane.remove(hexagons[i][j].getTile());
-									//tilesPane.revalidate();
-									//tilesPane.repaint();
-									tilesPane.updateUI();
-									hexagons[i][j].removeTile();
-									hexagons[i][j].getTile().setPosition(resolution, hexagons[i][j].returnPosTileX(resolution), hexagons[i][j].returnPosTileY(resolution));
-								//tile.applyEffect(hexagon);
+						if (hexagons[i][j].getTile() != null)
+							if (hexagons[i][j].isInHexagonfloat(resolution, e.getX(), e.getY())) {
+								System.out.println(
+										"Yay ! " + hexagons[i][j].getLine() + " " + hexagons[i][j].getColumn());
+								hexagons[i][j].getTile().discover(hexagons[i][j], null, board);
+								tilesPane.remove(hexagons[i][j].getTile());
+								// tilesPane.revalidate();
+								// tilesPane.repaint();
+								tilesPane.updateUI();
+								hexagons[i][j].removeTile();
+								hexagons[i][j].getTile().setPosition(resolution,
+										hexagons[i][j].returnPosTileX(resolution),
+										hexagons[i][j].returnPosTileY(resolution));
+								// tile.applyEffect(hexagon);
 
 							}
 					}
@@ -160,8 +164,8 @@ public class Board extends JLabel {
 
 			}
 
-			public void mouseReleased(MouseEvent e) {}
-
+			public void mouseReleased(MouseEvent e) {
+			}
 
 			public void mouseEntered(MouseEvent e) {
 			}
@@ -180,13 +184,13 @@ public class Board extends JLabel {
 			public void mouseMoved(MouseEvent e) {
 				for (int i = 0; i < 13; i++) {
 					for (int j = 0; j < 12; j++) {
-						if(hexagons[i][j].getTile() != null) {
-							if(hexagons[i][j].isInHexagonfloat(resolution, e.getX(), e.getY())) {
-								if(!hexagons[i][j].isHighlight())
+						if (hexagons[i][j].getTile() != null) {
+							if (hexagons[i][j].isInHexagonfloat(resolution, e.getX(), e.getY())) {
+								if (!hexagons[i][j].isHighlight())
 									hexagons[i][j].setHighlight(resolution, boardPane, true, "white");
 
 							} else {
-								if(hexagons[i][j].isHighlight())
+								if (hexagons[i][j].isHighlight())
 									hexagons[i][j].setHighlight(resolution, boardPane, false, null);
 							}
 						}
@@ -295,7 +299,7 @@ public class Board extends JLabel {
 
 		this.setIcon(icone);
 	}
-  
+
 	public Hexagon getTopLeft(Hexagon actualHexagon) {
 		if (actualHexagon.getLine() - 1 > 0 && actualHexagon.getLine() % 2 == 0) {
 			return this.hexagons[actualHexagon.getLine() - 1][actualHexagon.getColumn()];
