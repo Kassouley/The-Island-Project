@@ -12,6 +12,8 @@ import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
+import fr.mcstudio.enums.HexagonListType;
+import fr.mcstudio.util.PairList;
 
 @SuppressWarnings("serial")
 public class Pawn extends JPanel {
@@ -49,8 +51,8 @@ public class Pawn extends JPanel {
      * @param distance
      * @param listHexagon
      */
-    public void findPath(Hexagon actualPosition, Board board, int distance, List<Hexagon> listHexagon) {
-        listHexagon.clear();
+    public void findPath(Hexagon actualPosition, Board board, int distance, PairList<Hexagon,HexagonListType> hexagonPairList) {
+        hexagonPairList.clear();
 
         // ---------------------------------------------------------- A changer, faut
         // regarder les movePoint et moveCost je pense
@@ -65,12 +67,14 @@ public class Pawn extends JPanel {
         tmp.add(actualPosition);
         for (int i = 0; i < distance; i++) {
             for (Hexagon hexagon : tmp) {
-                this.findPathAux(hexagon, board, listHexagon);
+                this.findPathAux(hexagon, board, hexagonPairList);
             }
             List<Hexagon> mem = new ArrayList<Hexagon>();
+            List<Hexagon> hexagonList = hexagonPairList.getLeftList();
             mem.addAll(tmp);
+            
 
-            tmp.addAll(listHexagon);
+            tmp.addAll(hexagonList);
             for (Hexagon hexagon : mem) {
                 if (tmp.contains(hexagon)) {
                     tmp.remove(hexagon);
@@ -85,7 +89,7 @@ public class Pawn extends JPanel {
      * @param board
      * @param listHexagon
      */
-    private void findPathAux(Hexagon actualPosition, Board board, List<Hexagon> listHexagon) {
+    public void findPathAux(Hexagon actualPosition, Board board, PairList<Hexagon,HexagonListType> hexagonPairList) {
     }
 
     public void createPawnImage(Hexagon hex) {
