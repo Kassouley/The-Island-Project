@@ -228,7 +228,7 @@ public class Tile extends JLabel {
 		listNeighbors.add(tilePosition);
 		for(Hexagon hexagon :listNeighbors ) {
 			hexagons[hexagon.getLine()][hexagon.getColumn()].removeAllPawn();
-
+			hexagons[hexagon.getLine()][hexagon.getColumn()].displayPawns();
 			System.out.println(" ligne = " + hexagon.getLine() +" colonne = : " + hexagon.getColumn() + " coucou toi");
 		}										
 	}

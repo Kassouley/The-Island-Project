@@ -14,6 +14,7 @@ import fr.mcstudio.board.PlayerInfo;
 import fr.mcstudio.enums.ActionTurn;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.pawns.Explorer;
+import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
 import fr.mcstudio.pawns.Shark;
 
@@ -30,7 +31,9 @@ public class Game {
     	this.contentPane = contentPane;
         this.players = players;
         this.turnNumber = 0;
-        this.turnOrder = (int) (Math.random() * 3);
+        this.turnOrder = (int) (Math.random() * players.length);
+        
+        //A set comme vous voulez pour effectuer des test sur les differentes actions
         this.actionTurn = ActionTurn.PLAY_TILE;
         
         initializeBoard();
@@ -77,6 +80,9 @@ public class Game {
      */
     private ActionTurn actionTurn;
     
+    /**
+     * 
+     */
     public void initializeBoard() {
     	playerInfo = new PlayerInfo(resolution);
 		contentPane.add(playerInfo);
@@ -89,6 +95,21 @@ public class Game {
 		contentPane.add(actionInfo);
 		actionInfoClickAction();
     }
+    
+    /**
+     * 
+     */
+    boolean firstClic = true;
+    
+    /**
+     * 
+     */
+    private Pawn pawnToMove;
+    
+    /**
+     * 
+     */
+    private Hexagon saveHexa;
     
     public void boardClickAction() {
 
@@ -104,47 +125,72 @@ public class Game {
 						if (!hex.isVoid()) {
 							if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), e.getY() - hex.getY())) {
 								
-								hex.removeAllPawn();
-								System.out.println("Yay ! " + hex.getLine() + " " + hex.getColumn());
-								
-								hex.discover(null, board);
-								int n = r.nextInt(5);
-								//System.out.println(n);
-								switch(n) {
-									case 1:
-										Shark shark = new Shark();
-										hex.addPawn(shark);
-									case 2:
-										SeaSnake ss = new SeaSnake();
-										SeaSnake ss1 = new SeaSnake();
-										SeaSnake ss2 = new SeaSnake();
-										hex.addPawn(ss);
-										hex.addPawn(ss1);
-										hex.addPawn(ss2);
-									case 3:
-										Explorer ex = new Explorer(Color.YELLOW, 0);
-										Explorer ex1 = new Explorer(Color.YELLOW, 0);
-										hex.addPawn(ex);
-										hex.addPawn(ex1);
-									case 4:
-										Explorer ex2 = new Explorer(Color.BLUE, 0);
-										Explorer ex21= new Explorer(Color.BLUE, 0);
-										Explorer ex22 = new Explorer(Color.BLUE, 0);
-										Explorer ex23 = new Explorer(Color.BLUE, 0);
-										hex.addPawn(ex2);
-										hex.addPawn(ex21);
-										hex.addPawn(ex22);
-										hex.addPawn(ex23);
-									case 0:
-										Explorer ex3 = new Explorer(Color.GREEN, 0);
-										Explorer ex31 = new Explorer(Color.GREEN, 0);
-										Explorer ex32 = new Explorer(Color.GREEN, 0);
-										hex.addPawn(ex3);
-										hex.addPawn(ex31);
-										hex.addPawn(ex32);
-									default:
-										break;
+								if(actionTurn == ActionTurn.PLAY_TILE) {
+									//Pour test plus facilement ; les 4 prochaines lignes servent a afficher un pion
+									Explorer yop = new Explorer(players[turnOrder].getColor(),5);
+									Shark shark = new Shark();
+									hex.addPawn(shark);
+									hex.addPawn(yop);
+									
+
+									// ActionTurn est le changement d'action, à mettre en commentaire pour test
+									actionTurn = actionTurn.next();
 								}
+								else if(actionTurn== ActionTurn.MOVE_PAWNS) {
+									if(!board.getHexagons()[i][j].getExplorerList().isEmpty() && firstClic == true) {										
+										saveHexa = board.getHexagons()[i][j];
+										//--Choix de l'explorateur avec loik 
+										for( Explorer explo : board.getHexagons()[i][j].getExplorerList()) {
+											pawnToMove = explo;
+										}			
+										//--
+										firstClic = false;	
+									}
+									else if(firstClic == false) {
+										System.out.println("yopi2");
+										pawnToMove.move(saveHexa,hex) ;
+										
+										saveHexa.displayPawns();
+										firstClic = true;
+										saveHexa = null;
+										
+										// ActionTurn est le changement d'action, à mettre en commentaire pour test
+										actionTurn = actionTurn.next();
+									}	
+								}
+								else if(actionTurn== ActionTurn.DISCOVER_TILE){									
+									hex.discover(players[turnOrder], board);
+
+									// ActionTurn est le changement d'action, à mettre en commentaire pour test
+									actionTurn = actionTurn.next();
+								}
+								else if(actionTurn== ActionTurn.MOVE_MONSTER){
+									if(!board.getHexagons()[i][j].getSharkList().isEmpty() && firstClic == true) {										
+										saveHexa = board.getHexagons()[i][j];
+										//--Choix du monstre avec loik 
+										for( Shark ss : board.getHexagons()[i][j].getSharkList()) {
+											pawnToMove = ss;
+										}			
+										//--
+										firstClic = false;
+										
+									}
+									else if(firstClic == false) {
+										System.out.println("yopi2");
+										pawnToMove.move(saveHexa, board.getHexagons()[i][j]) ;
+										saveHexa.displayPawns();
+										firstClic = true;
+										saveHexa = null;
+										
+										// ActionTurn est le changement d'action, à mettre en commentaire pour test
+										actionTurn = actionTurn.next();
+										turnOrder = (turnOrder + 1) % players.length;
+									}
+								}
+								System.out.println("Joueur :"+ turnOrder + "; " + players[turnOrder].getPseudo());						
+								System.out.println(actionTurn + "\n");
+									
+								
 								hex.displayPawns();
 							}
 						}
