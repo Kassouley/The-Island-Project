@@ -16,9 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.mcstudio.board.Board;
-
-import javax.swing.ImageIcon;
-
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.enums.HexagonType;
