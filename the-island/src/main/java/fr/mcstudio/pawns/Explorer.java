@@ -123,6 +123,7 @@ public class Explorer extends Pawn {
      * @since 2.0
      */
     public void move(Hexagon oldPosition, Hexagon newPosition) {
+    	System.out.println("Bouh");
         oldPosition.removePawn(this);
         switch (newPosition.getType()) {
             case TILES:
@@ -240,13 +241,18 @@ public class Explorer extends Pawn {
         for (Hexagon hexagon : tmp) {
             if (hexagon != null
                     && !hexagonPairList.containsInPair(hexagon)) {
-                
-                if (hexagon.getSharkList().isEmpty()
-                        && hexagon.getSeaSnakeList().isEmpty()) {
-
-                    hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.NORMAL));
+            	if(hexagon.getBoat() != null)
+            		System.out.println("size : " + hexagon.getBoat().explorerList.size());
+            	if (hexagon.getBoat() != null && !hexagon.getBoat().isFull()) {
+                    hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.BOAT));
                 } else {
-                    hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.DEATH));
+                    if (hexagon.getSharkList().isEmpty()
+                            && hexagon.getSeaSnakeList().isEmpty()) {
+
+                        hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.NORMAL));
+                    } else {
+                        hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.DEATH));
+                    }
                 }
                 
             }

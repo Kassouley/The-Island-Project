@@ -80,6 +80,8 @@ public class Hexagon extends JLayeredPane {
 
     private JLabel highlightLabel = new JLabel();
     
+    private String highlightColor = null;
+    
     private List<Pawn> pawnsToDisplay = new ArrayList<Pawn>();
 
     /**
@@ -150,10 +152,10 @@ public class Hexagon extends JLayeredPane {
      * </p>
      */
     public Tile getTile() {
-        if (tile == null) {
+        if ( this.tile == null) {
             return null;
         } else {
-            return tile;
+            return  this.tile;
         }
 
     }
@@ -544,7 +546,12 @@ public class Hexagon extends JLayeredPane {
 
     public void setHighlight(int resolution, JLayeredPane boardPane, boolean highlight, String color) {
         this.highlight = highlight;
-        if (highlight) {
+
+        remove(highlightLabel);
+        revalidate();
+		repaint();
+        
+        if (this.highlight) {
             // boardPane.remove(highlightLabel);
             ImageIcon icone = null;
             Image scaleImage;
@@ -552,8 +559,15 @@ public class Hexagon extends JLayeredPane {
                 icone = new ImageIcon(Tile.class.getResource("/HexagonBlanc.png"));
             } else if (color == "yellow") {
                 icone = new ImageIcon(Tile.class.getResource("/HexagonJaune.png"));
+                highlightColor = "yellow";
             } else if (color == "red") {
                 icone = new ImageIcon(Tile.class.getResource("/HexagonRouge.png"));
+                if(boat != null)
+                	System.out.println("purple");
+                highlightColor = "red";
+            } else if (color == "purple") {
+                icone = new ImageIcon(Tile.class.getResource("/HexagonViolet.png"));
+                highlightColor = "purple";
             }
             switch (resolution) {
                 case 70:
@@ -579,7 +593,15 @@ public class Hexagon extends JLayeredPane {
         }
     }
 
-    /**
+    public void setHighlightColor(String highlightColor) {
+		this.highlightColor = highlightColor;
+	}
+
+	public String getHighlightColor() {
+		return highlightColor;
+	}
+
+	/**
      * <p>
      * Vide la case de tous ses pions
      * </p>
@@ -710,9 +732,9 @@ public class Hexagon extends JLayeredPane {
             pawnsToDisplay.add(ss);
         }
         if (this.boat != null) {
-        	this.boat = new Boat();
+        	Boat b = new Boat();
         	index.add(1);
-            pawnsToDisplay.add(this.boat);
+            pawnsToDisplay.add(b);
         }
         if (!this.explorerList.isEmpty()) {
         	if(containsExplorerColor(explorerList, Color.GREEN)) {
@@ -809,10 +831,14 @@ public class Hexagon extends JLayeredPane {
                 break;
         }
         for (int i = 0; i < pawnsToDisplay.size(); i++) {
+
+            
             pawnsToDisplay.get(i).setPosition(x.get(i),
                     y.get(i), resolution, imageSize);
             pawnsToDisplay.get(i).createPawnImage(this);
-            System.out.println(index.get(i));
+            if (pawnsToDisplay.get(i) instanceof Boat) 
+            	((Boat)pawnsToDisplay.get(i)).displayBoatPawns(this.boat, resolution, pawnsToDisplay.size(), this);
+            //System.out.println(index.get(i));
 
     		if(index.get(i) > 1)
     			pawnsToDisplay.get(i).addIndex(index.get(i), imageSize);
@@ -841,8 +867,8 @@ public class Hexagon extends JLayeredPane {
     }*/
     
     public void discover(Player p,Board board) {
-    	if(getTile() != null) {
-			getTile().flipTile(this,p,board);
+    	if( this.tile != null) {
+    		 this.tile.flipTile(this,p,board);
 		}
 		else {
 			System.out.println("Aucune tuile sur la case choisie\n");

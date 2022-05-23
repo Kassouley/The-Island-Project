@@ -14,6 +14,7 @@ import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonListType;
+import fr.mcstudio.util.Pair;
 import fr.mcstudio.util.PairList;
 
 @SuppressWarnings("serial")
@@ -66,6 +67,7 @@ public class Pawn extends JLayeredPane {
 
         List<Hexagon> tmp = new ArrayList<Hexagon>();
         tmp.add(actualPosition);
+        hexagonPairList.add(new Pair<Hexagon, HexagonListType>(actualPosition, HexagonListType.NORMAL));
         for (int i = 0; i < distance; i++) {
             for (Hexagon hexagon : tmp) {
                 this.findPathAux(hexagon, board, hexagonPairList);
@@ -75,13 +77,19 @@ public class Pawn extends JLayeredPane {
             mem.addAll(tmp);
             
 
-            tmp.addAll(hexagonList);
+            for (Hexagon hexagon : hexagonList) {
+                int index = hexagonList.indexOf(hexagon);
+                if (hexagonPairList.get(index).getRight() != HexagonListType.DEATH) {
+                    tmp.add(hexagon);
+                }
+            }
             for (Hexagon hexagon : mem) {
                 if (tmp.contains(hexagon)) {
                     tmp.remove(hexagon);
                 }
             }
         }
+        hexagonPairList.remove(0);
     }
 
     /**
@@ -142,6 +150,14 @@ public class Pawn extends JLayeredPane {
 		this.setLayer(this.index, 2);
 		add(this.index);
 		
+	}
+
+	public JLabel getImage() {
+		return image;
+	}
+
+	public void setImage(JLabel image) {
+		this.image = image;
 	}
 
 }
