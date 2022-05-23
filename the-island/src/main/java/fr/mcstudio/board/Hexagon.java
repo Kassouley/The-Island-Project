@@ -152,10 +152,10 @@ public class Hexagon extends JLayeredPane {
      * </p>
      */
     public Tile getTile() {
-        if (tile == null) {
+        if ( this.tile == null) {
             return null;
         } else {
-            return tile;
+            return  this.tile;
         }
 
     }
