@@ -562,6 +562,8 @@ public class Hexagon extends JLayeredPane {
                 highlightColor = "yellow";
             } else if (color == "red") {
                 icone = new ImageIcon(Tile.class.getResource("/HexagonRouge.png"));
+                if(boat != null)
+                	System.out.println("purple");
                 highlightColor = "red";
             } else if (color == "purple") {
                 icone = new ImageIcon(Tile.class.getResource("/HexagonViolet.png"));
@@ -586,8 +588,8 @@ public class Hexagon extends JLayeredPane {
             this.highlightLabel.setVisible(true);
             add(highlightLabel);
         } else {
-                this.highlightLabel.setVisible(false);
-                remove(highlightLabel);
+            this.highlightLabel.setVisible(false);
+            remove(highlightLabel);
         }
     }
 
@@ -730,9 +732,9 @@ public class Hexagon extends JLayeredPane {
             pawnsToDisplay.add(ss);
         }
         if (this.boat != null) {
-        	this.boat = new Boat();
+        	Boat b = new Boat();
         	index.add(1);
-            pawnsToDisplay.add(this.boat);
+            pawnsToDisplay.add(b);
         }
         if (!this.explorerList.isEmpty()) {
         	if(containsExplorerColor(explorerList, Color.GREEN)) {
@@ -829,10 +831,14 @@ public class Hexagon extends JLayeredPane {
                 break;
         }
         for (int i = 0; i < pawnsToDisplay.size(); i++) {
+
+            
             pawnsToDisplay.get(i).setPosition(x.get(i),
                     y.get(i), resolution, imageSize);
             pawnsToDisplay.get(i).createPawnImage(this);
-            System.out.println(index.get(i));
+            if (pawnsToDisplay.get(i) instanceof Boat) 
+            	((Boat)pawnsToDisplay.get(i)).displayBoatPawns(this.boat, resolution, pawnsToDisplay.size(), this);
+            //System.out.println(index.get(i));
 
     		if(index.get(i) > 1)
     			pawnsToDisplay.get(i).addIndex(index.get(i), imageSize);

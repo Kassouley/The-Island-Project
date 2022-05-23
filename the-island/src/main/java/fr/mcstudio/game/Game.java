@@ -13,6 +13,7 @@ import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.board.PlayerInfo;
 import fr.mcstudio.enums.ActionTurn;
 import fr.mcstudio.enums.HexagonListType;
+import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.Shark;
@@ -131,8 +132,10 @@ public class Game {
 								if(actionTurn == ActionTurn.PLAY_TILE) {
 									//Pour test plus facilement ; les 4 prochaines lignes servent a afficher un pion
 									Explorer yop = new Explorer(players[turnOrder].getColor(),5);
-									Shark shark = new Shark();
-									hex.addPawn(shark);
+									Shark s = new Shark();
+									Boat b = new Boat();
+									hex.addPawn(s);
+									hex.addPawn(b);
 									hex.addPawn(yop);
 									
 
@@ -156,7 +159,7 @@ public class Game {
 													s = "yellow";
 													break;
 												case BOAT:
-													s = "red";
+													s = "purple";
 													break;
 												case DEATH:
 													s = "red";
@@ -211,9 +214,6 @@ public class Game {
 											switch(p.getRight()) {
 												case NORMAL:
 													s = "yellow";
-													break;
-												case BOAT:
-													s = "red";
 													break;
 												case DEATH:
 													s = "red";

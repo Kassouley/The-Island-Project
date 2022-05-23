@@ -77,7 +77,12 @@ public class Pawn extends JLayeredPane {
             mem.addAll(tmp);
             
 
-            tmp.addAll(hexagonList);
+            for (Hexagon hexagon : hexagonList) {
+                int index = hexagonList.indexOf(hexagon);
+                if (hexagonPairList.get(index).getRight() != HexagonListType.DEATH) {
+                    tmp.add(hexagon);
+                }
+            }
             for (Hexagon hexagon : mem) {
                 if (tmp.contains(hexagon)) {
                     tmp.remove(hexagon);
@@ -145,6 +150,14 @@ public class Pawn extends JLayeredPane {
 		this.setLayer(this.index, 2);
 		add(this.index);
 		
+	}
+
+	public JLabel getImage() {
+		return image;
+	}
+
+	public void setImage(JLabel image) {
+		this.image = image;
 	}
 
 }
