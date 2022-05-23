@@ -137,7 +137,7 @@ public class Game {
 									
 
 									// ActionTurn est le changement d'action, à mettre en commentaire pour test
-									actionTurn = actionTurn.next();
+									nextActionTurn();
 								}
 								else if(actionTurn== ActionTurn.MOVE_PAWNS) {
 									if(!hex.getExplorerList().isEmpty() && firstClic == true) {										
@@ -182,7 +182,7 @@ public class Game {
 											firstClic = true;
 											saveHexa = null;
 											// ActionTurn est le changement d'action, à mettre en commentaire pour test
-											actionTurn = actionTurn.next();
+											nextActionTurn();
 											
 										}								
 									}	
@@ -192,7 +192,7 @@ public class Game {
 										hex.discover(players[turnOrder], board);
 
 										// ActionTurn est le changement d'action, à mettre en commentaire pour test
-										actionTurn = actionTurn.next();
+										nextActionTurn();
 									}
 									
 								}
@@ -240,7 +240,7 @@ public class Game {
 											saveHexa = null;
 											
 											// ActionTurn est le changement d'action, à mettre en commentaire pour test
-											actionTurn = actionTurn.next();
+											nextActionTurn();
 											turnOrder = (turnOrder + 1) % players.length;
 										}
 									}
