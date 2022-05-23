@@ -80,6 +80,8 @@ public class Hexagon extends JLayeredPane {
 
     private JLabel highlightLabel = new JLabel();
     
+    private String highlightColor = null;
+    
     private List<Pawn> pawnsToDisplay = new ArrayList<Pawn>();
 
     /**
@@ -544,7 +546,12 @@ public class Hexagon extends JLayeredPane {
 
     public void setHighlight(int resolution, JLayeredPane boardPane, boolean highlight, String color) {
         this.highlight = highlight;
-        if (highlight) {
+
+        remove(highlightLabel);
+        revalidate();
+		repaint();
+        
+        if (this.highlight) {
             // boardPane.remove(highlightLabel);
             ImageIcon icone = null;
             Image scaleImage;
@@ -552,8 +559,13 @@ public class Hexagon extends JLayeredPane {
                 icone = new ImageIcon(Tile.class.getResource("/HexagonBlanc.png"));
             } else if (color == "yellow") {
                 icone = new ImageIcon(Tile.class.getResource("/HexagonJaune.png"));
+                highlightColor = "yellow";
             } else if (color == "red") {
                 icone = new ImageIcon(Tile.class.getResource("/HexagonRouge.png"));
+                highlightColor = "red";
+            } else if (color == "purple") {
+                icone = new ImageIcon(Tile.class.getResource("/HexagonViolet.png"));
+                highlightColor = "purple";
             }
             switch (resolution) {
                 case 70:
@@ -574,12 +586,20 @@ public class Hexagon extends JLayeredPane {
             this.highlightLabel.setVisible(true);
             add(highlightLabel);
         } else {
-            this.highlightLabel.setVisible(false);
-            remove(highlightLabel);
+                this.highlightLabel.setVisible(false);
+                remove(highlightLabel);
         }
     }
 
-    /**
+    public void setHighlightColor(String highlightColor) {
+		this.highlightColor = highlightColor;
+	}
+
+	public String getHighlightColor() {
+		return highlightColor;
+	}
+
+	/**
      * <p>
      * Vide la case de tous ses pions
      * </p>

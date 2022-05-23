@@ -12,11 +12,12 @@ import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.board.PlayerInfo;
 import fr.mcstudio.enums.ActionTurn;
-import fr.mcstudio.enums.Color;
+import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Pawn;
-import fr.mcstudio.pawns.SeaSnake;
 import fr.mcstudio.pawns.Shark;
+import fr.mcstudio.util.Pair;
+import fr.mcstudio.util.PairList;
 
 /**
  * 
@@ -80,6 +81,8 @@ public class Game {
      */
     private ActionTurn actionTurn;
     
+    private PairList<Hexagon,HexagonListType> hexagonPairList = new PairList<Hexagon, HexagonListType>();
+    
     /**
      * 
      */
@@ -137,19 +140,45 @@ public class Game {
 									actionTurn = actionTurn.next();
 								}
 								else if(actionTurn== ActionTurn.MOVE_PAWNS) {
-									if(!board.getHexagons()[i][j].getExplorerList().isEmpty() && firstClic == true) {										
-										saveHexa = board.getHexagons()[i][j];
+									if(!hex.getExplorerList().isEmpty() && firstClic == true) {										
+										saveHexa = hex;
 										//--Choix de l'explorateur avec loik 
-										for( Explorer explo : board.getHexagons()[i][j].getExplorerList()) {
+										for( Explorer explo : hex.getExplorerList()) {
 											pawnToMove = explo;
-										}			
+										}
 										//--
+										
+										pawnToMove.findPath(hex, board, 3, hexagonPairList);
+										for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+											String s;
+											switch(p.getRight()) {
+												case NORMAL:
+													s = "yellow";
+													break;
+												case BOAT:
+													s = "red";
+													break;
+												case DEATH:
+													s = "red";
+													break;
+												default:
+													s = "white";
+													break;
+											}
+											p.getLeft().setHighlight(resolution, board, true, s);
+										}
+										
 										firstClic = false;	
 									}
 									else if(firstClic == false) {
 										System.out.println("yopi2");
-										pawnToMove.move(saveHexa,hex) ;
-										
+										if(hexagonPairList.getLeftList().contains(hex))
+											pawnToMove.move(saveHexa,hex) ;
+										for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+											p.getLeft().setHighlightColor(null);
+											p.getLeft().setHighlight(resolution, board, false, null);
+										}
+										hexagonPairList.clear();
 										saveHexa.displayPawns();
 										firstClic = true;
 										saveHexa = null;
@@ -172,12 +201,38 @@ public class Game {
 											pawnToMove = ss;
 										}			
 										//--
+										
+										pawnToMove.findPath(hex, board, 3, hexagonPairList);
+										for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+											String s;
+											switch(p.getRight()) {
+												case NORMAL:
+													s = "yellow";
+													break;
+												case BOAT:
+													s = "red";
+													break;
+												case DEATH:
+													s = "red";
+													break;
+												default:
+													s = "white";
+													break;
+											}
+											p.getLeft().setHighlight(resolution, board, true, s);
+										}
 										firstClic = false;
 										
 									}
 									else if(firstClic == false) {
 										System.out.println("yopi2");
-										pawnToMove.move(saveHexa, board.getHexagons()[i][j]) ;
+										if(hexagonPairList.getLeftList().contains(hex))
+											pawnToMove.move(saveHexa, board.getHexagons()[i][j]) ;
+										for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+											p.getLeft().setHighlightColor(null);
+											p.getLeft().setHighlight(resolution, board, false, null);
+										}
+										hexagonPairList.clear();
 										saveHexa.displayPawns();
 										firstClic = true;
 										saveHexa = null;
@@ -217,12 +272,13 @@ public class Game {
 						Hexagon hex = board.getHexagons()[i][j];
 						if (!hex.isVoid()) {
 							if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), e.getY() - hex.getY())) {
-								if (!hex.isHighlight())
+								if (!hex.isHighlight() || hex.getHighlightColor() == null)
 									hex.setHighlight(resolution, board, true, "white");
 
 							} else {
-								if (hex.isHighlight())
+								if (hex.isHighlight() && hex.getHighlightColor() == null) {
 									hex.setHighlight(resolution, board, false, null);
+								}
 							}
 						}
 					}

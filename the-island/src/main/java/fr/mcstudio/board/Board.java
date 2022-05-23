@@ -39,22 +39,7 @@ public class Board extends JLayeredPane{
 		for (int i = 0; i < 13; i++) {
 			for (int j = 0; j < 12; j++) {
 				hexagons[i][j] = new Hexagon(this, i, j, resolution);
-				if (((i != 0 || j != 0)
-						&& (i != 1 || j != 0)
-						&& (i != 3 || j != 0)
-						&& (i != 9 || j != 0)
-						&& (i != 11 || j != 0)
-						&& (i != 12 || j != 0)
-						&& (i != 0 || j != 0)
-						&& (i != 0 || j != 1)
-						&& (i != 12 || j != 1)
-						&& (i != 0 || j != 9)
-						&& (i != 12 || j != 9)
-						&& (i != 0 || j != 10) 
-						&& (i != 12 || j != 10)
-						&& j != 11)
-						|| (i == 5 && j == 11)
-						|| (i == 7 && j == 11)) {
+				if (isInMapBound(i,j)) {
 
 					if ((((i > 2 && j > 3 && i < 10 && j < 8)
 							|| (i > 4 && j > 1 && i < 8 && j < 10
@@ -70,13 +55,12 @@ public class Board extends JLayeredPane{
 								resolution, resolution);
 						hexagons[i][j].add(hexagons[i][j].getTile());
 
+					} else if (i == 1 && j == 0 || i == 1 && j == 11 ||
+							i == 11 && j == 0 || i == 11 && j == 11) {
+						hexagons[i][j].setType(HexagonType.ISLAND);
 					} else {
 						hexagons[i][j].setType(HexagonType.SEA);
 					}
-
-				} else if (i == 1 && j == 0 || i == 1 && j == 11 ||
-						i == 11 && j == 0 || i == 11 && j == 11) {
-					hexagons[i][j].setType(HexagonType.ISLAND);
 				} else {
 					hexagons[i][j].setType(HexagonType.VOID);
 				}
@@ -180,25 +164,64 @@ public class Board extends JLayeredPane{
 		boardLabel.setIcon(icone);
 		boardLabel.setBounds(0, 0, getWidth(), getHeight());
 	}
+	
+	public boolean isInMapBound(int line, int column) {
+		if (((line != 0 || column != 0)
+				&& (line != 1 || column != 0)
+				&& (line != 3 || column != 0)
+				&& (line != 9 || column != 0)
+				&& (line != 11 || column != 0)
+				&& (line != 12 || column != 0)
+				&& (line != 0 || column != 0)
+				&& (line != 0 || column != 1)
+				&& (line != 12 || column != 1)
+				&& (line != 0 || column != 9)
+				&& (line != 12 || column != 9)
+				&& (line != 0 || column != 10) 
+				&& (line != 12 || column != 10)
+				&& column != 11)
+				|| (line == 5 && column == 11)
+				|| (line == 7 && column == 11)
+				|| line == 1 && column == 0 
+				|| line == 1 && column == 11 
+				|| line == 11 && column == 0 
+				|| line == 11 && column == 11) {
+			return true;
+		}
+		
+		return false;
+	}
 
 	public Hexagon getTopLeft(Hexagon actualHexagon) {
-		if (actualHexagon.getLine() - 1 > 0 && actualHexagon.getLine() % 2 == 0) {
-			return this.hexagons[actualHexagon.getLine() - 1][actualHexagon.getColumn()];
-		} else if (actualHexagon.getLine() - 1 > 0
-				&& actualHexagon.getColumn() - 1 > 0
-				&& actualHexagon.getLine() % 2 == 1) {
-			return this.hexagons[actualHexagon.getLine() - 1][actualHexagon.getColumn() - 1];
+		if (actualHexagon.getLine() - 1 >= 0 
+				&& actualHexagon.getLine() % 2 == 0 
+				&& isInMapBound(actualHexagon.getLine() - 1, 
+						actualHexagon.getColumn())) {
+			return this.hexagons[actualHexagon.getLine() - 1]
+					[actualHexagon.getColumn()];
+		} else if (actualHexagon.getLine() - 1 >= 0
+				&& actualHexagon.getColumn() - 1 >= 0
+				&& actualHexagon.getLine() % 2 == 1
+				&& isInMapBound(actualHexagon.getLine() - 1, 
+						actualHexagon.getColumn() - 1)) {
+			return this.hexagons[actualHexagon.getLine() - 1]
+					[actualHexagon.getColumn() - 1];
 		} else {
 			return null;
 		}
 	}
 
 	public Hexagon getTopRight(Hexagon actualHexagon) {
-		if (actualHexagon.getLine() - 1 > 0
+		if (actualHexagon.getLine() - 1 >= 0
 				&& actualHexagon.getColumn() + 1 < 12
-				&& actualHexagon.getLine() % 2 == 0) {
+				&& actualHexagon.getLine() % 2 == 0
+				&& isInMapBound(actualHexagon.getLine() - 1, 
+						actualHexagon.getColumn() + 1)) {
 			return this.hexagons[actualHexagon.getLine() - 1][actualHexagon.getColumn() + 1];
-		} else if (actualHexagon.getLine() - 1 > 0 && actualHexagon.getLine() % 2 == 1) {
+		} else if (actualHexagon.getLine() - 1 >= 0 
+				&& actualHexagon.getLine() % 2 == 1
+				&& isInMapBound(actualHexagon.getLine() - 1, 
+						actualHexagon.getColumn())) {
 			return this.hexagons[actualHexagon.getLine() - 1][actualHexagon.getColumn()];
 		} else {
 			return null;
@@ -206,7 +229,9 @@ public class Board extends JLayeredPane{
 	}
 
 	public Hexagon getLeft(Hexagon actualHexagon) {
-		if (actualHexagon.getColumn() - 1 > 0) {
+		if (actualHexagon.getColumn() - 1 >= 0 
+				&& isInMapBound(actualHexagon.getLine(), 
+						actualHexagon.getColumn() - 1)) {
 			return this.hexagons[actualHexagon.getLine()][actualHexagon.getColumn() - 1];
 		} else {
 			return null;
@@ -214,7 +239,9 @@ public class Board extends JLayeredPane{
 	}
 
 	public Hexagon getRight(Hexagon actualHexagon) {
-		if (actualHexagon.getColumn() + 1 < 12) {
+		if (actualHexagon.getColumn() + 1 < 12
+				&& isInMapBound(actualHexagon.getLine(), 
+						actualHexagon.getColumn() + 1)) {
 			return this.hexagons[actualHexagon.getLine()][actualHexagon.getColumn() + 1];
 		} else {
 			return null;
@@ -222,11 +249,16 @@ public class Board extends JLayeredPane{
 	}
 
 	public Hexagon getBottomLeft(Hexagon actualHexagon) {
-		if (actualHexagon.getLine() + 1 < 13 && actualHexagon.getLine() % 2 == 0) {
+		if (actualHexagon.getLine() + 1 < 13 
+				&& actualHexagon.getLine() % 2 == 0
+				&& isInMapBound(actualHexagon.getLine() + 1, 
+						actualHexagon.getColumn())) {
 			return this.hexagons[actualHexagon.getLine() + 1][actualHexagon.getColumn()];
 		} else if (actualHexagon.getLine() + 1 < 13
-				&& actualHexagon.getColumn() - 1 > 0
-				&& actualHexagon.getLine() % 2 == 1) {
+				&& actualHexagon.getColumn() - 1 >= 0
+				&& actualHexagon.getLine() % 2 == 1
+				&& isInMapBound(actualHexagon.getLine() + 1, 
+						actualHexagon.getColumn() - 1)) {
 			return this.hexagons[actualHexagon.getLine() + 1][actualHexagon.getColumn() - 1];
 		} else {
 			return null;
@@ -236,9 +268,14 @@ public class Board extends JLayeredPane{
 	public Hexagon getBottomRight(Hexagon actualHexagon) {
 		if (actualHexagon.getLine() + 1 < 13
 				&& actualHexagon.getColumn() + 1 < 12
-				&& actualHexagon.getLine() % 2 == 0) {
+				&& actualHexagon.getLine() % 2 == 0
+				&& isInMapBound(actualHexagon.getLine() + 1, 
+						actualHexagon.getColumn() + 1)) {
 			return this.hexagons[actualHexagon.getLine() + 1][actualHexagon.getColumn() + 1];
-		} else if (actualHexagon.getLine() + 1 < 12 && actualHexagon.getLine() % 2 == 1) {
+		} else if (actualHexagon.getLine() + 1 < 13 
+				&& actualHexagon.getLine() % 2 == 1
+				&& isInMapBound(actualHexagon.getLine() + 1, 
+						actualHexagon.getColumn())) {
 			return this.hexagons[actualHexagon.getLine() + 1][actualHexagon.getColumn()];
 		} else {
 			return null;

@@ -14,6 +14,7 @@ import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonListType;
+import fr.mcstudio.util.Pair;
 import fr.mcstudio.util.PairList;
 
 @SuppressWarnings("serial")
@@ -66,6 +67,7 @@ public class Pawn extends JLayeredPane {
 
         List<Hexagon> tmp = new ArrayList<Hexagon>();
         tmp.add(actualPosition);
+        hexagonPairList.add(new Pair<Hexagon, HexagonListType>(actualPosition, HexagonListType.NORMAL));
         for (int i = 0; i < distance; i++) {
             for (Hexagon hexagon : tmp) {
                 this.findPathAux(hexagon, board, hexagonPairList);
@@ -82,6 +84,7 @@ public class Pawn extends JLayeredPane {
                 }
             }
         }
+        hexagonPairList.remove(0);
     }
 
     /**
