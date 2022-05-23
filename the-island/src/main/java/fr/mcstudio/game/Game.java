@@ -131,12 +131,12 @@ public class Game {
 								
 								if(actionTurn == ActionTurn.PLAY_TILE) {
 									//Pour test plus facilement ; les 4 prochaines lignes servent a afficher un pion
-									Explorer yop = new Explorer(players[turnOrder].getColor(),5);
+									Explorer explo = new Explorer(players[turnOrder].getColor(),5);
 									Shark s = new Shark();
 									Boat b = new Boat();
 									hex.addPawn(s);
 									hex.addPawn(b);
-									hex.addPawn(yop);
+									hex.addPawn(explo);
 									
 
 									// ActionTurn est le changement d'action, à mettre en commentaire pour test
@@ -187,7 +187,16 @@ public class Game {
 											// ActionTurn est le changement d'action, à mettre en commentaire pour test
 											nextActionTurn();
 											
-										}								
+										}
+										else {
+											firstClic = true;
+											saveHexa = null;
+											for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+												p.getLeft().setHighlightColor(null);
+												p.getLeft().setHighlight(resolution, board, false, null);
+											}
+										}
+										
 									}	
 								}
 								else if(actionTurn== ActionTurn.DISCOVER_TILE){	
@@ -242,6 +251,14 @@ public class Game {
 											// ActionTurn est le changement d'action, à mettre en commentaire pour test
 											nextActionTurn();
 											turnOrder = (turnOrder + 1) % players.length;
+										}
+										else {
+											firstClic = true;
+											saveHexa = null;
+											for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+												p.getLeft().setHighlightColor(null);
+												p.getLeft().setHighlight(resolution, board, false, null);
+											}
 										}
 									}
 								}
