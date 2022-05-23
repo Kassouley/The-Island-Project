@@ -861,8 +861,8 @@ public class Hexagon extends JLayeredPane {
     }*/
     
     public void discover(Player p,Board board) {
-    	if(getTile() != null) {
-			getTile().flipTile(this,p,board);
+    	if( this.tile != null) {
+    		 this.tile.flipTile(this,p,board);
 		}
 		else {
 			System.out.println("Aucune tuile sur la case choisie\n");
