@@ -276,4 +276,8 @@ public class Player {
         }
         return false;
     }
+
+	public List<Tile> getTileList() {
+		return tileList;
+	}
 }

@@ -2,6 +2,7 @@ package fr.mcstudio.board;
 
 import java.awt.Image;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -197,14 +198,14 @@ public class Board extends JLayeredPane{
 				&& actualHexagon.getLine() % 2 == 0 
 				&& isInMapBound(actualHexagon.getLine() - 1, 
 						actualHexagon.getColumn())) {
-			return this.hexagons[actualHexagon.getLine() - 1]
+			return this.getHexagons()[actualHexagon.getLine() - 1]
 					[actualHexagon.getColumn()];
 		} else if (actualHexagon.getLine() - 1 >= 0
 				&& actualHexagon.getColumn() - 1 >= 0
 				&& actualHexagon.getLine() % 2 == 1
 				&& isInMapBound(actualHexagon.getLine() - 1, 
 						actualHexagon.getColumn() - 1)) {
-			return this.hexagons[actualHexagon.getLine() - 1]
+			return this.getHexagons()[actualHexagon.getLine() - 1]
 					[actualHexagon.getColumn() - 1];
 		} else {
 			return null;
@@ -217,12 +218,12 @@ public class Board extends JLayeredPane{
 				&& actualHexagon.getLine() % 2 == 0
 				&& isInMapBound(actualHexagon.getLine() - 1, 
 						actualHexagon.getColumn() + 1)) {
-			return this.hexagons[actualHexagon.getLine() - 1][actualHexagon.getColumn() + 1];
+			return this.getHexagons()[actualHexagon.getLine() - 1][actualHexagon.getColumn() + 1];
 		} else if (actualHexagon.getLine() - 1 >= 0 
 				&& actualHexagon.getLine() % 2 == 1
 				&& isInMapBound(actualHexagon.getLine() - 1, 
 						actualHexagon.getColumn())) {
-			return this.hexagons[actualHexagon.getLine() - 1][actualHexagon.getColumn()];
+			return this.getHexagons()[actualHexagon.getLine() - 1][actualHexagon.getColumn()];
 		} else {
 			return null;
 		}
@@ -232,7 +233,7 @@ public class Board extends JLayeredPane{
 		if (actualHexagon.getColumn() - 1 >= 0 
 				&& isInMapBound(actualHexagon.getLine(), 
 						actualHexagon.getColumn() - 1)) {
-			return this.hexagons[actualHexagon.getLine()][actualHexagon.getColumn() - 1];
+			return this.getHexagons()[actualHexagon.getLine()][actualHexagon.getColumn() - 1];
 		} else {
 			return null;
 		}
@@ -242,7 +243,7 @@ public class Board extends JLayeredPane{
 		if (actualHexagon.getColumn() + 1 < 12
 				&& isInMapBound(actualHexagon.getLine(), 
 						actualHexagon.getColumn() + 1)) {
-			return this.hexagons[actualHexagon.getLine()][actualHexagon.getColumn() + 1];
+			return this.getHexagons()[actualHexagon.getLine()][actualHexagon.getColumn() + 1];
 		} else {
 			return null;
 		}
@@ -253,13 +254,13 @@ public class Board extends JLayeredPane{
 				&& actualHexagon.getLine() % 2 == 0
 				&& isInMapBound(actualHexagon.getLine() + 1, 
 						actualHexagon.getColumn())) {
-			return this.hexagons[actualHexagon.getLine() + 1][actualHexagon.getColumn()];
+			return this.getHexagons()[actualHexagon.getLine() + 1][actualHexagon.getColumn()];
 		} else if (actualHexagon.getLine() + 1 < 13
 				&& actualHexagon.getColumn() - 1 >= 0
 				&& actualHexagon.getLine() % 2 == 1
 				&& isInMapBound(actualHexagon.getLine() + 1, 
 						actualHexagon.getColumn() - 1)) {
-			return this.hexagons[actualHexagon.getLine() + 1][actualHexagon.getColumn() - 1];
+			return this.getHexagons()[actualHexagon.getLine() + 1][actualHexagon.getColumn() - 1];
 		} else {
 			return null;
 		}
@@ -271,14 +272,47 @@ public class Board extends JLayeredPane{
 				&& actualHexagon.getLine() % 2 == 0
 				&& isInMapBound(actualHexagon.getLine() + 1, 
 						actualHexagon.getColumn() + 1)) {
-			return this.hexagons[actualHexagon.getLine() + 1][actualHexagon.getColumn() + 1];
+			return this.getHexagons()[actualHexagon.getLine() + 1][actualHexagon.getColumn() + 1];
 		} else if (actualHexagon.getLine() + 1 < 13 
 				&& actualHexagon.getLine() % 2 == 1
 				&& isInMapBound(actualHexagon.getLine() + 1, 
 						actualHexagon.getColumn())) {
-			return this.hexagons[actualHexagon.getLine() + 1][actualHexagon.getColumn()];
+			return this.getHexagons()[actualHexagon.getLine() + 1][actualHexagon.getColumn()];
 		} else {
 			return null;
 		}
+	}
+	
+	public boolean isSharkOnBoard() {
+		for (int i = 0; i < 13; i++) {
+			for (int j = 0; j < 12; j++) {
+				if(this.getHexagons()[i][j].getSharkList().size() > 0)
+					return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean isWhaleOnBoard() {
+		for (int i = 0; i < 13; i++) {
+			for (int j = 0; j < 12; j++) {
+				if(this.getHexagons()[i][j].getWhaleList().size() > 0)
+					return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean isSeaSnakeOnBoard() {
+		for (int i = 0; i < 13; i++) {
+			for (int j = 0; j < 12; j++) {
+				if(this.getHexagons()[i][j].getSeaSnakeList().size() > 0)
+					return true;
+			}
+		}
+		
+		return false;
 	}
 }
