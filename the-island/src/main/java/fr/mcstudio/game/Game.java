@@ -172,19 +172,20 @@ public class Game {
 									}
 									else if(firstClic == false) {
 										System.out.println("yopi2");
-										if(hexagonPairList.getLeftList().contains(hex))
+										if(hexagonPairList.getLeftList().contains(hex)) {
 											pawnToMove.move(saveHexa,hex) ;
-										for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
-											p.getLeft().setHighlightColor(null);
-											p.getLeft().setHighlight(resolution, board, false, null);
-										}
-										hexagonPairList.clear();
-										saveHexa.displayPawns();
-										firstClic = true;
-										saveHexa = null;
-										
-										// ActionTurn est le changement d'action, à mettre en commentaire pour test
-										actionTurn = actionTurn.next();
+											for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+												p.getLeft().setHighlightColor(null);
+												p.getLeft().setHighlight(resolution, board, false, null);
+											}
+											hexagonPairList.clear();
+											saveHexa.displayPawns();
+											firstClic = true;
+											saveHexa = null;
+											// ActionTurn est le changement d'action, à mettre en commentaire pour test
+											actionTurn = actionTurn.next();
+											
+										}								
 									}	
 								}
 								else if(actionTurn== ActionTurn.DISCOVER_TILE){									
@@ -226,20 +227,21 @@ public class Game {
 									}
 									else if(firstClic == false) {
 										System.out.println("yopi2");
-										if(hexagonPairList.getLeftList().contains(hex))
+										if(hexagonPairList.getLeftList().contains(hex)) {
 											pawnToMove.move(saveHexa, board.getHexagons()[i][j]) ;
-										for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
-											p.getLeft().setHighlightColor(null);
-											p.getLeft().setHighlight(resolution, board, false, null);
+											for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+												p.getLeft().setHighlightColor(null);
+												p.getLeft().setHighlight(resolution, board, false, null);
+											}
+											hexagonPairList.clear();
+											saveHexa.displayPawns();
+											firstClic = true;
+											saveHexa = null;
+											
+											// ActionTurn est le changement d'action, à mettre en commentaire pour test
+											actionTurn = actionTurn.next();
+											turnOrder = (turnOrder + 1) % players.length;
 										}
-										hexagonPairList.clear();
-										saveHexa.displayPawns();
-										firstClic = true;
-										saveHexa = null;
-										
-										// ActionTurn est le changement d'action, à mettre en commentaire pour test
-										actionTurn = actionTurn.next();
-										turnOrder = (turnOrder + 1) % players.length;
 									}
 								}
 								System.out.println("Joueur :"+ turnOrder + "; " + players[turnOrder].getPseudo());						
