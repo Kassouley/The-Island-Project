@@ -171,7 +171,6 @@ public class Game {
 										firstClic = false;	
 									}
 									else if(firstClic == false) {
-										System.out.println("yopi2");
 										if(hexagonPairList.getLeftList().contains(hex)) {
 											pawnToMove.move(saveHexa,hex) ;
 											for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
@@ -188,11 +187,14 @@ public class Game {
 										}								
 									}	
 								}
-								else if(actionTurn== ActionTurn.DISCOVER_TILE){									
-									hex.discover(players[turnOrder], board);
+								else if(actionTurn== ActionTurn.DISCOVER_TILE){	
+									if(hex.getTile()!= null) {
+										hex.discover(players[turnOrder], board);
 
-									// ActionTurn est le changement d'action, à mettre en commentaire pour test
-									actionTurn = actionTurn.next();
+										// ActionTurn est le changement d'action, à mettre en commentaire pour test
+										actionTurn = actionTurn.next();
+									}
+									
 								}
 								else if(actionTurn== ActionTurn.MOVE_MONSTER){
 									if(!board.getHexagons()[i][j].getSharkList().isEmpty() && firstClic == true) {										
@@ -226,7 +228,6 @@ public class Game {
 										
 									}
 									else if(firstClic == false) {
-										System.out.println("yopi2");
 										if(hexagonPairList.getLeftList().contains(hex)) {
 											pawnToMove.move(saveHexa, board.getHexagons()[i][j]) ;
 											for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
