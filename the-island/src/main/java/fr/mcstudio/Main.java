@@ -32,7 +32,7 @@ public class Main extends JFrame {
 		int nbJoueur = 1;
 		players = new Player[nbJoueur];
 		
-		Player P1 = new Player("Akunes", Color.BLUE, false);
+		Player P1 = new Player("Akunes", Color.BLUE, false, resolution);
 		players[0] = P1;
 		/*Player P2 = new Player("lo", Color.RED, false);
 		players[1] = P2;
