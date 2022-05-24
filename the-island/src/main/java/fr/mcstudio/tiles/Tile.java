@@ -11,10 +11,12 @@ import javax.swing.SwingConstants;
 
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
+import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.game.Player;
 import fr.mcstudio.pawns.Boat;
+import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.pawns.Whale;
 
@@ -83,24 +85,20 @@ public class Tile extends JLabel {
 	 * @since1.0
 	 */
 	public void flipTile(Hexagon hexagon, Player p, Board board) {
-
-		hexagon.getTile().applyEffect(hexagon,board);
+		for(Explorer e : hexagon.getExplorerList()) {
+			e.setStatus(ExplorerStatus.SWIMMER);
+		}
+		if(hexagon.getTile().getEffect().getType() == "Verte"){
+			hexagon.getTile().applyEffect(hexagon,board);		  	
+		}
+		else {
+			  p.getTileList().add(hexagon.getTile());
+		}
+		
 		hexagon.remove(hexagon.getTile());
 		hexagon.revalidate();
 		hexagon.repaint();
 		hexagon.removeTile();
-		
-		/*if(tilePosition.getTile().getEffect().getType() == "Verte"){
-			tilePosition.getTile().applyEffect(tilePosition,hexagon);		  	
-		  }
-		else {
-			  p.getTileList().add(tilePosition.getTile());
-		  }*/
-		
-		//hexagons[tilePosition.getLine()][tilePosition.getColumn()].setType(HexagonType.SEA);
-		//hexagons[tilePosition.getLine()][tilePosition.getColumn()].setTile(null);
-		
-
 		 
 	}
 	
@@ -229,7 +227,6 @@ public class Tile extends JLabel {
 		for(Hexagon hexagon :listNeighbors ) {
 			hexagons[hexagon.getLine()][hexagon.getColumn()].removeAllPawn();
 			hexagons[hexagon.getLine()][hexagon.getColumn()].displayPawns();
-			System.out.println(" ligne = " + hexagon.getLine() +" colonne = : " + hexagon.getColumn() + " coucou toi");
 		}										
 	}
 	
