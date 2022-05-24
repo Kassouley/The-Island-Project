@@ -134,7 +134,7 @@ public class Game {
 							if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), e.getY() - hex.getY())) {
 								if(actionTurn == ActionTurn.INITIALIZATION) {
 									int exit = 0;
-									if(hex.getTile() != null) {
+									if(hex.getTile() != null && hex.getExplorerList().isEmpty()) {
 										
 										hex.addPawn(players[turnOrder].getExplorerList().get(0));
 										players[turnOrder].getExplorerList().remove(0);
