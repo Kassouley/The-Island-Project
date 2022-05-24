@@ -3,19 +3,24 @@ package fr.mcstudio.game;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.Random;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import fr.mcstudio.board.ActionInfo;
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.board.PlayerInfo;
 import fr.mcstudio.enums.ActionTurn;
+
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.pawns.Boat;
+
+import fr.mcstudio.enums.GameState;
+import fr.mcstudio.enums.TilesType;
+
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
@@ -40,19 +45,21 @@ public class Game {
         this.turnOrder = (int) (Math.random() * players.length);
         
         //A set comme vous voulez pour effectuer des test sur les differentes actions
+
         this.actionTurn = ActionTurn.INITIALIZATION;
+        this.gameState = GameState.INITIALISATION;
+
         
-        initializeBoard();
     }
 
     /**
      * 
      */
-    private Game game = this;
 	private Board board;
 	private PlayerInfo playerInfo;
 	private ActionInfo actionInfo;
 	private JPanel contentPane;
+	private GameState gameState;
 	
 	private int resolution;
 
@@ -102,6 +109,17 @@ public class Game {
 		actionInfo = new ActionInfo(resolution);
 		contentPane.add(actionInfo);
 		actionInfoClickAction();
+		
+		board.getHexagons()[1][1].getSeaSnakeList().add(new SeaSnake());
+    	board.getHexagons()[1][1].displayPawns();
+    	board.getHexagons()[2][10].getSeaSnakeList().add(new SeaSnake());
+    	board.getHexagons()[2][10].displayPawns();
+    	board.getHexagons()[10][0].getSeaSnakeList().add(new SeaSnake());
+    	board.getHexagons()[10][0].displayPawns();
+    	board.getHexagons()[11][10].getSeaSnakeList().add(new SeaSnake());
+    	board.getHexagons()[11][10].displayPawns();
+    	board.getHexagons()[6][5].getSeaSnakeList().add(new SeaSnake());
+    	board.getHexagons()[6][5].displayPawns();
     }
     
     /**
@@ -126,270 +144,22 @@ public class Game {
 			public void mouseClicked(MouseEvent e) {}
 
 			public void mousePressed(MouseEvent e) {
-				Random r = new Random();
-				for (int i = 0; i < 13; i++) {
-					for (int j = 0; j < 12; j++) {
-						Hexagon hex = board.getHexagons()[i][j];
-						if (!hex.isVoid()) {
-							if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), e.getY() - hex.getY())) {
-								if(actionTurn == ActionTurn.INITIALIZATION) {
-									int exit = 0;
-									if(hex.getTile() != null && hex.getExplorerList().isEmpty()) {
-										
-										hex.addPawn(players[turnOrder].getExplorerList().get(0));
-										players[turnOrder].getExplorerList().remove(0);
-										turnOrder = (turnOrder + 1) % players.length;
-										for(int x = 0 ; x < players.length ; x++) {
-											if(players[x].getExplorerList().size() == 0) {
-												exit ++;
-											}
-										}
-										if(exit == players.length) {
-											Shark s = new Shark();
-											Whale w = new Whale();
-											SeaSnake ss = new SeaSnake();
-											Boat b = new Boat();
-											hex.addPawn(s);
-											hex.addPawn(w);
-											hex.addPawn(ss);
-											hex.addPawn(b);
-											
-											nextActionTurn();
-										}
-									}								
-								}
-								else if(actionTurn == ActionTurn.PLAY_TILE) {									
-									//Pour test plus facilement ; les 4 prochaines lignes servent a afficher un pion
-									if(players[turnOrder].getTileList().size() > 0) {
-										System.out.println(players[turnOrder].getTileList().get(0).getEffect());
-										//players[turnOrder].getTileList().get(0).applyEffect(hex, board);
-										// Test de tuile
-										if(firstClic == true) {	
-											int distance = 0;
-											saveHexa = hex;
-											if (!hex.getSharkList().isEmpty() && 
-													players[turnOrder].getTileList().get(0).getEffect() == TilesEffect.SHARK_LOST) {
-												pawnToMove = hex.getSharkList().get(0);
-												distance = 30;
-											} 
-											else if (!hex.getSeaSnakeList().isEmpty() && 
-													players[turnOrder].getTileList().get(0).getEffect() == TilesEffect.SEASNAKE_LOST) {
-												pawnToMove = hex.getSeaSnakeList().get(0);
-												distance = 30;
-											} 
-											else if (!hex.getWhaleList().isEmpty() && 
-													players[turnOrder].getTileList().get(0).getEffect() == TilesEffect.WHALE_LOST) {
-												pawnToMove = hex.getWhaleList().get(0);
-												distance = 30;
-											}
-											else if (!hex.getExplorerList().isEmpty() && 
-													players[turnOrder].getTileList().get(0).getEffect() == TilesEffect.DOLPHIN_MOVE) {
-												if(hex.getExplorerList().get(0).getStatus() == ExplorerStatus.SWIMMER) {
-													pawnToMove = hex.getExplorerList().get(0);
-													distance = 3;
-												}
-											}
-											else if (hex.getBoat() != null && 
-													players[turnOrder].getTileList().get(0).getEffect() == TilesEffect.BOAT_MOVE) {
-												pawnToMove = hex.getBoat();
-												distance = 3;
-											}
-												
-											
-											if(pawnToMove != null) {
-												pawnToMove.findPath(hex, board, distance, hexagonPairList);
-												for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
-													String s;
-													switch(p.getRight()) {
-														case NORMAL:
-															s = "yellow";
-															break;
-														case BOAT:
-															s = "purple";
-															break;
-														case DEATH:
-															s = "red";
-															break;
-														default:
-															s = "white";
-															break;
-													}
-													p.getLeft().setHighlight(resolution, board, true, s);
-												}
-												
-												firstClic = false;
-											}
-												
-										}
-										else if(firstClic == false) {
-											if(hexagonPairList.getLeftList().contains(hex)) {
-												pawnToMove.move(saveHexa,hex) ;
-												for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
-													p.getLeft().setHighlightColor(null);
-													p.getLeft().setHighlight(resolution, board, false, null);
-												}
-												hexagonPairList.clear();
-												saveHexa.displayPawns();
-												firstClic = true;
-												saveHexa = null;
-												pawnToMove = null;
-												players[turnOrder].getTileList().remove(0);
-												// ActionTurn est le changement d'action, à mettre en commentaire pour test
-												nextActionTurn();
-												
-											}
-											else {
-												firstClic = true;
-												saveHexa = null;
-												for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
-													p.getLeft().setHighlightColor(null);
-													p.getLeft().setHighlight(resolution, board, false, null);
-												}
-											}
-											
-										}
-										
-									}
-									else {
-										// ActionTurn est le changement d'action, à mettre en commentaire pour test
-										nextActionTurn();
-									}
-								}
-								else if(actionTurn== ActionTurn.MOVE_PAWNS) {
-									if(!hex.getExplorerList().isEmpty() && firstClic == true) {										
-										saveHexa = hex;
-										//--Choix de l'explorateur avec loik 
-										for( Explorer explo : hex.getExplorerList()) {
-											pawnToMove = explo;
-										}
-										//--
-										
-										pawnToMove.findPath(hex, board, 3, hexagonPairList);
-										for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
-											String s;
-											switch(p.getRight()) {
-												case NORMAL:
-													s = "yellow";
-													break;
-												case BOAT:
-													s = "purple";
-													break;
-												case DEATH:
-													s = "red";
-													break;
-												default:
-													s = "white";
-													break;
-											}
-											p.getLeft().setHighlight(resolution, board, true, s);
-										}
-										
-										firstClic = false;	
-									}
-									else if(firstClic == false) {
-										if(hexagonPairList.getLeftList().contains(hex)) {
-											pawnToMove.move(saveHexa,hex) ;
-											for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
-												p.getLeft().setHighlightColor(null);
-												p.getLeft().setHighlight(resolution, board, false, null);
-											}
-											hexagonPairList.clear();
-											saveHexa.displayPawns();
-											firstClic = true;
-											saveHexa = null;
-											pawnToMove = null;
-											// ActionTurn est le changement d'action, à mettre en commentaire pour test
-											nextActionTurn();
-											
-										}
-										else {
-											firstClic = true;
-											saveHexa = null;
-											for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
-												p.getLeft().setHighlightColor(null);
-												p.getLeft().setHighlight(resolution, board, false, null);
-											}
-										}
-										
-									}	
-								}
-								else if(actionTurn== ActionTurn.DISCOVER_TILE){	
-									if(hex.getTile()!= null) {
-										hex.discover(players[turnOrder], board);
 
-										// ActionTurn est le changement d'action, à mettre en commentaire pour test
-										nextActionTurn();
-										nextActionTurn();
-										nextActionTurn();
-									}
-									
-								}
-								else if(actionTurn== ActionTurn.MOVE_MONSTER){
-									if(!board.getHexagons()[i][j].getSharkList().isEmpty() && firstClic == true) {										
-										saveHexa = board.getHexagons()[i][j];
-										//--Choix du monstre avec loik 
-										if (!hex.getSharkList().isEmpty()) {
-											pawnToMove = hex.getSharkList().get(0);
-										} 
-										else if (!hex.getSeaSnakeList().isEmpty()) {
-											pawnToMove = hex.getSeaSnakeList().get(0);
-										} 
-										else if (!hex.getWhaleList().isEmpty()) {
-											pawnToMove = hex.getWhaleList().get(0);
-										}			
-										//--
-										
-										pawnToMove.findPath(hex, board, 3, hexagonPairList);
-										for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
-											String s;
-											switch(p.getRight()) {
-												case NORMAL:
-													s = "yellow";
-													break;
-												case DEATH:
-													s = "red";
-													break;
-												default:
-													s = "white";
-													break;
-											}
-											p.getLeft().setHighlight(resolution, board, true, s);
-										}
-										firstClic = false;
-										
-									}
-									else if(firstClic == false) {
-										if(hexagonPairList.getLeftList().contains(hex)) {
-											pawnToMove.move(saveHexa, board.getHexagons()[i][j]) ;
-											for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
-												p.getLeft().setHighlightColor(null);
-												p.getLeft().setHighlight(resolution, board, false, null);
-											}
-											hexagonPairList.clear();
-											saveHexa.displayPawns();
-											firstClic = true;
-											saveHexa = null;
-											pawnToMove = null;
-											// ActionTurn est le changement d'action, à mettre en commentaire pour test
-											nextActionTurn();
-											nextActionTurn();
-											//turnOrder = (turnOrder + 1) % (players.length -1);
-										}
-										else {
-											firstClic = true;
-											saveHexa = null;
-											for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
-												p.getLeft().setHighlightColor(null);
-												p.getLeft().setHighlight(resolution, board, false, null);
-											}
-										}
+				if(SwingUtilities.isLeftMouseButton(e)) {
+					for (int i = 0; i < 13; i++) {
+						for (int j = 0; j < 12; j++) {
+							Hexagon hex = board.getHexagons()[i][j];
+							if (!hex.isVoid()) {
+								if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), 
+										e.getY() - hex.getY())) {
+									if(gameState == GameState.INITIALISATION) {
+										gameState = GameState.PLAYING;
+									} else if(gameState == GameState.PLAYING) {
+										inGame(hex);
+									} else if(gameState == GameState.ENDING) {
+										endGame();
 									}
 								}
-								System.out.println("Joueur :"+ turnOrder + "; " + players[turnOrder].getPseudo());						
-								System.out.println(actionTurn + "\n");
-									
-								
-								hex.displayPawns();
 							}
 						}
 					}
@@ -503,6 +273,24 @@ public class Game {
      */
     public void nextActionTurn() {
         this.actionTurn = this.actionTurn.next();
+        /*if(actionTurn == ActionTurn.PLAY_TILE) {
+        	if(getCurrentPlayer().getTileList().isEmpty()) {
+        	System.out.println(getCurrentPlayer().getPseudo() + " n'a pas de tuiles Ã  jouer !");
+        		nextActionTurn();
+        	}
+        } else if(actionTurn == ActionTurn.MOVE_PAWNS) {
+        	if (!getCurrentPlayer().haveExplorerOnBoard()) {
+        		System.out.println(getCurrentPlayer().getPseudo() + " n'a plus d'Explorateur Ã  bouger!");
+            	nextActionTurn();
+            }
+        } else if(actionTurn == ActionTurn.MOVE_MONSTER) {
+        	if(!board.isSeaSnakeOnBoard() 
+        			&& !board.isSharkOnBoard() 
+        			&& !board.isWhaleOnBoard()) {
+        		System.out.println("Il n'y a pas de monstres marins en jeu");
+            	nextActionTurn();
+        	}
+        }*/
     }
 
     /**
@@ -516,7 +304,7 @@ public class Game {
      * 
      */
     public int getTurnOrder() {
-        return this.turnNumber;
+        return this.turnOrder;
     }
 
     /**
@@ -581,6 +369,266 @@ public class Game {
             players[(this.turnOrder + i) % players.length]
                     .placeBoats(this.board);
         }*/
+    }
+    
+    public void inGame(Hexagon hex) {
+      if(actionTurn == ActionTurn.INITIALIZATION) {
+        int exit = 0;
+        if(hex.getTile() != null && hex.getExplorerList().isEmpty()) {
+
+          hex.addPawn(players[turnOrder].getExplorerList().get(0));
+          players[turnOrder].getExplorerList().remove(0);
+          turnOrder = (turnOrder + 1) % players.length;
+          for(int x = 0 ; x < players.length ; x++) {
+            if(players[x].getExplorerList().size() == 0) {
+            exit ++;
+            }
+          }
+          if(exit == players.length) {
+            Shark s = new Shark();
+            Whale w = new Whale();
+            SeaSnake ss = new SeaSnake();
+            Boat b = new Boat();
+            hex.addPawn(s);
+            hex.addPawn(w);
+            hex.addPawn(ss);
+            hex.addPawn(b);
+
+            nextActionTurn();
+          }
+        }								
+      }
+    	else if(actionTurn == ActionTurn.PLAY_TILE) {									
+        //Pour test plus facilement ; les 4 prochaines lignes servent a afficher un pion
+        if(players[turnOrder].getTileList().size() > 0) {
+          System.out.println(players[turnOrder].getTileList().get(0).getEffect());
+          //players[turnOrder].getTileList().get(0).applyEffect(hex, board);
+          // Test de tuile
+          if(firstClic == true) {	
+            int distance = 0;
+            saveHexa = hex;
+            if (!hex.getSharkList().isEmpty() && 
+                players[turnOrder].getTileList().get(0).getEffect() == TilesEffect.SHARK_LOST) {
+              pawnToMove = hex.getSharkList().get(0);
+              distance = 30;
+            } 
+            else if (!hex.getSeaSnakeList().isEmpty() && 
+                players[turnOrder].getTileList().get(0).getEffect() == TilesEffect.SEASNAKE_LOST) {
+              pawnToMove = hex.getSeaSnakeList().get(0);
+              distance = 30;
+            } 
+            else if (!hex.getWhaleList().isEmpty() && 
+                players[turnOrder].getTileList().get(0).getEffect() == TilesEffect.WHALE_LOST) {
+              pawnToMove = hex.getWhaleList().get(0);
+              distance = 30;
+            }
+            else if (!hex.getExplorerList().isEmpty() && 
+                players[turnOrder].getTileList().get(0).getEffect() == TilesEffect.DOLPHIN_MOVE) {
+              if(hex.getExplorerList().get(0).getStatus() == ExplorerStatus.SWIMMER) {
+                pawnToMove = hex.getExplorerList().get(0);
+                distance = 3;
+              }
+            }
+            else if (hex.getBoat() != null && 
+                players[turnOrder].getTileList().get(0).getEffect() == TilesEffect.BOAT_MOVE) {
+              pawnToMove = hex.getBoat();
+              distance = 3;
+            }
+
+
+            if(pawnToMove != null) {
+              pawnToMove.findPath(hex, board, distance, hexagonPairList);
+              for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+                String s;
+                switch(p.getRight()) {
+                  case NORMAL:
+                    s = "yellow";
+                    break;
+                  case BOAT:
+                    s = "purple";
+                    break;
+                  case DEATH:
+                    s = "red";
+                    break;
+                  default:
+                    s = "white";
+                    break;
+                }
+                p.getLeft().setHighlight(resolution, board, true, s);
+              }
+
+              firstClic = false;
+            }
+
+          }
+          else if(firstClic == false) {
+            if(hexagonPairList.getLeftList().contains(hex)) {
+              pawnToMove.move(saveHexa,hex) ;
+              for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+                p.getLeft().setHighlightColor(null);
+                p.getLeft().setHighlight(resolution, board, false, null);
+              }
+              hexagonPairList.clear();
+              saveHexa.displayPawns();
+              firstClic = true;
+              saveHexa = null;
+              pawnToMove = null;
+              players[turnOrder].getTileList().remove(0);
+              // ActionTurn est le changement d'action, Ã  mettre en commentaire pour test
+              nextActionTurn();
+
+            }
+            else {
+              firstClic = true;
+              saveHexa = null;
+              for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+                p.getLeft().setHighlightColor(null);
+                p.getLeft().setHighlight(resolution, board, false, null);
+              }
+            }
+
+          }
+
+        }
+        else {
+          // ActionTurn est le changement d'action, Ã  mettre en commentaire pour test
+          nextActionTurn();
+        }
+    }
+		else if(actionTurn== ActionTurn.MOVE_PAWNS) {
+      if(!hex.getExplorerList().isEmpty() && firstClic == true) {										
+        saveHexa = hex;
+        //--Choix de l'explorateur avec loik 
+        for( Explorer explo : hex.getExplorerList()) {
+          pawnToMove = explo;
+        }
+        //--
+
+        pawnToMove.findPath(hex, board, 3, hexagonPairList);
+        for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+          String s;
+          switch(p.getRight()) {
+            case NORMAL:
+              s = "yellow";
+              break;
+            case BOAT:
+              s = "purple";
+              break;
+            case DEATH:
+              s = "red";
+              break;
+            default:
+              s = "white";
+              break;
+          }
+          p.getLeft().setHighlight(resolution, board, true, s);
+        }
+
+        firstClic = false;	
+      }
+      else if(firstClic == false) {
+        if(hexagonPairList.getLeftList().contains(hex)) {
+          pawnToMove.move(saveHexa,hex) ;
+          for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+            p.getLeft().setHighlightColor(null);
+            p.getLeft().setHighlight(resolution, board, false, null);
+          }
+          hexagonPairList.clear();
+          saveHexa.displayPawns();
+          firstClic = true;
+          saveHexa = null;
+          pawnToMove = null;
+          // ActionTurn est le changement d'action, Ã  mettre en commentaire pour test
+          nextActionTurn();
+
+        }
+        else {
+          firstClic = true;
+          saveHexa = null;
+          for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+            p.getLeft().setHighlightColor(null);
+            p.getLeft().setHighlight(resolution, board, false, null);
+          }
+        }
+
+      }	
+    }
+		else if(actionTurn== ActionTurn.DISCOVER_TILE){	
+      if(hex.getTile().getType() == TilesType.BEACH 
+        || (hex.getTile().getType() == TilesType.FOREST
+        && board.getNbBeach() == 0)
+        || (hex.getTile().getType() == TilesType.MOUNTAINS
+        && board.getNbBeach() == 0
+        && board.getNbForest() == 0)) {
+        board.decreaseNbTile(hex.getTile().getType());
+        hex.discover(players[turnOrder], board);
+
+
+        // ActionTurn est le changement d'action, Ã  mettre en commentaire pour test
+        nextActionTurn();
+      }
+
+    }
+		else if(actionTurn== ActionTurn.MOVE_MONSTER){
+			if((!hex.getSharkList().isEmpty() 
+        			|| !hex.getSeaSnakeList().isEmpty() 
+        			|| !hex.getWhaleList().isEmpty())
+					&& firstClic == true) {										
+				saveHexa = hex;
+				//--Choix du monstre avec loik 
+				if (!hex.getSharkList().isEmpty()) {
+					pawnToMove = hex.getSharkList().get(0);
+				} else if (!hex.getSeaSnakeList().isEmpty()) {
+					pawnToMove = hex.getSeaSnakeList().get(0);
+				} else if (!hex.getWhaleList().isEmpty()) {
+					pawnToMove = hex.getWhaleList().get(0);
+				}
+				//--
+				
+				pawnToMove.findPath(hex, board, 3, hexagonPairList);
+				for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+					String s;
+					switch(p.getRight()) {
+						case NORMAL:
+							s = "yellow";
+							break;
+						case DEATH:
+							s = "red";
+							break;
+						default:
+							s = "white";
+							break;
+					}
+					p.getLeft().setHighlight(resolution, board, true, s);
+				}
+				firstClic = false;
+				
+			}
+			else if(firstClic == false) {
+				System.out.println("bouh2");
+				if(hexagonPairList.getLeftList().contains(hex)) {
+					pawnToMove.move(saveHexa, hex) ;
+					for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+						p.getLeft().setHighlightColor(null);
+						p.getLeft().setHighlight(resolution, board, false, null);
+					}
+					hexagonPairList.clear();
+					saveHexa.displayPawns();
+					firstClic = true;
+					saveHexa = null;
+					
+					// ActionTurn est le changement d'action, Ã  mettre en commentaire pour test
+					nextActionTurn();
+          nextActionTurn();
+					turnOrder = (turnOrder + 1) % players.length;
+				}
+			}
+		}
+		System.out.println("Joueur :"+ turnOrder + "; " + players[turnOrder].getPseudo());						
+		System.out.println(actionTurn + "\n");
+			
+		
+		hex.displayPawns();
     }
 
 

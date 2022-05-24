@@ -93,33 +93,6 @@ public class Hexagon extends JLayeredPane {
 
     /**
      * <p>
-     * Liste des exploreurs bleus presents sur l'hexagone dans le board
-     * </p>
-     */
-    private List<Explorer> blueExplorerList = new ArrayList<Explorer>();
-
-    /**
-     * <p>
-     * Liste des exploreurs jaunes presents sur l'hexagone dans le board
-     * </p>
-     */
-    private List<Explorer> yellowExplorerList = new ArrayList<Explorer>();
-
-    /**
-     * <p>
-     * Liste des exploreurs rouges presents sur l'hexagone dans le board
-     * </p>
-     */
-    private List<Explorer> redExplorerList = new ArrayList<Explorer>();
-
-    /**
-     * <p>
-     * Liste des exploreurs verts presents sur l'hexagone dans le board
-     * </p>
-     */
-    private List<Explorer> greenExplorerList = new ArrayList<Explorer>();
-    /**
-     * <p>
      * Liste des requins presents sur l'hexagone dans le board
      * </p>
      */
@@ -361,66 +334,6 @@ public class Hexagon extends JLayeredPane {
      */
     public List<Explorer> getExplorerList() {
         return this.explorerList;
-    }
-
-    /**
-     * <p>
-     * Accesseur au(x) explorateur(s) dans l'hexagone
-     * </p>
-     */
-    public List<Explorer> getBlueExplorerList() {
-        this.blueExplorerList.clear();
-        for (Explorer e : this.explorerList) {
-            if (e.getColor() == Color.BLUE) {
-                this.blueExplorerList.add(e);
-            }
-        }
-        return this.blueExplorerList;
-    }
-
-    /**
-     * <p>
-     * Accesseur au(x) explorateur(s) dans l'hexagone
-     * </p>
-     */
-    public List<Explorer> getGreenExplorerList() {
-        this.greenExplorerList.clear();
-        for (Explorer e : this.explorerList) {
-            if (e.getColor() == Color.GREEN) {
-                this.greenExplorerList.add(e);
-            }
-        }
-        return this.greenExplorerList;
-    }
-
-    /**
-     * <p>
-     * Accesseur au(x) explorateur(s) dans l'hexagone
-     * </p>
-     */
-    public List<Explorer> getRedExplorerList() {
-        this.redExplorerList.clear();
-        for (Explorer e : this.explorerList) {
-            if (e.getColor() == Color.RED) {
-                this.redExplorerList.add(e);
-            }
-        }
-        return this.redExplorerList;
-    }
-
-    /**
-     * <p>
-     * Accesseur au(x) explorateur(s) dans l'hexagone
-     * </p>
-     */
-    public List<Explorer> getYellowExplorerList() {
-        this.yellowExplorerList.clear();
-        for (Explorer e : this.explorerList) {
-            if (e.getColor() == Color.YELLOW) {
-                this.yellowExplorerList.add(e);
-            }
-        }
-        return this.yellowExplorerList;
     }
 
     /**

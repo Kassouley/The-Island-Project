@@ -277,6 +277,7 @@ public class Player {
         return false;
     }
 
+
 	/**
 	 * @return the tileList
 	 */
@@ -290,4 +291,5 @@ public class Player {
 	public List<Explorer> getExplorerList() {
 		return explorerList;
 	}
+
 }
