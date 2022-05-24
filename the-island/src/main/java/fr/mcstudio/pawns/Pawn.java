@@ -14,6 +14,7 @@ import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.enums.HexagonType;
+import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
 @SuppressWarnings("serial")
@@ -70,6 +71,7 @@ public class Pawn extends JPanel {
 
         List<Hexagon> tmp = new ArrayList<Hexagon>();
         tmp.add(actualPosition);
+        hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.BOAT));
         for (int i = 1; i <= distance; i++) {
             for (Hexagon hexagon : tmp) {
                 this.findPathAux(hexagon, board, hexagonTripletList, distance);
@@ -96,6 +98,32 @@ public class Pawn extends JPanel {
                     tmp.remove(hexagon);
                 }
             }
+        }
+
+        if (this instanceof Explorer
+                && actualPosition.getBoat() != null) {
+            if (actualPosition.getBoat().getExplorerList().contains(this)) {
+                if (!actualPosition.getWhaleList().isEmpty()
+                        || !actualPosition.getSeaSnakeList().isEmpty()) {
+                    hexagonTripletList.remove(0);
+                    hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.DEATH));
+                } else {
+                    hexagonTripletList.remove(0);
+                    hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.NORMAL));
+                }
+            } else {
+                if (!actualPosition.getBoat().isFull()) {
+                    if (!actualPosition.getWhaleList().isEmpty()
+                            || !actualPosition.getSeaSnakeList().isEmpty()) {
+                        hexagonTripletList.remove(0);
+                        hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.DEATH));
+                    }
+                } else {
+                    hexagonTripletList.remove(0);
+                }
+            }
+        } else {
+            hexagonTripletList.remove(0);
         }
     }
 

@@ -23,6 +23,7 @@ import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonListType;
+import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
@@ -241,16 +242,32 @@ public class Explorer extends Pawn {
         for (Hexagon hexagon : tmp) {
             if (hexagon != null
                     && !hexagonTripletList.containsInTriplet(hexagon)) {
-                
-                if (hexagon.getBoat() != null && !hexagon.getBoat().isFull()) {
-                    hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.BOAT));
-                } else {
-                    if (hexagon.getSharkList().isEmpty()
-                            && hexagon.getSeaSnakeList().isEmpty()) {
 
+                if (actualPosition.getBoat() != null
+                        && actualPosition.getBoat().getExplorerList().contains(this)) {
+                    if (hexagon.getBoat() != null
+                            && !hexagon.getBoat().isFull()) {
+                        if (!hexagon.getWhaleList().isEmpty()
+                                || !hexagon.getSeaSnakeList().isEmpty()) {
+                            hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.DEATH));
+                        } else {
+                            hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.BOAT));
+                        }
+                    } else if (hexagon.getType() != HexagonType.SEA) {
                         hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.NORMAL));
+                    }
+                } else {
+                    if (hexagon.getBoat() != null && !hexagon.getBoat().isFull()
+                            && actualPosition.getType() != HexagonType.SEA) {
+                        hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.BOAT));
                     } else {
-                        hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.DEATH));
+                        if (hexagon.getSharkList().isEmpty()
+                                && hexagon.getSeaSnakeList().isEmpty()) {
+
+                            hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.NORMAL));
+                        } else {
+                            hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.DEATH));
+                        }
                     }
                 }
             }

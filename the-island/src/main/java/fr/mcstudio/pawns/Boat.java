@@ -54,7 +54,11 @@ public class Boat extends Pawn {
      * 
      * @see Explorer.java
      */
-    public List<Explorer> explorerList;
+    private List<Explorer> explorerList;
+
+    public List<Explorer> getExplorerList() {
+        return explorerList;
+    }
 
     /**
      * <p>

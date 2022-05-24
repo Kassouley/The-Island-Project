@@ -55,7 +55,7 @@ public class Whale extends EffectPawn {
      */
     public void makeEffect(Hexagon hexagon) {
         if (hexagon.getBoat() != null) {
-            if (!hexagon.getBoat().explorerList.isEmpty()) {
+            if (!hexagon.getBoat().getExplorerList().isEmpty()) {
                 hexagon.getBoat().sunk(hexagon);
             }
         }
