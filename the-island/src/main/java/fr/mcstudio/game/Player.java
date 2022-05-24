@@ -12,6 +12,7 @@
 
 package fr.mcstudio.game;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -264,7 +265,11 @@ public class Player {
         }
     }*/
 
-    /**
+    public List<Explorer> getExplorerList() {
+		return explorerList;
+	}
+
+	/**
      * 
      */
     public boolean haveExplorerOnBoard() {
@@ -277,7 +282,10 @@ public class Player {
         return false;
     }
 
+<<<<<<< Updated upstream
 	public List<Tile> getTileList() {
 		return tileList;
 	}
+=======
+>>>>>>> Stashed changes
 }

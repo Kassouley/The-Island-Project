@@ -12,9 +12,14 @@ import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.board.PlayerInfo;
 import fr.mcstudio.enums.ActionTurn;
+<<<<<<< Updated upstream
 import fr.mcstudio.enums.GameState;
 import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.enums.TilesType;
+=======
+import fr.mcstudio.enums.Color;
+import fr.mcstudio.enums.ExternalPanelState;
+>>>>>>> Stashed changes
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
@@ -51,6 +56,7 @@ public class Game {
 	private ActionInfo actionInfo;
 	private JPanel contentPane;
 	private GameState gameState;
+	
 	
 	private int resolution;
 
@@ -93,7 +99,7 @@ public class Game {
     	playerInfo = new PlayerInfo(resolution);
 		contentPane.add(playerInfo);
 
-		board = new Board(resolution);
+		board = new Board(this, resolution);
 		contentPane.add(board);
 		boardClickAction();
 		
@@ -135,6 +141,7 @@ public class Game {
 			public void mouseClicked(MouseEvent e) {}
 
 			public void mousePressed(MouseEvent e) {
+<<<<<<< Updated upstream
 				if(SwingUtilities.isLeftMouseButton(e)) {
 					for (int i = 0; i < 13; i++) {
 						for (int j = 0; j < 12; j++) {
@@ -150,6 +157,29 @@ public class Game {
 										endGame();
 									}
 								}
+=======
+				if(!board.isDisplayExternalPanel()) {
+					for (int i = 0; i < 13; i++) {
+						for (int j = 0; j < 12; j++) {
+							Hexagon hex = board.getHexagons()[i][j];
+							if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), e.getY() - hex.getY())) {
+								System.out.println(
+										"Yay ! " + hex.getLine() + " " + hex.getColumn());
+								
+								hex.discover(null, board);
+								
+								Shark shark = new Shark();
+								SeaSnake ss = new SeaSnake();
+								Explorer ex = new Explorer(Color.RED, 0);
+								Explorer ex2 = new Explorer(Color.BLUE, 0);
+								Explorer ex3 = new Explorer(Color.GREEN, 0);
+								hex.addPawn(shark);
+								hex.addPawn(ss);
+								hex.addPawn(ex);
+								hex.addPawn(ex2);
+								hex.addPawn(ex3);
+								hex.displayPawns();
+>>>>>>> Stashed changes
 							}
 						}
 					}
@@ -170,6 +200,7 @@ public class Game {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
+<<<<<<< Updated upstream
 				for (int i = 0; i < 13; i++) {
 					for (int j = 0; j < 12; j++) {
 						Hexagon hex = board.getHexagons()[i][j];
@@ -181,6 +212,20 @@ public class Game {
 							} else {
 								if (hex.isHighlight() && hex.getHighlightColor() == null) {
 									hex.setHighlight(resolution, board, false, null);
+=======
+				if(!board.isDisplayExternalPanel()) {
+					for (int i = 0; i < 13; i++) {
+						for (int j = 0; j < 12; j++) {
+							Hexagon hex = board.getHexagons()[i][j];
+							if (!hex.isVoid()) {
+								if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), e.getY() - hex.getY())) {
+									if (!hex.isHighlight())
+										hex.setHighlight(resolution, board, true, "white");
+	
+								} else {
+									if (hex.isHighlight())
+										hex.setHighlight(resolution, board, false, null);
+>>>>>>> Stashed changes
 								}
 							}
 						}

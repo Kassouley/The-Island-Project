@@ -13,6 +13,7 @@ import javax.swing.JLayeredPane;
 import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
+import fr.mcstudio.game.Game;
 import fr.mcstudio.tiles.Tile;
 
 @SuppressWarnings("serial")
@@ -25,6 +26,7 @@ public class Board extends JLayeredPane{
 
 	private JLabel boardLabel = new JLabel();
 
+<<<<<<< Updated upstream
 	private Board board;
 	
 	private int nbBeach = 16;
@@ -55,15 +57,30 @@ public class Board extends JLayeredPane{
 				this.nbMountains --;
 				break;
 		}
+=======
+	Board board;
+	
+	Game game;
+	
+	ExternalPanel externalPanel;
+	
+	private boolean displayExternalPanel = false;
+
+	public ExternalPanel getExternalPanel() {
+		return externalPanel;
+>>>>>>> Stashed changes
 	}
 
-	public Board(final int resolution) {
+	public Board(Game game, final int resolution) {
 		super();
 		this.board = this;
+		this.game = game;
 		setLayer(boardLabel, 0);
 		setPanelBoundsFromResolution(resolution);
 		setLabel();
 		add(boardLabel);
+		
+		externalPanel = new ExternalPanel(this, resolution);
 
 		List<Tile> tilesList = CreateTiles(resolution);
 		Random r = new Random();
@@ -347,5 +364,13 @@ public class Board extends JLayeredPane{
 		}
 		
 		return false;
+	}
+
+	public boolean isDisplayExternalPanel() {
+		return displayExternalPanel;
+	}
+
+	public void setDisplayExternalPanel(boolean displayExternalPanel) {
+		this.displayExternalPanel = displayExternalPanel;
 	}
 }

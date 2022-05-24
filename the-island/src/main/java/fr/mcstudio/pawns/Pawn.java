@@ -35,7 +35,11 @@ public class Pawn extends JLayeredPane {
 
     protected JLabel image = new JLabel();
 
-    private int movePoint;
+    public JLabel getImage() {
+		return image;
+	}
+
+	private int movePoint;
 
     public int getMovePoint() {
         return this.movePoint;
