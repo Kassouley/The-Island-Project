@@ -28,6 +28,8 @@ import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.pawns.Whale;
 import fr.mcstudio.util.Pair;
 import fr.mcstudio.util.PairList;
+import fr.mcstudio.util.Triplet;
+import fr.mcstudio.util.TripletList;
 
 /**
  * 
@@ -93,7 +95,7 @@ public class Game {
      */
     private ActionTurn actionTurn;
     
-    private PairList<Hexagon,HexagonListType> hexagonPairList = new PairList<Hexagon, HexagonListType>();
+    private TripletList<Hexagon,Integer,HexagonListType> hexagonPairList = new TripletList<Hexagon,Integer, HexagonListType>();
     
     /**
      * 
@@ -438,7 +440,7 @@ public class Game {
 
             if(pawnToMove != null) {
               pawnToMove.findPath(hex, board, distance, hexagonPairList);
-              for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+              for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonPairList) {
                 String s;
                 switch(p.getRight()) {
                   case NORMAL:
@@ -464,7 +466,7 @@ public class Game {
           else if(firstClic == false) {
             if(hexagonPairList.getLeftList().contains(hex)) {
               pawnToMove.move(saveHexa,hex) ;
-              for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+              for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonPairList) {
                 p.getLeft().setHighlightColor(null);
                 p.getLeft().setHighlight(resolution, board, false, null);
               }
@@ -481,7 +483,7 @@ public class Game {
             else {
               firstClic = true;
               saveHexa = null;
-              for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+              for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonPairList) {
                 p.getLeft().setHighlightColor(null);
                 p.getLeft().setHighlight(resolution, board, false, null);
               }
@@ -505,7 +507,7 @@ public class Game {
         //--
 
         pawnToMove.findPath(hex, board, 3, hexagonPairList);
-        for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+        for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonPairList) {
           String s;
           switch(p.getRight()) {
             case NORMAL:
@@ -529,7 +531,7 @@ public class Game {
       else if(firstClic == false) {
         if(hexagonPairList.getLeftList().contains(hex)) {
           pawnToMove.move(saveHexa,hex) ;
-          for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+          for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonPairList) {
             p.getLeft().setHighlightColor(null);
             p.getLeft().setHighlight(resolution, board, false, null);
           }
@@ -545,7 +547,7 @@ public class Game {
         else {
           firstClic = true;
           saveHexa = null;
-          for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+          for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonPairList) {
             p.getLeft().setHighlightColor(null);
             p.getLeft().setHighlight(resolution, board, false, null);
           }
@@ -586,7 +588,7 @@ public class Game {
 				//--
 				
 				pawnToMove.findPath(hex, board, 3, hexagonPairList);
-				for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+				for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonPairList) {
 					String s;
 					switch(p.getRight()) {
 						case NORMAL:
@@ -608,7 +610,7 @@ public class Game {
 				System.out.println("bouh2");
 				if(hexagonPairList.getLeftList().contains(hex)) {
 					pawnToMove.move(saveHexa, hex) ;
-					for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+					for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonPairList) {
 						p.getLeft().setHighlightColor(null);
 						p.getLeft().setHighlight(resolution, board, false, null);
 					}
