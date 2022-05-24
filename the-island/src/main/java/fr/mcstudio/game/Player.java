@@ -12,16 +12,11 @@
 
 package fr.mcstudio.game;
 
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.mcstudio.board.Board;
-import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
-import fr.mcstudio.enums.HexagonType;
-import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.tiles.Tile;
 
@@ -282,10 +277,7 @@ public class Player {
         return false;
     }
 
-<<<<<<< Updated upstream
 	public List<Tile> getTileList() {
 		return tileList;
 	}
-=======
->>>>>>> Stashed changes
 }

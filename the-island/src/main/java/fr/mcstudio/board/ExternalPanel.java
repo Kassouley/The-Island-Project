@@ -31,9 +31,10 @@ public class ExternalPanel extends JLayeredPane{
 	private JPanel tilesEffectsPanel;
 	private JPanel animationPanel;
 	
-	private PairList<JButton, Pawn> bPairList;
+	private PairList<JButton, Pawn> bPairList = new PairList<JButton, Pawn>();
 	
-	private Pawn pawn;
+	private Pawn pawn = null;
+	private Hexagon clickedHex;
 	
 	private ExternalPanelState externalPanelState = ExternalPanelState.VOID;
 	
@@ -61,7 +62,6 @@ public class ExternalPanel extends JLayeredPane{
 
 	public void setExternalPanelState(ExternalPanelState externalPanelState) {
 		this.externalPanelState = externalPanelState;
-		System.out.println(externalPanelState);
 		displayExternalPanel(externalPanelState);
 	}
 
@@ -115,23 +115,24 @@ public class ExternalPanel extends JLayeredPane{
 	private void displayPawnPanel() {
 
 		this.pawnPanel.setVisible(true);
-		
+		for (int i = 0; i < bPairList.size(); i++) {
+			pawnPanel.remove(bPairList.get(i).getLeft());
+		}
 		bPairList.clear();
 		bPairList = new PairList<JButton, Pawn>();
-        
-		Player player = board.game.getCurrentPlayer();
 		
-        int explorersLength = player.getExplorerList().size();
+        int explorersLength = clickedHex.getExplorerList().size();
         for (int i = 0; i < explorersLength; i++) {
-        	Explorer explorer = player.getExplorerList().get(i);
-            bPairList.add(new Pair<JButton,Pawn>(new JButton(explorer.getImage().getIcon()), explorer));
-            bPairList.get(i).getLeft().setBackground(java.awt.Color.WHITE);
-            //bPairList.get(i).getLeft().setBorderPainted(false);
-            //bPairList.get(i).getLeft().setBorder(BorderFactory.createLineBorder(java.awt.Color.WHITE));
-            bPairList.get(i).getLeft().setFocusPainted(false);
-            bPairList.get(i).getLeft().setContentAreaFilled(false);
-            pawnPanel.add(bPairList.get(i).getLeft());
-            
+        	Explorer explorer = clickedHex.getExplorerList().get(i);
+        	if(board.game.getCurrentPlayer().getColor() == explorer.getColor()) {
+        		bPairList.add(new Pair<JButton,Pawn>(new JButton(explorer.getImage().getIcon()), explorer));
+                bPairList.get(i).getLeft().setBackground(java.awt.Color.WHITE);
+                //bPairList.get(i).getLeft().setBorderPainted(false);
+                //bPairList.get(i).getLeft().setBorder(BorderFactory.createLineBorder(java.awt.Color.WHITE));
+                bPairList.get(i).getLeft().setFocusPainted(false);
+                bPairList.get(i).getLeft().setContentAreaFilled(false);
+                pawnPanel.add(bPairList.get(i).getLeft());
+        	}
             bPairList.get(i).getLeft().addActionListener( new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -139,10 +140,27 @@ public class ExternalPanel extends JLayeredPane{
                     pawn = bPairList.get(index).getRight();
                     board.setDisplayExternalPanel(false);
                     setExternalPanelState(ExternalPanelState.VOID);
+                    board.game.inGame(clickedHex);
                 }
             });
         }
 		
+	}
+
+	public Pawn getPawn() {
+		return pawn;
+	}
+
+	public void setPawn(Pawn pawn) {
+		this.pawn = pawn;
+	}
+
+	public Hexagon getClickedHex() {
+		return clickedHex;
+	}
+
+	public void setClickedHex(Hexagon clickedHex) {
+		this.clickedHex = clickedHex;
 	}
 
 	private void hideAllPanels() {

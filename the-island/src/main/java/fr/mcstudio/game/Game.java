@@ -12,20 +12,15 @@ import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.board.PlayerInfo;
 import fr.mcstudio.enums.ActionTurn;
-<<<<<<< Updated upstream
+import fr.mcstudio.enums.ExternalPanelState;
 import fr.mcstudio.enums.GameState;
 import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.enums.TilesType;
-=======
-import fr.mcstudio.enums.Color;
-import fr.mcstudio.enums.ExternalPanelState;
->>>>>>> Stashed changes
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
-import fr.mcstudio.pawns.Shark;
-import fr.mcstudio.util.Pair;
-import fr.mcstudio.util.PairList;
+import fr.mcstudio.util.Triplet;
+import fr.mcstudio.util.TripletList;
 
 /**
  * 
@@ -90,7 +85,7 @@ public class Game {
      */
     private ActionTurn actionTurn;
     
-    private PairList<Hexagon,HexagonListType> hexagonPairList = new PairList<Hexagon, HexagonListType>();
+    private TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList = new TripletList<Hexagon, Integer, HexagonListType>();
     
     /**
      * 
@@ -141,7 +136,6 @@ public class Game {
 			public void mouseClicked(MouseEvent e) {}
 
 			public void mousePressed(MouseEvent e) {
-<<<<<<< Updated upstream
 				if(SwingUtilities.isLeftMouseButton(e)) {
 					for (int i = 0; i < 13; i++) {
 						for (int j = 0; j < 12; j++) {
@@ -157,29 +151,6 @@ public class Game {
 										endGame();
 									}
 								}
-=======
-				if(!board.isDisplayExternalPanel()) {
-					for (int i = 0; i < 13; i++) {
-						for (int j = 0; j < 12; j++) {
-							Hexagon hex = board.getHexagons()[i][j];
-							if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), e.getY() - hex.getY())) {
-								System.out.println(
-										"Yay ! " + hex.getLine() + " " + hex.getColumn());
-								
-								hex.discover(null, board);
-								
-								Shark shark = new Shark();
-								SeaSnake ss = new SeaSnake();
-								Explorer ex = new Explorer(Color.RED, 0);
-								Explorer ex2 = new Explorer(Color.BLUE, 0);
-								Explorer ex3 = new Explorer(Color.GREEN, 0);
-								hex.addPawn(shark);
-								hex.addPawn(ss);
-								hex.addPawn(ex);
-								hex.addPawn(ex2);
-								hex.addPawn(ex3);
-								hex.displayPawns();
->>>>>>> Stashed changes
 							}
 						}
 					}
@@ -200,19 +171,6 @@ public class Game {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-<<<<<<< Updated upstream
-				for (int i = 0; i < 13; i++) {
-					for (int j = 0; j < 12; j++) {
-						Hexagon hex = board.getHexagons()[i][j];
-						if (!hex.isVoid()) {
-							if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), e.getY() - hex.getY())) {
-								if (!hex.isHighlight() || hex.getHighlightColor() == null)
-									hex.setHighlight(resolution, board, true, "white");
-
-							} else {
-								if (hex.isHighlight() && hex.getHighlightColor() == null) {
-									hex.setHighlight(resolution, board, false, null);
-=======
 				if(!board.isDisplayExternalPanel()) {
 					for (int i = 0; i < 13; i++) {
 						for (int j = 0; j < 12; j++) {
@@ -223,9 +181,9 @@ public class Game {
 										hex.setHighlight(resolution, board, true, "white");
 	
 								} else {
-									if (hex.isHighlight())
+									if (hex.isHighlight() && hex.getHighlightColor() == null) {
 										hex.setHighlight(resolution, board, false, null);
->>>>>>> Stashed changes
+									}
 								}
 							}
 						}
@@ -410,6 +368,8 @@ public class Game {
     	if(actionTurn == ActionTurn.PLAY_TILE) {
 			//Pour test plus facilement ; les 4 prochaines lignes servent a afficher un pion
 			Explorer yop = new Explorer(players[turnOrder].getColor(),5);
+	        yop.setPosition(0, 0, resolution, 68);
+	        yop.createImage(resolution);
 			hex.addPawn(yop);
 			
 
@@ -419,40 +379,48 @@ public class Game {
 		else if(actionTurn== ActionTurn.MOVE_PAWNS) {
 			if(!hex.getExplorerList().isEmpty() && firstClic == true) {										
 				saveHexa = hex;
-				//--Choix de l'explorateur avec loik 
-				pawnToMove = hex.getExplorerList().get(0);
-				//--
-				
-				pawnToMove.findPath(hex, board, 3, hexagonPairList);
-				for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
-					String s;
-					switch(p.getRight()) {
-						case NORMAL:
-							s = "yellow";
-							break;
-						case BOAT:
-							s = "purple";
-							break;
-						case DEATH:
-							s = "red";
-							break;
-						default:
-							s = "white";
-							break;
+				if(!board.isDisplayExternalPanel() && pawnToMove == null) {
+					if(board.getExternalPanel().getPawn() != null) {
+						pawnToMove = board.getExternalPanel().getPawn();
+						inGame(hex);
+					} else if(hex.containsExplorerColor(getCurrentPlayer().getColor())) {
+						board.getExternalPanel().setClickedHex(hex);
+						board.setDisplayExternalPanel(true);
+						board.getExternalPanel().setExternalPanelState(ExternalPanelState.PAWNPANEL);
+						
 					}
-					p.getLeft().setHighlight(resolution, board, true, s);
+				} else {
+					pawnToMove.findPath(hex, board, 3, hexagonTripletList);
+					for(Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
+						String s;
+						switch(p.getRight()) {
+							case NORMAL:
+								s = "yellow";
+								break;
+							case BOAT:
+								s = "purple";
+								break;
+							case DEATH:
+								s = "red";
+								break;
+							default:
+								s = "white";
+								break;
+						}
+						p.getLeft().setHighlight(resolution, board, true, s);
+					}
+					
+					firstClic = false;	
 				}
-				
-				firstClic = false;	
 			}
 			else if(firstClic == false) {
-				if(hexagonPairList.getLeftList().contains(hex)) {
+				if(hexagonTripletList.getLeftList().contains(hex)) {
 					pawnToMove.move(saveHexa,hex) ;
-					for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+					for(Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
 						p.getLeft().setHighlightColor(null);
 						p.getLeft().setHighlight(resolution, board, false, null);
 					}
-					hexagonPairList.clear();
+					hexagonTripletList.clear();
 					saveHexa.displayPawns();
 					firstClic = true;
 					saveHexa = null;
@@ -474,7 +442,7 @@ public class Game {
 					hex.discover(players[turnOrder], board);
 
 					// ActionTurn est le changement d'action, à mettre en commentaire pour test
-					//nextActionTurn();
+					nextActionTurn();
 				}
 			}
 			
@@ -496,8 +464,8 @@ public class Game {
 				}
 				//--
 				
-				pawnToMove.findPath(hex, board, 3, hexagonPairList);
-				for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+				pawnToMove.findPath(hex, board, 3, hexagonTripletList);
+				for(Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
 					String s;
 					switch(p.getRight()) {
 						case NORMAL:
@@ -517,13 +485,13 @@ public class Game {
 			}
 			else if(firstClic == false) {
 				System.out.println("bouh2");
-				if(hexagonPairList.getLeftList().contains(hex)) {
+				if(hexagonTripletList.getLeftList().contains(hex)) {
 					pawnToMove.move(saveHexa, hex) ;
-					for(Pair<Hexagon, HexagonListType> p : hexagonPairList) {
+					for(Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
 						p.getLeft().setHighlightColor(null);
 						p.getLeft().setHighlight(resolution, board, false, null);
 					}
-					hexagonPairList.clear();
+					hexagonTripletList.clear();
 					saveHexa.displayPawns();
 					firstClic = true;
 					saveHexa = null;

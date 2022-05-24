@@ -2,7 +2,6 @@ package fr.mcstudio.board;
 
 import java.awt.Image;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -26,7 +25,6 @@ public class Board extends JLayeredPane{
 
 	private JLabel boardLabel = new JLabel();
 
-<<<<<<< Updated upstream
 	private Board board;
 	
 	private int nbBeach = 16;
@@ -57,8 +55,7 @@ public class Board extends JLayeredPane{
 				this.nbMountains --;
 				break;
 		}
-=======
-	Board board;
+	}
 	
 	Game game;
 	
@@ -68,7 +65,6 @@ public class Board extends JLayeredPane{
 
 	public ExternalPanel getExternalPanel() {
 		return externalPanel;
->>>>>>> Stashed changes
 	}
 
 	public Board(Game game, final int resolution) {
@@ -332,6 +328,7 @@ public class Board extends JLayeredPane{
 
 	public Board getBoard() {
 		return this;
+	}
 	
 	public boolean isSharkOnBoard() {
 		for (int i = 0; i < 13; i++) {

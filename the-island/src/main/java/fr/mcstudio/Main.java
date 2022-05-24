@@ -5,11 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-<<<<<<< Updated upstream
 import fr.mcstudio.enums.Color;
-=======
-import fr.mcstudio.board.SelectPawn;
->>>>>>> Stashed changes
 import fr.mcstudio.game.Game;
 import fr.mcstudio.game.Player;
 
@@ -52,11 +48,7 @@ public class Main extends JFrame {
 				try {
 					Main main = new Main();
 					Game game = new Game(main.resolution, main.contentPane, main.players);
-<<<<<<< Updated upstream
 					game.initializeBoard();
-=======
-					//SelectPawn sp = new SelectPawn(game.getBoard());
->>>>>>> Stashed changes
 					
 				} catch (Exception e) {
 					e.printStackTrace();
