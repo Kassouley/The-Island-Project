@@ -12,22 +12,17 @@ import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.board.PlayerInfo;
 import fr.mcstudio.enums.ActionTurn;
-
 import fr.mcstudio.enums.ExplorerStatus;
+import fr.mcstudio.enums.GameState;
 import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.enums.TilesEffect;
-import fr.mcstudio.pawns.Boat;
-
-import fr.mcstudio.enums.GameState;
 import fr.mcstudio.enums.TilesType;
-
-import fr.mcstudio.pawns.Explorer;
+import fr.mcstudio.pawns.Boat;
+import fr.mcstudio.pawns.EffectPawn;
 import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
 import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.pawns.Whale;
-import fr.mcstudio.util.Pair;
-import fr.mcstudio.util.PairList;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
@@ -401,44 +396,58 @@ public class Game {
     public void inGame(Hexagon hex) {      
     	if(actionTurn == ActionTurn.PLAY_TILE) {									
         //Pour test plus facilement ; les 4 prochaines lignes servent a afficher un pion
-        /*if(players[turnOrder].getTileList().size() > 0) {
+        if(players[turnOrder].getTileList().size() > 0) {
           System.out.println(players[turnOrder].getTileList().get(0).getEffect());
           //players[turnOrder].getTileList().get(0).applyEffect(hex, board);
           // Test de tuile
           if(firstClic == true) {	
             int distance = 0;
             saveHexa = hex;
+            pawnToMove = null;
+            EffectPawn effect = null; 
             if (!hex.getSharkList().isEmpty() && 
                 players[turnOrder].getTileList().get(0).getEffect() == TilesEffect.SHARK_LOST) {
               pawnToMove = hex.getSharkList().get(0);
-              distance = 30;
+              effect = (EffectPawn) pawnToMove;
+
             } 
             else if (!hex.getSeaSnakeList().isEmpty() && 
                 players[turnOrder].getTileList().get(0).getEffect() == TilesEffect.SEASNAKE_LOST) {
               pawnToMove = hex.getSeaSnakeList().get(0);
-              distance = 30;
+              effect = (EffectPawn) pawnToMove;
             } 
             else if (!hex.getWhaleList().isEmpty() && 
                 players[turnOrder].getTileList().get(0).getEffect() == TilesEffect.WHALE_LOST) {
               pawnToMove = hex.getWhaleList().get(0);
-              distance = 30;
+              effect = (EffectPawn) pawnToMove;
             }
             else if (!hex.getExplorerList().isEmpty() && 
                 players[turnOrder].getTileList().get(0).getEffect() == TilesEffect.DOLPHIN_MOVE) {
               if(hex.getExplorerList().get(0).getStatus() == ExplorerStatus.SWIMMER) {
                 pawnToMove = hex.getExplorerList().get(0);
-                distance = 3;
               }
             }
             else if (hex.getBoat() != null && 
                 players[turnOrder].getTileList().get(0).getEffect() == TilesEffect.BOAT_MOVE) {
               pawnToMove = hex.getBoat();
-              distance = 3;
             }
 
 
             if(pawnToMove != null) {
-              pawnToMove.findPath(hex, board, distance, hexagonTripletList);
+            	switch(players[turnOrder].getTileList().get(0).getEffect()) {
+            	case WHALE_LOST :
+            	case SEASNAKE_LOST :
+            	case SHARK_LOST :
+            		effect.findPathEffect(hex, board, hexagonTripletList);
+            		break;
+            	case BOAT_MOVE :
+            	case DOLPHIN_MOVE :
+            		 pawnToMove.findPath(hex, board, 3, hexagonTripletList);
+            		 break;
+            	default :
+            		break;
+            	}
+             
               for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonTripletList) {
                 String s;
                 switch(p.getRight()) {
@@ -494,9 +503,7 @@ public class Game {
         else {
           // ActionTurn est le changement d'action, à mettre en commentaire pour test
           nextActionTurn();
-        }*/
-    		//Test du PLAY_TILE au dessus
-    		nextActionTurn();
+        }
     }
 		else if(actionTurn== ActionTurn.MOVE_PAWNS) {
       if(!hex.getExplorerList().isEmpty() && firstClic == true) {										
