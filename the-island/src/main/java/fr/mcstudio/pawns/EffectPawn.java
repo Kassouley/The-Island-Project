@@ -32,8 +32,8 @@ public class EffectPawn extends Pawn {
      * Constructeur par d�faut
      * </p>
      */
-    public EffectPawn() {
-
+    public EffectPawn(int movePoint) {
+        super(movePoint);
     }
 
     /**

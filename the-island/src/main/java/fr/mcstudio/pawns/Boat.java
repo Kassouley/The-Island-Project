@@ -21,8 +21,8 @@ import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.game.Player;
-import fr.mcstudio.util.Pair;
-import fr.mcstudio.util.PairList;
+import fr.mcstudio.util.Triplet;
+import fr.mcstudio.util.TripletList;
 
 /**
  * <p>
@@ -43,6 +43,7 @@ public class Boat extends Pawn {
      * </p>
      */
     public Boat() {
+        super(3);
         this.explorerList = new ArrayList<Explorer>();
     }
 
@@ -168,7 +169,7 @@ public class Boat extends Pawn {
         }
     }
 
-    public void findPathAux(Hexagon actualPosition, Board board, PairList<Hexagon,HexagonListType> hexagonPairList) {
+    public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
         tmp.add(board.getTopLeft(actualPosition));
@@ -180,16 +181,16 @@ public class Boat extends Pawn {
 
         for (Hexagon hexagon : tmp) {
             if (hexagon != null
-                    && !hexagonPairList.containsInPair(hexagon)
+                    && !hexagonTripletList.containsInTriplet(hexagon)
                     && hexagon.getType() == HexagonType.SEA) {
 
                 if (this.explorerList.isEmpty()
                         || (hexagon.getSeaSnakeList().isEmpty()
                         && hexagon.getWhaleList().isEmpty())) {
                             
-                    hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.NORMAL));
+                    hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.NORMAL));
                 } else {
-                    hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.DEATH));
+                    hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.DEATH));
                 }
             }
         }

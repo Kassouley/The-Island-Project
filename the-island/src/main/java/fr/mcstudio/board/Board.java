@@ -244,4 +244,8 @@ public class Board extends JLayeredPane{
 			return null;
 		}
 	}
+
+	public Board getBoard() {
+		return this;
+	}
 }

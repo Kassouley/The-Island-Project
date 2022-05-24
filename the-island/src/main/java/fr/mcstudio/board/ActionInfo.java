@@ -113,8 +113,7 @@ public class ActionInfo extends JLayeredPane {
 		});
 		actionInfoPane.setLayer(quitButton, 1);
 		actionInfoPane.add(quitButton);
-
-
+	}
 	
 	private void setPanelBoundsFromResolution(int resolution) {
 		switch (resolution) {

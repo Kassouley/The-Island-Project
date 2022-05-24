@@ -13,7 +13,8 @@ import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonListType;
-import fr.mcstudio.util.PairList;
+import fr.mcstudio.enums.HexagonType;
+import fr.mcstudio.util.TripletList;
 
 @SuppressWarnings("serial")
 public class Pawn extends JPanel {
@@ -22,14 +23,25 @@ public class Pawn extends JPanel {
      * Constructeur par d�faut.
      * </p>
      */
-    public Pawn() {
+    public Pawn(int movePoint) {
     	this.setLayout(null);
     	this.setOpaque(false);
+        this.movePoint = movePoint;
     }
 
     protected JLabel index;
 
     protected JLabel image = new JLabel();
+
+    private int movePoint;
+
+    public int getMovePoint() {
+        return this.movePoint;
+    }
+
+    public void setMovePoint(int movePoint) {
+        this.movePoint = movePoint;
+    }
 
     /**
      * 
@@ -51,30 +63,34 @@ public class Pawn extends JPanel {
      * @param distance
      * @param listHexagon
      */
-    public void findPath(Hexagon actualPosition, Board board, int distance, PairList<Hexagon,HexagonListType> hexagonPairList) {
-        hexagonPairList.clear();
+    public void findPath(Hexagon actualPosition, Board board, int movePointLeft, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList) {
+        hexagonTripletList.clear();
 
-        // ---------------------------------------------------------- A changer, faut
-        // regarder les movePoint et moveCost je pense
-        if (this instanceof Explorer) {
-            Explorer explorer = (Explorer) this;
-            if (explorer.getStatus() == ExplorerStatus.SWIMMER) {
-                distance = 1;
-            }
-        }
+        int distance = Math.min(movePointLeft, this.getMovePoint());
 
         List<Hexagon> tmp = new ArrayList<Hexagon>();
         tmp.add(actualPosition);
-        for (int i = 0; i < distance; i++) {
+        for (int i = 1; i <= distance; i++) {
             for (Hexagon hexagon : tmp) {
-                this.findPathAux(hexagon, board, hexagonPairList);
+                this.findPathAux(hexagon, board, hexagonTripletList, distance);
             }
             List<Hexagon> mem = new ArrayList<Hexagon>();
-            List<Hexagon> hexagonList = hexagonPairList.getLeftList();
+            List<Hexagon> hexagonList = hexagonTripletList.getLeftList();
             mem.addAll(tmp);
-            
+            Explorer explorer = (Explorer) this;
 
-            tmp.addAll(hexagonList);
+            tmp.clear();
+            for (Hexagon hexagon : hexagonList) {
+                int index = hexagonList.indexOf(hexagon);
+                if ((this instanceof Explorer
+                        && explorer.getStatus() == ExplorerStatus.SWIMMER
+                        || hexagon.getType() != HexagonType.SEA)
+                        && hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
+                        
+                    tmp.add(hexagon);
+                }
+            }
+
             for (Hexagon hexagon : mem) {
                 if (tmp.contains(hexagon)) {
                     tmp.remove(hexagon);
@@ -89,7 +105,7 @@ public class Pawn extends JPanel {
      * @param board
      * @param listHexagon
      */
-    public void findPathAux(Hexagon actualPosition, Board board, PairList<Hexagon,HexagonListType> hexagonPairList) {
+    public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
     }
 
     public void createPawnImage(Hexagon hex) {
