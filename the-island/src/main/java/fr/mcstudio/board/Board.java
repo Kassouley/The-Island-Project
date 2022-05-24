@@ -23,9 +23,39 @@ public class Board extends JLayeredPane{
 		return hexagons;
 	}
 
-	JLabel boardLabel = new JLabel();
+	private JLabel boardLabel = new JLabel();
 
-	Board board;
+	private Board board;
+	
+	private int nbBeach = 16;
+	private int nbForest = 16;
+	private int nbMountains = 8;
+
+	public int getNbBeach() {
+		return nbBeach;
+	}
+
+	public int getNbForest() {
+		return nbForest;
+	}
+
+	public int getNbMountains() {
+		return nbMountains;
+	}
+
+	public void decreaseNbTile(TilesType type) {
+		switch(type) {
+			case BEACH:
+				this.nbBeach --;
+				break;
+			case FOREST:
+				this.nbForest --;
+				break;
+			case MOUNTAINS:
+				this.nbMountains --;
+				break;
+		}
+	}
 
 	public Board(final int resolution) {
 		super();
@@ -124,7 +154,7 @@ public class Board extends JLayeredPane{
 		}
 		for (int i = 0; i < 8; i++) {
 			Tile tile = new Tile();
-			tile.setType(resolution, TilesType.MONTAINS);
+			tile.setType(resolution, TilesType.MOUNTAINS);
 			if (i < 4) {
 				tile.setEffect(TilesEffect.WHIRLPOOL);
 			} else if (i == 4) {

@@ -52,7 +52,7 @@ public class Tile extends JLabel {
 			icone = new ImageIcon(Tile.class.getResource("/Plage.png"));
 		} else if (type == TilesType.FOREST) {
 			icone = new ImageIcon(Tile.class.getResource("/Foret.png"));
-		} else if (type == TilesType.MONTAINS) {
+		} else if (type == TilesType.MOUNTAINS) {
 			icone = new ImageIcon(Tile.class.getResource("/Montagne.png"));
 		}
 		

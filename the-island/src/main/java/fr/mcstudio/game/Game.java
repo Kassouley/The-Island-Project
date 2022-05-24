@@ -5,6 +5,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import fr.mcstudio.board.ActionInfo;
 import fr.mcstudio.board.Board;
@@ -13,6 +14,7 @@ import fr.mcstudio.board.PlayerInfo;
 import fr.mcstudio.enums.ActionTurn;
 import fr.mcstudio.enums.GameState;
 import fr.mcstudio.enums.HexagonListType;
+import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
@@ -39,8 +41,6 @@ public class Game {
         this.actionTurn = ActionTurn.PLAY_TILE;
         this.gameState = GameState.INITIALISATION;
         
-        initializeBoard();
-        startGame();
     }
 
     /**
@@ -100,6 +100,17 @@ public class Game {
 		actionInfo = new ActionInfo(resolution);
 		contentPane.add(actionInfo);
 		actionInfoClickAction();
+		
+		board.getHexagons()[1][1].getSeaSnakeList().add(new SeaSnake());
+    	board.getHexagons()[1][1].displayPawns();
+    	board.getHexagons()[2][10].getSeaSnakeList().add(new SeaSnake());
+    	board.getHexagons()[2][10].displayPawns();
+    	board.getHexagons()[10][0].getSeaSnakeList().add(new SeaSnake());
+    	board.getHexagons()[10][0].displayPawns();
+    	board.getHexagons()[11][10].getSeaSnakeList().add(new SeaSnake());
+    	board.getHexagons()[11][10].displayPawns();
+    	board.getHexagons()[6][5].getSeaSnakeList().add(new SeaSnake());
+    	board.getHexagons()[6][5].displayPawns();
     }
     
     /**
@@ -124,22 +135,21 @@ public class Game {
 			public void mouseClicked(MouseEvent e) {}
 
 			public void mousePressed(MouseEvent e) {
-				for (int i = 0; i < 13; i++) {
-					for (int j = 0; j < 12; j++) {
-						Hexagon hex = board.getHexagons()[i][j];
-						if (!hex.isVoid()) {
-							if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), 
-									e.getY() - hex.getY())) {
-								if(gameState == GameState.INITIALISATION) {
-									
-									
-									gameState = GameState.PLAYING;
-								} else if(gameState == GameState.PLAYING) {
-									inGame(hex);
-								} else if(gameState == GameState.ENDING) {
-									endGame();
+				if(SwingUtilities.isLeftMouseButton(e)) {
+					for (int i = 0; i < 13; i++) {
+						for (int j = 0; j < 12; j++) {
+							Hexagon hex = board.getHexagons()[i][j];
+							if (!hex.isVoid()) {
+								if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), 
+										e.getY() - hex.getY())) {
+									if(gameState == GameState.INITIALISATION) {
+										gameState = GameState.PLAYING;
+									} else if(gameState == GameState.PLAYING) {
+										inGame(hex);
+									} else if(gameState == GameState.ENDING) {
+										endGame();
+									}
 								}
-								
 							}
 						}
 					}
@@ -341,14 +351,6 @@ public class Game {
      */
 
     public void startGame() {
-    	board.getHexagons()[1][1].getSeaSnakeList().add(new SeaSnake());
-    	board.getHexagons()[1][1].displayPawns();;
-    	board.getHexagons()[2][10].getSeaSnakeList().add(new SeaSnake());
-    	board.getHexagons()[2][10].displayPawns();;
-    	board.getHexagons()[10][0].getSeaSnakeList().add(new SeaSnake());
-    	board.getHexagons()[10][0].displayPawns();;
-    	board.getHexagons()[11][10].getSeaSnakeList().add(new SeaSnake());
-    	board.getHexagons()[11][10].displayPawns();;
     	
         /*for (int i = 0; i < players.length; i++) {
             // Afficher message "Pose tes pions"
@@ -373,9 +375,7 @@ public class Game {
 			if(!hex.getExplorerList().isEmpty() && firstClic == true) {										
 				saveHexa = hex;
 				//--Choix de l'explorateur avec loik 
-				for( Explorer explo : hex.getExplorerList()) {
-					pawnToMove = explo;
-				}
+				pawnToMove = hex.getExplorerList().get(0);
 				//--
 				
 				pawnToMove.findPath(hex, board, 3, hexagonPairList);
@@ -418,11 +418,19 @@ public class Game {
 			}	
 		}
 		else if(actionTurn== ActionTurn.DISCOVER_TILE){	
-			if(hex.getTile()!= null) {
-				hex.discover(players[turnOrder], board);
+			if(hex.getTile() != null) {
+				if(hex.getTile().getType() == TilesType.BEACH 
+						|| (hex.getTile().getType() == TilesType.FOREST
+						&& board.getNbBeach() == 0)
+						|| (hex.getTile().getType() == TilesType.MOUNTAINS
+						&& board.getNbBeach() == 0
+						&& board.getNbForest() == 0)) {
+					board.decreaseNbTile(hex.getTile().getType());
+					hex.discover(players[turnOrder], board);
 
-				// ActionTurn est le changement d'action, à mettre en commentaire pour test
-				nextActionTurn();
+					// ActionTurn est le changement d'action, à mettre en commentaire pour test
+					//nextActionTurn();
+				}
 			}
 			
 		}
