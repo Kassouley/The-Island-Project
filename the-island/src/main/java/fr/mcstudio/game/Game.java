@@ -401,7 +401,7 @@ public class Game {
     public void inGame(Hexagon hex) {      
     	if(actionTurn == ActionTurn.PLAY_TILE) {									
         //Pour test plus facilement ; les 4 prochaines lignes servent a afficher un pion
-        if(players[turnOrder].getTileList().size() > 0) {
+        /*if(players[turnOrder].getTileList().size() > 0) {
           System.out.println(players[turnOrder].getTileList().get(0).getEffect());
           //players[turnOrder].getTileList().get(0).applyEffect(hex, board);
           // Test de tuile
@@ -494,7 +494,9 @@ public class Game {
         else {
           // ActionTurn est le changement d'action, à mettre en commentaire pour test
           nextActionTurn();
-        }
+        }*/
+    		//Test du PLAY_TILE au dessus
+    		nextActionTurn();
     }
 		else if(actionTurn== ActionTurn.MOVE_PAWNS) {
       if(!hex.getExplorerList().isEmpty() && firstClic == true) {										
