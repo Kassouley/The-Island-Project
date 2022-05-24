@@ -29,17 +29,18 @@ public class Main extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		int nbJoueur = 4;
+		int nbJoueur = 1;
 		players = new Player[nbJoueur];
 		
 		Player P1 = new Player("Akunes", Color.BLUE, false);
-		Player P2 = new Player("lo", Color.RED, false);	
-		Player P3 = new Player("Lucasse", Color.YELLOW, false);
-		Player P4 = new Player("kev1", Color.GREEN, false);
 		players[0] = P1;
+		/*Player P2 = new Player("lo", Color.RED, false);
 		players[1] = P2;
+		Player P3 = new Player("Lucasse", Color.YELLOW, false);
 		players[2] = P3;
-		players[3] = P4;
+		Player P4 = new Player("kev1", Color.GREEN, false);
+		players[3] = P4;*/
+			
 	}
 
 	public static void main(String[] args) {

@@ -1,7 +1,7 @@
 package fr.mcstudio.enums;
 
 public enum ActionTurn {
-    PLAY_TILE, MOVE_PAWNS, DISCOVER_TILE, MOVE_MONSTER;
+	INITIALIZATION,PLAY_TILE, MOVE_PAWNS, DISCOVER_TILE, MOVE_MONSTER;
 
     private static ActionTurn[] vals = values();
 

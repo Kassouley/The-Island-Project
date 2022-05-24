@@ -224,7 +224,6 @@ public class Boat extends Pawn {
 		}
 		for (int i = 0; i < explorerToDisplay.size(); i++) {
 			
-			System.out.println(this.getHeight());
 			explorerToDisplay.get(i).setPosition(x.get(i),
 					y.get(i), resolution, this.getHeight()/3);
 			createPawnBoatImage(explorerToDisplay.get(i));

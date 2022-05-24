@@ -562,8 +562,6 @@ public class Hexagon extends JLayeredPane {
                 highlightColor = "yellow";
             } else if (color == "red") {
                 icone = new ImageIcon(Tile.class.getResource("/HexagonRouge.png"));
-                if(boat != null)
-                	System.out.println("purple");
                 highlightColor = "red";
             } else if (color == "purple") {
                 icone = new ImageIcon(Tile.class.getResource("/HexagonViolet.png"));

@@ -82,25 +82,18 @@ public class Tile extends JLabel {
 	 * </p>
 	 * @since1.0
 	 */
-	public void flipTile(Hexagon hexagon, Player p, Board board) {
-
-		hexagon.getTile().applyEffect(hexagon,board);
+	public void flipTile(Hexagon hexagon, Player p, Board board) {	
+		if(hexagon.getTile().getEffect().getType() == "Verte"){
+			hexagon.getTile().applyEffect(hexagon,board);		  	
+		}
+		else {
+			  p.getTileList().add(hexagon.getTile());
+		}
+		
 		hexagon.remove(hexagon.getTile());
 		hexagon.revalidate();
 		hexagon.repaint();
 		hexagon.removeTile();
-		
-		/*if(tilePosition.getTile().getEffect().getType() == "Verte"){
-			tilePosition.getTile().applyEffect(tilePosition,hexagon);		  	
-		  }
-		else {
-			  p.getTileList().add(tilePosition.getTile());
-		  }*/
-		
-		//hexagons[tilePosition.getLine()][tilePosition.getColumn()].setType(HexagonType.SEA);
-		//hexagons[tilePosition.getLine()][tilePosition.getColumn()].setTile(null);
-		
-
 		 
 	}
 	
@@ -229,7 +222,6 @@ public class Tile extends JLabel {
 		for(Hexagon hexagon :listNeighbors ) {
 			hexagons[hexagon.getLine()][hexagon.getColumn()].removeAllPawn();
 			hexagons[hexagon.getLine()][hexagon.getColumn()].displayPawns();
-			System.out.println(" ligne = " + hexagon.getLine() +" colonne = : " + hexagon.getColumn() + " coucou toi");
 		}										
 	}
 	

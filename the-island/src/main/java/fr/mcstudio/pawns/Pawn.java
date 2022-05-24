@@ -141,7 +141,6 @@ public class Pawn extends JLayeredPane {
 
 	public void addIndex(int index, int size) {
 		this.index = new JLabel(Integer.toString(index));
-		System.out.println(getWidth()/2 + " " + getHeight()/2);
 		this.index.setFont(new Font("Tahoma", Font.BOLD,  size/2));
 		this.index.setForeground(java.awt.Color.WHITE);
 		int indexWidth = this.index.getFontMetrics(this.index.getFont()).stringWidth(this.index.getText());

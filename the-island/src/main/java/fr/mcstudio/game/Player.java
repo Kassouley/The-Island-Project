@@ -276,4 +276,18 @@ public class Player {
         }
         return false;
     }
+
+	/**
+	 * @return the tileList
+	 */
+	public List<Tile> getTileList() {
+		return tileList;
+	}
+
+	/**
+	 * @return the explorerList
+	 */
+	public List<Explorer> getExplorerList() {
+		return explorerList;
+	}
 }
