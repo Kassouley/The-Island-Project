@@ -12,14 +12,18 @@
 
 package fr.mcstudio.pawns;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
+import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
-import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.enums.HexagonListType;
+import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.game.Player;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
@@ -43,8 +47,10 @@ public class Boat extends Pawn {
      * </p>
      */
     public Boat() {
-        super(3);
-        this.explorerList = new ArrayList<Explorer>();
+      super(3);
+    	explorerList.add(new Explorer(Color.BLUE, 0));
+    	explorerList.add(new Explorer(Color.GREEN, 0));
+    	explorerList.add(new Explorer(Color.YELLOW, 0));
     }
 
     /**
@@ -54,11 +60,14 @@ public class Boat extends Pawn {
      * 
      * @see Explorer.java
      */
-    private List<Explorer> explorerList;
 
     public List<Explorer> getExplorerList() {
         return explorerList;
     }
+  
+    private List<Explorer> explorerList = new ArrayList<Explorer>();
+
+    private List<Explorer> explorerToDisplay = new ArrayList<Explorer>();
 
     /**
      * <p>
@@ -199,5 +208,63 @@ public class Boat extends Pawn {
             }
         }
     }
+
+	public void displayBoatPawns(Boat boat, int resolution, int nbPawn, Hexagon hex) {
+		// TODO Auto-generated method stub
+		List<Integer> x = new ArrayList<Integer>();
+        List<Integer> y = new ArrayList<Integer>();
+        explorerToDisplay.clear();
+		for(Explorer e : boat.explorerList) {
+			explorerToDisplay.add(new Explorer(e.getColor(), 0));
+		}
+		
+		switch (explorerToDisplay.size()) {
+		case 3:
+            x.add((int) (0));
+            y.add((int) (3*this.getHeight()/10));
+        case 2:
+            x.add((int) (3*this.getWidth()/10));
+            y.add((int) (3*this.getHeight()/10));
+        case 1:
+            x.add((int) (3*this.getWidth()/5));
+            y.add((int) (3*this.getHeight()/10));
+		}
+		for (int i = 0; i < explorerToDisplay.size(); i++) {
+			
+			explorerToDisplay.get(i).setBounds(x.get(i),
+					y.get(i), 2*this.getWidth()/5, 2*this.getHeight()/5);
+			createPawnBoatImage(explorerToDisplay.get(i));
+    		
+            setLayer(explorerToDisplay.get(i), 4);
+            add(explorerToDisplay.get(i));
+		}
+		
+		
+	}
+
+	private void createPawnBoatImage(Explorer e) {
+		ImageIcon icon = null;
+        Image scaleImage;
+		if((e).getColor() == Color.RED) {
+            icon = new ImageIcon(Pawn.class.getResource("/pion_rouge.png"));
+    	} else if((e).getColor() == Color.GREEN) {
+            icon = new ImageIcon(Pawn.class.getResource("/pion_vert.png"));
+    	} else if((e).getColor() == Color.BLUE) {
+            icon = new ImageIcon(Pawn.class.getResource("/pion_bleu.png"));
+    	} else if((e).getColor() == Color.YELLOW) {
+            icon = new ImageIcon(Pawn.class.getResource("/pion_jaune.png"));
+    	}
+
+		scaleImage = icon.getImage().getScaledInstance(e.getWidth(), e.getHeight(), Image.SCALE_SMOOTH);
+
+       	//this.index = new JLabel(Integer.toString(index));
+
+        icon.setImage(scaleImage);
+
+        e.getImage().setIcon(icon);
+        e.add(e.getImage());
+        e.getImage().setBounds(0, 0, e.getWidth(), e.getHeight());
+		
+	}
 
 }

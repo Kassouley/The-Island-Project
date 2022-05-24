@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import fr.mcstudio.enums.Color;
 import fr.mcstudio.game.Game;
 import fr.mcstudio.game.Player;
 
@@ -27,7 +28,18 @@ public class Main extends JFrame {
 		contentPane.setBorder(null);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
+		
+		int nbJoueur = 4;
+		players = new Player[nbJoueur];
+		
+		Player P1 = new Player("Akunes", Color.BLUE, false);
+		Player P2 = new Player("lo", Color.RED, false);	
+		Player P3 = new Player("Lucasse", Color.YELLOW, false);
+		Player P4 = new Player("kev1", Color.GREEN, false);
+		players[0] = P1;
+		players[1] = P2;
+		players[2] = P3;
+		players[3] = P4;
 	}
 
 	public static void main(String[] args) {
@@ -36,7 +48,7 @@ public class Main extends JFrame {
 				try {
 					Main main = new Main();
 					Game game = new Game(main.resolution, main.contentPane, main.players);
-					
+					game.initializeBoard();
 					
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -1,12 +1,13 @@
 package fr.mcstudio.pawns;
 
+import java.awt.Font;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JLayeredPane;
 
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
@@ -18,7 +19,7 @@ import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
 @SuppressWarnings("serial")
-public class Pawn extends JPanel {
+public class Pawn extends JLayeredPane {
     /**
      * <p>
      * Constructeur par d�faut.
@@ -173,5 +174,25 @@ public class Pawn extends JPanel {
         this.add(this.image);
         this.image.setBounds(0, 0, this.getWidth(), this.getHeight());
     }
+
+	public void addIndex(int index, int size) {
+		this.index = new JLabel(Integer.toString(index));
+		this.index.setFont(new Font("Tahoma", Font.BOLD,  size/2));
+		this.index.setForeground(java.awt.Color.WHITE);
+		int indexWidth = this.index.getFontMetrics(this.index.getFont()).stringWidth(this.index.getText());
+		int indexHeight = this.index.getFontMetrics(this.index.getFont()).getHeight();
+		this.index.setBounds(getWidth()/2 - indexWidth/2, getHeight()/2 - indexHeight/4, size/2, size/2);
+		this.setLayer(this.index, 2);
+		add(this.index);
+		
+	}
+
+	public JLabel getImage() {
+		return image;
+	}
+
+	public void setImage(JLabel image) {
+		this.image = image;
+	}
 
 }
