@@ -20,6 +20,7 @@ import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.EffectPawn;
+import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
 import fr.mcstudio.pawns.Shark;
@@ -155,11 +156,11 @@ public class Game {
 										int exit = 0;
 								        if(hex.getTile() != null && hex.getExplorerList().isEmpty()) {
                           
-								          hex.addPawn(players[turnOrder].getExplorerList().get(0));
-								          players[turnOrder].getExplorerList().remove(0);
-								          turnOrder = (turnOrder + 1) % players.length;
+								          hex.addPawn(getCurrentPlayer().getExplorerList().get(0));
+								          getCurrentPlayer().getExplorerList().remove(0);
+								          nextTurn();
 								          for(int x = 0 ; x < players.length ; x++) {
-								            if(players[x].getExplorerList().size() == 0) {
+								            if(getCurrentPlayer().getExplorerList().size() == 0) {
 								            exit ++;
 								            }
 								          }
@@ -173,6 +174,7 @@ public class Game {
 								            hex.addPawn(ss);
 								            hex.addPawn(b);
 								            gameState = GameState.PLAYING;
+								            turnNumber = 0;
 								          }
 								        }
 
@@ -397,15 +399,14 @@ public class Game {
         }*/
     }
     
-    public void inGame(Hexagon hex) {      
+    public void inGame(Hexagon hex) {    
     	if(actionTurn == ActionTurn.PLAY_TILE) {									
         //Pour test plus facilement ; les 4 prochaines lignes servent a afficher un pion
-        if(players[turnOrder].getTileList().size() > 0) {
+       /* if(players[turnOrder].getTileList().size() > 0) {
           System.out.println(players[turnOrder].getTileList().get(0).getEffect());
           //players[turnOrder].getTileList().get(0).applyEffect(hex, board);
           // Test de tuile
-          if(firstClic == true) {	
-            int distance = 0;
+          if(firstClic == true) {
             saveHexa = hex;
             pawnToMove = null;
             EffectPawn effect = null; 
@@ -507,22 +508,31 @@ public class Game {
         else {
           // ActionTurn est le changement d'action, à mettre en commentaire pour test
           nextActionTurn();
-        }
+        }*/
+    		pawnToMove = null;
+        nextActionTurn();
     }
 		else if(actionTurn== ActionTurn.MOVE_PAWNS) {
-			if(!hex.getExplorerList().isEmpty() && firstClic == true) {										
+			
+			if(!hex.getExplorerList().isEmpty() && firstClic == true) {	
 				saveHexa = hex;
+				
 				if(!board.isDisplayExternalPanel() && pawnToMove == null) {
 					if(board.getExternalPanel().getPawn() != null) {
+						
 						pawnToMove = board.getExternalPanel().getPawn();
+						board.getExternalPanel().setPawn(null);
 						inGame(hex);
+						System.out.println("tour1");
 					} else if(hex.containsExplorerColor(getCurrentPlayer().getColor())) {
 						board.getExternalPanel().setClickedHex(hex);
 						board.setDisplayExternalPanel(true);
 						board.getExternalPanel().setExternalPanelState(ExternalPanelState.PAWNPANEL);
+						System.out.println("tour2");
 						
 					}
 				} else {
+					
 					pawnToMove.findPath(hex, board, 3, hexagonTripletList);
 					for(Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
 						String s;
@@ -557,8 +567,9 @@ public class Game {
 					saveHexa.displayPawns();
 					firstClic = true;
 					saveHexa = null;
-          pawnToMove = null;
+					pawnToMove = null;
 					// ActionTurn est le changement d'action, � mettre en commentaire pour test
+					//players[turnOrder].
 					nextActionTurn();
 					
 				}								
@@ -573,7 +584,7 @@ public class Game {
 						&& board.getNbBeach() == 0
 						&& board.getNbForest() == 0)) {
 					board.decreaseNbTile(hex.getTile().getType());
-					hex.discover(players[turnOrder], board);
+					hex.discover(getCurrentPlayer(), board);
 
 					// ActionTurn est le changement d'action, � mettre en commentaire pour test
 					nextActionTurn();
@@ -617,7 +628,6 @@ public class Game {
 				
 			}
 			else if(firstClic == false) {
-				System.out.println("bouh2");
 				if(hexagonTripletList.getLeftList().contains(hex)) {
 					pawnToMove.move(saveHexa, hex) ;
 					for(Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
@@ -628,10 +638,10 @@ public class Game {
 					saveHexa.displayPawns();
 					firstClic = true;
 					saveHexa = null;
+					pawnToMove = null;
 					
 					// ActionTurn est le changement d'action, à mettre en commentaire pour test
-					nextActionTurn();
-					turnOrder = (turnOrder + 1) % players.length;
+					nextTurn();
 				}
 				else {
 			          firstClic = true;
@@ -643,8 +653,8 @@ public class Game {
 			    }
 			}
 		}
-		System.out.println("Joueur :"+ turnOrder + "; " + players[turnOrder].getPseudo());						
-		System.out.println(actionTurn + "\n");
+		//System.out.println("Joueur :"+ turnOrder + "; " + players[turnOrder].getPseudo());						
+		//System.out.println(actionTurn + "\n");
 			
 		
 		hex.displayPawns();

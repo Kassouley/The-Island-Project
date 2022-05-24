@@ -69,7 +69,7 @@ public class Pawn extends JLayeredPane {
         hexagonTripletList.clear();
 
         int distance = Math.min(movePointLeft, this.getMovePoint());
-
+        
         List<Hexagon> tmp = new ArrayList<Hexagon>();
         tmp.add(actualPosition);
         hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.BOAT));

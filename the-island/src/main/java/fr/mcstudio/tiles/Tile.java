@@ -87,6 +87,7 @@ public class Tile extends JLabel {
 	public void flipTile(Hexagon hexagon, Player p, Board board) {
 		for(Explorer e : hexagon.getExplorerList()) {
 			e.setStatus(ExplorerStatus.SWIMMER);
+			e.setMovePoint(1);
 		}
 		if(hexagon.getTile().getEffect().getType() == "Verte"){
 			hexagon.getTile().applyEffect(hexagon,board);		  	
