@@ -523,17 +523,15 @@ public class Game {
 						pawnToMove = board.getExternalPanel().getPawn();
 						board.getExternalPanel().setPawn(null);
 						inGame(hex);
-						System.out.println("tour1");
 					} else if(hex.containsExplorerColor(getCurrentPlayer().getColor())) {
 						board.getExternalPanel().setClickedHex(hex);
 						board.setDisplayExternalPanel(true);
 						board.getExternalPanel().setExternalPanelState(ExternalPanelState.PAWNPANEL);
-						System.out.println("tour2");
 						
 					}
 				} else {
 					
-					pawnToMove.findPath(hex, board, 3, hexagonTripletList);
+					pawnToMove.findPath(hex, board, getCurrentPlayer().getMoveLeft(), hexagonTripletList);
 					for(Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
 						String s;
 						switch(p.getRight()) {
@@ -558,7 +556,13 @@ public class Game {
 			}
 			else if(firstClic == false) {
 				if(hexagonTripletList.getLeftList().contains(hex)) {
+					
 					pawnToMove.move(saveHexa,hex) ;
+					for(int comp = 0; comp < hexagonTripletList.getLeftList().size();comp++) {
+						if(hexagonTripletList.getLeftList().get(comp) == hex) {
+							getCurrentPlayer().setMoveLeft(getCurrentPlayer().getMoveLeft()-hexagonTripletList.getMiddleList().get(comp));
+						}
+					}
 					for(Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
 						p.getLeft().setHighlightColor(null);
 						p.getLeft().setHighlight(resolution, board, false, null);
@@ -570,7 +574,10 @@ public class Game {
 					pawnToMove = null;
 					// ActionTurn est le changement d'action, � mettre en commentaire pour test
 					//players[turnOrder].
-					nextActionTurn();
+					if(getCurrentPlayer().getMoveLeft() == 0) {
+						nextActionTurn();
+					}
+					
 					
 				}								
 			}	

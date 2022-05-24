@@ -204,7 +204,7 @@ public class Player {
      * </p>
      */
     public void setMoveLeft(int moveLeft) {
-        if (moveLeft > 0) {
+        if (moveLeft >= 0) {
             this.moveLeft = moveLeft;
         } else {
             System.out.println("Error : the number of move left cant be negative or zero.");

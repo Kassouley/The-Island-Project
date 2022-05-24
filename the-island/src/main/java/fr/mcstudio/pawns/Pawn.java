@@ -75,7 +75,7 @@ public class Pawn extends JLayeredPane {
         hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.BOAT));
         for (int i = 1; i <= distance; i++) {
             for (Hexagon hexagon : tmp) {
-                this.findPathAux(hexagon, board, hexagonTripletList, distance);
+                this.findPathAux(hexagon, board, hexagonTripletList, i);
             }
             List<Hexagon> mem = new ArrayList<Hexagon>();
             List<Hexagon> hexagonList = hexagonTripletList.getLeftList();
