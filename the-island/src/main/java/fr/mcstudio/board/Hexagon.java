@@ -648,22 +648,22 @@ public class Hexagon extends JLayeredPane {
             pawnsToDisplay.add(b);
         }
         if (!this.explorerList.isEmpty()) {
-        	if(containsExplorerColor(explorerList, Color.GREEN)) {
+        	if(containsExplorerColor(Color.GREEN)) {
         		Explorer e = new Explorer(Color.GREEN, 0);
         		index.add(nbExplorerColor(explorerList, Color.GREEN));
                 pawnsToDisplay.add(e);
         	}
-        	if(containsExplorerColor(explorerList, Color.RED)) {
+        	if(containsExplorerColor(Color.RED)) {
         		Explorer e = new Explorer(Color.RED, 0);
         		index.add(nbExplorerColor(explorerList, Color.RED));
                 pawnsToDisplay.add(e);
         	}
-        	if(containsExplorerColor(explorerList, Color.BLUE)) {
+        	if(containsExplorerColor(Color.BLUE)) {
         		Explorer e = new Explorer(Color.BLUE, 0);
         		index.add(nbExplorerColor(explorerList, Color.BLUE));
                 pawnsToDisplay.add(e);
         	}
-        	if(containsExplorerColor(explorerList, Color.YELLOW)) {
+        	if(containsExplorerColor(Color.YELLOW)) {
         		Explorer e = new Explorer(Color.YELLOW, 0);
         		index.add(nbExplorerColor(explorerList, Color.YELLOW));
                 pawnsToDisplay.add(e);
@@ -759,8 +759,8 @@ public class Hexagon extends JLayeredPane {
         }
     }
     
-    public boolean containsExplorerColor(final List<Explorer> list, final Color color){
-        return list.stream().filter(o -> o.getColor().equals(color)).findFirst().isPresent();
+    public boolean containsExplorerColor(final Color color){
+        return explorerList.stream().filter(o -> o.getColor().equals(color)).findFirst().isPresent();
     }
     
     public int nbExplorerColor(final List<Explorer> list, final Color color) {

@@ -2,7 +2,6 @@ package fr.mcstudio.board;
 
 import java.awt.Image;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -13,6 +12,7 @@ import javax.swing.JLayeredPane;
 import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
+import fr.mcstudio.game.Game;
 import fr.mcstudio.tiles.Tile;
 
 @SuppressWarnings("serial")
@@ -56,14 +56,27 @@ public class Board extends JLayeredPane{
 				break;
 		}
 	}
+	
+	Game game;
+	
+	ExternalPanel externalPanel;
+	
+	private boolean displayExternalPanel = false;
 
-	public Board(final int resolution) {
+	public ExternalPanel getExternalPanel() {
+		return externalPanel;
+	}
+
+	public Board(Game game, final int resolution) {
 		super();
 		this.board = this;
+		this.game = game;
 		setLayer(boardLabel, 0);
 		setPanelBoundsFromResolution(resolution);
 		setLabel();
 		add(boardLabel);
+		
+		externalPanel = new ExternalPanel(this, resolution);
 
 		List<Tile> tilesList = CreateTiles(resolution);
 		Random r = new Random();
@@ -316,6 +329,7 @@ public class Board extends JLayeredPane{
 	public Board getBoard() {
 		return this;
 	}
+	
 	public boolean isSharkOnBoard() {
 		for (int i = 0; i < 13; i++) {
 			for (int j = 0; j < 12; j++) {
@@ -347,5 +361,13 @@ public class Board extends JLayeredPane{
 		}
 		
 		return false;
+	}
+
+	public boolean isDisplayExternalPanel() {
+		return displayExternalPanel;
+	}
+
+	public void setDisplayExternalPanel(boolean displayExternalPanel) {
+		this.displayExternalPanel = displayExternalPanel;
 	}
 }
