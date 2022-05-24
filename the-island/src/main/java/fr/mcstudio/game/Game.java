@@ -48,7 +48,7 @@ public class Game {
         
         //A set comme vous voulez pour effectuer des test sur les differentes actions
 
-        this.actionTurn = ActionTurn.INITIALIZATION;
+        this.actionTurn = ActionTurn.PLAY_TILE;
         this.gameState = GameState.INITIALISATION;
 
         
@@ -95,7 +95,7 @@ public class Game {
      */
     private ActionTurn actionTurn;
     
-    private TripletList<Hexagon,Integer,HexagonListType> hexagonPairList = new TripletList<Hexagon,Integer, HexagonListType>();
+    private TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList = new TripletList<Hexagon,Integer, HexagonListType>();
     
     /**
      * 
@@ -154,8 +154,33 @@ public class Game {
 							if (!hex.isVoid()) {
 								if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), 
 										e.getY() - hex.getY())) {
-									if(gameState == GameState.INITIALISATION) {
-										gameState = GameState.PLAYING;
+									if(gameState == GameState.INITIALISATION) {						            
+										int exit = 0;
+								        if(hex.getTile() != null && hex.getExplorerList().isEmpty()) {
+
+								          hex.addPawn(players[turnOrder].getExplorerList().get(0));
+								          players[turnOrder].getExplorerList().remove(0);
+								          turnOrder = (turnOrder + 1) % players.length;
+								          for(int x = 0 ; x < players.length ; x++) {
+								            if(players[x].getExplorerList().size() == 0) {
+								            exit ++;
+								            }
+								          }
+								          if(exit == players.length) {
+								            Shark s = new Shark();
+								            Whale w = new Whale();
+								            SeaSnake ss = new SeaSnake();
+								            Boat b = new Boat();
+								            hex.addPawn(s);
+								            hex.addPawn(w);
+								            hex.addPawn(ss);
+								            hex.addPawn(b);
+								            gameState = GameState.PLAYING;
+								          }
+								        }
+
+										hex.displayPawns();
+										
 									} else if(gameState == GameState.PLAYING) {
 										inGame(hex);
 									} else if(gameState == GameState.ENDING) {
@@ -373,34 +398,8 @@ public class Game {
         }*/
     }
     
-    public void inGame(Hexagon hex) {
-      if(actionTurn == ActionTurn.INITIALIZATION) {
-        int exit = 0;
-        if(hex.getTile() != null && hex.getExplorerList().isEmpty()) {
-
-          hex.addPawn(players[turnOrder].getExplorerList().get(0));
-          players[turnOrder].getExplorerList().remove(0);
-          turnOrder = (turnOrder + 1) % players.length;
-          for(int x = 0 ; x < players.length ; x++) {
-            if(players[x].getExplorerList().size() == 0) {
-            exit ++;
-            }
-          }
-          if(exit == players.length) {
-            Shark s = new Shark();
-            Whale w = new Whale();
-            SeaSnake ss = new SeaSnake();
-            Boat b = new Boat();
-            hex.addPawn(s);
-            hex.addPawn(w);
-            hex.addPawn(ss);
-            hex.addPawn(b);
-
-            nextActionTurn();
-          }
-        }								
-      }
-    	else if(actionTurn == ActionTurn.PLAY_TILE) {									
+    public void inGame(Hexagon hex) {      
+    	if(actionTurn == ActionTurn.PLAY_TILE) {									
         //Pour test plus facilement ; les 4 prochaines lignes servent a afficher un pion
         if(players[turnOrder].getTileList().size() > 0) {
           System.out.println(players[turnOrder].getTileList().get(0).getEffect());
@@ -439,8 +438,8 @@ public class Game {
 
 
             if(pawnToMove != null) {
-              pawnToMove.findPath(hex, board, distance, hexagonPairList);
-              for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonPairList) {
+              pawnToMove.findPath(hex, board, distance, hexagonTripletList);
+              for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonTripletList) {
                 String s;
                 switch(p.getRight()) {
                   case NORMAL:
@@ -464,13 +463,13 @@ public class Game {
 
           }
           else if(firstClic == false) {
-            if(hexagonPairList.getLeftList().contains(hex)) {
+            if(hexagonTripletList.getLeftList().contains(hex)) {
               pawnToMove.move(saveHexa,hex) ;
-              for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonPairList) {
+              for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonTripletList) {
                 p.getLeft().setHighlightColor(null);
                 p.getLeft().setHighlight(resolution, board, false, null);
               }
-              hexagonPairList.clear();
+              hexagonTripletList.clear();
               saveHexa.displayPawns();
               firstClic = true;
               saveHexa = null;
@@ -483,7 +482,7 @@ public class Game {
             else {
               firstClic = true;
               saveHexa = null;
-              for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonPairList) {
+              for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonTripletList) {
                 p.getLeft().setHighlightColor(null);
                 p.getLeft().setHighlight(resolution, board, false, null);
               }
@@ -500,14 +499,12 @@ public class Game {
 		else if(actionTurn== ActionTurn.MOVE_PAWNS) {
       if(!hex.getExplorerList().isEmpty() && firstClic == true) {										
         saveHexa = hex;
-        //--Choix de l'explorateur avec loik 
-        for( Explorer explo : hex.getExplorerList()) {
-          pawnToMove = explo;
-        }
+        //--Choix de l'explorateur avec kevin 
+        pawnToMove = hex.getExplorerList().get(0);
         //--
 
-        pawnToMove.findPath(hex, board, 3, hexagonPairList);
-        for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonPairList) {
+        pawnToMove.findPath(hex, board, 3, hexagonTripletList);
+        for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonTripletList) {
           String s;
           switch(p.getRight()) {
             case NORMAL:
@@ -529,13 +526,13 @@ public class Game {
         firstClic = false;	
       }
       else if(firstClic == false) {
-        if(hexagonPairList.getLeftList().contains(hex)) {
+        if(hexagonTripletList.getLeftList().contains(hex)) {
           pawnToMove.move(saveHexa,hex) ;
-          for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonPairList) {
+          for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonTripletList) {
             p.getLeft().setHighlightColor(null);
             p.getLeft().setHighlight(resolution, board, false, null);
           }
-          hexagonPairList.clear();
+          hexagonTripletList.clear();
           saveHexa.displayPawns();
           firstClic = true;
           saveHexa = null;
@@ -547,7 +544,7 @@ public class Game {
         else {
           firstClic = true;
           saveHexa = null;
-          for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonPairList) {
+          for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonTripletList) {
             p.getLeft().setHighlightColor(null);
             p.getLeft().setHighlight(resolution, board, false, null);
           }
@@ -587,8 +584,8 @@ public class Game {
 				}
 				//--
 				
-				pawnToMove.findPath(hex, board, 3, hexagonPairList);
-				for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonPairList) {
+				pawnToMove.findPath(hex, board, 3, hexagonTripletList);
+				for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonTripletList) {
 					String s;
 					switch(p.getRight()) {
 						case NORMAL:
@@ -608,22 +605,29 @@ public class Game {
 			}
 			else if(firstClic == false) {
 				System.out.println("bouh2");
-				if(hexagonPairList.getLeftList().contains(hex)) {
+				if(hexagonTripletList.getLeftList().contains(hex)) {
 					pawnToMove.move(saveHexa, hex) ;
-					for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonPairList) {
+					for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonTripletList) {
 						p.getLeft().setHighlightColor(null);
 						p.getLeft().setHighlight(resolution, board, false, null);
 					}
-					hexagonPairList.clear();
+					hexagonTripletList.clear();
 					saveHexa.displayPawns();
 					firstClic = true;
 					saveHexa = null;
 					
 					// ActionTurn est le changement d'action, à mettre en commentaire pour test
 					nextActionTurn();
-          nextActionTurn();
 					turnOrder = (turnOrder + 1) % players.length;
 				}
+				else {
+			          firstClic = true;
+			          saveHexa = null;
+			          for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonTripletList) {
+			            p.getLeft().setHighlightColor(null);
+			            p.getLeft().setHighlight(resolution, board, false, null);
+			          }
+			    }
 			}
 		}
 		System.out.println("Joueur :"+ turnOrder + "; " + players[turnOrder].getPseudo());						
