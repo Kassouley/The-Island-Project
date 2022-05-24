@@ -80,17 +80,20 @@ public class Pawn extends JLayeredPane {
             List<Hexagon> mem = new ArrayList<Hexagon>();
             List<Hexagon> hexagonList = hexagonTripletList.getLeftList();
             mem.addAll(tmp);
-            Explorer explorer = (Explorer) this;
+            
 
             tmp.clear();
             for (Hexagon hexagon : hexagonList) {
                 int index = hexagonList.indexOf(hexagon);
-                if ((this instanceof Explorer
-                        && explorer.getStatus() == ExplorerStatus.SWIMMER
-                        || hexagon.getType() != HexagonType.SEA)
-                        && hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
-                        
-                    tmp.add(hexagon);
+                if (this instanceof Explorer) {
+                	Explorer explorer = (Explorer) this;
+                	if ((explorer.getStatus() == ExplorerStatus.SWIMMER
+                			|| hexagon.getType() != HexagonType.SEA)
+                			&& hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
+                		tmp.add(hexagon);
+                	}
+                } else if (hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
+                	tmp.add(hexagon);   
                 }
             }
 
