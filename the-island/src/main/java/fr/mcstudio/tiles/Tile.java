@@ -11,10 +11,12 @@ import javax.swing.SwingConstants;
 
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
+import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.game.Player;
 import fr.mcstudio.pawns.Boat;
+import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.pawns.Whale;
 
@@ -82,7 +84,10 @@ public class Tile extends JLabel {
 	 * </p>
 	 * @since1.0
 	 */
-	public void flipTile(Hexagon hexagon, Player p, Board board) {	
+	public void flipTile(Hexagon hexagon, Player p, Board board) {
+		for(Explorer e : hexagon.getExplorerList()) {
+			e.setStatus(ExplorerStatus.SWIMMER);
+		}
 		if(hexagon.getTile().getEffect().getType() == "Verte"){
 			hexagon.getTile().applyEffect(hexagon,board);		  	
 		}
