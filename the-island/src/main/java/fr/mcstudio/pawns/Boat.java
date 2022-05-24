@@ -47,6 +47,9 @@ public class Boat extends Pawn {
      * </p>
      */
     public Boat() {
+    	explorerList.add(new Explorer(Color.BLUE, 0));
+    	explorerList.add(new Explorer(Color.GREEN, 0));
+    	explorerList.add(new Explorer(Color.YELLOW, 0));
     }
 
     /**
@@ -209,23 +212,22 @@ public class Boat extends Pawn {
 		for(Explorer e : boat.explorerList) {
 			explorerToDisplay.add(new Explorer(e.getColor(), 0));
 		}
-		float rate = ((float) resolution / (float) 90);
 		
 		switch (explorerToDisplay.size()) {
 		case 3:
-            x.add((int) (0 * rate));
-            y.add((int) (this.getHeight()/3 * rate));
+            x.add((int) (0));
+            y.add((int) (3*this.getHeight()/10));
         case 2:
-            x.add((int) (this.getWidth()/3 * rate));
-            y.add((int) (this.getHeight()/3 * rate));
+            x.add((int) (3*this.getWidth()/10));
+            y.add((int) (3*this.getHeight()/10));
         case 1:
-            x.add((int) (2*this.getWidth()/3 * rate));
-            y.add((int) (this.getHeight()/3 * rate));
+            x.add((int) (3*this.getWidth()/5));
+            y.add((int) (3*this.getHeight()/10));
 		}
 		for (int i = 0; i < explorerToDisplay.size(); i++) {
 			
-			explorerToDisplay.get(i).setPosition(x.get(i),
-					y.get(i), resolution, this.getHeight()/3);
+			explorerToDisplay.get(i).setBounds(x.get(i),
+					y.get(i), 2*this.getWidth()/5, 2*this.getHeight()/5);
 			createPawnBoatImage(explorerToDisplay.get(i));
     		
             setLayer(explorerToDisplay.get(i), 4);
@@ -247,6 +249,7 @@ public class Boat extends Pawn {
     	} else if((e).getColor() == Color.YELLOW) {
             icon = new ImageIcon(Pawn.class.getResource("/pion_jaune.png"));
     	}
+
 		scaleImage = icon.getImage().getScaledInstance(e.getWidth(), e.getHeight(), Image.SCALE_SMOOTH);
 
        	//this.index = new JLabel(Integer.toString(index));

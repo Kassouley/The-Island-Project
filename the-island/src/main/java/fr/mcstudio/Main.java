@@ -48,7 +48,7 @@ public class Main extends JFrame {
 				try {
 					Main main = new Main();
 					Game game = new Game(main.resolution, main.contentPane, main.players);
-					
+					game.initializeBoard();
 					
 				} catch (Exception e) {
 					e.printStackTrace();
