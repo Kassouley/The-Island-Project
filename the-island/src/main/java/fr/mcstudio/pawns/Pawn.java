@@ -14,8 +14,9 @@ import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonListType;
-import fr.mcstudio.util.Pair;
-import fr.mcstudio.util.PairList;
+import fr.mcstudio.enums.HexagonType;
+import fr.mcstudio.util.Triplet;
+import fr.mcstudio.util.TripletList;
 
 @SuppressWarnings("serial")
 public class Pawn extends JLayeredPane {
@@ -24,14 +25,25 @@ public class Pawn extends JLayeredPane {
      * Constructeur par d�faut.
      * </p>
      */
-    public Pawn() {
+    public Pawn(int movePoint) {
     	this.setLayout(null);
     	this.setOpaque(false);
+        this.movePoint = movePoint;
     }
 
     protected JLabel index;
 
     protected JLabel image = new JLabel();
+
+    private int movePoint;
+
+    public int getMovePoint() {
+        return this.movePoint;
+    }
+
+    public void setMovePoint(int movePoint) {
+        this.movePoint = movePoint;
+    }
 
     /**
      * 
@@ -53,43 +65,67 @@ public class Pawn extends JLayeredPane {
      * @param distance
      * @param listHexagon
      */
-    public void findPath(Hexagon actualPosition, Board board, int distance, PairList<Hexagon,HexagonListType> hexagonPairList) {
-        hexagonPairList.clear();
+    public void findPath(Hexagon actualPosition, Board board, int movePointLeft, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList) {
+        hexagonTripletList.clear();
 
-        // ---------------------------------------------------------- A changer, faut
-        // regarder les movePoint et moveCost je pense
-        if (this instanceof Explorer) {
-            Explorer explorer = (Explorer) this;
-            if (explorer.getStatus() == ExplorerStatus.SWIMMER) {
-                distance = 1;
-            }
-        }
+        int distance = Math.min(movePointLeft, this.getMovePoint());
 
         List<Hexagon> tmp = new ArrayList<Hexagon>();
         tmp.add(actualPosition);
-        hexagonPairList.add(new Pair<Hexagon, HexagonListType>(actualPosition, HexagonListType.NORMAL));
-        for (int i = 0; i < distance; i++) {
+        hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.BOAT));
+        for (int i = 1; i <= distance; i++) {
             for (Hexagon hexagon : tmp) {
-                this.findPathAux(hexagon, board, hexagonPairList);
+                this.findPathAux(hexagon, board, hexagonTripletList, distance);
             }
             List<Hexagon> mem = new ArrayList<Hexagon>();
-            List<Hexagon> hexagonList = hexagonPairList.getLeftList();
+            List<Hexagon> hexagonList = hexagonTripletList.getLeftList();
             mem.addAll(tmp);
-            
+            Explorer explorer = (Explorer) this;
 
+            tmp.clear();
             for (Hexagon hexagon : hexagonList) {
                 int index = hexagonList.indexOf(hexagon);
-                if (hexagonPairList.get(index).getRight() != HexagonListType.DEATH) {
+                if ((this instanceof Explorer
+                        && explorer.getStatus() == ExplorerStatus.SWIMMER
+                        || hexagon.getType() != HexagonType.SEA)
+                        && hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
+                        
                     tmp.add(hexagon);
                 }
             }
+
             for (Hexagon hexagon : mem) {
                 if (tmp.contains(hexagon)) {
                     tmp.remove(hexagon);
                 }
             }
         }
-        hexagonPairList.remove(0);
+
+        if (this instanceof Explorer
+                && actualPosition.getBoat() != null) {
+            if (actualPosition.getBoat().getExplorerList().contains(this)) {
+                if (!actualPosition.getWhaleList().isEmpty()
+                        || !actualPosition.getSeaSnakeList().isEmpty()) {
+                    hexagonTripletList.remove(0);
+                    hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.DEATH));
+                } else {
+                    hexagonTripletList.remove(0);
+                    hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.NORMAL));
+                }
+            } else {
+                if (!actualPosition.getBoat().isFull()) {
+                    if (!actualPosition.getWhaleList().isEmpty()
+                            || !actualPosition.getSeaSnakeList().isEmpty()) {
+                        hexagonTripletList.remove(0);
+                        hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.DEATH));
+                    }
+                } else {
+                    hexagonTripletList.remove(0);
+                }
+            }
+        } else {
+            hexagonTripletList.remove(0);
+        }
     }
 
     /**
@@ -98,7 +134,7 @@ public class Pawn extends JLayeredPane {
      * @param board
      * @param listHexagon
      */
-    public void findPathAux(Hexagon actualPosition, Board board, PairList<Hexagon,HexagonListType> hexagonPairList) {
+    public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
     }
 
     public void createPawnImage(Hexagon hex) {
