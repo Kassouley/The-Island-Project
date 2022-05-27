@@ -125,6 +125,7 @@ public class Explorer extends Pawn {
      * @since 2.0
      */
     public void move(Hexagon oldPosition, Hexagon newPosition) {
+    	System.out.println("Bouh");
         oldPosition.removePawn(this);
         switch (newPosition.getType()) {
             case TILES:
@@ -190,6 +191,7 @@ public class Explorer extends Pawn {
             case TILES:
                 // Move impossible
                 this.status = ExplorerStatus.NORMAL;
+                this.setMovePoint(3);
                 newPosition.addPawn(this);
                 break;
             case SEA:
@@ -197,6 +199,7 @@ public class Explorer extends Pawn {
                     this.status = ExplorerStatus.DEAD;
                 } else {
                     this.status = ExplorerStatus.SWIMMER;
+                    this.setMovePoint(1);
                     newPosition.addPawn(this);
                 }
                 break;
@@ -228,6 +231,67 @@ public class Explorer extends Pawn {
         }
         if (!newBoatPosition.getSeaSnakeList().isEmpty()) {
             newBoatPosition.getSeaSnakeList().get(0).makeEffect(newBoatPosition);
+        }
+    }
+
+    public void findPath(Hexagon actualPosition, Board board, int movePointLeft, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList) {
+        hexagonTripletList.clear();
+        
+        int distance = Math.min(movePointLeft, this.getMovePoint());
+
+        List<Hexagon> tmp = new ArrayList<Hexagon>();
+        tmp.add(actualPosition);
+        hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.BOAT));
+        for (int i = 1; i <= distance; i++) {
+            for (Hexagon hexagon : tmp) {
+                this.findPathAux(hexagon, board, hexagonTripletList, i);
+            }
+            
+            List<Hexagon> mem = new ArrayList<Hexagon>();
+            List<Hexagon> hexagonList = hexagonTripletList.getLeftList();
+            mem.addAll(tmp);
+
+            tmp.clear();
+            for (Hexagon hexagon : hexagonList) {
+                int index = hexagonList.indexOf(hexagon);
+                if ((this.getStatus() == ExplorerStatus.SWIMMER
+                        || hexagon.getType() != HexagonType.SEA)
+                        && hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
+                        
+                    tmp.add(hexagon);
+                }
+            }
+
+            for (Hexagon hexagon : mem) {
+                if (tmp.contains(hexagon)) {
+                    tmp.remove(hexagon);
+                }
+            }
+        }
+
+        if (actualPosition.getBoat() != null) {
+            if (actualPosition.getBoat().getExplorerList().contains(this)) {
+                if (!actualPosition.getWhaleList().isEmpty()
+                        || !actualPosition.getSeaSnakeList().isEmpty()) {
+                    hexagonTripletList.remove(0);
+                    hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.DEATH));
+                } else {
+                    hexagonTripletList.remove(0);
+                    hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.NORMAL));
+                }
+            } else {
+                if (!actualPosition.getBoat().isFull()) {
+                    if (!actualPosition.getWhaleList().isEmpty()
+                            || !actualPosition.getSeaSnakeList().isEmpty()) {
+                        hexagonTripletList.remove(0);
+                        hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.DEATH));
+                    }
+                } else {
+                    hexagonTripletList.remove(0);
+                }
+            }
+        } else {
+            hexagonTripletList.remove(0);
         }
     }
 

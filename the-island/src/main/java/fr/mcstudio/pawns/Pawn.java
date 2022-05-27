@@ -35,7 +35,7 @@ public class Pawn extends JLayeredPane {
 
     protected JLabel image = new JLabel();
 
-	private int movePoint;
+    private int movePoint;
 
     public int getMovePoint() {
         return this.movePoint;
@@ -67,9 +67,9 @@ public class Pawn extends JLayeredPane {
      */
     public void findPath(Hexagon actualPosition, Board board, int movePointLeft, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList) {
         hexagonTripletList.clear();
-
-        int distance = Math.min(movePointLeft, this.getMovePoint());
         
+        int distance = Math.min(movePointLeft, this.getMovePoint());
+
         List<Hexagon> tmp = new ArrayList<Hexagon>();
         tmp.add(actualPosition);
         hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.BOAT));
@@ -77,23 +77,17 @@ public class Pawn extends JLayeredPane {
             for (Hexagon hexagon : tmp) {
                 this.findPathAux(hexagon, board, hexagonTripletList, i);
             }
+            
             List<Hexagon> mem = new ArrayList<Hexagon>();
             List<Hexagon> hexagonList = hexagonTripletList.getLeftList();
             mem.addAll(tmp);
-            
 
             tmp.clear();
             for (Hexagon hexagon : hexagonList) {
                 int index = hexagonList.indexOf(hexagon);
-                if (this instanceof Explorer) {
-                	Explorer explorer = (Explorer) this;
-                	if ((explorer.getStatus() == ExplorerStatus.SWIMMER
-                			|| hexagon.getType() != HexagonType.SEA)
-                			&& hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
-                		tmp.add(hexagon);
-                	}
-                } else if (hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
-                	tmp.add(hexagon);   
+                if (hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
+                        
+                    tmp.add(hexagon);
                 }
             }
 
@@ -104,31 +98,7 @@ public class Pawn extends JLayeredPane {
             }
         }
 
-        if (this instanceof Explorer
-                && actualPosition.getBoat() != null) {
-            if (actualPosition.getBoat().getExplorerList().contains(this)) {
-                if (!actualPosition.getWhaleList().isEmpty()
-                        || !actualPosition.getSeaSnakeList().isEmpty()) {
-                    hexagonTripletList.remove(0);
-                    hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.DEATH));
-                } else {
-                    hexagonTripletList.remove(0);
-                    hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.NORMAL));
-                }
-            } else {
-                if (!actualPosition.getBoat().isFull()) {
-                    if (!actualPosition.getWhaleList().isEmpty()
-                            || !actualPosition.getSeaSnakeList().isEmpty()) {
-                        hexagonTripletList.remove(0);
-                        hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.DEATH));
-                    }
-                } else {
-                    hexagonTripletList.remove(0);
-                }
-            }
-        } else {
-            hexagonTripletList.remove(0);
-        }
+        hexagonTripletList.remove(0);
     }
 
     /**
