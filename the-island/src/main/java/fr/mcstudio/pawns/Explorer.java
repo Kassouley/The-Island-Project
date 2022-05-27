@@ -230,6 +230,67 @@ public class Explorer extends Pawn {
         }
     }
 
+    public void findPath(Hexagon actualPosition, Board board, int movePointLeft, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList) {
+        hexagonTripletList.clear();
+        
+        int distance = Math.min(movePointLeft, this.getMovePoint());
+
+        List<Hexagon> tmp = new ArrayList<Hexagon>();
+        tmp.add(actualPosition);
+        hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.BOAT));
+        for (int i = 1; i <= distance; i++) {
+            for (Hexagon hexagon : tmp) {
+                this.findPathAux(hexagon, board, hexagonTripletList, distance);
+            }
+            
+            List<Hexagon> mem = new ArrayList<Hexagon>();
+            List<Hexagon> hexagonList = hexagonTripletList.getLeftList();
+            mem.addAll(tmp);
+
+            tmp.clear();
+            for (Hexagon hexagon : hexagonList) {
+                int index = hexagonList.indexOf(hexagon);
+                if ((this.getStatus() == ExplorerStatus.SWIMMER
+                        || hexagon.getType() != HexagonType.SEA)
+                        && hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
+                        
+                    tmp.add(hexagon);
+                }
+            }
+
+            for (Hexagon hexagon : mem) {
+                if (tmp.contains(hexagon)) {
+                    tmp.remove(hexagon);
+                }
+            }
+        }
+
+        if (actualPosition.getBoat() != null) {
+            if (actualPosition.getBoat().getExplorerList().contains(this)) {
+                if (!actualPosition.getWhaleList().isEmpty()
+                        || !actualPosition.getSeaSnakeList().isEmpty()) {
+                    hexagonTripletList.remove(0);
+                    hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.DEATH));
+                } else {
+                    hexagonTripletList.remove(0);
+                    hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.NORMAL));
+                }
+            } else {
+                if (!actualPosition.getBoat().isFull()) {
+                    if (!actualPosition.getWhaleList().isEmpty()
+                            || !actualPosition.getSeaSnakeList().isEmpty()) {
+                        hexagonTripletList.remove(0);
+                        hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.DEATH));
+                    }
+                } else {
+                    hexagonTripletList.remove(0);
+                }
+            }
+        } else {
+            hexagonTripletList.remove(0);
+        }
+    }
+
     public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
