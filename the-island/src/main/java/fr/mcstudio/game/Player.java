@@ -63,12 +63,21 @@ public class Player {
 
     /**
      * <p>
-     * Liste des explorateurs du joueur
+     * Liste des explorateurs du joueur a l'initialisation
      * </p>
      * 
      * @see Color.java
      */
     private List<Explorer> explorerList = new ArrayList<Explorer>();
+    
+    /**
+     * <p>
+     * Liste des explorateurs du joueur pendant la partie
+     * </p>
+     * 
+     * @see Color.java
+     */
+    private List<Explorer> currentExplorerList = new ArrayList<Explorer>();
 
     /**
      * <p>
@@ -183,7 +192,7 @@ public class Player {
             explorer.setPosition(0, 0, resolution, 68);
             explorer.createImage(resolution);
             explorerList.add(explorer);
-        }
+        }     
         return explorerList;
     }
 
@@ -290,5 +299,24 @@ public class Player {
 		return tileList;
 	}
 
+	/**
+	 * 
+	 */
+	public void resetMovePointExplorer() {
+		for(Explorer e : this.currentExplorerList) {
+			if(e.getStatus() == ExplorerStatus.SWIMMER) {
+				e.setMovePoint(1);
+			}else if (e.getStatus() == ExplorerStatus.NORMAL) {
+				e.setMovePoint(3);
+			}				
+		}
+	}
+
+	/**
+	 * @return the currentExplorerList
+	 */
+	public List<Explorer> getCurrentExplorerList() {
+		return currentExplorerList;
+	}
 
 }

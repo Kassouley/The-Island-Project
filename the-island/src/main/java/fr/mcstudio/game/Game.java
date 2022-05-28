@@ -158,6 +158,7 @@ public class Game {
 								        if(hex.getTile() != null && hex.getExplorerList().isEmpty()) {
                           
 								          hex.addPawn(getCurrentPlayer().getExplorerList().get(0));
+								          getCurrentPlayer().getCurrentExplorerList().add(getCurrentPlayer().getExplorerList().get(0));
 								          getCurrentPlayer().getExplorerList().remove(0);
 								          nextTurn();
 								          for(int x = 0 ; x < players.length ; x++) {
@@ -443,7 +444,7 @@ public class Game {
      * @param hex
      */
     private void inGamePlayTile(Hexagon hex) {
-    	if(players[turnOrder].getTileList().size() > 0) {
+    	if(getCurrentPlayer().getTileList().size() > 0) {
             System.out.println(players[turnOrder].getTileList().get(0).getEffect());
             //players[turnOrder].getTileList().get(0).applyEffect(hex, board);
             // Test de tuile
@@ -608,7 +609,7 @@ public class Game {
 				for(int comp = 0; comp < hexagonTripletList.getLeftList().size();comp++) {
 					if(hexagonTripletList.getLeftList().get(comp) == hex) {
 						getCurrentPlayer().setMoveLeft(getCurrentPlayer().getMoveLeft()-hexagonTripletList.getMiddleList().get(comp));
-
+						pawnToMove.setMovePoint(pawnToMove.getMovePoint() -hexagonTripletList.getMiddleList().get(comp));
 					}
 				}
 				for(Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
@@ -624,6 +625,7 @@ public class Game {
 				//players[turnOrder].
 				if(getCurrentPlayer().getMoveLeft() == 0) {
 					nextActionTurn();
+					getCurrentPlayer().resetMovePointExplorer();
 				}
 				
 				
