@@ -226,17 +226,19 @@ public class Player {
      * 
      * @param board le plateau dans lequel on pose les explorateurs.
      */
-    /*public void placeAllExplorers(Board board) {
-        for (Explorer e : this.explorerList) {
-            Hexagon hexagon;
-            do {
-                hexagon = board.returnHexagon();
-            } while (!hexagon.isTiles() || !hexagon.getExplorerList().isEmpty());
-
-            hexagon.addPawn(e);
-            hexagon = null;
-        }
-    }*/
+    /*
+     * public void placeAllExplorers(Board board) {
+     * for (Explorer e : this.explorerList) {
+     * Hexagon hexagon;
+     * do {
+     * hexagon = board.returnHexagon();
+     * } while (!hexagon.isTiles() || !hexagon.getExplorerList().isEmpty());
+     * 
+     * hexagon.addPawn(e);
+     * hexagon = null;
+     * }
+     * }
+     */
 
     /**
      * <p>
@@ -245,25 +247,27 @@ public class Player {
      * 
      * @param board le plateau dans lequel on pose les bateaux.
      */
-    /*public void placeBoats(Board board) {
-        for (int i = 0; i < 2; i++) {
-            Hexagon hexagon;
-            do {
-                hexagon = board.returnHexagon();
-            } while (!hexagon.isSea()
-                    || hexagon.getBoat() != null
-                    || !board.getBottomLeft(hexagon).isTiles()
-                    || !board.getLeft(hexagon).isTiles()
-                    || !board.getTopLeft(hexagon).isTiles()
-                    || !board.getBottomRight(hexagon).isTiles()
-                    || !board.getRight(hexagon).isTiles()
-                    || !board.getTopRight(hexagon).isTiles());
-
-            Boat b = new Boat();
-            hexagon.addPawn(b);
-            hexagon = null;
-        }
-    }*/
+    /*
+     * public void placeBoats(Board board) {
+     * for (int i = 0; i < 2; i++) {
+     * Hexagon hexagon;
+     * do {
+     * hexagon = board.returnHexagon();
+     * } while (!hexagon.isSea()
+     * || hexagon.getBoat() != null
+     * || !board.getBottomLeft(hexagon).isTiles()
+     * || !board.getLeft(hexagon).isTiles()
+     * || !board.getTopLeft(hexagon).isTiles()
+     * || !board.getBottomRight(hexagon).isTiles()
+     * || !board.getRight(hexagon).isTiles()
+     * || !board.getTopRight(hexagon).isTiles());
+     * 
+     * Boat b = new Boat();
+     * hexagon.addPawn(b);
+     * hexagon = null;
+     * }
+     * }
+     */
 
     public List<Explorer> getExplorerList() {
 		return explorerList;

@@ -37,8 +37,8 @@ public class Game {
      */
     public Game(int resolution, JPanel contentPane, Player[] players) {
         // this.board = new Board();
-    	this.resolution = resolution;
-    	this.contentPane = contentPane;
+        this.resolution = resolution;
+        this.contentPane = contentPane;
         this.players = players;
         this.turnNumber = 0;
         this.turnOrder = (int) (Math.random() * players.length);
@@ -48,7 +48,6 @@ public class Game {
         this.actionTurn = ActionTurn.PLAY_TILE;
         this.gameState = GameState.INITIALISATION;
 
-        
     }
 
     /**
@@ -92,7 +91,7 @@ public class Game {
      * 
      */
     private ActionTurn actionTurn;
-    
+  
     private TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList = new TripletList<Hexagon, Integer, HexagonListType>();
     
     /**
@@ -660,6 +659,16 @@ public class Game {
 		hex.displayPawns();
     }
 
+        /*
+         * for (int i = 0; i < players.length; i++) {
+         * // Afficher message "Pose tes pions"
+         * players[(this.turnOrder + i) % players.length]
+         * .placeAllExplorers(this.board);
+         * players[(this.turnOrder + i) % players.length]
+         * .placeBoats(this.board);
+         * }
+         */
+    }
 
     /**
      * 
