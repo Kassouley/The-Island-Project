@@ -149,6 +149,40 @@ public class ActionInfo extends JLayeredPane {
 		}
 	}
 
+		JButton skipButton = new JButton(
+				new ImageIcon(JButton.class.getResource("/SideBar/skipButton")));
+		skipButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+			}
+		});
+		actionInfoPane.setLayer(skipButton, 1);
+		actionInfoPane.add(skipButton);
+
+		JButton rulesButton = new JButton(
+				new ImageIcon(JButton.class.getResource("/SideBar/rulesButton")));
+		rulesButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+			}
+		});
+		actionInfoPane.setLayer(rulesButton, 1);
+		actionInfoPane.add(rulesButton);
+
+		JButton quitButton = new JButton(
+				new ImageIcon(JButton.class.getResource("/SideBar/quitButton")));
+		quitButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+			}
+		});
+		actionInfoPane.setLayer(quitButton, 1);
+		actionInfoPane.add(quitButton);
+	}
+	
 	private void setPanelBoundsFromResolution(int resolution) {
 		switch (resolution) {
 			case 70:

@@ -1,35 +1,49 @@
 package fr.mcstudio.pawns;
 
+import java.awt.Font;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JLayeredPane;
 
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonListType;
-import fr.mcstudio.util.PairList;
+import fr.mcstudio.enums.HexagonType;
+import fr.mcstudio.util.Triplet;
+import fr.mcstudio.util.TripletList;
 
 @SuppressWarnings("serial")
-public class Pawn extends JPanel {
+public class Pawn extends JLayeredPane {
     /**
      * <p>
      * Constructeur par d�faut.
      * </p>
      */
-    public Pawn() {
+    public Pawn(int movePoint) {
     	this.setLayout(null);
     	this.setOpaque(false);
+        this.movePoint = movePoint;
     }
 
     protected JLabel index;
 
     protected JLabel image = new JLabel();
+
+	private int movePoint;
+
+    public int getMovePoint() {
+        return this.movePoint;
+    }
+
+    public void setMovePoint(int movePoint) {
+        this.movePoint = movePoint;
+    }
 
     /**
      * 
@@ -51,35 +65,69 @@ public class Pawn extends JPanel {
      * @param distance
      * @param listHexagon
      */
-    public void findPath(Hexagon actualPosition, Board board, int distance, PairList<Hexagon,HexagonListType> hexagonPairList) {
-        hexagonPairList.clear();
+    public void findPath(Hexagon actualPosition, Board board, int movePointLeft, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList) {
+        hexagonTripletList.clear();
 
-        // ---------------------------------------------------------- A changer, faut
-        // regarder les movePoint et moveCost je pense
-        if (this instanceof Explorer) {
-            Explorer explorer = (Explorer) this;
-            if (explorer.getStatus() == ExplorerStatus.SWIMMER) {
-                distance = 1;
-            }
-        }
-
+        int distance = Math.min(movePointLeft, this.getMovePoint());
+        
         List<Hexagon> tmp = new ArrayList<Hexagon>();
         tmp.add(actualPosition);
-        for (int i = 0; i < distance; i++) {
+        hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.BOAT));
+        for (int i = 1; i <= distance; i++) {
             for (Hexagon hexagon : tmp) {
-                this.findPathAux(hexagon, board, hexagonPairList);
+                this.findPathAux(hexagon, board, hexagonTripletList, distance);
             }
             List<Hexagon> mem = new ArrayList<Hexagon>();
-            List<Hexagon> hexagonList = hexagonPairList.getLeftList();
+            List<Hexagon> hexagonList = hexagonTripletList.getLeftList();
             mem.addAll(tmp);
             
 
-            tmp.addAll(hexagonList);
+            tmp.clear();
+            for (Hexagon hexagon : hexagonList) {
+                int index = hexagonList.indexOf(hexagon);
+                if (this instanceof Explorer) {
+                	Explorer explorer = (Explorer) this;
+                	if ((explorer.getStatus() == ExplorerStatus.SWIMMER
+                			|| hexagon.getType() != HexagonType.SEA)
+                			&& hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
+                		tmp.add(hexagon);
+                	}
+                } else if (hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
+                	tmp.add(hexagon);   
+                }
+            }
+
             for (Hexagon hexagon : mem) {
                 if (tmp.contains(hexagon)) {
                     tmp.remove(hexagon);
                 }
             }
+        }
+
+        if (this instanceof Explorer
+                && actualPosition.getBoat() != null) {
+            if (actualPosition.getBoat().getExplorerList().contains(this)) {
+                if (!actualPosition.getWhaleList().isEmpty()
+                        || !actualPosition.getSeaSnakeList().isEmpty()) {
+                    hexagonTripletList.remove(0);
+                    hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.DEATH));
+                } else {
+                    hexagonTripletList.remove(0);
+                    hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.NORMAL));
+                }
+            } else {
+                if (!actualPosition.getBoat().isFull()) {
+                    if (!actualPosition.getWhaleList().isEmpty()
+                            || !actualPosition.getSeaSnakeList().isEmpty()) {
+                        hexagonTripletList.remove(0);
+                        hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.DEATH));
+                    }
+                } else {
+                    hexagonTripletList.remove(0);
+                }
+            }
+        } else {
+            hexagonTripletList.remove(0);
         }
     }
 
@@ -89,7 +137,7 @@ public class Pawn extends JPanel {
      * @param board
      * @param listHexagon
      */
-    public void findPathAux(Hexagon actualPosition, Board board, PairList<Hexagon,HexagonListType> hexagonPairList) {
+    public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
     }
 
     public void createPawnImage(Hexagon hex) {
@@ -129,5 +177,25 @@ public class Pawn extends JPanel {
         this.add(this.image);
         this.image.setBounds(0, 0, this.getWidth(), this.getHeight());
     }
+
+	public void addIndex(int index, int size) {
+		this.index = new JLabel(Integer.toString(index));
+		this.index.setFont(new Font("Tahoma", Font.BOLD,  size/2));
+		this.index.setForeground(java.awt.Color.WHITE);
+		int indexWidth = this.index.getFontMetrics(this.index.getFont()).stringWidth(this.index.getText());
+		int indexHeight = this.index.getFontMetrics(this.index.getFont()).getHeight();
+		this.index.setBounds(getWidth()/2 - indexWidth/2, getHeight()/2 - indexHeight/4, size/2, size/2);
+		this.setLayer(this.index, 2);
+		add(this.index);
+		
+	}
+
+	public JLabel getImage() {
+		return image;
+	}
+
+	public void setImage(JLabel image) {
+		this.image = image;
+	}
 
 }

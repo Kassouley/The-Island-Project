@@ -11,10 +11,12 @@ import javax.swing.SwingConstants;
 
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
+import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.game.Player;
 import fr.mcstudio.pawns.Boat;
+import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.pawns.Whale;
 
@@ -52,7 +54,7 @@ public class Tile extends JLabel {
 			icone = new ImageIcon(Tile.class.getResource("/Plage.png"));
 		} else if (type == TilesType.FOREST) {
 			icone = new ImageIcon(Tile.class.getResource("/Foret.png"));
-		} else if (type == TilesType.MONTAINS) {
+		} else if (type == TilesType.MOUNTAINS) {
 			icone = new ImageIcon(Tile.class.getResource("/Montagne.png"));
 		}
 		
@@ -83,24 +85,21 @@ public class Tile extends JLabel {
 	 * @since1.0
 	 */
 	public void flipTile(Hexagon hexagon, Player p, Board board) {
-
-		hexagon.getTile().applyEffect(hexagon,board);
+		for(Explorer e : hexagon.getExplorerList()) {
+			e.setStatus(ExplorerStatus.SWIMMER);
+			e.setMovePoint(1);
+		}
+		if(hexagon.getTile().getEffect().getType() == "Verte"){
+			hexagon.getTile().applyEffect(hexagon,board);		  	
+		}
+		else {
+			  p.getTileList().add(hexagon.getTile());
+		}
+		
 		hexagon.remove(hexagon.getTile());
 		hexagon.revalidate();
 		hexagon.repaint();
 		hexagon.removeTile();
-		
-		/*if(tilePosition.getTile().getEffect().getType() == "Verte"){
-			tilePosition.getTile().applyEffect(tilePosition,hexagon);		  	
-		  }
-		else {
-			  p.getTileList().add(tilePosition.getTile());
-		  }*/
-		
-		//hexagons[tilePosition.getLine()][tilePosition.getColumn()].setType(HexagonType.SEA);
-		//hexagons[tilePosition.getLine()][tilePosition.getColumn()].setTile(null);
-		
-
 		 
 	}
 	
@@ -228,8 +227,7 @@ public class Tile extends JLabel {
 		listNeighbors.add(tilePosition);
 		for(Hexagon hexagon :listNeighbors ) {
 			hexagons[hexagon.getLine()][hexagon.getColumn()].removeAllPawn();
-
-			System.out.println(" ligne = " + hexagon.getLine() +" colonne = : " + hexagon.getColumn() + " coucou toi");
+			hexagons[hexagon.getLine()][hexagon.getColumn()].displayPawns();
 		}										
 	}
 	

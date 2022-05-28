@@ -23,8 +23,9 @@ import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonListType;
-import fr.mcstudio.util.Pair;
-import fr.mcstudio.util.PairList;
+import fr.mcstudio.enums.HexagonType;
+import fr.mcstudio.util.Triplet;
+import fr.mcstudio.util.TripletList;
 
 /**
  * <p>
@@ -45,6 +46,7 @@ public class Explorer extends Pawn {
      * </p>
      */
     public Explorer(Color color, int treasureValue) {
+        super(3);
         this.color = color;
         this.treasureValue = treasureValue;
         this.status = ExplorerStatus.NORMAL;
@@ -127,6 +129,7 @@ public class Explorer extends Pawn {
         switch (newPosition.getType()) {
             case TILES:
                 this.status = ExplorerStatus.NORMAL;
+                this.setMovePoint(3);
                 newPosition.addPawn(this);
                 break;
             case SEA:
@@ -135,6 +138,7 @@ public class Explorer extends Pawn {
                     this.status = ExplorerStatus.DEAD;
                 } else {
                     this.status = ExplorerStatus.SWIMMER;
+                    this.setMovePoint(1);
                     newPosition.addPawn(this);
                 }
                 break;
@@ -227,7 +231,7 @@ public class Explorer extends Pawn {
         }
     }
 
-    public void findPathAux(Hexagon actualPosition, Board board, PairList<Hexagon,HexagonListType> hexagonPairList) {
+    public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
         tmp.add(board.getTopLeft(actualPosition));
@@ -239,16 +243,35 @@ public class Explorer extends Pawn {
 
         for (Hexagon hexagon : tmp) {
             if (hexagon != null
-                    && !hexagonPairList.containsInPair(hexagon)) {
-                
-                if (hexagon.getSharkList().isEmpty()
-                        && hexagon.getSeaSnakeList().isEmpty()) {
+                    && !hexagonTripletList.containsInTriplet(hexagon)) {
 
-                    hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.NORMAL));
+                if (actualPosition.getBoat() != null
+                        && actualPosition.getBoat().getExplorerList().contains(this)) {
+                    if (hexagon.getBoat() != null
+                            && !hexagon.getBoat().isFull()) {
+                        if (!hexagon.getWhaleList().isEmpty()
+                                || !hexagon.getSeaSnakeList().isEmpty()) {
+                            hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.DEATH));
+                        } else {
+                            hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.BOAT));
+                        }
+                    } else if (hexagon.getType() != HexagonType.SEA) {
+                        hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.NORMAL));
+                    }
                 } else {
-                    hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.DEATH));
+                    if (hexagon.getBoat() != null && !hexagon.getBoat().isFull()
+                            && actualPosition.getType() != HexagonType.SEA) {
+                        hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.BOAT));
+                    } else {
+                        if (hexagon.getSharkList().isEmpty()
+                                && hexagon.getSeaSnakeList().isEmpty()) {
+
+                            hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.NORMAL));
+                        } else {
+                            hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.DEATH));
+                        }
+                    }
                 }
-                
             }
         }
     }

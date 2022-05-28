@@ -19,8 +19,8 @@ import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.enums.HexagonType;
-import fr.mcstudio.util.Pair;
-import fr.mcstudio.util.PairList;
+import fr.mcstudio.util.Triplet;
+import fr.mcstudio.util.TripletList;
 
 /**
  * <p>
@@ -41,6 +41,7 @@ public class SeaSnake extends EffectPawn {
      * </p>
      */
     public SeaSnake() {
+        super(1);
     }
 
     /**
@@ -60,7 +61,7 @@ public class SeaSnake extends EffectPawn {
     }
 
 
-    public void findPathAux(Hexagon actualPosition, Board board, PairList<Hexagon,HexagonListType> hexagonPairList) {
+    public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
         tmp.add(board.getTopLeft(actualPosition));
@@ -72,14 +73,14 @@ public class SeaSnake extends EffectPawn {
 
         for (Hexagon hexagon : tmp) {
             if (hexagon != null
-                    && !hexagonPairList.containsInPair(hexagon)
+                    && !hexagonTripletList.containsInTriplet(hexagon)
                     && hexagon.getType() == HexagonType.SEA) {
                 
                 if (!hexagon.getExplorerList().isEmpty()
                         && hexagon.getBoat() != null && !hexagon.getBoat().isEmpty()) {
-                    hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.DEATH));
+                    hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.DEATH));
                 } else {
-                    hexagonPairList.add(new Pair<Hexagon,HexagonListType>(hexagon, HexagonListType.NORMAL));
+                    hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.NORMAL));
                 }
             }
         }

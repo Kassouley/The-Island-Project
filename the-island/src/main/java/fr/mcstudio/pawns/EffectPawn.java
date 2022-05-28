@@ -12,7 +12,12 @@
 
 package fr.mcstudio.pawns;
 
+import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
+import fr.mcstudio.enums.HexagonListType;
+import fr.mcstudio.enums.HexagonType;
+import fr.mcstudio.util.Triplet;
+import fr.mcstudio.util.TripletList;
 
 /**
  * <p>
@@ -32,8 +37,8 @@ public class EffectPawn extends Pawn {
      * Constructeur par d�faut
      * </p>
      */
-    public EffectPawn() {
-
+    public EffectPawn(int movePoint) {
+        super(movePoint);
     }
 
     /**
@@ -62,6 +67,24 @@ public class EffectPawn extends Pawn {
         newPosition.addPawn(this);
         if (!newPosition.getExplorerList().isEmpty() || newPosition.getBoat() != null) {
             this.makeEffect(newPosition);
+        }
+    }
+    public void findPathEffect(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList) {
+        hexagonTripletList.clear();
+        Hexagon[][] hexagons = board.getHexagons();
+        for (int i = 0; i < 13; i++) {
+            for (int j = 0; j < 12; j++) {
+                if (hexagons[i][j].getExplorerList().isEmpty()
+                        && hexagons[i][j].getSharkList().isEmpty()
+                        && hexagons[i][j].getWhaleList().isEmpty()
+                        && hexagons[i][j].getSeaSnakeList().isEmpty()
+                        && hexagons[i][j].getBoat() == null
+                        && hexagons[i][j].getType() == HexagonType.SEA) {
+                		
+                            
+                    hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagons[i][j], 1, HexagonListType.NORMAL));
+                }
+            }
         }
     }
 }

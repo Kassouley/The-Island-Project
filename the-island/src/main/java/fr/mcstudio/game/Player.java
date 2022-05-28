@@ -36,13 +36,16 @@ public class Player {
      * Constructeur par défaut
      * </p>
      */
-    public Player(String pseudo, Color color, boolean isBot) {
+    public Player(String pseudo, Color color, boolean isBot, int resolution) {
         this.pseudo = pseudo;
         this.color = color;
+        this.resolution = resolution;
         this.explorerList = initPlayerExplorer();
         this.isBot = isBot;
         this.moveLeft = 3;
     }
+    
+    private int resolution;
 
     /**
      * <p>
@@ -177,6 +180,8 @@ public class Player {
         int[] treasureValue = new int[] { 1, 1, 1, 2, 2, 3, 3, 4, 5, 6 };
         for (int i : treasureValue) {
             Explorer explorer = new Explorer(this.color, i);
+            explorer.setPosition(0, 0, resolution, 68);
+            explorer.createImage(resolution);
             explorerList.add(explorer);
         }
         return explorerList;
@@ -264,7 +269,11 @@ public class Player {
      * }
      */
 
-    /**
+    public List<Explorer> getExplorerList() {
+		return explorerList;
+	}
+
+	/**
      * 
      */
     public boolean haveExplorerOnBoard() {
@@ -276,4 +285,14 @@ public class Player {
         }
         return false;
     }
+
+
+	/**
+	 * @return the tileList
+	 */
+	public List<Tile> getTileList() {
+		return tileList;
+	}
+
+
 }
