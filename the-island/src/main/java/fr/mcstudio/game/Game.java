@@ -36,7 +36,6 @@ public class Game {
      * Default constructor
      */
     public Game(int resolution, JPanel contentPane, Player[] players) {
-        // this.board = new Board();
         this.resolution = resolution;
         this.contentPane = contentPane;
         this.players = players;
@@ -123,7 +122,7 @@ public class Game {
     /**
      * 
      */
-    boolean firstClic = true;
+    private boolean firstClic = true;
 
     /**
      * 
@@ -145,12 +144,14 @@ public class Game {
             public void mousePressed(MouseEvent e) {
 
                 if (SwingUtilities.isLeftMouseButton(e)) {
+
                     for (int i = 0; i < 13; i++) {
                         for (int j = 0; j < 12; j++) {
                             Hexagon hex = board.getHexagons()[i][j];
                             if (!hex.isVoid()) {
                                 if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(),
                                         e.getY() - hex.getY())) {
+
                                     if (gameState == GameState.INITIALISATION) {
                                         int exit = 0;
                                         if (hex.getTile() != null && hex.getExplorerList().isEmpty()) {
@@ -163,7 +164,9 @@ public class Game {
                                                     exit++;
                                                 }
                                             }
+
                                             if (exit == players.length) {
+
                                                 Shark s = new Shark();
                                                 Whale w = new Whale();
                                                 SeaSnake ss = new SeaSnake();
@@ -184,6 +187,9 @@ public class Game {
                                     } else if (gameState == GameState.ENDING) {
                                         endGame();
                                     }
+
+                                    actionInfo.displayActionInfo(getGame(), resolution);
+                                    playerInfo.displayPlayerInfo(getGame(), resolution);
                                 }
                             }
                         }
@@ -304,6 +310,20 @@ public class Game {
      */
     public Player getCurrentPlayer() {
         return this.players[(this.turnOrder + this.turnNumber) % players.length];
+    }
+
+    /**
+     * 
+     */
+    public int getCurrentPlayerIndex() {
+        return (this.turnOrder + this.turnNumber) % players.length;
+    }
+
+    /**
+     * 
+     */
+    public Game getGame() {
+        return this;
     }
 
     /**

@@ -15,6 +15,8 @@ package fr.mcstudio.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Icon;
+
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.pawns.Explorer;
@@ -43,8 +45,12 @@ public class Player {
         this.explorerList = initPlayerExplorer();
         this.isBot = isBot;
         this.moveLeft = 3;
+        this.pawnOnBoardNumber = 0;
     }
 
+    /**
+     * 
+     */
     private int resolution;
 
     /**
@@ -55,12 +61,21 @@ public class Player {
     private String pseudo;
 
     /**
+     * 
+     */
+    private Icon avatar;
+
+    /**
      * <p>
      * Couleur du joueur
      * </p>
      */
     private Color color;
 
+    /**
+     * 
+     */
+    private int pawnOnBoardNumber;
     /**
      * <p>
      * Liste des explorateurs du joueur
@@ -110,6 +125,22 @@ public class Player {
     }
 
     /**
+     * 
+     * 
+     */
+    public void setAvatar(Icon avatar) {
+        this.avatar = avatar;
+    }
+
+    /**
+     * 
+     * 
+     */
+    public Icon getAvatar() {
+        return this.avatar;
+    }
+
+    /**
      * <p>
      * Mutateur de la couleur du joueur.
      * </p>
@@ -129,6 +160,22 @@ public class Player {
      */
     public Color getColor() {
         return this.color;
+    }
+
+    /**
+     * 
+     * 
+     */
+    public int getPawnOnBoardNumber() {
+        return this.pawnOnBoardNumber;
+    }
+
+    /**
+     * 
+     * 
+     */
+    public void addPawnOnBoardNumber() {
+        this.pawnOnBoardNumber++;
     }
 
     /**
@@ -242,6 +289,46 @@ public class Player {
      */
     public List<Tile> getTileList() {
         return tileList;
+    }
+
+    /**
+     * 
+     */
+    public int getNumberExplorerAlive() {
+        int cmpt = 0;
+        for (Explorer e : explorerList) {
+            if (e.getStatus() == ExplorerStatus.NORMAL
+                    || e.getStatus() == ExplorerStatus.SWIMMER) {
+                cmpt++;
+            }
+        }
+        return cmpt;
+    }
+
+    /**
+     * 
+     */
+    public int getNumberExplorerSaved() {
+        int cmpt = 0;
+        for (Explorer e : explorerList) {
+            if (e.getStatus() == ExplorerStatus.SAVED) {
+                cmpt++;
+            }
+        }
+        return cmpt;
+    }
+
+    /**
+     * 
+     */
+    public int getNumberExplorerDead() {
+        int cmpt = 0;
+        for (Explorer e : explorerList) {
+            if (e.getStatus() == ExplorerStatus.DEAD) {
+                cmpt++;
+            }
+        }
+        return cmpt;
     }
 
 }

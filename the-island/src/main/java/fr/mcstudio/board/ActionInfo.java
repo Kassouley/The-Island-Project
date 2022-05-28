@@ -105,42 +105,45 @@ public class ActionInfo extends JLayeredPane {
 		this.actionTitle.setText(game.getActionTurn().getTitle());
 		this.actionDesc.setText(game.getActionTurn().getDesc());
 		this.actionLabel.removeAll();
+		this.actionLabel.revalidate();
+		this.actionLabel.repaint();
 
 		switch (game.getActionTurn()) {
 			case PLAY_TILE:
+				actionLabel.add(this.buttons.get(SideBarButton.SEETILES.ordinal()));
 				this.buttons.get(SideBarButton.SEETILES.ordinal()).addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 
 					}
 				});
-				actionLabel.add(this.buttons.get(SideBarButton.SEETILES.ordinal()));
 				break;
 
 			case MOVE_PAWNS:
-				JLabel moveLeft = new JLabel("Il vous reste" + game.getCurrentPlayer().getMoveLeft() + "déplacements");
+				JLabel moveLeft = new JLabel(
+						"Il vous reste " + game.getCurrentPlayer().getMoveLeft() + " déplacements");
 				moveLeft.setVerticalAlignment(SwingConstants.TOP);
 				actionLabel.add(moveLeft);
 				break;
 
 			case DISCOVER_TILE:
+				actionLabel.add(this.buttons.get(SideBarButton.DISCOVER.ordinal()));
 				this.buttons.get(SideBarButton.DISCOVER.ordinal()).addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 
 					}
 				});
-				actionLabel.add(this.buttons.get(SideBarButton.DISCOVER.ordinal()));
 				break;
 
 			case MOVE_MONSTER:
+				actionLabel.add(this.buttons.get(SideBarButton.ROLL.ordinal()));
 				this.buttons.get(SideBarButton.ROLL.ordinal()).addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 
 					}
 				});
-				actionLabel.add(this.buttons.get(SideBarButton.ROLL.ordinal()));
 				break;
 
 			default:

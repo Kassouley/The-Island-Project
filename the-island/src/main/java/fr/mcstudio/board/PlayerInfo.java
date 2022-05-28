@@ -5,6 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import fr.mcstudio.game.Game;
+import fr.mcstudio.game.Player;
 
 @SuppressWarnings("serial")
 public class PlayerInfo extends JLayeredPane {
@@ -13,6 +14,7 @@ public class PlayerInfo extends JLayeredPane {
 	private JPanel playerInfoPanel = new JPanel();
 
 	private JLabel pseudoPlayer = new JLabel();
+	private JLabel avatarPlayer = new JLabel();
 	private JLabel explorersPlayer = new JLabel();
 	private JLabel explorersSaved = new JLabel();
 	private JLabel explorersDead = new JLabel();
@@ -37,9 +39,30 @@ public class PlayerInfo extends JLayeredPane {
 		this.pseudoPlayer.setVerticalAlignment(SwingConstants.TOP);
 		this.playerInfoPanel.add(pseudoPlayer);
 
+		this.avatarPlayer.setVerticalAlignment(SwingConstants.TOP);
+		this.playerInfoPanel.add(avatarPlayer);
+
+		this.explorersPlayer.setFont(new Font("/Font/Treasuremap.ttf", Font.PLAIN, 18));
+		this.explorersPlayer.setVerticalAlignment(SwingConstants.TOP);
+		this.playerInfoPanel.add(explorersPlayer);
+
+		this.explorersSaved.setFont(new Font("/Font/Treasuremap.ttf", Font.PLAIN, 18));
+		this.explorersSaved.setVerticalAlignment(SwingConstants.TOP);
+		this.playerInfoPanel.add(explorersSaved);
+
+		this.explorersDead.setFont(new Font("/Font/Treasuremap.ttf", Font.PLAIN, 18));
+		this.explorersDead.setVerticalAlignment(SwingConstants.TOP);
+		this.playerInfoPanel.add(explorersDead);
+
 	}
 
 	public void displayPlayerInfo(Game game, int resolution) {
+		Player currentPlayer = game.getCurrentPlayer();
+		this.pseudoPlayer.setText(currentPlayer.getPseudo());
+		this.avatarPlayer.setIcon(currentPlayer.getAvatar());
+		this.explorersPlayer.setText(Integer.toString(currentPlayer.getNumberExplorerAlive()));
+		this.explorersSaved.setText(Integer.toString(currentPlayer.getNumberExplorerSaved()));
+		this.explorersDead.setText(Integer.toString(currentPlayer.getNumberExplorerDead()));
 	}
 
 	private void setPanelBoundsFromResolution(int resolution) {
@@ -59,7 +82,7 @@ public class PlayerInfo extends JLayeredPane {
 	}
 
 	private void setLabel() {
-		ImageIcon icone = new ImageIcon(Board.class.getResource("/PlayerInfo.png"));
+		ImageIcon icone = new ImageIcon(PlayerInfo.class.getResource("/PlayerInfo.png"));
 		Image scaleImage = icone.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
 		;
 		icone.setImage(scaleImage);
