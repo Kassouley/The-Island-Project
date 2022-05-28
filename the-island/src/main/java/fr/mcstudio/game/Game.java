@@ -25,13 +25,13 @@ public class Game {
      */
     public Game(int resolution, JPanel contentPane, Player[] players) {
         // this.board = new Board();
-    	this.resolution = resolution;
-    	this.contentPane = contentPane;
+        this.resolution = resolution;
+        this.contentPane = contentPane;
         this.players = players;
         this.turnNumber = 0;
         this.turnOrder = (int) (Math.random() * 3);
         this.actionTurn = ActionTurn.PLAY_TILE;
-        
+
         initializeBoard();
     }
 
@@ -39,12 +39,12 @@ public class Game {
      * 
      */
 
-	private Board board;
-	private PlayerInfo playerInfo;
-	private ActionInfo actionInfo;
-	private JPanel contentPane;
-	
-	private int resolution;
+    private Board board;
+    private PlayerInfo playerInfo;
+    private ActionInfo actionInfo;
+    private JPanel contentPane;
+
+    private int resolution;
 
     /**
      * 
@@ -75,78 +75,90 @@ public class Game {
      * 
      */
     private ActionTurn actionTurn;
-    
+
+    /**
+     * 
+     */
+    private Game game = this;
+
     public void initializeBoard() {
-    	playerInfo = new PlayerInfo(resolution);
-		contentPane.add(playerInfo);
+        playerInfo = new PlayerInfo(resolution);
+        contentPane.add(playerInfo);
 
-		board = new Board(resolution);
-		contentPane.add(board);
-		
-		this.board.addMouseListener(new MouseListener() {
+        actionInfo = new ActionInfo(resolution);
+        contentPane.add(actionInfo);
 
-			public void mouseClicked(MouseEvent e) {}
+        board = new Board(resolution);
+        contentPane.add(board);
 
-			public void mousePressed(MouseEvent e) {
-				for (int i = 0; i < 13; i++) {
-					for (int j = 0; j < 12; j++) {
-						Hexagon hex = board.getHexagons()[i][j];
-						if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), e.getY() - hex.getY())) {
-							System.out.println(
-									"Yay ! " + hex.getLine() + " " + hex.getColumn());
-							
-							hex.discover(null, board);
-							
-							Shark shark = new Shark();
-							SeaSnake ss = new SeaSnake();
-							Explorer ex = new Explorer(Color.RED, 0);
-							Explorer ex2 = new Explorer(Color.BLUE, 0);
-							Explorer ex3 = new Explorer(Color.GREEN, 0);
-							hex.addPawn(shark);
-							hex.addPawn(ss);
-							hex.addPawn(ex);
-							hex.addPawn(ex2);
-							hex.addPawn(ex3);
-							hex.displayPawns();
-						}
-					}
-				}
-			}
+        this.board.addMouseListener(new MouseListener() {
 
-			public void mouseReleased(MouseEvent e) {}
+            public void mouseClicked(MouseEvent e) {
+            }
 
-			public void mouseEntered(MouseEvent e) {}
+            public void mousePressed(MouseEvent e) {
+                actionInfo.displayActionInfo(game, resolution);
+                for (int i = 0; i < 13; i++) {
+                    for (int j = 0; j < 12; j++) {
+                        Hexagon hex = board.getHexagons()[i][j];
+                        if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), e.getY() - hex.getY())) {
+                            System.out.println(
+                                    "Yay ! " + hex.getLine() + " " + hex.getColumn());
 
-			public void mouseExited(MouseEvent e) {}
-		});
+                            hex.discover(null, board);
 
-    	this.board.addMouseMotionListener(new MouseMotionListener() {
+                            Shark shark = new Shark();
+                            SeaSnake ss = new SeaSnake();
+                            Explorer ex = new Explorer(Color.RED, 0);
+                            Explorer ex2 = new Explorer(Color.BLUE, 0);
+                            Explorer ex3 = new Explorer(Color.GREEN, 0);
+                            hex.addPawn(shark);
+                            hex.addPawn(ss);
+                            hex.addPawn(ex);
+                            hex.addPawn(ex2);
+                            hex.addPawn(ex3);
+                            hex.displayPawns();
+                        }
+                    }
+                }
+            }
 
-			@Override
-			public void mouseDragged(MouseEvent e) {}
+            public void mouseReleased(MouseEvent e) {
+            }
 
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				for (int i = 0; i < 13; i++) {
-					for (int j = 0; j < 12; j++) {
-						Hexagon hex = board.getHexagons()[i][j];
-						if (!hex.isVoid()) {
-							if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), e.getY() - hex.getY())) {
-								if (!hex.isHighlight())
-									hex.setHighlight(resolution, board, true, "white");
+            public void mouseEntered(MouseEvent e) {
+            }
 
-							} else {
-								if (hex.isHighlight())
-									hex.setHighlight(resolution, board, false, null);
-							}
-						}
-					}
-				}
-			}
-		});
+            public void mouseExited(MouseEvent e) {
+            }
+        });
 
-		actionInfo = new ActionInfo(resolution);
-		contentPane.add(actionInfo);
+        this.board.addMouseMotionListener(new MouseMotionListener() {
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                for (int i = 0; i < 13; i++) {
+                    for (int j = 0; j < 12; j++) {
+                        Hexagon hex = board.getHexagons()[i][j];
+                        if (!hex.isVoid()) {
+                            if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), e.getY() - hex.getY())) {
+                                if (!hex.isHighlight())
+                                    hex.setHighlight(resolution, board, true, "white");
+
+                            } else {
+                                if (hex.isHighlight())
+                                    hex.setHighlight(resolution, board, false, null);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
     }
 
     /**
@@ -268,16 +280,17 @@ public class Game {
      */
 
     public void startGame() {
-    	
-        /*for (int i = 0; i < players.length; i++) {
-            // Afficher message "Pose tes pions"
-            players[(this.turnOrder + i) % players.length]
-                    .placeAllExplorers(this.board);
-            players[(this.turnOrder + i) % players.length]
-                    .placeBoats(this.board);
-        }*/
-    }
 
+        /*
+         * for (int i = 0; i < players.length; i++) {
+         * // Afficher message "Pose tes pions"
+         * players[(this.turnOrder + i) % players.length]
+         * .placeAllExplorers(this.board);
+         * players[(this.turnOrder + i) % players.length]
+         * .placeBoats(this.board);
+         * }
+         */
+    }
 
     /**
      * 

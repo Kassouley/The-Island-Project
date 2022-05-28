@@ -14,7 +14,7 @@ public class Main extends JFrame {
 	private Player[] players;
 	private JPanel contentPane;
 
-	int resolution = 90;
+	int resolution = 70;
 
 	public Main() {
 		super("The Island");
@@ -36,8 +36,7 @@ public class Main extends JFrame {
 				try {
 					Main main = new Main();
 					Game game = new Game(main.resolution, main.contentPane, main.players);
-					
-					
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

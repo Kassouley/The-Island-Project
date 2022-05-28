@@ -6,6 +6,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
+import fr.mcstudio.game.Game;
+
 @SuppressWarnings("serial")
 public class PlayerInfo extends JLayeredPane {
 
@@ -18,7 +20,11 @@ public class PlayerInfo extends JLayeredPane {
 		setLabel();
 		add(playerInfoLabel);
 	}
-	
+
+	public void displayPlayerInfo(Game game, int resolution) {
+
+	}
+
 	private void setPanelBoundsFromResolution(int resolution) {
 		switch (resolution) {
 			case 70:
@@ -34,10 +40,11 @@ public class PlayerInfo extends JLayeredPane {
 				break;
 		}
 	}
-	
+
 	private void setLabel() {
 		ImageIcon icone = new ImageIcon(Board.class.getResource("/PlayerInfo.png"));
-		Image scaleImage = icone.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);;
+		Image scaleImage = icone.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+		;
 		icone.setImage(scaleImage);
 		playerInfoLabel.setIcon(icone);
 		playerInfoLabel.setBounds(0, 0, getWidth(), getHeight());
