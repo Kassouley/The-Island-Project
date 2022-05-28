@@ -15,6 +15,8 @@ package fr.mcstudio.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Icon;
+
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.pawns.Explorer;
@@ -43,8 +45,12 @@ public class Player {
         this.explorerList = initPlayerExplorer();
         this.isBot = isBot;
         this.moveLeft = 3;
+        this.pawnOnBoardNumber = 0;
     }
-    
+
+    /**
+     * 
+     */
     private int resolution;
 
     /**
@@ -55,12 +61,21 @@ public class Player {
     private String pseudo;
 
     /**
+     * 
+     */
+    private Icon avatar;
+
+    /**
      * <p>
      * Couleur du joueur
      * </p>
      */
     private Color color;
 
+    /**
+     * 
+     */
+    private int pawnOnBoardNumber;
     /**
      * <p>
      * Liste des explorateurs du joueur
@@ -110,6 +125,22 @@ public class Player {
     }
 
     /**
+     * 
+     * 
+     */
+    public void setAvatar(Icon avatar) {
+        this.avatar = avatar;
+    }
+
+    /**
+     * 
+     * 
+     */
+    public Icon getAvatar() {
+        return this.avatar;
+    }
+
+    /**
      * <p>
      * Mutateur de la couleur du joueur.
      * </p>
@@ -129,6 +160,22 @@ public class Player {
      */
     public Color getColor() {
         return this.color;
+    }
+
+    /**
+     * 
+     * 
+     */
+    public int getPawnOnBoardNumber() {
+        return this.pawnOnBoardNumber;
+    }
+
+    /**
+     * 
+     * 
+     */
+    public void addPawnOnBoardNumber() {
+        this.pawnOnBoardNumber++;
     }
 
     /**
@@ -219,61 +266,12 @@ public class Player {
     public int getMoveLeft() {
         return this.moveLeft;
     }
-    /**
-     * <p>
-     * Permet au joueur de placer tout ses explorateurs sur une tuile vide.
-     * </p>
-     * 
-     * @param board le plateau dans lequel on pose les explorateurs.
-     */
-    /*
-     * public void placeAllExplorers(Board board) {
-     * for (Explorer e : this.explorerList) {
-     * Hexagon hexagon;
-     * do {
-     * hexagon = board.returnHexagon();
-     * } while (!hexagon.isTiles() || !hexagon.getExplorerList().isEmpty());
-     * 
-     * hexagon.addPawn(e);
-     * hexagon = null;
-     * }
-     * }
-     */
-
-    /**
-     * <p>
-     * Permet au joueur de placer 2 bateaux sur des tuile de mer.
-     * </p>
-     * 
-     * @param board le plateau dans lequel on pose les bateaux.
-     */
-    /*
-     * public void placeBoats(Board board) {
-     * for (int i = 0; i < 2; i++) {
-     * Hexagon hexagon;
-     * do {
-     * hexagon = board.returnHexagon();
-     * } while (!hexagon.isSea()
-     * || hexagon.getBoat() != null
-     * || !board.getBottomLeft(hexagon).isTiles()
-     * || !board.getLeft(hexagon).isTiles()
-     * || !board.getTopLeft(hexagon).isTiles()
-     * || !board.getBottomRight(hexagon).isTiles()
-     * || !board.getRight(hexagon).isTiles()
-     * || !board.getTopRight(hexagon).isTiles());
-     * 
-     * Boat b = new Boat();
-     * hexagon.addPawn(b);
-     * hexagon = null;
-     * }
-     * }
-     */
 
     public List<Explorer> getExplorerList() {
-		return explorerList;
-	}
+        return explorerList;
+    }
 
-	/**
+    /**
      * 
      */
     public boolean haveExplorerOnBoard() {
@@ -286,13 +284,51 @@ public class Player {
         return false;
     }
 
+    /**
+     * @return the tileList
+     */
+    public List<Tile> getTileList() {
+        return tileList;
+    }
 
-	/**
-	 * @return the tileList
-	 */
-	public List<Tile> getTileList() {
-		return tileList;
-	}
+    /**
+     * 
+     */
+    public int getNumberExplorerAlive() {
+        int cmpt = 0;
+        for (Explorer e : explorerList) {
+            if (e.getStatus() == ExplorerStatus.NORMAL
+                    || e.getStatus() == ExplorerStatus.SWIMMER) {
+                cmpt++;
+            }
+        }
+        return cmpt;
+    }
 
+    /**
+     * 
+     */
+    public int getNumberExplorerSaved() {
+        int cmpt = 0;
+        for (Explorer e : explorerList) {
+            if (e.getStatus() == ExplorerStatus.SAVED) {
+                cmpt++;
+            }
+        }
+        return cmpt;
+    }
+
+    /**
+     * 
+     */
+    public int getNumberExplorerDead() {
+        int cmpt = 0;
+        for (Explorer e : explorerList) {
+            if (e.getStatus() == ExplorerStatus.DEAD) {
+                cmpt++;
+            }
+        }
+        return cmpt;
+    }
 
 }

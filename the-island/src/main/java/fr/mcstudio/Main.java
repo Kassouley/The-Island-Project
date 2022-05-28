@@ -1,7 +1,8 @@
 package fr.mcstudio;
 
-import java.awt.EventQueue;
+import java.awt.*;
 
+import javax.swing.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -28,19 +29,26 @@ public class Main extends JFrame {
 		contentPane.setBorder(null);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		int nbJoueur = 2;
 		players = new Player[nbJoueur];
-		
+
 		Player P1 = new Player("Akunes", Color.BLUE, false, resolution);
+		ImageIcon avatar = new ImageIcon(Main.class.getResource("/SideBar/avatar1.png"));
+		Image scaleImage = avatar.getImage().getScaledInstance(avatar.getIconWidth() * resolution / 90,
+				avatar.getIconHeight() * resolution / 90, Image.SCALE_SMOOTH);
+		avatar.setImage(scaleImage);
+		P1.setAvatar(avatar);
 		players[0] = P1;
 		Player P2 = new Player("lo", Color.RED, false, resolution);
 		players[1] = P2;
-		/*Player P3 = new Player("Lucasse", Color.YELLOW, false);
-		players[2] = P3;
-		Player P4 = new Player("kev1", Color.GREEN, false);
-		players[3] = P4;*/
-			
+		/*
+		 * Player P3 = new Player("Lucasse", Color.YELLOW, false);
+		 * players[2] = P3;
+		 * Player P4 = new Player("kev1", Color.GREEN, false);
+		 * players[3] = P4;
+		 */
+
 	}
 
 	public static void main(String[] args) {
@@ -50,7 +58,7 @@ public class Main extends JFrame {
 					Main main = new Main();
 					Game game = new Game(main.resolution, main.contentPane, main.players);
 					game.initializeBoard();
-					
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

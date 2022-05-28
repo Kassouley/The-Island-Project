@@ -62,7 +62,6 @@ public class ActionInfo extends JLayeredPane {
 		this.add(actionInfoPanel);
 
 		this.actionTitle.setFont(new Font("/Font/Treasuremap.ttf", Font.PLAIN, 18));
-
 		this.actionTitle.setVerticalAlignment(SwingConstants.TOP);
 		this.actionInfoPanel.add(actionTitle);
 
@@ -106,42 +105,45 @@ public class ActionInfo extends JLayeredPane {
 		this.actionTitle.setText(game.getActionTurn().getTitle());
 		this.actionDesc.setText(game.getActionTurn().getDesc());
 		this.actionLabel.removeAll();
+		this.actionLabel.revalidate();
+		this.actionLabel.repaint();
 
 		switch (game.getActionTurn()) {
 			case PLAY_TILE:
+				actionLabel.add(this.buttons.get(SideBarButton.SEETILES.ordinal()));
 				this.buttons.get(SideBarButton.SEETILES.ordinal()).addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 
 					}
 				});
-				actionLabel.add(this.buttons.get(SideBarButton.SEETILES.ordinal()));
 				break;
 
 			case MOVE_PAWNS:
-				JLabel moveLeft = new JLabel("Il vous reste" + game.getCurrentPlayer().getMoveLeft() + "déplacements");
+				JLabel moveLeft = new JLabel(
+						"Il vous reste " + game.getCurrentPlayer().getMoveLeft() + " déplacements");
 				moveLeft.setVerticalAlignment(SwingConstants.TOP);
 				actionLabel.add(moveLeft);
 				break;
 
 			case DISCOVER_TILE:
+				actionLabel.add(this.buttons.get(SideBarButton.DISCOVER.ordinal()));
 				this.buttons.get(SideBarButton.DISCOVER.ordinal()).addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 
 					}
 				});
-				actionLabel.add(this.buttons.get(SideBarButton.DISCOVER.ordinal()));
 				break;
 
 			case MOVE_MONSTER:
+				actionLabel.add(this.buttons.get(SideBarButton.ROLL.ordinal()));
 				this.buttons.get(SideBarButton.ROLL.ordinal()).addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 
 					}
 				});
-				actionLabel.add(this.buttons.get(SideBarButton.ROLL.ordinal()));
 				break;
 
 			default:
@@ -149,40 +151,6 @@ public class ActionInfo extends JLayeredPane {
 		}
 	}
 
-		JButton skipButton = new JButton(
-				new ImageIcon(JButton.class.getResource("/SideBar/skipButton")));
-		skipButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-		actionInfoPane.setLayer(skipButton, 1);
-		actionInfoPane.add(skipButton);
-
-		JButton rulesButton = new JButton(
-				new ImageIcon(JButton.class.getResource("/SideBar/rulesButton")));
-		rulesButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-		actionInfoPane.setLayer(rulesButton, 1);
-		actionInfoPane.add(rulesButton);
-
-		JButton quitButton = new JButton(
-				new ImageIcon(JButton.class.getResource("/SideBar/quitButton")));
-		quitButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-		actionInfoPane.setLayer(quitButton, 1);
-		actionInfoPane.add(quitButton);
-	}
-	
 	private void setPanelBoundsFromResolution(int resolution) {
 		switch (resolution) {
 			case 70:
