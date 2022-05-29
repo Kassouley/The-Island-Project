@@ -1,9 +1,12 @@
 package fr.mcstudio.board;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -12,6 +15,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import fr.mcstudio.enums.ExternalPanelState;
+import fr.mcstudio.enums.PawnType;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.tiles.Tile;
 import fr.mcstudio.util.Pair;
@@ -29,9 +33,13 @@ public class ExternalPanel extends JLayeredPane{
 	private JPanel animationPanel;
 	
 	private PairList<JButton, JLayeredPane> bPairList = new PairList<JButton, JLayeredPane>();
+	private List<JLabel> seaSnakeList = new ArrayList<JLabel>();
+	private List<JLabel> sharkList = new ArrayList<JLabel>();
+	private List<JLabel> whaleList = new ArrayList<JLabel>();
 	
 	private JLayeredPane selection = null;
 	private Hexagon clickedHex;
+	private PawnType pawnType;
 	
 	private ExternalPanelState externalPanelState = ExternalPanelState.VOID;
 	private int resolution;
@@ -49,12 +57,20 @@ public class ExternalPanel extends JLayeredPane{
 		this.boatOrSeaPanel = createDisplayPanel();
 		this.boatOrSeaPanel.setLayout(new GridLayout(4, 0, 0, 0));
 		this.dicePanel = createDisplayPanel();
+		this.dicePanel.setLayout(new BorderLayout(0, 0));
 		this.tilesEffectsPanel = createDisplayPanel();
 		this.animationPanel = createDisplayPanel();
 		this.setVisible(false);
 		
 		board.setLayer(this, 4);
 		board.add(this);
+
+		this.seaSnakeList.add(new JLabel(new ImageIcon(ExternalPanel.class.getResource("/Animation/seaSnake/seaSnake1.gif"))));
+		this.seaSnakeList.add(new JLabel(new ImageIcon(ExternalPanel.class.getResource("/Animation/seaSnake/seaSnake2.gif"))));
+		this.sharkList.add(new JLabel(new ImageIcon(ExternalPanel.class.getResource("/Animation/shark/shark1.gif"))));
+		this.sharkList.add(new JLabel(new ImageIcon(ExternalPanel.class.getResource("/Animation/shark/shark1.gif"))));
+		this.whaleList.add(new JLabel(new ImageIcon(ExternalPanel.class.getResource("/Animation/whale/whale1.gif"))));
+		this.whaleList.add(new JLabel(new ImageIcon(ExternalPanel.class.getResource("/Animation/whale/whale2.gif"))));
 	}
 	
 	public ExternalPanelState getExternalPanelState() {
@@ -145,8 +161,26 @@ public class ExternalPanel extends JLayeredPane{
 	}
 
 	private void displayDicePanel() {
-		// TODO Auto-generated method stub
-		
+		int animationNumber;
+		switch((int) (Math.random() * 3)) {
+			case 0:
+				animationNumber = (int) (Math.random() * this.seaSnakeList.size());
+				this.dicePanel.add(this.seaSnakeList.get(animationNumber), BorderLayout.CENTER);
+				this.pawnType = PawnType.SEASNAKE;
+				break;
+			case 1:
+				animationNumber = (int) (Math.random() * this.sharkList.size());
+				this.dicePanel.add(this.sharkList.get(animationNumber), BorderLayout.CENTER);
+				this.pawnType = PawnType.SHARK;
+				break;
+			case 2:
+				animationNumber = (int) (Math.random() * this.whaleList.size());
+				this.dicePanel.add(this.whaleList.get(animationNumber), BorderLayout.CENTER);
+				this.pawnType = PawnType.WHALE;
+				break;
+			default:
+				break;
+		}
 	}
 	
 	private void displayBoatOrSea() {
@@ -220,6 +254,10 @@ public class ExternalPanel extends JLayeredPane{
 
 	public void setClickedHex(Hexagon clickedHex) {
 		this.clickedHex = clickedHex;
+	}
+
+	public PawnType getPawnType() {
+		return pawnType;
 	}
 
 	private void hideAllPanels() {

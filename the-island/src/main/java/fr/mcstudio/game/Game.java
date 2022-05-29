@@ -658,6 +658,12 @@ public class Game {
             }
 
         } else if (actionTurn == ActionTurn.MOVE_MONSTER) {
+            if (board.getExternalPanel().getPawnType() == null) {
+                
+            }
+
+            board.getExternalPanel().setExternalPanelState(ExternalPanelState.DICEPANEL);
+
             if ((!hex.getSharkList().isEmpty()
                     || !hex.getSeaSnakeList().isEmpty()
                     || !hex.getWhaleList().isEmpty())
