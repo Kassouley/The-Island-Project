@@ -193,14 +193,13 @@ public class ExternalPanel extends JLayeredPane{
         	Explorer explorer = clickedHex.getExplorerList().get(i);
         	if(board.getGame().getCurrentPlayer().getColor() == explorer.getColor()) {
         		bPairList.add(new Pair<JButton,JLayeredPane>(new JButton(explorer.getImage().getIcon()), explorer));
-                //bPairList.get(i).getLeft().setBackground(java.awt.Color.WHITE);
-                //bPairList.get(i).getLeft().setBorderPainted(false);
-                //bPairList.get(i).getLeft().setBorder(BorderFactory.createLineBorder(java.awt.Color.WHITE));
-                bPairList.get(i).getLeft().setFocusPainted(false);
-                bPairList.get(i).getLeft().setContentAreaFilled(false);
-                pawnPanel.add(bPairList.get(i).getLeft());
         	}
-            bPairList.get(i).getLeft().addActionListener( new ActionListener() {
+        }
+        for(int i = 0; i < bPairList.size(); i++) {
+            bPairList.get(i).getLeft().setFocusPainted(false);
+            bPairList.get(i).getLeft().setContentAreaFilled(false);
+            pawnPanel.add(bPairList.get(i).getLeft());
+        	bPairList.get(i).getLeft().addActionListener( new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     int index = bPairList.getLeftList().indexOf(e.getSource());
