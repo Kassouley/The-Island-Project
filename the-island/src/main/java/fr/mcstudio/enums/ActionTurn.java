@@ -28,13 +28,13 @@ public enum ActionTurn {
     public String getDesc() {
         switch (this) {
             case PLAY_TILE:
-                return "<html>Jouez une tuile de votre main<br>ou passez votre action</html>";
+                return "<html><center>Jouez une tuile de votre main<br>ou passez votre action</center></html>";
             case MOVE_PAWNS:
-                return "<html>Choisissez un explorateur<br>ou un bateau et déplacez le</html>";
+                return "<html><center>Choisissez un explorateur<br>ou un bateau et déplacez le</center></html>";
             case DISCOVER_TILE:
-                return "<html>Retournez une tuile et<br>découvrez ce qu'il se cache derrière</html>";
+                return "<html><center>Retournez une tuile et<br>découvrez ce qu'il se cache derrière</center></html>";
             case MOVE_MONSTER:
-                return "<html>Lancez le dé puis déplacez<br>le monstre qui a été choisit</html>";
+                return "<html><center>Lancez le dé puis déplacez<br>le monstre qui a été choisit</center></html>";
             default:
                 break;
         }

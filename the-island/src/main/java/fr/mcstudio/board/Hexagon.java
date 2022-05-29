@@ -36,16 +36,16 @@ public class Hexagon extends JLayeredPane {
         this.line = line;
         this.column = column;
         this.resolution = resolution;
-        
-    	this.setLayout(null);
+
+        this.setLayout(null);
         this.setBounds(this.returnPosX(resolution),
                 this.returnPosY(resolution),
                 resolution,
                 resolution);
-        
-		boardPane.setLayer(this, 1);
-		setOpaque(false);
-		boardPane.add(this);
+
+        boardPane.setLayer(this, 1);
+        setOpaque(false);
+        boardPane.add(this);
     }
 
     private int resolution;
@@ -79,9 +79,9 @@ public class Hexagon extends JLayeredPane {
     private boolean highlight;
 
     private JLabel highlightLabel = new JLabel();
-    
+
     private String highlightColor = null;
-    
+
     private List<Pawn> pawnsToDisplay = new ArrayList<Pawn>();
 
     /**
@@ -125,10 +125,10 @@ public class Hexagon extends JLayeredPane {
      * </p>
      */
     public Tile getTile() {
-        if ( this.tile == null) {
+        if (this.tile == null) {
             return null;
         } else {
-            return  this.tile;
+            return this.tile;
         }
 
     }
@@ -462,8 +462,8 @@ public class Hexagon extends JLayeredPane {
 
         remove(highlightLabel);
         revalidate();
-		repaint();
-        
+        repaint();
+
         if (this.highlight) {
             // boardPane.remove(highlightLabel);
             ImageIcon icone = null;
@@ -505,14 +505,14 @@ public class Hexagon extends JLayeredPane {
     }
 
     public void setHighlightColor(String highlightColor) {
-		this.highlightColor = highlightColor;
-	}
+        this.highlightColor = highlightColor;
+    }
 
-	public String getHighlightColor() {
-		return highlightColor;
-	}
+    public String getHighlightColor() {
+        return highlightColor;
+    }
 
-	/**
+    /**
      * <p>
      * Vide la case de tous ses pions
      * </p>
@@ -615,13 +615,13 @@ public class Hexagon extends JLayeredPane {
     }
 
     public void displayPawns() {
-    	for(Pawn p : pawnsToDisplay) {
-    		remove(p);
-    	}
-		revalidate();
-		repaint();
-    	pawnsToDisplay.clear();
-        //List<Pawn> pawnsToDisplay = new ArrayList<Pawn>();
+        for (Pawn p : pawnsToDisplay) {
+            remove(p);
+        }
+        revalidate();
+        repaint();
+        pawnsToDisplay.clear();
+        // List<Pawn> pawnsToDisplay = new ArrayList<Pawn>();
         List<Integer> x = new ArrayList<Integer>();
         List<Integer> y = new ArrayList<Integer>();
         List<Integer> index = new ArrayList<Integer>();
@@ -643,31 +643,31 @@ public class Hexagon extends JLayeredPane {
             pawnsToDisplay.add(ss);
         }
         if (this.boat != null) {
-        	Boat b = new Boat();
-        	index.add(1);
+            Boat b = new Boat();
+            index.add(1);
             pawnsToDisplay.add(b);
         }
         if (!this.explorerList.isEmpty()) {
-        	if(containsExplorerColor(Color.GREEN)) {
-        		Explorer e = new Explorer(Color.GREEN, 0);
-        		index.add(nbExplorerColor(explorerList, Color.GREEN));
+            if (containsExplorerColor(Color.GREEN)) {
+                Explorer e = new Explorer(Color.GREEN, 0);
+                index.add(nbExplorerColor(explorerList, Color.GREEN));
                 pawnsToDisplay.add(e);
-        	}
-        	if(containsExplorerColor(Color.RED)) {
-        		Explorer e = new Explorer(Color.RED, 0);
-        		index.add(nbExplorerColor(explorerList, Color.RED));
+            }
+            if (containsExplorerColor(Color.RED)) {
+                Explorer e = new Explorer(Color.RED, 0);
+                index.add(nbExplorerColor(explorerList, Color.RED));
                 pawnsToDisplay.add(e);
-        	}
-        	if(containsExplorerColor(Color.BLUE)) {
-        		Explorer e = new Explorer(Color.BLUE, 0);
-        		index.add(nbExplorerColor(explorerList, Color.BLUE));
+            }
+            if (containsExplorerColor(Color.BLUE)) {
+                Explorer e = new Explorer(Color.BLUE, 0);
+                index.add(nbExplorerColor(explorerList, Color.BLUE));
                 pawnsToDisplay.add(e);
-        	}
-        	if(containsExplorerColor(Color.YELLOW)) {
-        		Explorer e = new Explorer(Color.YELLOW, 0);
-        		index.add(nbExplorerColor(explorerList, Color.YELLOW));
+            }
+            if (containsExplorerColor(Color.YELLOW)) {
+                Explorer e = new Explorer(Color.YELLOW, 0);
+                index.add(nbExplorerColor(explorerList, Color.YELLOW));
                 pawnsToDisplay.add(e);
-        	}
+            }
         }
         float rate = ((float) resolution / (float) 90);
         switch (pawnsToDisplay.size()) {
@@ -743,46 +743,46 @@ public class Hexagon extends JLayeredPane {
         }
         for (int i = 0; i < pawnsToDisplay.size(); i++) {
 
-            
             pawnsToDisplay.get(i).setPosition(x.get(i),
                     y.get(i), resolution, imageSize);
             pawnsToDisplay.get(i).createPawnImage();
-            if (pawnsToDisplay.get(i) instanceof Boat) 
-            	((Boat)pawnsToDisplay.get(i)).displayBoatPawns(this.boat, resolution, pawnsToDisplay.size(), this);
-            //System.out.println(index.get(i));
+            if (pawnsToDisplay.get(i) instanceof Boat)
+                ((Boat) pawnsToDisplay.get(i)).displayBoatPawns(this.boat, resolution, pawnsToDisplay.size(), this);
 
-    		if(index.get(i) > 1)
-    			pawnsToDisplay.get(i).addIndex(index.get(i), imageSize);
-    		
+            if (index.get(i) > 1)
+                pawnsToDisplay.get(i).addIndex(index.get(i), imageSize);
+
             setLayer(pawnsToDisplay.get(i), 1);
             add(pawnsToDisplay.get(i));
         }
     }
-    
-    public boolean containsExplorerColor(final Color color){
+
+    public boolean containsExplorerColor(final Color color) {
         return explorerList.stream().filter(o -> o.getColor().equals(color)).findFirst().isPresent();
     }
-    
+
     public int nbExplorerColor(final List<Explorer> list, final Color color) {
-    	int nb = 0;
-    	for(Explorer e : list) {
-    		if(e.getColor() == color) {
-    			nb++;
-    		}
-    	}
-		return nb;
+        int nb = 0;
+        for (Explorer e : list) {
+            if (e.getColor() == color) {
+                nb++;
+            }
+        }
+        return nb;
     }
-    
-    /*public int getExplorerNbInList(final List<Explorer> list, final Color color){
-        return list.stream().filter(o -> o.getColor().equals(color)).findFirst().isPresent();
-    }*/
-    
-    public void discover(Player p,Board board) {
-    	if( this.tile != null) {
-    		 this.tile.flipTile(this,p,board);
-		}
-		else {
-			System.out.println("Aucune tuile sur la case choisie\n");
-		}
-	}
+
+    /*
+     * public int getExplorerNbInList(final List<Explorer> list, final Color color){
+     * return list.stream().filter(o ->
+     * o.getColor().equals(color)).findFirst().isPresent();
+     * }
+     */
+
+    public void discover(Player p, Board board) {
+        if (this.tile != null) {
+            this.tile.flipTile(this, p, board);
+        } else {
+            System.out.println("Aucune tuile sur la case choisie\n");
+        }
+    }
 }
