@@ -1,5 +1,5 @@
 package fr.mcstudio.enums;
 
 public enum PawnType {
-	SHARK, SEASNAKE, WHALE;
+    EXPLORER, BOAT, SEASNAKE, SHARK, WHALE
 }

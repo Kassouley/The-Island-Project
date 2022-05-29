@@ -172,10 +172,10 @@ public class Game {
                                                 SeaSnake ss = new SeaSnake();
                                                 Boat b = new Boat();
                                                 b.createImage(resolution);
-                                                hex.addPawn(s);
-                                                hex.addPawn(w);
-                                                hex.addPawn(ss);
-                                                hex.addPawn(b);
+                                                //hex.addPawn(s);
+                                                //hex.addPawn(w);
+                                                //hex.addPawn(ss);
+                                                //hex.addPawn(b);
                                                 gameState = GameState.PLAYING;
                                                 turnNumber = 0;
                                             }
