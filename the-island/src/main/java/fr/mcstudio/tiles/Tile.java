@@ -30,8 +30,12 @@ public class Tile extends JLayeredPane {
 	private TilesType type = null;
 	private TilesEffect effect = null;
 	private int resolution;
-	private JLabel typeLabel;
-	private JLabel effectLabel;
+	private JLabel typeLabel = new JLabel();
+	public JLabel getTypeLabel() {
+		return typeLabel;
+	}
+
+	private JLabel effectLabel = new JLabel();
 
 	/**
 	 * Default constructor
