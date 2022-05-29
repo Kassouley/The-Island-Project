@@ -40,6 +40,8 @@ public class ExternalPanel extends JLayeredPane{
 	private List<JLabel> whaleList = new ArrayList<JLabel>();
 	
 	private JLayeredPane selection = null;
+	private PawnType pawnType;
+	
 	private Hexagon clickedHex;
 	private PawnType pawnType;
 	
@@ -340,5 +342,13 @@ public class ExternalPanel extends JLayeredPane{
 
 	public void setSelection(JLayeredPane selection) {
 		this.selection = selection;
+	}
+
+	public PawnType getPawnType() {
+		return pawnType;
+	}
+
+	public void setPawnType(PawnType pawnType) {
+		this.pawnType = pawnType;
 	}
 }
