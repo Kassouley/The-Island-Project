@@ -148,8 +148,45 @@ public class ExternalPanel extends JLayeredPane{
 	}
 
 	private void displayDicePanel() {
-		// TODO Auto-generated method stub
-		
+		this.dicePanel.setVisible(true);
+        dicePanel.removeAll();
+		int animationNumber;
+		switch((int) (Math.random() * 3)) {
+			case 0:
+				animationNumber = (int) (Math.random() * this.seaSnakeList.size());
+				this.dicePanel.add(this.seaSnakeList.get(animationNumber), BorderLayout.CENTER);
+				this.pawnType = PawnType.SEASNAKE;
+				break;
+			case 1:
+				animationNumber = (int) (Math.random() * this.sharkList.size());
+				this.dicePanel.add(this.sharkList.get(animationNumber), BorderLayout.CENTER);
+				this.pawnType = PawnType.SHARK;
+				break;
+			case 2:
+				animationNumber = (int) (Math.random() * this.whaleList.size());
+				this.dicePanel.add(this.whaleList.get(animationNumber), BorderLayout.CENTER);
+				this.pawnType = PawnType.WHALE;
+				break;
+			default:
+				break;
+		}
+		//this.dicePanel.add(new JLabel(new ImageIcon(ExternalPanel.class.getResource("/Bateau.png"))), BorderLayout.NORTH);
+		dicePanel.addMouseListener( new MouseListener() {
+
+            public void mouseClicked(MouseEvent e) {}
+
+            public void mousePressed(MouseEvent e) {
+            	board.setDisplayExternalPanel(false);
+                setExternalPanelState(ExternalPanelState.VOID);
+                board.getGame().inGame(clickedHex);
+            }
+
+            public void mouseReleased(MouseEvent e) {}
+
+            public void mouseEntered(MouseEvent e) {}
+
+            public void mouseExited(MouseEvent e) {}
+        });
 	}
 	
 	private void displayBoatOrSea() {
