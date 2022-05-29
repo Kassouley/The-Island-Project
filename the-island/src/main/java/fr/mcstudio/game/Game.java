@@ -19,6 +19,7 @@ import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.enums.PawnType;
 import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.pawns.Boat;
+import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
 import fr.mcstudio.pawns.Shark;
@@ -581,7 +582,15 @@ public class Game {
 
             if (!hex.getExplorerList().isEmpty() && firstClic == true) {
                 saveHexa = hex;
-
+                if(hex.nbExplorerColor(getCurrentPlayer().getColor()) == 1) {
+                	for (Explorer e : hex.getExplorerList()) {
+						if(e.getColor() == getCurrentPlayer().getColor()) {
+							pawnToMove = e;
+							break;
+						}
+					}
+                }
+                
                 if (pawnToMove == null) {
                     if (board.getExternalPanel().getSelection() != null) {
 

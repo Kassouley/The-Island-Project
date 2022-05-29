@@ -245,8 +245,10 @@ public class ExternalPanel extends JLayeredPane{
         	}
         }
         for(int i = 0; i < bPairList.size(); i++) {
+        	Explorer e = (Explorer) bPairList.get(i).getRight();
             bPairList.get(i).getLeft().setFocusPainted(false);
             bPairList.get(i).getLeft().setContentAreaFilled(false);
+            e.addIndex(clickedHex.getExplorerList().indexOf(e), 90);
             pawnPanel.add(bPairList.get(i).getLeft());
         	bPairList.get(i).getLeft().addActionListener( new ActionListener() {
                 @Override

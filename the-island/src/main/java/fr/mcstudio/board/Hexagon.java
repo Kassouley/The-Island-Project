@@ -650,22 +650,22 @@ public class Hexagon extends JLayeredPane {
         if (!this.explorerList.isEmpty()) {
             if (containsExplorerColor(Color.GREEN)) {
                 Explorer e = new Explorer(Color.GREEN, 0);
-                index.add(nbExplorerColor(explorerList, Color.GREEN));
+                index.add(nbExplorerColor(Color.GREEN));
                 pawnsToDisplay.add(e);
             }
             if (containsExplorerColor(Color.RED)) {
                 Explorer e = new Explorer(Color.RED, 0);
-                index.add(nbExplorerColor(explorerList, Color.RED));
+                index.add(nbExplorerColor(Color.RED));
                 pawnsToDisplay.add(e);
             }
             if (containsExplorerColor(Color.BLUE)) {
                 Explorer e = new Explorer(Color.BLUE, 0);
-                index.add(nbExplorerColor(explorerList, Color.BLUE));
+                index.add(nbExplorerColor(Color.BLUE));
                 pawnsToDisplay.add(e);
             }
             if (containsExplorerColor(Color.YELLOW)) {
                 Explorer e = new Explorer(Color.YELLOW, 0);
-                index.add(nbExplorerColor(explorerList, Color.YELLOW));
+                index.add(nbExplorerColor(Color.YELLOW));
                 pawnsToDisplay.add(e);
             }
         }
@@ -761,9 +761,9 @@ public class Hexagon extends JLayeredPane {
         return explorerList.stream().filter(o -> o.getColor().equals(color)).findFirst().isPresent();
     }
 
-    public int nbExplorerColor(final List<Explorer> list, final Color color) {
+    public int nbExplorerColor(final Color color) {
         int nb = 0;
-        for (Explorer e : list) {
+        for (Explorer e : explorerList) {
             if (e.getColor() == color) {
                 nb++;
             }
