@@ -329,10 +329,24 @@ public class Board extends JLayeredPane{
 				|| getLeft(actualHexagon).isSea()
 				|| getRight(actualHexagon).isSea()
 				|| getBottomLeft(actualHexagon).isSea()
-				|| getTopRight(actualHexagon).isSea())
+				|| getBottomRight(actualHexagon).isSea())
 			return true;
 		
 		return false;
+	}
+	
+	public boolean canRemoveOutOfSea(Hexagon actualHexagon, TilesType tilesType) {
+		for (int i = 0; i < 13; i++) {
+			for (int j = 0; j < 12; j++) {
+				Hexagon hex = this.getHexagons()[i][j];
+				if(hex.getTile() != null && hex.getTile().getType() == tilesType) {
+					if(isNextToSea(hex)) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
 	}
 
 	public Board getBoard() {

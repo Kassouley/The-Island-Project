@@ -16,7 +16,7 @@ public class Main extends JFrame {
 	private Player[] players;
 	private JPanel contentPane;
 
-	int resolution = 70;
+	int resolution = 90;
 
 	public Main() {
 		super("The Island");

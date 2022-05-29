@@ -664,20 +664,20 @@ public class Game {
             }
         } else if (actionTurn == ActionTurn.DISCOVER_TILE) {
             if (hex.getTile() != null) {
-                if (hex.getTile().getType() == TilesType.BEACH 
-                		&& board.isNextToSea(hex)
+                if ((hex.getTile().getType() == TilesType.BEACH 
                         || (hex.getTile().getType() == TilesType.FOREST
-                        		&& board.isNextToSea(hex)
                                 && board.getNbBeach() == 0)
                         || (hex.getTile().getType() == TilesType.MOUNTAINS
-                        		&& board.isNextToSea(hex)
                                 && board.getNbBeach() == 0
-                                && board.getNbForest() == 0)) {
-                    board.decreaseNbTile(hex.getTile().getType());
-                    hex.discover(getCurrentPlayer(), board);
+                                && board.getNbForest() == 0))){
+                	if(board.canRemoveOutOfSea(hex, hex.getTile().getType()) 
+                			|| board.isNextToSea(hex)) {
+                        board.decreaseNbTile(hex.getTile().getType());
+                        hex.discover(getCurrentPlayer(), board);
 
-                    // ActionTurn est le changement d'action, � mettre en commentaire pour test
-                    nextActionTurn();
+                        // ActionTurn est le changement d'action, � mettre en commentaire pour test
+                        nextActionTurn();
+                	}
                 }
             }
 

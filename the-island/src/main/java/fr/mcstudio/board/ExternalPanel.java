@@ -52,6 +52,7 @@ public class ExternalPanel extends JLayeredPane{
 		this.boatOrSeaPanel.setLayout(new GridLayout(4, 0, 0, 0));
 		this.dicePanel = createDisplayPanel();
 		this.tilesEffectsPanel = createDisplayPanel();
+		this.tilesEffectsPanel.setLayout(new GridLayout(4, 0, 0, 0));
 		this.animationPanel = createDisplayPanel();
 		this.setVisible(false);
 		
