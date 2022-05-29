@@ -368,4 +368,36 @@ public class Tile extends JLayeredPane {
 		return typeLabel;
 	}
 	
+	public boolean checkPlay(Board board,Player p) {
+		switch(this.effect) {
+		case SHARK_LOST:
+			if(board.isSharkOnBoard()) {
+				return true;
+			}
+				
+			break;
+		case SEASNAKE_LOST:
+			if(board.isSeaSnakeOnBoard()) {
+				return true;
+			}
+			break;
+		case WHALE_LOST:
+			if(board.isWhaleOnBoard()) {
+				return true;
+			}
+			break;
+		case DOLPHIN_MOVE:
+			if(board.isSwimmerOnBoard(p)) {
+				return true;
+			}
+			break;
+		case BOAT_MOVE:
+			if(board.isBoatOnBoard()) {
+				return true;
+			}
+			break;
+		default : break;
+		}
+		return false;
+	}
 }

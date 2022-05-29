@@ -475,7 +475,11 @@ public class Game {
     public void endGame() {
         // TODO
     }
-
+    
+    /**
+     * 
+     */
+    private boolean checkTileToPlay;
     /**
      * 
      * @param hex
@@ -488,13 +492,15 @@ public class Game {
 
                     usedTile = (Tile)board.getExternalPanel().getSelection();
                     board.getExternalPanel().setSelection(null);
+                    checkTileToPlay = usedTile.checkPlay(board, getCurrentPlayer());
                 } else {
                     board.setDisplayExternalPanel(true);
                     board.getExternalPanel().setExternalPanelState(ExternalPanelState.TILEEFFECTPANEL);
                 }
             }
-            else {
+            else if(checkTileToPlay) {
             	if(firstClic == true) {
+            		getCurrentPlayer().getTileList().remove(usedTile);
                     saveHexa = hex;
                     pawnToMove = null;
                     EffectPawn effect = null; 
@@ -599,125 +605,15 @@ public class Game {
                   }
             	
             }
+            else {
+            	usedTile = null;
+            	nextActionTurn();
+            }
         }
         else {
             pawnToMove = null;
             nextActionTurn();
         }
-    	/*
-    	if(getCurrentPlayer().getTileList().size() > 0) {
-            System.out.println(players[turnOrder].getTileList().get(0).getEffect());
-            //players[turnOrder].getTileList().get(0).applyEffect(hex, board);
-            // Test de tuile
-            if(firstClic == true) {
-              saveHexa = hex;
-              pawnToMove = null;
-              EffectPawn effect = null; 
-              if (!hex.getSharkList().isEmpty() && 
-                  usedTile.getEffect() == TilesEffect.SHARK_LOST) {
-                pawnToMove = hex.getSharkList().get(0);
-                effect = (EffectPawn) pawnToMove;
-
-              } 
-              else if (!hex.getSeaSnakeList().isEmpty() && 
-                 usedTile.getEffect() == TilesEffect.SEASNAKE_LOST) {
-                pawnToMove = hex.getSeaSnakeList().get(0);
-                effect = (EffectPawn) pawnToMove;
-              } 
-              else if (!hex.getWhaleList().isEmpty() && 
-                 usedTile.getEffect() == TilesEffect.WHALE_LOST) {
-                pawnToMove = hex.getWhaleList().get(0);
-                effect = (EffectPawn) pawnToMove;
-              }
-              else if (!hex.getExplorerList().isEmpty() && 
-                  usedTile.getEffect() == TilesEffect.DOLPHIN_MOVE) {
-                if(hex.getExplorerList().get(0).getStatus() == ExplorerStatus.SWIMMER) {
-                  pawnToMove = hex.getExplorerList().get(0);
-                 
-                }
-              }
-              else if (hex.getBoat() != null &&  
-                  usedTile.getEffect() == TilesEffect.BOAT_MOVE) {
-            	  pawnToMove = hex.getBoat();
-              }
-
-
-              if(pawnToMove != null) {
-              	switch(usedTile.getEffect()) {
-              	case WHALE_LOST :
-              	case SEASNAKE_LOST :
-              	case SHARK_LOST :
-              		effect.findPathEffect(hex, board, hexagonTripletList);
-              		break;
-              	case BOAT_MOVE :
-              		pawnToMove.findPath(hex, board, 3, hexagonTripletList);
-              		break;
-              	case DOLPHIN_MOVE :
-              		Dolphin d = new Dolphin();
-              		d.findPath(hex, board, 3, hexagonTripletList);
-              		break;
-              	default :
-              		break;
-              	}
-               
-                for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonTripletList) {
-                  String s;
-                  switch(p.getRight()) {
-                    case NORMAL:
-                      s = "yellow";
-                      break;
-                    case BOAT:
-                      s = "purple";
-                      break;
-                    case DEATH:
-                      s = "red";
-                      break;
-                    default:
-                      s = "white";
-                      break;
-                  }
-                  p.getLeft().setHighlight(resolution, board, true, s);
-                }
-
-                firstClic = false;
-              }
-
-            }
-            else if(firstClic == false) {
-              if(hexagonTripletList.getLeftList().contains(hex)) {
-                pawnToMove.move(saveHexa,hex) ;
-                for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonTripletList) {
-                  p.getLeft().setHighlightColor(null);
-                  p.getLeft().setHighlight(resolution, board, false, null);
-                }
-                hexagonTripletList.clear();
-                saveHexa.displayPawns();
-                firstClic = true;
-                saveHexa = null;
-                pawnToMove = null;
-                players[turnOrder].getTileList().remove(usedTile);
-                // ActionTurn est le changement d'action, à mettre en commentaire pour test
-                nextActionTurn();
-
-              }
-              else {
-                firstClic = true;
-                saveHexa = null;
-                
-                for(Triplet<Hexagon,Integer,HexagonListType> p : hexagonTripletList) {
-                  p.getLeft().setHighlightColor(null);
-                  p.getLeft().setHighlight(resolution, board, false, null);
-                }
-              }
-
-            }
-
-          }
-          else {
-            // ActionTurn est le changement d'action, à mettre en commentaire pour test
-            nextActionTurn();
-          }
-    	pawnToMove = null;*/
     }
     
     /**
