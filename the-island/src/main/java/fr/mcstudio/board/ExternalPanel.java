@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,10 +131,6 @@ public class ExternalPanel extends JLayeredPane{
 
 	private void displayTileEffectPanel() {
 		this.tilesEffectsPanel.setVisible(true);
-		for (int i = 0; i < bPairList.size(); i++) {
-			tilesEffectsPanel.remove(bPairList.get(i).getLeft());
-		}
-		bPairList.clear();
 		
 		int explorersHand = board.getGame().getCurrentPlayer().getTileList().size();
         for (int i = 0; i < explorersHand; i++) {
@@ -151,6 +149,8 @@ public class ExternalPanel extends JLayeredPane{
                 public void actionPerformed(ActionEvent e) {
                     int index = bPairList.getLeftList().indexOf(e.getSource());
                     setSelection(bPairList.get(index).getRight());
+                    tilesEffectsPanel.removeAll();
+            		bPairList.clear();
                     board.setDisplayExternalPanel(false);
                     setExternalPanelState(ExternalPanelState.VOID);
                     board.getGame().inGame(clickedHex);
@@ -160,7 +160,10 @@ public class ExternalPanel extends JLayeredPane{
 		
 	}
 
+
 	private void displayDicePanel() {
+		this.dicePanel.setVisible(true);
+        dicePanel.removeAll();
 		int animationNumber;
 		switch((int) (Math.random() * 3)) {
 			case 0:
@@ -181,14 +184,27 @@ public class ExternalPanel extends JLayeredPane{
 			default:
 				break;
 		}
+		//this.dicePanel.add(new JLabel(new ImageIcon(ExternalPanel.class.getResource("/Bateau.png"))), BorderLayout.NORTH);
+		dicePanel.addMouseListener( new MouseListener() {
+
+            public void mouseClicked(MouseEvent e) {}
+
+            public void mousePressed(MouseEvent e) {
+            	board.setDisplayExternalPanel(false);
+                setExternalPanelState(ExternalPanelState.VOID);
+                board.getGame().inGame(clickedHex);
+            }
+
+            public void mouseReleased(MouseEvent e) {}
+
+            public void mouseEntered(MouseEvent e) {}
+
+            public void mouseExited(MouseEvent e) {}
+        });
 	}
 	
 	private void displayBoatOrSea() {
 		this.boatOrSeaPanel.setVisible(true);
-		for (int i = 0; i < bPairList.size(); i++) {
-			boatOrSeaPanel.remove(bPairList.get(i).getLeft());
-		}
-		bPairList.clear();
 		ImageIcon icon = new ImageIcon(ExternalPanel.class.getResource("/Mer.png"));
 		Image scaleImage;
 		scaleImage = icon.getImage().getScaledInstance(resolution, resolution, Image.SCALE_SMOOTH);
@@ -204,6 +220,9 @@ public class ExternalPanel extends JLayeredPane{
                 public void actionPerformed(ActionEvent e) {
                     int index = bPairList.getLeftList().indexOf(e.getSource());
                     setSelection(bPairList.get(index).getRight());
+
+                    boatOrSeaPanel.removeAll();
+            		bPairList.clear();
                     board.setDisplayExternalPanel(false);
                     setExternalPanelState(ExternalPanelState.VOID);
                     board.getGame().inGame(clickedHex);
@@ -215,12 +234,7 @@ public class ExternalPanel extends JLayeredPane{
 	}
 
 	private void displayPawnPanel() {
-
 		this.pawnPanel.setVisible(true);
-		for (int i = 0; i < bPairList.size(); i++) {
-			pawnPanel.remove(bPairList.get(i).getLeft());
-		}
-		bPairList.clear();
 		
         int explorersLength = clickedHex.getExplorerList().size();
         for (int i = 0; i < explorersLength; i++) {
@@ -239,6 +253,8 @@ public class ExternalPanel extends JLayeredPane{
                 public void actionPerformed(ActionEvent e) {
                     int index = bPairList.getLeftList().indexOf(e.getSource());
                     setSelection(bPairList.get(index).getRight());
+            		pawnPanel.removeAll();
+            		bPairList.clear();
                     board.setDisplayExternalPanel(false);
                     setExternalPanelState(ExternalPanelState.VOID);
                     board.getGame().inGame(clickedHex);
@@ -258,6 +274,10 @@ public class ExternalPanel extends JLayeredPane{
 
 	public PawnType getPawnType() {
 		return pawnType;
+	}
+
+	public void setPawnType(PawnType pawnType) {
+		this.pawnType = pawnType;
 	}
 
 	private void hideAllPanels() {

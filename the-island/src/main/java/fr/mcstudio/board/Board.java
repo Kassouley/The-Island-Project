@@ -95,9 +95,9 @@ public class Board extends JLayeredPane{
 						hexagons[i][j].setTile(tilesList.get(n));
 						tilesList.remove(n);
 						hexagons[i][j].setType(HexagonType.TILES);
-						hexagons[i][j].getTile().setBounds(0, 0, 
+						hexagons[i][j].getTile().getTypeLabel().setBounds(0, 0, 
 								resolution, resolution);
-						hexagons[i][j].add(hexagons[i][j].getTile());
+						hexagons[i][j].add(hexagons[i][j].getTile().getTypeLabel());
 
 					} else if (i == 1 && j == 0 || i == 1 && j == 11 ||
 							i == 11 && j == 0 || i == 11 && j == 11) {
