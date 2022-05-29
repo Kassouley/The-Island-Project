@@ -16,6 +16,7 @@ import fr.mcstudio.enums.ActionTurn;
 import fr.mcstudio.enums.ExternalPanelState;
 import fr.mcstudio.enums.GameState;
 import fr.mcstudio.enums.HexagonListType;
+import fr.mcstudio.enums.PawnType;
 import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.Pawn;
@@ -171,10 +172,10 @@ public class Game {
                                                 SeaSnake ss = new SeaSnake();
                                                 Boat b = new Boat();
                                                 b.createImage(resolution);
-                                                hex.addPawn(s);
-                                                hex.addPawn(w);
-                                                hex.addPawn(ss);
-                                                hex.addPawn(b);
+                                                //hex.addPawn(s);
+                                                //hex.addPawn(w);
+                                                //hex.addPawn(ss);
+                                                //hex.addPawn(b);
                                                 gameState = GameState.PLAYING;
                                                 turnNumber = 0;
                                             }
@@ -658,69 +659,107 @@ public class Game {
             }
 
         } else if (actionTurn == ActionTurn.MOVE_MONSTER) {
-            if ((!hex.getSharkList().isEmpty()
-                    || !hex.getSeaSnakeList().isEmpty()
-                    || !hex.getWhaleList().isEmpty())
-                    && firstClic == true) {
-                saveHexa = hex;
-                // --Choix du monstre avec loik
-                if (!hex.getSharkList().isEmpty()) {
-                    pawnToMove = hex.getSharkList().get(0);
-                } else if (!hex.getSeaSnakeList().isEmpty()) {
-                    pawnToMove = hex.getSeaSnakeList().get(0);
-                } else if (!hex.getWhaleList().isEmpty()) {
-                    pawnToMove = hex.getWhaleList().get(0);
-                }
-                // --
+            if (board.getExternalPanel().getPawnType() == null) {
+            	board.setDisplayExternalPanel(true);
+            	board.getExternalPanel().setExternalPanelState(ExternalPanelState.DICEPANEL);
 
-                pawnToMove.findPath(hex, board, 3, hexagonTripletList);
-                for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
-                    String s;
-                    switch (p.getRight()) {
-                        case NORMAL:
-                            s = "yellow";
-                            break;
-                        case DEATH:
-                            s = "red";
-                            break;
-                        default:
-                            s = "white";
-                            break;
-                    }
-                    p.getLeft().setHighlight(resolution, board, true, s);
-                }
-                firstClic = false;
-
-            } else if (firstClic == false) {
-                if (hexagonTripletList.getLeftList().contains(hex)) {
-                    pawnToMove.move(saveHexa, hex);
-                    for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
-                        p.getLeft().setHighlightColor(null);
-                        p.getLeft().setHighlight(resolution, board, false, null);
-                    }
-                    hexagonTripletList.clear();
-                    saveHexa.displayPawns();
-                    firstClic = true;
-                    saveHexa = null;
-                    pawnToMove = null;
-
-                    // ActionTurn est le changement d'action, à mettre en commentaire pour test
-                    nextTurn();
-                } else {
-                    firstClic = true;
-                    saveHexa = null;
-                    for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
-                        p.getLeft().setHighlightColor(null);
-                        p.getLeft().setHighlight(resolution, board, false, null);
-                    }
-                }
+            } else if(!board.isDisplayExternalPanel()) {
+            	if(board.getExternalPanel().getPawnType() == PawnType.SHARK) {
+            		if(!board.isSharkOnBoard()) {
+            			System.out.println("Il n'y a pas de requins !");
+	                    board.getExternalPanel().setPawnType(null);
+	                    nextTurn();
+            		} else if(hex != null && hex.getSharkList().isEmpty() && firstClic == true) {
+            			System.out.println("Il n'y a pas de requins sur cette case !");
+            			return;
+            		}
+            	} else if(board.getExternalPanel().getPawnType() == PawnType.SEASNAKE) {
+            		if(!board.isSeaSnakeOnBoard()) {
+            			System.out.println("Il n'y a pas de serpents de mers !");
+	                    board.getExternalPanel().setPawnType(null);
+	                    nextTurn();
+            		} else if(hex != null && hex.getSeaSnakeList().isEmpty() && firstClic == true) {
+            			System.out.println("Il n'y a pas de serpents de mers sur cette case !");
+            			return;
+            		}
+            	} else if(board.getExternalPanel().getPawnType() == PawnType.WHALE) {
+            		if(!board.isWhaleOnBoard()) {
+            			System.out.println("Il n'y a pas de baleines !");
+	                    board.getExternalPanel().setPawnType(null);
+	                    nextTurn();
+            		} else if(hex != null && hex.getWhaleList().isEmpty() && firstClic == true) {
+            			System.out.println("Il n'y a pas de baleines sur cette case !");
+            			return;
+            		}
+            	}
+            	if (hex != null && firstClic == true) {
+            		saveHexa = hex;
+            		// --Choix du monstre avec loik
+            		switch(board.getExternalPanel().getPawnType()) {
+            			case SHARK:
+    	                    pawnToMove = hex.getSharkList().get(0);
+            				break;
+            			case SEASNAKE:
+    	                    pawnToMove = hex.getSeaSnakeList().get(0);
+            				break;
+            			case WHALE:
+    	                    pawnToMove = hex.getWhaleList().get(0);
+            				break;
+						default:
+							break;
+            		}
+	                // --
+	
+	                pawnToMove.findPath(hex, board, 3, hexagonTripletList);
+	                for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
+	                    String s;
+	                    switch (p.getRight()) {
+	                        case NORMAL:
+	                            s = "yellow";
+	                            break;
+	                        case DEATH:
+	                            s = "red";
+	                            break;
+	                        default:
+	                            s = "white";
+	                            break;
+	                    }
+	                    p.getLeft().setHighlight(resolution, board, true, s);
+	                }
+	                firstClic = false;
+	
+	            } else if (firstClic == false) {
+	                if (hexagonTripletList.getLeftList().contains(hex)) {
+	                    pawnToMove.move(saveHexa, hex);
+	                    for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
+	                        p.getLeft().setHighlightColor(null);
+	                        p.getLeft().setHighlight(resolution, board, false, null);
+	                    }
+	                    hexagonTripletList.clear();
+	                    saveHexa.displayPawns();
+	                    firstClic = true;
+	                    saveHexa = null;
+	                    pawnToMove = null;
+	                    board.getExternalPanel().setPawnType(null);
+	
+	                    // ActionTurn est le changement d'action, à mettre en commentaire pour test
+	                    nextTurn();
+	                } else {
+	                    firstClic = true;
+	                    saveHexa = null;
+	                    for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
+	                        p.getLeft().setHighlightColor(null);
+	                        p.getLeft().setHighlight(resolution, board, false, null);
+	                    }
+	                }
+	            }
             }
         }
         // System.out.println("Joueur :"+ turnOrder + "; " +
         // players[turnOrder].getPseudo());
         // System.out.println(actionTurn + "\n");
 
-        hex.displayPawns();
+        if(hex != null) hex.displayPawns();
     }
 
     /**
