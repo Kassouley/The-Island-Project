@@ -62,6 +62,7 @@ public class ExternalPanel extends JLayeredPane{
 		this.dicePanel = createDisplayPanel();
 		this.dicePanel.setLayout(new BorderLayout(0, 0));
 		this.tilesEffectsPanel = createDisplayPanel();
+		this.tilesEffectsPanel.setLayout(new GridLayout(4, 0, 0, 0));
 		this.animationPanel = createDisplayPanel();
 		this.setVisible(false);
 		
@@ -158,7 +159,6 @@ public class ExternalPanel extends JLayeredPane{
                 }
             });
         }
-		
 	}
 
 
