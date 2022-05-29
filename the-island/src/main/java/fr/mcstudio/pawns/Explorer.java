@@ -129,7 +129,6 @@ public class Explorer extends Pawn {
         switch (newPosition.getType()) {
             case TILES:
                 this.status = ExplorerStatus.NORMAL;
-                this.setMovePoint(3);
                 newPosition.addPawn(this);
                 break;
             case SEA:
