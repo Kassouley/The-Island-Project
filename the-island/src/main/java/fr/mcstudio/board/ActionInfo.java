@@ -164,13 +164,13 @@ public class ActionInfo extends JLayeredPane {
 	private void setPanelBoundsFromResolution(int resolution) {
 		switch (resolution) {
 			case 70:
-				setBounds(1162, 0, 244, 770);
+				setBounds(1162, 0, 254, 770);
 				break;
 			case 80:
 				setBounds(1338, 0, 281, 880);
 				break;
 			case 90:
-				setBounds(1512, 0, 322, 990);
+				setBounds(1512, 0, 320, 990);
 				break;
 			default:
 				break;
