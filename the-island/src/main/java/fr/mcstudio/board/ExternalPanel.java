@@ -12,6 +12,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import fr.mcstudio.enums.ExternalPanelState;
+import fr.mcstudio.enums.PawnType;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.tiles.Tile;
 import fr.mcstudio.util.Pair;
@@ -31,6 +32,8 @@ public class ExternalPanel extends JLayeredPane{
 	private PairList<JButton, JLayeredPane> bPairList = new PairList<JButton, JLayeredPane>();
 	
 	private JLayeredPane selection = null;
+	private PawnType pawnType;
+	
 	private Hexagon clickedHex;
 	
 	private ExternalPanelState externalPanelState = ExternalPanelState.VOID;
@@ -282,5 +285,13 @@ public class ExternalPanel extends JLayeredPane{
 
 	public void setSelection(JLayeredPane selection) {
 		this.selection = selection;
+	}
+
+	public PawnType getPawnType() {
+		return pawnType;
+	}
+
+	public void setPawnType(PawnType pawnType) {
+		this.pawnType = pawnType;
 	}
 }
