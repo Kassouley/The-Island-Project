@@ -151,7 +151,7 @@ public class Tile extends JLayeredPane {
 			  p.getTileList().add(hexagon.getTile());
 		}
 		
-		hexagon.remove(hexagon.getTile());
+		hexagon.remove(hexagon.getTile().getTypeLabel());
 		hexagon.revalidate();
 		hexagon.repaint();
 		hexagon.removeTile();
