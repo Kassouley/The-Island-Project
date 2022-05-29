@@ -40,12 +40,17 @@ public class Main extends JFrame {
 		avatar.setImage(scaleImage);
 		P1.setAvatar(avatar);
 		players[0] = P1;
-		Player P2 = new Player("lo", Color.RED, false, resolution);
+		Player P2 = new Player("Lo", Color.RED, false, resolution);
+		avatar = new ImageIcon(Main.class.getResource("/SideBar/avatar3.png"));
+		scaleImage = avatar.getImage().getScaledInstance(avatar.getIconWidth() * resolution / 90,
+				avatar.getIconHeight() * resolution / 90, Image.SCALE_SMOOTH);
+		avatar.setImage(scaleImage);
+		P2.setAvatar(avatar);
 		players[1] = P2;
 		/*
 		 * Player P3 = new Player("Lucasse", Color.YELLOW, false);
 		 * players[2] = P3;
-		 * Player P4 = new Player("kev1", Color.GREEN, false);
+		 * Player P4 = new Player("Kev1", Color.GREEN, false);
 		 * players[3] = P4;
 		 */
 

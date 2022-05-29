@@ -3,6 +3,7 @@ package fr.mcstudio.board;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,15 @@ public class ActionInfo extends JLayeredPane {
 				"/SideBar/rollButton.png"
 		};
 
+		Font sizedFont = null;
+		try {
+			InputStream is = ActionInfo.class.getResourceAsStream("/Font/Treasuremap.ttf");
+			Font font = Font.createFont(Font.TRUETYPE_FONT, is);
+			sizedFont = font.deriveFont(18f);
+		} catch (Exception ex) {
+			System.err.println("Not loaded");
+		}
+
 		for (String image : imagePath) {
 			ImageIcon imageButton = new ImageIcon(ActionInfo.class.getResource(image));
 			Image scaleImage = imageButton.getImage().getScaledInstance(imageButton.getIconWidth() * resolution / 90,
@@ -55,21 +65,20 @@ public class ActionInfo extends JLayeredPane {
 			buttons.add(button);
 		}
 
-		this.actionInfoPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		this.actionInfoPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 50));
 		this.actionInfoPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
 		this.actionInfoPanel.setOpaque(false);
 		this.setLayer(actionInfoPanel, 1);
 		this.add(actionInfoPanel);
 
-		this.actionTitle.setFont(new Font("/Font/Treasuremap.ttf", Font.PLAIN, 18));
-		this.actionTitle.setVerticalAlignment(SwingConstants.TOP);
+		this.actionTitle.setFont(sizedFont);
+		this.actionTitle.setVerticalAlignment(SwingConstants.CENTER);
+		this.actionTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		this.actionInfoPanel.add(actionTitle);
 
-		this.actionDesc.setFont(new Font("/Font/Treasuremap.ttf", Font.PLAIN, 18));
-		this.actionDesc.setVerticalAlignment(SwingConstants.TOP);
-		// this.actionDesc.setBounds(this.actionDesc.getX(), this.actionDesc.getY(),
-		// this.actionInfoPanel.getWidth(),
-		// this.actionInfoPanel.getHeight());
+		this.actionDesc.setFont(sizedFont);
+		this.actionDesc.setVerticalAlignment(SwingConstants.CENTER);
+		this.actionDesc.setHorizontalAlignment(SwingConstants.CENTER);
 		this.actionInfoPanel.add(actionDesc);
 
 		this.actionLabel.setOpaque(false);
@@ -122,7 +131,8 @@ public class ActionInfo extends JLayeredPane {
 			case MOVE_PAWNS:
 				JLabel moveLeft = new JLabel(
 						"Il vous reste " + game.getCurrentPlayer().getMoveLeft() + " déplacements");
-				moveLeft.setVerticalAlignment(SwingConstants.TOP);
+				moveLeft.setVerticalAlignment(SwingConstants.CENTER);
+				moveLeft.setHorizontalAlignment(SwingConstants.CENTER);
 				actionLabel.add(moveLeft);
 				break;
 
@@ -154,13 +164,13 @@ public class ActionInfo extends JLayeredPane {
 	private void setPanelBoundsFromResolution(int resolution) {
 		switch (resolution) {
 			case 70:
-				setBounds(1162, 0, 260, 770);
+				setBounds(1162, 0, 254, 770);
 				break;
 			case 80:
-				setBounds(1338, 0, 297, 880);
+				setBounds(1338, 0, 281, 880);
 				break;
 			case 90:
-				setBounds(1512, 0, 338, 990);
+				setBounds(1512, 0, 320, 990);
 				break;
 			default:
 				break;

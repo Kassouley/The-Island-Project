@@ -65,6 +65,7 @@ public class ExternalPanel extends JLayeredPane {
 		this.dicePanel = createDisplayPanel();
 		this.dicePanel.setLayout(new BorderLayout(0, 0));
 		this.tilesEffectsPanel = createDisplayPanel();
+		this.tilesEffectsPanel.setLayout(new GridLayout(4, 0, 0, 0));
 		this.animationPanel = createDisplayPanel();
 		this.setVisible(false);
 
@@ -158,30 +159,31 @@ public class ExternalPanel extends JLayeredPane {
 		this.tilesEffectsPanel.setVisible(true);
 
 		int explorersHand = board.getGame().getCurrentPlayer().getTileList().size();
-		for (int i = 0; i < explorersHand; i++) {
-			Tile tile = board.getGame().getCurrentPlayer().getTileList().get(i);
-
-			bPairList.add(new Pair<JButton, JLayeredPane>(new JButton(tile.getEffectLabel().getIcon()), tile));
-			// bPairList.get(i).getLeft().setBackground(java.awt.Color.WHITE);
-			// bPairList.get(i).getLeft().setBorderPainted(false);
-			// bPairList.get(i).getLeft().setBorder(BorderFactory.createLineBorder(java.awt.Color.WHITE));
-			bPairList.get(i).getLeft().setFocusPainted(false);
-			bPairList.get(i).getLeft().setContentAreaFilled(false);
-			tilesEffectsPanel.add(bPairList.get(i).getLeft());
-
-			bPairList.get(i).getLeft().addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					int index = bPairList.getLeftList().indexOf(e.getSource());
-					setSelection(bPairList.get(index).getRight());
-					tilesEffectsPanel.removeAll();
-					bPairList.clear();
-					board.setDisplayExternalPanel(false);
-					setExternalPanelState(ExternalPanelState.VOID);
-					board.getGame().inGame(clickedHex);
-				}
-			});
-		}
+        for (int i = 0; i < explorersHand; i++) {
+        	Tile tile = board.getGame().getCurrentPlayer().getTileList().get(i);
+        	
+    		bPairList.add(new Pair<JButton,JLayeredPane>(new JButton(tile.getEffectLabel().getIcon()), tile));
+            //bPairList.get(i).getLeft().setBackground(java.awt.Color.WHITE);
+            //bPairList.get(i).getLeft().setBorderPainted(false);
+            //bPairList.get(i).getLeft().setBorder(BorderFactory.createLineBorder(java.awt.Color.WHITE));
+            bPairList.get(i).getLeft().setFocusPainted(false);
+            bPairList.get(i).getLeft().setContentAreaFilled(false);
+            tilesEffectsPanel.add(bPairList.get(i).getLeft());
+                
+            bPairList.get(i).getLeft().addActionListener( new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int index = bPairList.getLeftList().indexOf(e.getSource());
+                    setSelection(bPairList.get(index).getRight());
+                    tilesEffectsPanel.removeAll();
+            		bPairList.clear();
+                    board.setDisplayExternalPanel(false);
+                    setExternalPanelState(ExternalPanelState.VOID);
+                    board.getGame().inGame(clickedHex);
+                }
+            });
+        }
+	}
 
 	}
 
