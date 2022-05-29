@@ -185,8 +185,6 @@ public class ExternalPanel extends JLayeredPane {
         }
 	}
 
-	}
-
 	private void displayDicePanel() {
 		this.dicePanel.setVisible(true);
 		dicePanel.removeAll();
@@ -357,6 +355,14 @@ public class ExternalPanel extends JLayeredPane {
 				AnimationType.VOLCANO,
 				new JLabel(
 					new ImageIcon(ExternalPanel.class.getResource("/Animation/event/volcano.gif"))
+				)
+			)
+		);
+		this.aPairList.add(
+			new Pair<AnimationType,JLabel>(
+				AnimationType.WHALE_ATTACK,
+				new JLabel(
+					new ImageIcon(ExternalPanel.class.getResource("/Animation/event/whaleAttack.gif"))
 				)
 			)
 		);
