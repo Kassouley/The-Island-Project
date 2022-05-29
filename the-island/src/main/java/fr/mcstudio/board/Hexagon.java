@@ -746,7 +746,7 @@ public class Hexagon extends JLayeredPane {
             
             pawnsToDisplay.get(i).setPosition(x.get(i),
                     y.get(i), resolution, imageSize);
-            pawnsToDisplay.get(i).createPawnImage(this);
+            pawnsToDisplay.get(i).createPawnImage();
             if (pawnsToDisplay.get(i) instanceof Boat) 
             	((Boat)pawnsToDisplay.get(i)).displayBoatPawns(this.boat, resolution, pawnsToDisplay.size(), this);
             //System.out.println(index.get(i));

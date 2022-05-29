@@ -57,9 +57,9 @@ public class Board extends JLayeredPane{
 		}
 	}
 	
-	Game game;
+	private Game game;
 	
-	ExternalPanel externalPanel;
+	private ExternalPanel externalPanel;
 	
 	private boolean displayExternalPanel = false;
 
@@ -116,8 +116,8 @@ public class Board extends JLayeredPane{
 		List<Tile> tiles = new ArrayList<Tile>();
 
 		for (int i = 0; i < 16; i++) {
-			Tile tile = new Tile();
-			tile.setType(resolution, TilesType.BEACH);
+			Tile tile = new Tile(resolution);
+			tile.setType(TilesType.BEACH);
 			if (i < 3) {
 				tile.setEffect(TilesEffect.WHALE);
 			} else if (i >= 3 && i < 6) {
@@ -140,8 +140,8 @@ public class Board extends JLayeredPane{
 			tiles.add(tile);
 		}
 		for (int i = 0; i < 16; i++) {
-			Tile tile = new Tile();
-			tile.setType(resolution, TilesType.FOREST);
+			Tile tile = new Tile(resolution);
+			tile.setType(TilesType.FOREST);
 			if (i < 2) {
 				tile.setEffect(TilesEffect.WHALE);
 			} else if (i >= 2 && i < 4) {
@@ -166,8 +166,8 @@ public class Board extends JLayeredPane{
 			tiles.add(tile);
 		}
 		for (int i = 0; i < 8; i++) {
-			Tile tile = new Tile();
-			tile.setType(resolution, TilesType.MOUNTAINS);
+			Tile tile = new Tile(resolution);
+			tile.setType(TilesType.MOUNTAINS);
 			if (i < 4) {
 				tile.setEffect(TilesEffect.WHIRLPOOL);
 			} else if (i == 4) {
@@ -369,5 +369,9 @@ public class Board extends JLayeredPane{
 
 	public void setDisplayExternalPanel(boolean displayExternalPanel) {
 		this.displayExternalPanel = displayExternalPanel;
+	}
+
+	public Game getGame() {
+		return game;
 	}
 }

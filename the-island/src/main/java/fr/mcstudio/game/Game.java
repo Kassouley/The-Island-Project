@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -13,14 +14,10 @@ import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.board.PlayerInfo;
 import fr.mcstudio.enums.ActionTurn;
 import fr.mcstudio.enums.ExternalPanelState;
-import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.GameState;
 import fr.mcstudio.enums.HexagonListType;
-import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.pawns.Boat;
-import fr.mcstudio.pawns.EffectPawn;
-import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
 import fr.mcstudio.pawns.Shark;
@@ -128,6 +125,8 @@ public class Game {
      * 
      */
     private Pawn pawnToMove;
+    
+    private JLayeredPane destination;
 
     /**
      * 
@@ -171,6 +170,7 @@ public class Game {
                                                 Whale w = new Whale();
                                                 SeaSnake ss = new SeaSnake();
                                                 Boat b = new Boat();
+                                                b.createImage(resolution);
                                                 hex.addPawn(s);
                                                 hex.addPawn(w);
                                                 hex.addPawn(ss);
@@ -560,22 +560,20 @@ public class Game {
             if (!hex.getExplorerList().isEmpty() && firstClic == true) {
                 saveHexa = hex;
 
-                if (!board.isDisplayExternalPanel() && pawnToMove == null) {
-                    if (board.getExternalPanel().getPawn() != null) {
+                if (pawnToMove == null) {
+                    if (board.getExternalPanel().getSelection() != null) {
 
-                        pawnToMove = board.getExternalPanel().getPawn();
-                        board.getExternalPanel().setPawn(null);
+                        pawnToMove = (Pawn)board.getExternalPanel().getSelection();
+                        board.getExternalPanel().setSelection(null);
+                        board.getExternalPanel().setClickedHex(null);
                         inGame(hex);
-                        System.out.println("tour1");
                     } else if (hex.containsExplorerColor(getCurrentPlayer().getColor())) {
                         board.getExternalPanel().setClickedHex(hex);
                         board.setDisplayExternalPanel(true);
                         board.getExternalPanel().setExternalPanelState(ExternalPanelState.PAWNPANEL);
-                        System.out.println("tour2");
 
                     }
                 } else {
-
                     pawnToMove.findPath(hex, board, 3, hexagonTripletList);
                     for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
                         String s;
@@ -600,20 +598,47 @@ public class Game {
                 }
             } else if (firstClic == false) {
                 if (hexagonTripletList.getLeftList().contains(hex)) {
-                    pawnToMove.move(saveHexa, hex);
-                    for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
-                        p.getLeft().setHighlightColor(null);
-                        p.getLeft().setHighlight(resolution, board, false, null);
-                    }
-                    hexagonTripletList.clear();
-                    saveHexa.displayPawns();
-                    firstClic = true;
-                    saveHexa = null;
-                    pawnToMove = null;
-                    // ActionTurn est le changement d'action, � mettre en commentaire pour test
-                    // players[turnOrder].
-                    nextActionTurn();
-
+                	if(hex.getBoat() == null) {
+                		destination = hex;
+                	}
+                	if(destination == null 
+                			&& (saveHexa.isTiles() 
+                			|| (saveHexa.getBoat() != null && saveHexa.getBoat().getExplorerList().contains(pawnToMove))) 
+                			&& hex.getBoat() != null) {
+                		if (board.getExternalPanel().getSelection() != null) {
+                            destination = board.getExternalPanel().getSelection();
+                            board.getExternalPanel().setSelection(null);
+                            board.getExternalPanel().setClickedHex(null);
+                            inGame(hex);
+                		} else {
+                    		board.getExternalPanel().setClickedHex(hex);
+                            board.setDisplayExternalPanel(true);
+                            board.getExternalPanel().setExternalPanelState(ExternalPanelState.BOATORSEA);
+                		}
+                	} else if(!board.isDisplayExternalPanel()){
+                        if(destination == hex) {
+                    		pawnToMove.move(saveHexa, hex);
+                            System.out.println("Mer");
+                        } else {
+                        	// A modifier avec monter sur bateau
+                            System.out.println("Bateau");
+                        	pawnToMove.move(saveHexa, hex);
+                        	//
+                        }
+                        for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
+                            p.getLeft().setHighlightColor(null);
+                            p.getLeft().setHighlight(resolution, board, false, null);
+                        }
+                        hexagonTripletList.clear();
+                        saveHexa.displayPawns();
+                        firstClic = true;
+                        saveHexa = null;
+                        pawnToMove = null;
+                        destination = null;
+                        // ActionTurn est le changement d'action, � mettre en commentaire pour test
+                        // players[turnOrder].
+                        nextActionTurn();
+                	}
                 }
             }
         } else if (actionTurn == ActionTurn.DISCOVER_TILE) {

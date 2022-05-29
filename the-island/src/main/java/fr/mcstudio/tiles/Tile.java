@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.SwingConstants;
 
 import fr.mcstudio.board.Board;
@@ -24,16 +25,20 @@ import fr.mcstudio.pawns.Whale;
  * 
  */
 @SuppressWarnings("serial")
-public class Tile extends JLabel {
+public class Tile extends JLayeredPane {
 
 	private TilesType type = null;
 	private TilesEffect effect = null;
+	private int resolution;
+	private JLabel typeLabel;
+	private JLabel effectLabel;
 
 	/**
 	 * Default constructor
 	 */
-	public Tile() {
-		this.setHorizontalAlignment(SwingConstants.CENTER);
+	public Tile(int resolution) {
+		this.resolution = resolution;
+		this.typeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 	}
 
 	/**
@@ -46,7 +51,7 @@ public class Tile extends JLabel {
 	/**
 	* 
 	*/
-	public void setType(int resolution, TilesType type) {
+	public void setType(TilesType type) {
 		ImageIcon icone = null;
 		Image scaleImage;
 		this.type = type;
@@ -61,7 +66,7 @@ public class Tile extends JLabel {
 		scaleImage = icone.getImage().getScaledInstance(resolution, resolution,Image.SCALE_SMOOTH);
 		icone.setImage(scaleImage);
 		
-		this.setIcon(icone);
+		this.typeLabel.setIcon(icone);
 	}
 
 	/**
@@ -75,7 +80,53 @@ public class Tile extends JLabel {
 	* 
 	*/
 	public void setEffect(TilesEffect effect) {
+		ImageIcon icone = null;
+		Image scaleImage;
 		this.effect = effect;
+		
+		switch(effect) {
+			case BOAT_MOVE:
+				icone = new ImageIcon(Tile.class.getResource("/Bateau_move.png"));
+				break;
+			case BOAT:
+				icone = new ImageIcon(Tile.class.getResource("/Bateau.png"));
+				break;
+			case DOLPHIN_MOVE:
+				icone = new ImageIcon(Tile.class.getResource("/Dauphin_move.png"));
+				break;
+			case SEASNAKE_LOST:
+				icone = new ImageIcon(Tile.class.getResource("/Serpent_de_mer.png"));
+				break;
+			case SHARK:
+				icone = new ImageIcon(Tile.class.getResource("/Requin.png"));
+				break;
+			case SHARK_DEATH:
+				icone = new ImageIcon(Tile.class.getResource("/Requin_mort.png"));
+				break;
+			case SHARK_LOST:
+				icone = new ImageIcon(Tile.class.getResource("/Requin_perdu.png"));
+				break;
+			case WHIRLPOOL:
+				icone = new ImageIcon(Tile.class.getResource("/Tourbillon.png"));
+				break;
+			case VOLCANO:
+				icone = new ImageIcon(Tile.class.getResource("/Volcan.png"));
+				break;
+			case WHALE:
+				icone = new ImageIcon(Tile.class.getResource("/Baleine.png"));
+				break;
+			case WHALE_DEATH:
+				icone = new ImageIcon(Tile.class.getResource("/Baleine_mort.png"));
+				break;
+			case WHALE_LOST:
+				icone = new ImageIcon(Tile.class.getResource("/Baleine_perdu.png"));
+				break;
+		}
+		
+		scaleImage = icone.getImage().getScaledInstance(resolution, resolution,Image.SCALE_SMOOTH);
+		icone.setImage(scaleImage);
+		
+		this.effectLabel.setIcon(icone);
 	}
 
 	/*
@@ -151,6 +202,8 @@ public class Tile extends JLabel {
 	 */
 	public void boatEffect(Hexagon tilePosition) {
 		Boat b = new Boat();
+        b.setPosition(0, 0, resolution, 68);
+        b.createImage(resolution);
 		tilePosition.addPawn(b);
 	}
 	
@@ -305,6 +358,10 @@ public class Tile extends JLabel {
         }
 		return listHexagon;
     }
+
+	public JLabel getEffectLabel() {
+		return effectLabel;
+	}
 	
 	
 	

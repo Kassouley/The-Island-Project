@@ -140,10 +140,9 @@ public class Pawn extends JLayeredPane {
     public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
     }
 
-    public void createPawnImage(Hexagon hex) {
+    public void createPawnImage() {
         ImageIcon icon = null;
         Image scaleImage;
-        int index = 0;
         if (this instanceof Shark) {
             icon = new ImageIcon(Pawn.class.getResource("/pion_requin.png"));
 

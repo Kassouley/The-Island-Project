@@ -4,8 +4,6 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -13,11 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExternalPanelState;
-import fr.mcstudio.game.Player;
 import fr.mcstudio.pawns.Explorer;
-import fr.mcstudio.pawns.Pawn;
+import fr.mcstudio.tiles.Tile;
 import fr.mcstudio.util.Pair;
 import fr.mcstudio.util.PairList;
 
@@ -25,21 +21,24 @@ import fr.mcstudio.util.PairList;
 public class ExternalPanel extends JLayeredPane{
 	
 	private Board board;
-	private JLabel backgroundPanel = new JLabel("");;
+	private JLabel backgroundPanel = new JLabel("");
+	private JPanel boatOrSeaPanel;
 	private JPanel pawnPanel;
 	private JPanel dicePanel;
 	private JPanel tilesEffectsPanel;
 	private JPanel animationPanel;
 	
-	private PairList<JButton, Pawn> bPairList = new PairList<JButton, Pawn>();
+	private PairList<JButton, JLayeredPane> bPairList = new PairList<JButton, JLayeredPane>();
 	
-	private Pawn pawn = null;
+	private JLayeredPane selection = null;
 	private Hexagon clickedHex;
 	
 	private ExternalPanelState externalPanelState = ExternalPanelState.VOID;
+	private int resolution;
 	
 	public ExternalPanel(Board board, int resolution) {
 		this.board = board;
+		this.resolution = resolution;
 		this.setLayout(null);
 		this.setLayer(backgroundPanel, 0);
 		this.setPanelBoundsFromResolution(resolution);
@@ -47,6 +46,8 @@ public class ExternalPanel extends JLayeredPane{
 		
 		this.pawnPanel = createDisplayPanel();
 		this.pawnPanel.setLayout(new GridLayout(4, 0, 0, 0));
+		this.boatOrSeaPanel = createDisplayPanel();
+		this.boatOrSeaPanel.setLayout(new GridLayout(4, 0, 0, 0));
 		this.dicePanel = createDisplayPanel();
 		this.tilesEffectsPanel = createDisplayPanel();
 		this.animationPanel = createDisplayPanel();
@@ -85,6 +86,9 @@ public class ExternalPanel extends JLayeredPane{
 		case PAWNPANEL : 
 			displayPawnPanel();
 			break;
+		case BOATORSEA:
+			displayBoatOrSea();
+			break;
 		case DICEPANEL : 
 			displayDicePanel();
 			break;
@@ -98,17 +102,81 @@ public class ExternalPanel extends JLayeredPane{
 	}
 	
 	private void displayAnimationPanel() {
-		// TODO Auto-generated method stub
+		this.animationPanel.setVisible(true);
+		for (int i = 0; i < bPairList.size(); i++) {
+			animationPanel.remove(bPairList.get(i).getLeft());
+		}
+		bPairList.clear();
+		
 		
 	}
 
 	private void displayTileEffectPanel() {
-		// TODO Auto-generated method stub
+		this.tilesEffectsPanel.setVisible(true);
+		for (int i = 0; i < bPairList.size(); i++) {
+			tilesEffectsPanel.remove(bPairList.get(i).getLeft());
+		}
+		bPairList.clear();
+		
+		int explorersHand = board.getGame().getCurrentPlayer().getTileList().size();
+        for (int i = 0; i < explorersHand; i++) {
+        	Tile tile = board.getGame().getCurrentPlayer().getTileList().get(i);
+        	
+    		bPairList.add(new Pair<JButton,JLayeredPane>(new JButton(tile.getEffectLabel().getIcon()), tile));
+            //bPairList.get(i).getLeft().setBackground(java.awt.Color.WHITE);
+            //bPairList.get(i).getLeft().setBorderPainted(false);
+            //bPairList.get(i).getLeft().setBorder(BorderFactory.createLineBorder(java.awt.Color.WHITE));
+            bPairList.get(i).getLeft().setFocusPainted(false);
+            bPairList.get(i).getLeft().setContentAreaFilled(false);
+            tilesEffectsPanel.add(bPairList.get(i).getLeft());
+                
+            bPairList.get(i).getLeft().addActionListener( new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int index = bPairList.getLeftList().indexOf(e.getSource());
+                    setSelection(bPairList.get(index).getRight());
+                    board.setDisplayExternalPanel(false);
+                    setExternalPanelState(ExternalPanelState.VOID);
+                    board.getGame().inGame(clickedHex);
+                }
+            });
+        }
 		
 	}
 
 	private void displayDicePanel() {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	private void displayBoatOrSea() {
+		this.boatOrSeaPanel.setVisible(true);
+		for (int i = 0; i < bPairList.size(); i++) {
+			boatOrSeaPanel.remove(bPairList.get(i).getLeft());
+		}
+		bPairList.clear();
+		ImageIcon icon = new ImageIcon(ExternalPanel.class.getResource("/Mer.png"));
+		Image scaleImage;
+		scaleImage = icon.getImage().getScaledInstance(resolution, resolution, Image.SCALE_SMOOTH);
+	    icon.setImage(scaleImage);
+		bPairList.add(new Pair<JButton,JLayeredPane>(new JButton(icon), clickedHex));
+		bPairList.add(new Pair<JButton,JLayeredPane>(new JButton(clickedHex.getBoat().getImage().getIcon()), clickedHex.getBoat()));
+		for (int i = 0; i < 2; i++) {
+			bPairList.get(i).getLeft().setFocusPainted(false);
+            bPairList.get(i).getLeft().setContentAreaFilled(false);
+            boatOrSeaPanel.add(bPairList.get(i).getLeft());
+            bPairList.get(i).getLeft().addActionListener( new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int index = bPairList.getLeftList().indexOf(e.getSource());
+                    setSelection(bPairList.get(index).getRight());
+                    board.setDisplayExternalPanel(false);
+                    setExternalPanelState(ExternalPanelState.VOID);
+                    board.getGame().inGame(clickedHex);
+                }
+            });
+		}
+		
 		
 	}
 
@@ -119,14 +187,13 @@ public class ExternalPanel extends JLayeredPane{
 			pawnPanel.remove(bPairList.get(i).getLeft());
 		}
 		bPairList.clear();
-		bPairList = new PairList<JButton, Pawn>();
 		
         int explorersLength = clickedHex.getExplorerList().size();
         for (int i = 0; i < explorersLength; i++) {
         	Explorer explorer = clickedHex.getExplorerList().get(i);
-        	if(board.game.getCurrentPlayer().getColor() == explorer.getColor()) {
-        		bPairList.add(new Pair<JButton,Pawn>(new JButton(explorer.getImage().getIcon()), explorer));
-                bPairList.get(i).getLeft().setBackground(java.awt.Color.WHITE);
+        	if(board.getGame().getCurrentPlayer().getColor() == explorer.getColor()) {
+        		bPairList.add(new Pair<JButton,JLayeredPane>(new JButton(explorer.getImage().getIcon()), explorer));
+                //bPairList.get(i).getLeft().setBackground(java.awt.Color.WHITE);
                 //bPairList.get(i).getLeft().setBorderPainted(false);
                 //bPairList.get(i).getLeft().setBorder(BorderFactory.createLineBorder(java.awt.Color.WHITE));
                 bPairList.get(i).getLeft().setFocusPainted(false);
@@ -137,22 +204,14 @@ public class ExternalPanel extends JLayeredPane{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     int index = bPairList.getLeftList().indexOf(e.getSource());
-                    pawn = bPairList.get(index).getRight();
+                    setSelection(bPairList.get(index).getRight());
                     board.setDisplayExternalPanel(false);
                     setExternalPanelState(ExternalPanelState.VOID);
-                    board.game.inGame(clickedHex);
+                    board.getGame().inGame(clickedHex);
                 }
             });
         }
 		
-	}
-
-	public Pawn getPawn() {
-		return pawn;
-	}
-
-	public void setPawn(Pawn pawn) {
-		this.pawn = pawn;
 	}
 
 	public Hexagon getClickedHex() {
@@ -166,6 +225,7 @@ public class ExternalPanel extends JLayeredPane{
 	private void hideAllPanels() {
 
 		this.pawnPanel.setVisible(false);
+		this.boatOrSeaPanel.setVisible(false);
 		this.dicePanel.setVisible(false);
 		this.tilesEffectsPanel.setVisible(false);
 		this.animationPanel.setVisible(false);
@@ -215,5 +275,13 @@ public class ExternalPanel extends JLayeredPane{
 
 	public Board getBoard() {
 		return board;
+	}
+
+	public JLayeredPane getSelection() {
+		return selection;
+	}
+
+	public void setSelection(JLayeredPane selection) {
+		this.selection = selection;
 	}
 }

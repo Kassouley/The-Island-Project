@@ -268,5 +268,17 @@ public class Boat extends Pawn {
         e.getImage().setBounds(0, 0, e.getWidth(), e.getHeight());
 		
 	}
+	
+	public void createImage(int resolution) {
+
+        ImageIcon icon = null;
+        Image scaleImage;
+
+        icon = new ImageIcon(Pawn.class.getResource("/pion_bateau.png"));
+        scaleImage = icon.getImage().getScaledInstance(resolution, resolution, Image.SCALE_SMOOTH);
+        icon.setImage(scaleImage);
+
+        this.image.setIcon(icon);
+    }
 
 }
