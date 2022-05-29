@@ -785,4 +785,5 @@ public class Hexagon extends JLayeredPane {
 			System.out.println("Aucune tuile sur la case choisie\n");
 		}
 	}
+    
 }

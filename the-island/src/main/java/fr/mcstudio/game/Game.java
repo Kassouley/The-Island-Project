@@ -22,6 +22,7 @@ import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
 import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.pawns.Whale;
+import fr.mcstudio.tiles.Tile;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
@@ -127,6 +128,8 @@ public class Game {
     private Pawn pawnToMove;
     
     private JLayeredPane destination;
+    
+    private Tile usedTile;
 
     /**
      * 
@@ -553,8 +556,26 @@ public class Game {
              * nextActionTurn();
              * }
              */
-            pawnToMove = null;
-            nextActionTurn();
+        	if(!getCurrentPlayer().getTileList().isEmpty()) {
+        		if(usedTile == null) {
+        			if (board.getExternalPanel().getSelection() != null) {
+
+                        usedTile = (Tile)board.getExternalPanel().getSelection();
+                        board.getExternalPanel().setSelection(null);
+                        //Effectuer l'effet de la tuile
+                        
+                        //
+                        nextActionTurn();
+                    } else {
+                        board.setDisplayExternalPanel(true);
+                        board.getExternalPanel().setExternalPanelState(ExternalPanelState.TILEEFFECTPANEL);
+                    }
+        		}
+        	}
+        	else {
+                pawnToMove = null;
+                nextActionTurn();
+        	}
         } else if (actionTurn == ActionTurn.MOVE_PAWNS) {
 
             if (!hex.getExplorerList().isEmpty() && firstClic == true) {
@@ -643,10 +664,13 @@ public class Game {
             }
         } else if (actionTurn == ActionTurn.DISCOVER_TILE) {
             if (hex.getTile() != null) {
-                if (hex.getTile().getType() == TilesType.BEACH
+                if (hex.getTile().getType() == TilesType.BEACH 
+                		&& board.isNextToSea(hex)
                         || (hex.getTile().getType() == TilesType.FOREST
+                        		&& board.isNextToSea(hex)
                                 && board.getNbBeach() == 0)
                         || (hex.getTile().getType() == TilesType.MOUNTAINS
+                        		&& board.isNextToSea(hex)
                                 && board.getNbBeach() == 0
                                 && board.getNbForest() == 0)) {
                     board.decreaseNbTile(hex.getTile().getType());

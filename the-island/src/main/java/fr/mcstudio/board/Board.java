@@ -24,8 +24,6 @@ public class Board extends JLayeredPane{
 	}
 
 	private JLabel boardLabel = new JLabel();
-
-	private Board board;
 	
 	private int nbBeach = 16;
 	private int nbForest = 16;
@@ -69,7 +67,6 @@ public class Board extends JLayeredPane{
 
 	public Board(Game game, final int resolution) {
 		super();
-		this.board = this;
 		this.game = game;
 		setLayer(boardLabel, 0);
 		setPanelBoundsFromResolution(resolution);
@@ -95,9 +92,9 @@ public class Board extends JLayeredPane{
 						hexagons[i][j].setTile(tilesList.get(n));
 						tilesList.remove(n);
 						hexagons[i][j].setType(HexagonType.TILES);
-						hexagons[i][j].getTile().setBounds(0, 0, 
+						hexagons[i][j].getTile().getTypeLabel().setBounds(0, 0, 
 								resolution, resolution);
-						hexagons[i][j].add(hexagons[i][j].getTile());
+						hexagons[i][j].add(hexagons[i][j].getTile().getTypeLabel());
 
 					} else if (i == 1 && j == 0 || i == 1 && j == 11 ||
 							i == 11 && j == 0 || i == 11 && j == 11) {
@@ -324,6 +321,18 @@ public class Board extends JLayeredPane{
 		} else {
 			return null;
 		}
+	}
+	
+	public boolean isNextToSea(Hexagon actualHexagon) {
+		if(getTopLeft(actualHexagon).isSea()
+				|| getTopRight(actualHexagon).isSea()
+				|| getLeft(actualHexagon).isSea()
+				|| getRight(actualHexagon).isSea()
+				|| getBottomLeft(actualHexagon).isSea()
+				|| getTopRight(actualHexagon).isSea())
+			return true;
+		
+		return false;
 	}
 
 	public Board getBoard() {

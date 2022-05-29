@@ -31,6 +31,8 @@ public class ExternalPanel extends JLayeredPane{
 	private PairList<JButton, JLayeredPane> bPairList = new PairList<JButton, JLayeredPane>();
 	
 	private JLayeredPane selection = null;
+	
+	
 	private Hexagon clickedHex;
 	
 	private ExternalPanelState externalPanelState = ExternalPanelState.VOID;
@@ -141,11 +143,10 @@ public class ExternalPanel extends JLayeredPane{
                 }
             });
         }
-		
 	}
 
 	private void displayDicePanel() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	
