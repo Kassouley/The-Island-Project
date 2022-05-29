@@ -1,7 +1,8 @@
 package fr.mcstudio;
 
-import java.awt.EventQueue;
+import java.awt.*;
 
+import javax.swing.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -15,7 +16,7 @@ public class Main extends JFrame {
 	private Player[] players;
 	private JPanel contentPane;
 
-	int resolution = 90;
+	int resolution = 70;
 
 	public Main() {
 		super("The Island");
@@ -28,18 +29,31 @@ public class Main extends JFrame {
 		contentPane.setBorder(null);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		int nbJoueur = 4;
+
+		int nbJoueur = 2;
 		players = new Player[nbJoueur];
-		
-		Player P1 = new Player("Akunes", Color.BLUE, false);
-		Player P2 = new Player("lo", Color.RED, false);	
-		Player P3 = new Player("Lucasse", Color.YELLOW, false);
-		Player P4 = new Player("kev1", Color.GREEN, false);
+
+		Player P1 = new Player("Akunes", Color.BLUE, false, resolution);
+		ImageIcon avatar = new ImageIcon(Main.class.getResource("/SideBar/avatar1.png"));
+		Image scaleImage = avatar.getImage().getScaledInstance(avatar.getIconWidth() * resolution / 90,
+				avatar.getIconHeight() * resolution / 90, Image.SCALE_SMOOTH);
+		avatar.setImage(scaleImage);
+		P1.setAvatar(avatar);
 		players[0] = P1;
+		Player P2 = new Player("Lo", Color.RED, false, resolution);
+		avatar = new ImageIcon(Main.class.getResource("/SideBar/avatar3.png"));
+		scaleImage = avatar.getImage().getScaledInstance(avatar.getIconWidth() * resolution / 90,
+				avatar.getIconHeight() * resolution / 90, Image.SCALE_SMOOTH);
+		avatar.setImage(scaleImage);
+		P2.setAvatar(avatar);
 		players[1] = P2;
-		players[2] = P3;
-		players[3] = P4;
+		/*
+		 * Player P3 = new Player("Lucasse", Color.YELLOW, false);
+		 * players[2] = P3;
+		 * Player P4 = new Player("Kev1", Color.GREEN, false);
+		 * players[3] = P4;
+		 */
+
 	}
 
 	public static void main(String[] args) {
@@ -49,7 +63,7 @@ public class Main extends JFrame {
 					Main main = new Main();
 					Game game = new Game(main.resolution, main.contentPane, main.players);
 					game.initializeBoard();
-					
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

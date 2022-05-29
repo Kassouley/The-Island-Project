@@ -2,7 +2,6 @@ package fr.mcstudio.board;
 
 import java.awt.Image;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -13,6 +12,7 @@ import javax.swing.JLayeredPane;
 import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
+import fr.mcstudio.game.Game;
 import fr.mcstudio.tiles.Tile;
 
 @SuppressWarnings("serial")
@@ -24,8 +24,6 @@ public class Board extends JLayeredPane{
 	}
 
 	private JLabel boardLabel = new JLabel();
-
-	private Board board;
 	
 	private int nbBeach = 16;
 	private int nbForest = 16;
@@ -56,14 +54,26 @@ public class Board extends JLayeredPane{
 				break;
 		}
 	}
+	
+	private Game game;
+	
+	private ExternalPanel externalPanel;
+	
+	private boolean displayExternalPanel = false;
 
-	public Board(final int resolution) {
+	public ExternalPanel getExternalPanel() {
+		return externalPanel;
+	}
+
+	public Board(Game game, final int resolution) {
 		super();
-		this.board = this;
+		this.game = game;
 		setLayer(boardLabel, 0);
 		setPanelBoundsFromResolution(resolution);
 		setLabel();
 		add(boardLabel);
+		
+		externalPanel = new ExternalPanel(this, resolution);
 
 		List<Tile> tilesList = CreateTiles(resolution);
 		Random r = new Random();
@@ -82,9 +92,9 @@ public class Board extends JLayeredPane{
 						hexagons[i][j].setTile(tilesList.get(n));
 						tilesList.remove(n);
 						hexagons[i][j].setType(HexagonType.TILES);
-						hexagons[i][j].getTile().setBounds(0, 0, 
+						hexagons[i][j].getTile().getTypeLabel().setBounds(0, 0, 
 								resolution, resolution);
-						hexagons[i][j].add(hexagons[i][j].getTile());
+						hexagons[i][j].add(hexagons[i][j].getTile().getTypeLabel());
 
 					} else if (i == 1 && j == 0 || i == 1 && j == 11 ||
 							i == 11 && j == 0 || i == 11 && j == 11) {
@@ -103,8 +113,8 @@ public class Board extends JLayeredPane{
 		List<Tile> tiles = new ArrayList<Tile>();
 
 		for (int i = 0; i < 16; i++) {
-			Tile tile = new Tile();
-			tile.setType(resolution, TilesType.BEACH);
+			Tile tile = new Tile(resolution);
+			tile.setType(TilesType.BEACH);
 			if (i < 3) {
 				tile.setEffect(TilesEffect.WHALE);
 			} else if (i >= 3 && i < 6) {
@@ -127,8 +137,8 @@ public class Board extends JLayeredPane{
 			tiles.add(tile);
 		}
 		for (int i = 0; i < 16; i++) {
-			Tile tile = new Tile();
-			tile.setType(resolution, TilesType.FOREST);
+			Tile tile = new Tile(resolution);
+			tile.setType(TilesType.FOREST);
 			if (i < 2) {
 				tile.setEffect(TilesEffect.WHALE);
 			} else if (i >= 2 && i < 4) {
@@ -153,8 +163,8 @@ public class Board extends JLayeredPane{
 			tiles.add(tile);
 		}
 		for (int i = 0; i < 8; i++) {
-			Tile tile = new Tile();
-			tile.setType(resolution, TilesType.MOUNTAINS);
+			Tile tile = new Tile(resolution);
+			tile.setType(TilesType.MOUNTAINS);
 			if (i < 4) {
 				tile.setEffect(TilesEffect.WHIRLPOOL);
 			} else if (i == 4) {
@@ -312,6 +322,32 @@ public class Board extends JLayeredPane{
 			return null;
 		}
 	}
+	
+	public boolean isNextToSea(Hexagon actualHexagon) {
+		if(getTopLeft(actualHexagon).isSea()
+				|| getTopRight(actualHexagon).isSea()
+				|| getLeft(actualHexagon).isSea()
+				|| getRight(actualHexagon).isSea()
+				|| getBottomLeft(actualHexagon).isSea()
+				|| getBottomRight(actualHexagon).isSea())
+			return true;
+		
+		return false;
+	}
+	
+	public boolean canRemoveOutOfSea(Hexagon actualHexagon, TilesType tilesType) {
+		for (int i = 0; i < 13; i++) {
+			for (int j = 0; j < 12; j++) {
+				Hexagon hex = this.getHexagons()[i][j];
+				if(hex.getTile() != null && hex.getTile().getType() == tilesType) {
+					if(isNextToSea(hex)) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
 
 	public Board getBoard() {
 		return this;
@@ -348,5 +384,17 @@ public class Board extends JLayeredPane{
 		}
 		
 		return false;
+	}
+
+	public boolean isDisplayExternalPanel() {
+		return displayExternalPanel;
+	}
+
+	public void setDisplayExternalPanel(boolean displayExternalPanel) {
+		this.displayExternalPanel = displayExternalPanel;
+	}
+
+	public Game getGame() {
+		return game;
 	}
 }

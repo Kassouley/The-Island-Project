@@ -125,11 +125,11 @@ public class Explorer extends Pawn {
      * @since 2.0
      */
     public void move(Hexagon oldPosition, Hexagon newPosition) {
-    	System.out.println("Bouh");
         oldPosition.removePawn(this);
         switch (newPosition.getType()) {
             case TILES:
                 this.status = ExplorerStatus.NORMAL;
+                this.setMovePoint(3);
                 newPosition.addPawn(this);
                 break;
             case SEA:
@@ -138,6 +138,7 @@ public class Explorer extends Pawn {
                     this.status = ExplorerStatus.DEAD;
                 } else {
                     this.status = ExplorerStatus.SWIMMER;
+                    this.setMovePoint(1);
                     newPosition.addPawn(this);
                 }
                 break;

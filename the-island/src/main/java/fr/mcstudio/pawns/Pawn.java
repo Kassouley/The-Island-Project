@@ -35,7 +35,7 @@ public class Pawn extends JLayeredPane {
 
     protected JLabel image = new JLabel();
 
-    private int movePoint;
+	private int movePoint;
 
     public int getMovePoint() {
         return this.movePoint;
@@ -69,7 +69,7 @@ public class Pawn extends JLayeredPane {
         hexagonTripletList.clear();
         
         int distance = Math.min(movePointLeft, this.getMovePoint());
-
+        
         List<Hexagon> tmp = new ArrayList<Hexagon>();
         tmp.add(actualPosition);
         hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.BOAT));
@@ -110,10 +110,9 @@ public class Pawn extends JLayeredPane {
     public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
     }
 
-    public void createPawnImage(Hexagon hex) {
+    public void createPawnImage() {
         ImageIcon icon = null;
         Image scaleImage;
-        int index = 0;
         if (this instanceof Shark) {
             icon = new ImageIcon(Pawn.class.getResource("/pion_requin.png"));
 
