@@ -17,6 +17,9 @@ import java.util.List;
 
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
+import fr.mcstudio.enums.AnimationType;
+import fr.mcstudio.enums.ExplorerStatus;
+import fr.mcstudio.enums.ExternalPanelState;
 import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.util.Triplet;
@@ -35,13 +38,16 @@ import fr.mcstudio.util.TripletList;
 @SuppressWarnings("serial")
 public class SeaSnake extends EffectPawn {
 
+    private Board board;
+
     /**
      * <p>
      * Constructeur par défaut
      * </p>
      */
-    public SeaSnake() {
+    public SeaSnake(Board board) {
         super(1);
+        this.board = board;
     }
 
     /**
@@ -54,10 +60,22 @@ public class SeaSnake extends EffectPawn {
      * 
      */
     public void makeEffect(Hexagon hexagon) {
-        Whale whaleEffect = new Whale();
-        Shark sharkEffect = new Shark();
-        whaleEffect.makeEffect(hexagon);
-        sharkEffect.makeEffect(hexagon);
+        if ((hexagon.getBoat() != null
+                && !hexagon.getBoat().getExplorerList().isEmpty())
+                || !hexagon.getExplorerList().isEmpty()) {
+            this.board.getExternalPanel().setAnimationType(AnimationType.SEASNAKE_ATTACK);
+            this.board.setDisplayExternalPanel(true);
+            this.board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+        }
+        if (hexagon.getBoat() != null) {
+            if (!hexagon.getBoat().getExplorerList().isEmpty()) {
+                hexagon.getBoat().sunk(hexagon);
+            }
+        }
+        for (Explorer e : hexagon.getExplorerList()) {
+            e.setStatus(ExplorerStatus.DEAD);
+        }
+        hexagon.getExplorerList().clear();
     }
 
 

@@ -12,7 +12,9 @@ import javax.swing.SwingConstants;
 
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
+import fr.mcstudio.enums.AnimationType;
 import fr.mcstudio.enums.ExplorerStatus;
+import fr.mcstudio.enums.ExternalPanelState;
 import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.game.Player;
@@ -164,17 +166,17 @@ public class Tile extends JLayeredPane {
 		System.out.println(this.effect);
 		switch(this.effect) {
 		
-		case BOAT_MOVE : this.boatMoveEffect();break;
-		case BOAT : this.boatEffect(tilePosition);break;
-		case DOLPHIN_MOVE :this.dolphinMoveEffect(); break;
+		case BOAT_MOVE : this.boatMoveEffect(board);break;
+		case BOAT : this.boatEffect(tilePosition, board);break;
+		case DOLPHIN_MOVE :this.dolphinMoveEffect(board); break;
 		case SEASNAKE_LOST : this.seasnakeLostEffect();break;
-		case SHARK : this.sharkEffect(tilePosition);break;
-		case SHARK_DEATH : this.sharkDeathEffect(tilePosition); break;
+		case SHARK : this.sharkEffect(tilePosition,board);break;
+		case SHARK_DEATH : this.sharkDeathEffect(tilePosition,board); break;
 		case SHARK_LOST : this.sharkLostEffect(); break;
 		case WHIRLPOOL : this.whirlpoolEffect(tilePosition,board); break;
-		case VOLCANO : this.volcanoEffect(); break;
-		case WHALE : this.whaleEffect(tilePosition); break;
-		case WHALE_DEATH : this.whaleDeathEffect(tilePosition);break;
+		case VOLCANO : this.volcanoEffect(board); break;
+		case WHALE : this.whaleEffect(tilePosition,board); break;
+		case WHALE_DEATH : this.whaleDeathEffect(tilePosition,board);break;
 		case WHALE_LOST :this.whaleLostEffect(); break;
 		default : break;
 		}
@@ -188,7 +190,10 @@ public class Tile extends JLayeredPane {
 	 * Tuile en début de tour.
 	 * </p>
 	 */
-	public void boatMoveEffect() {
+	public void boatMoveEffect(Board board) {
+		board.getExternalPanel().setAnimationType(AnimationType.WIND);
+        board.setDisplayExternalPanel(true);
+        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
 		//selectionnne un bateau
 		//le de placer de 1 a 3 cases
 	}
@@ -200,7 +205,10 @@ public class Tile extends JLayeredPane {
 	 * </p>
 	 * @param tilePosition Tuile actuelle
 	 */
-	public void boatEffect(Hexagon tilePosition) {
+	public void boatEffect(Hexagon tilePosition, Board board) {
+		board.getExternalPanel().setAnimationType(AnimationType.BOAT_SUMMON);
+        board.setDisplayExternalPanel(true);
+        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
 		Boat b = new Boat();
         b.setPosition(0, 0, resolution, 68);
         b.createImage(resolution);
@@ -213,7 +221,10 @@ public class Tile extends JLayeredPane {
 	 * Tuile en début de tour.
 	 * </p>
 	 */
-	public void dolphinMoveEffect() {
+	public void dolphinMoveEffect(Board board) {
+		board.getExternalPanel().setAnimationType(AnimationType.DOLPHIN_SUMMON);
+        board.setDisplayExternalPanel(true);
+        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
 		//selectionnne un nageur
 		//le de placer de 1 a 3 cases
 	}
@@ -236,8 +247,11 @@ public class Tile extends JLayeredPane {
 	 * </p>
 	 * @param tilePosition Tuile actuelle
 	 */
-	public void sharkEffect(Hexagon tilePosition) {
-		Shark s = new Shark();
+	public void sharkEffect(Hexagon tilePosition, Board board) {
+		board.getExternalPanel().setAnimationType(AnimationType.SHARK_SUMMON);
+        board.setDisplayExternalPanel(true);
+        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+		Shark s = new Shark(board);
 		tilePosition.addPawn(s);
 	}
 	
@@ -248,9 +262,12 @@ public class Tile extends JLayeredPane {
 	 * </p>
 	 * @param tilePosition Tuile actuelle
 	 */
-	public void sharkDeathEffect(Hexagon tilePosition) {
+	public void sharkDeathEffect(Hexagon tilePosition, Board board) {
+		board.getExternalPanel().setAnimationType(AnimationType.SHARK_COUNTER);
+        board.setDisplayExternalPanel(true);
+        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
 		// a changer avec lucas
-		Shark s = new Shark();
+		Shark s = new Shark(board);
 		tilePosition.removePawn(s);
 	}
 	
@@ -272,6 +289,9 @@ public class Tile extends JLayeredPane {
 	 * </p>
 	 */
 	public void whirlpoolEffect(Hexagon tilePosition,Board board) {
+		board.getExternalPanel().setAnimationType(AnimationType.WHIRLPOOL);
+        board.setDisplayExternalPanel(true);
+        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
 		Hexagon[][] hexagons = board.getHexagons();
 		List<Hexagon> listNeighbors = new ArrayList<Hexagon>();
 
@@ -280,7 +300,7 @@ public class Tile extends JLayeredPane {
 		listNeighbors.add(tilePosition);
 		for(Hexagon hexagon :listNeighbors ) {
 			hexagons[hexagon.getLine()][hexagon.getColumn()].removeAllPawn();
-			hexagons[hexagon.getLine()][hexagon.getColumn()].displayPawns();
+			hexagons[hexagon.getLine()][hexagon.getColumn()].displayPawns(board);
 		}										
 	}
 	
@@ -290,7 +310,10 @@ public class Tile extends JLayeredPane {
 	 * Tuile instantanée.
 	 * </p>
 	 */
-	public void volcanoEffect() {
+	public void volcanoEffect(Board board) {
+		board.getExternalPanel().setAnimationType(AnimationType.VOLCANO);
+        board.setDisplayExternalPanel(true);
+        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
 		//endgame
 	}
 	
@@ -302,8 +325,11 @@ public class Tile extends JLayeredPane {
 	 * @param tilePosition Tuile actuelle
 	 * @since1.0
 	 */
-	public void whaleEffect(Hexagon tilePosition) {
-		Whale w = new Whale();
+	public void whaleEffect(Hexagon tilePosition, Board board) {
+		board.getExternalPanel().setAnimationType(AnimationType.WHALE_SUMMON);
+        board.setDisplayExternalPanel(true);
+        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+		Whale w = new Whale(board);
 		tilePosition.addPawn(w);	
 	}
 	
@@ -315,9 +341,12 @@ public class Tile extends JLayeredPane {
 	 * @param tilePosition Tuile actuelle
 	 * @since1.0
 	 */
-	public void whaleDeathEffect(Hexagon tilePosition) {
+	public void whaleDeathEffect(Hexagon tilePosition, Board board) {
+		board.getExternalPanel().setAnimationType(AnimationType.WHALE_COUNTER);
+        board.setDisplayExternalPanel(true);
+        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
 		//a changer avec lucas
-		Whale w = new Whale();
+		Whale w = new Whale(board);
 		tilePosition.removePawn(w);
 	}
 	

@@ -9,10 +9,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
+import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.game.Game;
+import fr.mcstudio.game.Player;
+import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.tiles.Tile;
 
 @SuppressWarnings("serial")
@@ -396,5 +399,40 @@ public class Board extends JLayeredPane{
 
 	public Game getGame() {
 		return game;
+	}
+	
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public boolean isSwimmerOnBoard(Player p) {
+		for (int i = 0; i < 13; i++) {
+			for (int j = 0; j < 12; j++) {
+				for(Explorer e : this.getHexagons()[i][j].getExplorerList()) {
+					if(e.getStatus() == ExplorerStatus.SWIMMER && e.getColor() == p.getColor()) {
+						return true;
+					}
+				}
+					
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isBoatOnBoard() {
+		for (int i = 0; i < 13; i++) {
+			for (int j = 0; j < 12; j++) {
+				if(this.getHexagons()[i][j].getBoat() != null)
+					return true;
+			}
+		}
+		
+		return false;
 	}
 }

@@ -17,6 +17,8 @@ import java.util.List;
 
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
+import fr.mcstudio.enums.AnimationType;
+import fr.mcstudio.enums.ExternalPanelState;
 import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.util.Triplet;
@@ -35,13 +37,16 @@ import fr.mcstudio.util.TripletList;
 @SuppressWarnings("serial")
 public class Whale extends EffectPawn {
 
+    private Board board;
+
     /**
      * <p>
      * Constructeur par défaut
      * </p>
      */
-    public Whale() {
+    public Whale(Board board) {
         super(3);
+        this.board = board;
     }
 
     /**
@@ -56,6 +61,9 @@ public class Whale extends EffectPawn {
     public void makeEffect(Hexagon hexagon) {
         if (hexagon.getBoat() != null) {
             if (!hexagon.getBoat().getExplorerList().isEmpty()) {
+                this.board.getExternalPanel().setAnimationType(AnimationType.WHALE_ATTACK);
+                this.board.setDisplayExternalPanel(true);
+                this.board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
                 hexagon.getBoat().sunk(hexagon);
             }
         }

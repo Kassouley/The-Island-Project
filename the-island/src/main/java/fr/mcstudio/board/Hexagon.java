@@ -614,7 +614,7 @@ public class Hexagon extends JLayeredPane {
         return 0;
     }
 
-    public void displayPawns() {
+    public void displayPawns(Board board) {
         for (Pawn p : pawnsToDisplay) {
             remove(p);
         }
@@ -628,17 +628,17 @@ public class Hexagon extends JLayeredPane {
         int imageSize = 0;
 
         if (!this.sharkList.isEmpty()) {
-            Shark s = new Shark();
+            Shark s = new Shark(board);
             index.add(this.sharkList.size());
             pawnsToDisplay.add(s);
         }
         if (!this.whaleList.isEmpty()) {
-            Whale w = new Whale();
+            Whale w = new Whale(board);
             index.add(this.whaleList.size());
             pawnsToDisplay.add(w);
         }
         if (!this.seaSnakeList.isEmpty()) {
-            SeaSnake ss = new SeaSnake();
+            SeaSnake ss = new SeaSnake(board);
             index.add(this.seaSnakeList.size());
             pawnsToDisplay.add(ss);
         }
