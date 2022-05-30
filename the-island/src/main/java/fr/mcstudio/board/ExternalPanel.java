@@ -67,6 +67,7 @@ public class ExternalPanel extends JLayeredPane {
 		this.tilesEffectsPanel = createDisplayPanel();
 		this.tilesEffectsPanel.setLayout(new GridLayout(4, 0, 0, 0));
 		this.animationPanel = createDisplayPanel();
+		this.animationPanel.setLayout(new BorderLayout(0, 0));
 		this.setVisible(false);
 
 		board.setLayer(this, 4);
@@ -92,7 +93,6 @@ public class ExternalPanel extends JLayeredPane {
 		this.add(panel);
 		panel.setOpaque(false);
 		panel.setVisible(false);
-		panel.setLayout(null);
 		return panel;
 	}
 
@@ -122,10 +122,6 @@ public class ExternalPanel extends JLayeredPane {
 
 	private void displayAnimationPanel() {
 		this.animationPanel.setVisible(true);
-		for (int i = 0; i < bPairList.size(); i++) {
-			animationPanel.remove(bPairList.get(i).getLeft());
-		}
-		bPairList.clear();
 
 		if (aPairList.containsInPair(animationType)) {
 			int index = aPairList.getLeftList().indexOf(animationType);
@@ -141,6 +137,7 @@ public class ExternalPanel extends JLayeredPane {
 				board.setDisplayExternalPanel(false);
 				setExternalPanelState(ExternalPanelState.VOID);
 				animationType = null;
+				animationPanel.removeAll();
 				board.getGame().inGame(clickedHex);
 			}
 
@@ -415,6 +412,10 @@ public class ExternalPanel extends JLayeredPane {
 	public void setPawnType(PawnType pawnType) {
 		this.pawnType = pawnType;
 	}
+
+	public void setAnimationType(AnimationType animationType) {
+		this.animationType = animationType;
+	} 
 
 	private void hideAllPanels() {
 

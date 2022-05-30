@@ -133,13 +133,14 @@ public class Explorer extends Pawn {
                 newPosition.addPawn(this);
                 break;
             case SEA:
-                if (!newPosition.getSeaSnakeList().isEmpty() ||
-                        !newPosition.getSharkList().isEmpty()) {
-                    this.status = ExplorerStatus.DEAD;
-                } else {
-                    this.status = ExplorerStatus.SWIMMER;
-                    this.setMovePoint(1);
-                    newPosition.addPawn(this);
+                this.status = ExplorerStatus.SWIMMER;
+                this.setMovePoint(1);
+                newPosition.addPawn(this);
+                
+                if (!newPosition.getSeaSnakeList().isEmpty()) {
+                    newPosition.getSeaSnakeList().get(0).makeEffect(newPosition);
+                } else if (!newPosition.getSharkList().isEmpty()) {
+                    newPosition.getSharkList().get(0).makeEffect(newPosition);
                 }
                 break;
             case ISLAND:
