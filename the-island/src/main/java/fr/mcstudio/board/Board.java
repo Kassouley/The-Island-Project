@@ -337,6 +337,18 @@ public class Board extends JLayeredPane{
 		
 		return false;
 	}
+
+	public boolean isNextToLand(Hexagon actualHexagon) {
+		if(getTopLeft(actualHexagon).isTiles()
+				|| getTopRight(actualHexagon).isTiles()
+				|| getLeft(actualHexagon).isTiles()
+				|| getRight(actualHexagon).isTiles()
+				|| getBottomLeft(actualHexagon).isTiles()
+				|| getBottomRight(actualHexagon).isTiles())
+			return true;
+		
+		return false;
+	}
 	
 	public boolean canRemoveOutOfSea(Hexagon actualHexagon, TilesType tilesType) {
 		for (int i = 0; i < 13; i++) {

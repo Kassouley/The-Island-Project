@@ -19,6 +19,7 @@ import javax.swing.Icon;
 
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
+import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.tiles.Tile;
 
@@ -46,6 +47,8 @@ public class Player {
         this.isBot = isBot;
         this.moveLeft = 3;
         this.pawnOnBoardNumber = 0;
+        this.boatToSet.add(new Boat(resolution));
+        this.boatToSet.add(new Boat(resolution));
     }
 
     /**
@@ -84,6 +87,9 @@ public class Player {
      * @see Color.java
      */
     private List<Explorer> explorerList = new ArrayList<Explorer>();
+
+    
+    private List<Boat> boatToSet = new ArrayList<Boat>();
     
     /**
      * <p>
@@ -280,6 +286,10 @@ public class Player {
         return explorerList;
     }
 
+    public List<Boat> getBoatToSet() {
+        return boatToSet;
+    }
+
     /**
      * 
      */
@@ -305,7 +315,7 @@ public class Player {
      */
     public int getNumberExplorerAlive() {
         int cmpt = 0;
-        for (Explorer e : explorerList) {
+        for (Explorer e : currentExplorerList) {
             if (e.getStatus() == ExplorerStatus.NORMAL
                     || e.getStatus() == ExplorerStatus.SWIMMER) {
                 cmpt++;
@@ -319,7 +329,7 @@ public class Player {
      */
     public int getNumberExplorerSaved() {
         int cmpt = 0;
-        for (Explorer e : explorerList) {
+        for (Explorer e : currentExplorerList) {
             if (e.getStatus() == ExplorerStatus.SAVED) {
                 cmpt++;
             }
@@ -332,7 +342,7 @@ public class Player {
      */
     public int getNumberExplorerDead() {
         int cmpt = 0;
-        for (Explorer e : explorerList) {
+        for (Explorer e : currentExplorerList) {
             if (e.getStatus() == ExplorerStatus.DEAD) {
                 cmpt++;
             }

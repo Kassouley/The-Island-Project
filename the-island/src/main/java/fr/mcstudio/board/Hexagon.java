@@ -643,7 +643,7 @@ public class Hexagon extends JLayeredPane {
             pawnsToDisplay.add(ss);
         }
         if (this.boat != null) {
-            Boat b = new Boat();
+            Boat b = new Boat(resolution);
             index.add(1);
             pawnsToDisplay.add(b);
         }

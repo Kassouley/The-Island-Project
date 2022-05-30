@@ -46,11 +46,9 @@ public class Boat extends Pawn {
      * Constructeur par d�faut
      * </p>
      */
-    public Boat() {
+    public Boat(int resolution) {
       super(3);
-    	explorerList.add(new Explorer(Color.BLUE, 0));
-    	explorerList.add(new Explorer(Color.GREEN, 0));
-    	explorerList.add(new Explorer(Color.YELLOW, 0));
+      this.createImage(resolution);
     }
 
     /**

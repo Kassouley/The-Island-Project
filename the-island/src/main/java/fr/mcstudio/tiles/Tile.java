@@ -209,7 +209,7 @@ public class Tile extends JLayeredPane {
 		board.getExternalPanel().setAnimationType(AnimationType.BOAT_SUMMON);
         board.setDisplayExternalPanel(true);
         board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
-		Boat b = new Boat();
+		Boat b = new Boat(resolution);
         b.setPosition(0, 0, resolution, 68);
         b.createImage(resolution);
 		tilePosition.addPawn(b);

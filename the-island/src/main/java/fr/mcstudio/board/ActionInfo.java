@@ -232,9 +232,7 @@ public class ActionInfo extends JLayeredPane {
 							default:
 								break;
 						}
-					}
-				
-						
+					}	
 				}
 				break;
 
@@ -267,7 +265,7 @@ public class ActionInfo extends JLayeredPane {
 		if (game.getBoard().getExternalPanel().getPawnType() == null) {
 			button.setVisible(false);
 			displayActionInfo(game);
-			game.inGame(null);
+			game.inGameMoveMonster(null);
 		}
 	}
 
