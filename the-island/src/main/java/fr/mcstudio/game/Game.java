@@ -13,6 +13,8 @@ import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.board.PlayerInfo;
 import fr.mcstudio.enums.ActionTurn;
+import fr.mcstudio.enums.Color;
+import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.ExternalPanelState;
 import fr.mcstudio.enums.GameState;
 import fr.mcstudio.enums.HexagonListType;
@@ -145,7 +147,9 @@ public class Game {
             public void mousePressed(MouseEvent e) {
 
                 if (SwingUtilities.isLeftMouseButton(e)) {
-
+                	if(board.isDisplayExternalPanel()) {
+                		
+                	}
                     for (int i = 0; i < 13; i++) {
                         for (int j = 0; j < 12; j++) {
                             Hexagon hex = board.getHexagons()[i][j];
@@ -599,16 +603,32 @@ public class Game {
      */
     private void inGameMovePawn(Hexagon hex) {
     	if (hex != null && (!hex.getExplorerList().isEmpty() || hex.getBoat() != null)  && firstClic == true) {
+    		Color plColor = getCurrentPlayer().getColor();
             saveHexa = hex;
-            if(hex.nbExplorerColor(getCurrentPlayer().getColor()) + 
+            if(hex.nbExplorerColor(plColor) + 
             		(hex.getBoat() != null 
-            		&& hex.getBoat().isOwnedBy(getCurrentPlayer())?1:0) == 1) {
-            	if(hex.getBoat() != null && hex.getBoat().isOwnedBy(getCurrentPlayer())) {
+            		&& hex.getBoat().isOwnedBy(getCurrentPlayer())?1:0) +
+            		(hex.getBoat() != null?hex.getBoat()
+            				.nbExplorerColor(plColor):0) == 1) {
+            	
+            	if(hex.getBoat() != null 
+            			&& hex.getBoat().isOwnedBy(getCurrentPlayer())) {
+            		
             		pawnToMove = hex.getBoat();
+            	}
+            	else if(hex.getBoat() != null && hex.getBoat()
+        				.nbExplorerColor(plColor) != 0) {
+            		
+            		for (Explorer e : hex.getBoat().getExplorerList()) {
+    					if(e.getColor() == plColor) {
+    						pawnToMove = e;
+    						break;
+    					}
+            		}
             	}
             	else {
                 	for (Explorer e : hex.getExplorerList()) {
-    					if(e.getColor() == getCurrentPlayer().getColor()) {
+    					if(e.getColor() == plColor) {
     						pawnToMove = e;
     						break;
     					}
@@ -623,7 +643,7 @@ public class Game {
                     board.getExternalPanel().setSelection(null);
                     board.getExternalPanel().setClickedHex(null);
                     inGame(hex);
-                } else if (hex.containsExplorerColor(getCurrentPlayer().getColor()) 
+                } else if (hex.containsExplorerColor(plColor) 
                 		|| (hex.getBoat() != null 
                 		&& hex.getBoat().isOwnedBy(getCurrentPlayer()))) {
                 	
@@ -657,10 +677,11 @@ public class Game {
             }
         } else if (firstClic == false) {
             if (hexagonTripletList.getLeftList().contains(hex)) {
-            	if(hex == saveHexa && hex.isSea() && hex.getBoat() != null) {
+            	if(hex == saveHexa && hex.isSea() && hex.getBoat() != null 
+            			&& pawnToMove instanceof Explorer 
+            			&& ((Explorer)pawnToMove).getStatus() != ExplorerStatus.ONBOAT) {
             		destination = hex.getBoat();
 
-                    System.out.println("Je suis jesus");
             	} else if(hex.getBoat() == null || !saveHexa.isTiles()) {
             		destination = hex;
             	}
@@ -680,14 +701,23 @@ public class Game {
                         board.getExternalPanel().setExternalPanelState(ExternalPanelState.BOATORSEA);
             		}
             	} else if(!board.isDisplayExternalPanel()){
-                    if(destination == hex) {
+                    if(destination == hex 
+                    		&& ((pawnToMove instanceof Explorer 
+                    				&& ((Explorer)pawnToMove).getStatus() != ExplorerStatus.ONBOAT)
+                    		|| pawnToMove instanceof Boat)) {
                 		pawnToMove.move(saveHexa, hex);
-                    } else {
+
+                    } else if(destination == hex 
+                    		&& ((Explorer)pawnToMove).getStatus() == ExplorerStatus.ONBOAT) {
+
+                    	((Explorer) pawnToMove).move(hex.getBoat(), hex);
+                    } else if(destination == hex.getBoat()) {
+
                     	// A modifier avec monter sur bateau
-                        System.out.println("Bateau inGameMovePawn");
                     	((Explorer) pawnToMove).move(saveHexa, hex.getBoat(), hex);
                     	//
                     }
+                    
                     for(int comp = 0; comp < hexagonTripletList.getLeftList().size();comp++) {
     					if(hexagonTripletList.getLeftList().get(comp) == hex) {
     						getCurrentPlayer().setMoveLeft(getCurrentPlayer().getMoveLeft()-hexagonTripletList.getMiddleList().get(comp));

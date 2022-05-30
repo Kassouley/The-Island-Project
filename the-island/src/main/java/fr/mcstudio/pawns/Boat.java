@@ -278,5 +278,19 @@ public class Boat extends Pawn {
 
         this.image.setIcon(icon);
     }
+	
+	public boolean containsExplorerColor(final Color color) {
+        return explorerList.stream().filter(o -> o.getColor().equals(color)).findFirst().isPresent();
+    }
+
+    public int nbExplorerColor(final Color color) {
+        int nb = 0;
+        for (Explorer e : explorerList) {
+            if (e.getColor() == color) {
+                nb++;
+            }
+        }
+        return nb;
+    }
 
 }

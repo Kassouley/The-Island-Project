@@ -19,12 +19,23 @@ public class PlayerInfo extends JLayeredPane {
 	private JLabel avatarPlayer = new JLabel();
 	private List<JLabel> infosPlayer = new ArrayList<JLabel>();
 
+	private int[][] pos = {
+		{ 43, 50 },
+		{ 330, 50 },
+		{ 390, 50 },
+		{ 445, 50 },
+		{ 540, 50 },
+		{ 570, 50 },
+		{ 600, 50 },
+	};
+
 	public PlayerInfo(int resolution) {
 		super();
-		this.setLayer(playerInfoLabel, 0);
+		this.setLayer(this.playerInfoLabel, 0);
+		this.setLayout(null);
 		this.setPanelBoundsFromResolution(resolution);
 		this.setLabel();
-		this.add(playerInfoLabel);
+		this.add(this.playerInfoLabel);
 
 		this.playerInfoPanel.setLayout(null);
 		this.playerInfoPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
@@ -42,8 +53,9 @@ public class PlayerInfo extends JLayeredPane {
 		}
 
 		for (int i = 0; i < 7; i++) {
-			JLabel text = new JLabel();
+			JLabel text = new JLabel("null", SwingConstants.CENTER);
 			text.setFont(sizedFont);
+			text.setBounds(0,this.pos[i][0] * resolution / 90 ,this.getWidth(), this.pos[i][0] * resolution / 90);
 			this.playerInfoPanel.add(text);
 			this.infosPlayer.add(text);
 		}
@@ -58,19 +70,7 @@ public class PlayerInfo extends JLayeredPane {
 
 		Player currentPlayer = game.getCurrentPlayer();
 		Player[] players = game.getPlayers();
-		int textWidth = 0;
-		int textHeight = 0;
 		int i = 0;
-
-		int[][] pos = {
-				{ 137, 55 },
-				{ 139, 488 },
-				{ 139, 573 },
-				{ 139, 658 },
-				{ 139, 800 },
-				{ 139, 850 },
-				{ 139, 900 },
-		};
 
 		String[] textInfo = {
 				currentPlayer.getPseudo(),
@@ -83,13 +83,7 @@ public class PlayerInfo extends JLayeredPane {
 		};
 
 		for (String text : textInfo) {
-
-			JLabel playerInfo = this.infosPlayer.get(i);
-			playerInfo.setText(text);
-			textWidth = playerInfo.getFontMetrics(playerInfo.getFont()).stringWidth(playerInfo.getText());
-			textHeight = playerInfo.getFontMetrics(playerInfo.getFont()).getHeight();
-			playerInfo.setBounds((pos[i][0] - textWidth / 2) * resolution / 90, pos[i][1] * resolution / 90, textWidth,
-					textHeight);
+			this.infosPlayer.get(i).setText(text);
 			i++;
 		}
 

@@ -263,19 +263,24 @@ public class ExternalPanel extends JLayeredPane {
 	private void displayPawnPanel() {
 		this.pawnPanel.setVisible(true);
 
-		int explorersLength = clickedHex.getExplorerList().size();
-		for (int i = 0; i < explorersLength; i++) {
-			Explorer explorer = clickedHex.getExplorerList().get(i);
-			if (board.getGame().getCurrentPlayer().getColor() == explorer.getColor()) {
-				bPairList.add(new Pair<JButton, JLayeredPane>(new JButton(explorer.getImage().getIcon()), explorer));
+		for (Explorer e : clickedHex.getExplorerList()) {
+			if (board.getGame().getCurrentPlayer().getColor() == e.getColor()) {
+				bPairList.add(new Pair<JButton, JLayeredPane>(new JButton(e.getImage().getIcon()), e));
 			}
-			if((clickedHex.getBoat() != null 
-                	&& clickedHex.getBoat().
-                			isOwnedBy(board.
-                					getGame().
-                					getCurrentPlayer()))) {
-				
-				bPairList.add(new Pair<JButton, JLayeredPane>(new JButton(clickedHex.getBoat().getImage().getIcon()), clickedHex.getBoat()));
+			
+		}
+		if((clickedHex.getBoat() != null 
+            	&& clickedHex.getBoat().
+    			isOwnedBy(board.
+    					getGame().
+    					getCurrentPlayer()))) {
+			
+			bPairList.add(new Pair<JButton, JLayeredPane>(new JButton(clickedHex.getBoat().getImage().getIcon()), clickedHex.getBoat()));
+			
+		}
+		for (Explorer e : clickedHex.getBoat().getExplorerList()) {
+			if (board.getGame().getCurrentPlayer().getColor() == e.getColor()) {
+				bPairList.add(new Pair<JButton, JLayeredPane>(new JButton(e.getImage().getIcon()), e));
 			}
 		}
 		for (int i = 0; i < bPairList.size(); i++) {

@@ -240,32 +240,30 @@ public class Explorer extends Pawn {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
         tmp.add(actualPosition);
         hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.BOAT));
+        
+        for (int i = 1; i <= distance; i++) {
+            for (Hexagon hexagon : tmp) {
+                this.findPathAux(hexagon, board, hexagonTripletList, i);
+            }
+            
+            List<Hexagon> mem = new ArrayList<Hexagon>();
+            List<Hexagon> hexagonList = hexagonTripletList.getLeftList();
+            mem.addAll(tmp);
 
-        if (this.getStatus() != ExplorerStatus.ONBOAT) {
-            for (int i = 1; i <= distance; i++) {
-                for (Hexagon hexagon : tmp) {
-                    this.findPathAux(hexagon, board, hexagonTripletList, i);
+            tmp.clear();
+            for (Hexagon hexagon : hexagonList) {
+                int index = hexagonList.indexOf(hexagon);
+                if ((this.getStatus() == ExplorerStatus.SWIMMER
+                        || hexagon.getType() != HexagonType.SEA)
+                        && hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
+                        
+                    tmp.add(hexagon);
                 }
-                
-                List<Hexagon> mem = new ArrayList<Hexagon>();
-                List<Hexagon> hexagonList = hexagonTripletList.getLeftList();
-                mem.addAll(tmp);
-    
-                tmp.clear();
-                for (Hexagon hexagon : hexagonList) {
-                    int index = hexagonList.indexOf(hexagon);
-                    if ((this.getStatus() == ExplorerStatus.SWIMMER
-                            || hexagon.getType() != HexagonType.SEA)
-                            && hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
-                            
-                        tmp.add(hexagon);
-                    }
-                }
-    
-                for (Hexagon hexagon : mem) {
-                    if (tmp.contains(hexagon)) {
-                        tmp.remove(hexagon);
-                    }
+            }
+
+            for (Hexagon hexagon : mem) {
+                if (tmp.contains(hexagon)) {
+                    tmp.remove(hexagon);
                 }
             }
         }
