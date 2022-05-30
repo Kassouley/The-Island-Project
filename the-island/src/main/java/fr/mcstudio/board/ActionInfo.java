@@ -276,7 +276,6 @@ public class ActionInfo extends JLayeredPane {
 		if(!game.getCurrentPlayer().getTileList().isEmpty()) {
 			if(game.getUsedTile() == null) {
 				if (game.getBoard().getExternalPanel().getSelection() != null) {
-					System.out.println("bonsoir");
 					if(((Tile)game.getBoard().getExternalPanel().getSelection()).checkPlayTile(game.getBoard(),game.getCurrentPlayer())) {
 						game.setUsedTile((Tile)game.getBoard().getExternalPanel().getSelection());
 						game.getBoard().getExternalPanel().setSelection(null);
