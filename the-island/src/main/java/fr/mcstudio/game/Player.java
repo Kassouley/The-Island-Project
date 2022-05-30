@@ -84,6 +84,15 @@ public class Player {
      * @see Color.java
      */
     private List<Explorer> explorerList = new ArrayList<Explorer>();
+    
+    /**
+     * <p>
+     * Liste des explorateurs du joueur
+     * </p>
+     * 
+     * @see Color.java
+     */
+    private List<Explorer> currentExplorerList = new ArrayList<Explorer>();
 
     /**
      * <p>
@@ -251,10 +260,10 @@ public class Player {
      * </p>
      */
     public void setMoveLeft(int moveLeft) {
-        if (moveLeft > 0) {
+        if (moveLeft >= 0) {
             this.moveLeft = moveLeft;
         } else {
-            System.out.println("Error : the number of move left cant be negative or zero.");
+            System.out.println("Error : the number of move left cant be negative.");
         }
     }
 
@@ -330,5 +339,25 @@ public class Player {
         }
         return cmpt;
     }
+    
+    /**
+   	 * 
+   	 */
+   	public void resetMovePointExplorer() {
+   		for(Explorer e : this.currentExplorerList) {
+   			if(e.getStatus() == ExplorerStatus.SWIMMER) {
+   				e.setMovePoint(1);
+   			}else if (e.getStatus() == ExplorerStatus.NORMAL) {
+   				e.setMovePoint(3);
+   			}				
+   		}
+   	}
+
+   	/**
+   	 * @return the currentExplorerList
+   	 */
+   	public List<Explorer> getCurrentExplorerList() {
+   		return currentExplorerList;
+   	}
 
 }

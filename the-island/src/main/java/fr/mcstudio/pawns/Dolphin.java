@@ -32,7 +32,7 @@ public class Dolphin extends Pawn {
                     && hexagon.getType() == HexagonType.SEA) {
                 
                 if (!hexagon.getSharkList().isEmpty()
-                        || hexagon.getSeaSnakeList().isEmpty()) {
+                        || !hexagon.getSeaSnakeList().isEmpty()) {
                     hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.DEATH));
                 } else {
                     hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.NORMAL));
