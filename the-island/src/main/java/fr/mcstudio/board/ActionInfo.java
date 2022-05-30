@@ -10,6 +10,10 @@ import java.util.List;
 import javax.swing.*;
 
 import fr.mcstudio.game.Game;
+import fr.mcstudio.pawns.Shark;
+import fr.mcstudio.tiles.Tile;
+import fr.mcstudio.enums.ExternalPanelState;
+import fr.mcstudio.enums.PawnType;
 import fr.mcstudio.enums.SideBarButton;
 
 @SuppressWarnings("serial")
@@ -24,8 +28,9 @@ public class ActionInfo extends JLayeredPane {
 	private JPanel actionLabel = new JPanel();
 
 	private List<JButton> buttons = new ArrayList<JButton>();
+	private List<JLabel> diceImage =  new ArrayList<JLabel>();
 
-	public ActionInfo(int resolution) {
+	public ActionInfo(Game game, int resolution) {
 		super();
 		setLayer(this.actionInfoLabel, 0);
 		this.setLayout(null);
@@ -38,8 +43,13 @@ public class ActionInfo extends JLayeredPane {
 				"/SideBar/rulesButton.png",
 				"/SideBar/quitButton.png",
 				"/SideBar/seeTilesButton.png",
-				"/SideBar/discoverTileButton.png",
 				"/SideBar/rollButton.png"
+		};
+
+		String[] dicePath = {
+			"/seaSnakeDice.png",
+			"/sharkDice.png",
+			"/whaleDice.png"
 		};
 
 		Font sizedFont = null;
@@ -50,6 +60,8 @@ public class ActionInfo extends JLayeredPane {
 		} catch (Exception ex) {
 			System.err.println("Not loaded");
 		}
+
+		ActionListener actionListener = null; 
 
 		for (String image : imagePath) {
 			ImageIcon imageButton = new ImageIcon(ActionInfo.class.getResource(image));
@@ -62,7 +74,72 @@ public class ActionInfo extends JLayeredPane {
 			button.setContentAreaFilled(false);
 			button.setFocusPainted(false);
 			button.setBorderPainted(false);
+
+			switch (image) {
+				case "/SideBar/skipButton.png":
+					actionListener = new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							game.nextActionTurn();
+							displayActionInfo(game);
+							game.inGame(null);
+						}
+					};
+					
+					break;
+				case "/SideBar/rulesButton.png":
+					actionListener = new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+						}
+					};
+						
+					break;
+				case "/SideBar/quitButton.png":
+					actionListener = new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+						}
+					};
+							
+					break;
+				case "/SideBar/seeTilesButton.png":
+					actionListener = new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							onClickTilesButton(game);
+						}
+					};
+								
+					break;
+				case "/SideBar/rollButton.png":
+					actionListener = new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							onClickRollButton(game, (JButton) e.getSource());
+						}
+					};
+									
+					break;
+				
+			
+				default:
+					break;
+			}
+
+			button.addActionListener(actionListener);
+
+			
 			buttons.add(button);
+		}
+
+		for (String path : dicePath) {
+			ImageIcon image = new ImageIcon(ActionInfo.class.getResource(path));
+			Image scaleImage = image.getImage().getScaledInstance(image.getIconWidth() * resolution / 90,
+			image.getIconHeight() * resolution / 90, Image.SCALE_SMOOTH);
+			image.setImage(scaleImage);
+			this.diceImage.add(new JLabel(image));
+
 		}
 
 		this.actionInfoPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 50));
@@ -83,33 +160,26 @@ public class ActionInfo extends JLayeredPane {
 
 		this.actionLabel.setOpaque(false);
 		this.actionInfoPanel.add(this.actionLabel);
-
-		this.buttons.get(SideBarButton.SKIP.ordinal()).addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-		this.actionInfoPanel.add(this.buttons.get(SideBarButton.SKIP.ordinal()));
-
-		this.buttons.get(SideBarButton.RULES.ordinal()).addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-		this.actionInfoPanel.add(this.buttons.get(SideBarButton.RULES.ordinal()));
-
-		this.buttons.get(SideBarButton.QUIT.ordinal()).addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-		this.actionInfoPanel.add(this.buttons.get(SideBarButton.QUIT.ordinal()));
+		
+		this.actionInfoPanel.add(this.buttons.get(SideBarButton.SKIP));
+		this.actionInfoPanel.add(this.buttons.get(SideBarButton.RULES));
+		this.actionInfoPanel.add(this.buttons.get(SideBarButton.QUIT));
 	}
 
-	public void displayActionInfo(Game game, int resolution) {
+	public void displayInitialActionInfo(Game game) {
+		this.actionTitle.setText("<html>Posez vos pions !</html>");
+		this.actionDesc.setText("<html><center>Posez vos 10 pions sur le plateau !</center></html>");
+		this.actionLabel.removeAll();
+		this.actionLabel.revalidate();
+		this.actionLabel.repaint();
+		JLabel pawnNumber = new JLabel(
+				"Il vous reste " + game.getCurrentPlayer().getExplorerList().size() + " exploreurs à poser");
+		pawnNumber.setVerticalAlignment(SwingConstants.CENTER);
+		pawnNumber.setHorizontalAlignment(SwingConstants.CENTER);
+		actionLabel.add(pawnNumber);
+	}
+
+	public void displayActionInfo(Game game) {
 
 		this.actionTitle.setText(game.getActionTurn().getTitle());
 		this.actionDesc.setText(game.getActionTurn().getDesc());
@@ -117,15 +187,16 @@ public class ActionInfo extends JLayeredPane {
 		this.actionLabel.revalidate();
 		this.actionLabel.repaint();
 
+		this.buttons.get(SideBarButton.SKIP).setVisible(true);
+
 		switch (game.getActionTurn()) {
 			case PLAY_TILE:
-				actionLabel.add(this.buttons.get(SideBarButton.SEETILES.ordinal()));
-				this.buttons.get(SideBarButton.SEETILES.ordinal()).addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-
-					}
-				});
+				
+				if(!game.getCurrentPlayer().getTileList().isEmpty()) {
+					actionLabel.add(this.buttons.get(SideBarButton.SEETILES));
+				} else {
+					actionLabel.add(new JLabel("Vous n'avez pas de tuile, appuyez sur < Passez votre tour >"));
+				}
 				break;
 
 			case MOVE_PAWNS:
@@ -137,27 +208,66 @@ public class ActionInfo extends JLayeredPane {
 				break;
 
 			case DISCOVER_TILE:
-				actionLabel.add(this.buttons.get(SideBarButton.DISCOVER.ordinal()));
-				this.buttons.get(SideBarButton.DISCOVER.ordinal()).addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-
-					}
-				});
+				this.buttons.get(SideBarButton.SKIP).setVisible(false);
 				break;
 
 			case MOVE_MONSTER:
-				actionLabel.add(this.buttons.get(SideBarButton.ROLL.ordinal()));
-				this.buttons.get(SideBarButton.ROLL.ordinal()).addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-
+				if (game.getBoard().getExternalPanel().getPawnType() == null) {
+					actionLabel.add(this.buttons.get(SideBarButton.ROLL));
+					this.buttons.get(SideBarButton.ROLL).setVisible(true);
+					this.buttons.get(SideBarButton.SKIP).setVisible(false);
+				} else {
+					if (!game.getBoard().isDisplayExternalPanel()) {	
+						this.buttons.get(SideBarButton.ROLL).setVisible(false);
+						switch (game.getBoard().getExternalPanel().getPawnType()) {
+							case SEASNAKE:
+								actionLabel.add(diceImage.get(0));
+								break;
+							case SHARK:
+								actionLabel.add(diceImage.get(1));
+								break;						
+							case WHALE:
+								actionLabel.add(diceImage.get(2));
+								break;
+							default:
+								break;
+						}
 					}
-				});
+				
+						
+				}
 				break;
 
 			default:
 				break;
+		}
+	}
+
+	public void onClickTilesButton(Game game){
+		if(!game.getCurrentPlayer().getTileList().isEmpty()) {
+			if(game.getUsedTile() == null) {
+				if (game.getBoard().getExternalPanel().getSelection() != null) {
+
+					game.setUsedTile((Tile)game.getBoard().getExternalPanel().getSelection());
+					game.getBoard().getExternalPanel().setSelection(null);
+					//Effectuer l'effet de la tuile
+					
+					//
+					game.nextActionTurn();
+				} else {
+					game.getBoard().setDisplayExternalPanel(true);
+					game.getBoard().getExternalPanel().setExternalPanelState(ExternalPanelState.TILEEFFECTPANEL);
+				}
+			}
+			displayActionInfo(game);
+		}
+	}
+
+	public void onClickRollButton(Game game, JButton button){
+		if (game.getBoard().getExternalPanel().getPawnType() == null) {
+			button.setVisible(false);
+			displayActionInfo(game);
+			game.inGame(null);
 		}
 	}
 
