@@ -492,13 +492,14 @@ public class Game {
 
                     usedTile = (Tile)board.getExternalPanel().getSelection();
                     board.getExternalPanel().setSelection(null);
-                    checkTileToPlay = usedTile.checkPlay(board, getCurrentPlayer());
+                    System.out.println(usedTile.getEffect());
+                     
                 } else {
                     board.setDisplayExternalPanel(true);
                     board.getExternalPanel().setExternalPanelState(ExternalPanelState.TILEEFFECTPANEL);
                 }
             }
-            else if(checkTileToPlay) {
+            /*else if(usedTile.checkPlay(board, getCurrentPlayer())) {
             	if(firstClic == true) {
             		getCurrentPlayer().getTileList().remove(usedTile);
                     saveHexa = hex;
@@ -570,7 +571,11 @@ public class Game {
                         p.getLeft().setHighlight(resolution, board, true, s);
                       }
 
-                      firstClic = false;
+                      if(pawnToMove != null) {
+                    	  System.out.println("plop");
+                    	  firstClic = false;
+                      }
+                     
                     }
 
                   }
@@ -613,7 +618,8 @@ public class Game {
         else {
             pawnToMove = null;
             nextActionTurn();
-        }
+        }*/
+    	}
     }
     
     /**
