@@ -19,6 +19,8 @@ import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.enums.PawnType;
 import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.pawns.Boat;
+import fr.mcstudio.pawns.Dolphin;
+import fr.mcstudio.pawns.EffectPawn;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
@@ -55,7 +57,9 @@ public class Game {
     private Board board;
     private PlayerInfo playerInfo;
     private ActionInfo actionInfo;
-    private JPanel contentPane;
+    
+
+	private JPanel contentPane;
     private GameState gameState;
 
     private int resolution;
@@ -128,6 +132,9 @@ public class Game {
      */
     private Hexagon saveHexa;
 
+    /**
+     * 
+     */
     public void boardClickAction() {
 
         this.board.addMouseListener(new MouseListener() {
@@ -253,6 +260,7 @@ public class Game {
 
     /**
      * 
+     * @param players
      */
     public void setPlayers(Player[] players) {
         this.players = players;
@@ -295,6 +303,10 @@ public class Game {
         return this;
     }
 
+    /**
+     * 
+     * @param hex
+     */
     private void setAllPawn(Hexagon hex) {
         int exit = 0;
 
@@ -422,7 +434,9 @@ public class Game {
     }
 
     public void inGame(Hexagon hex) {
-        if (actionTurn == ActionTurn.MOVE_PAWNS) {
+    	if(actionTurn == ActionTurn.PLAY_TILE) {
+    		inGamePlayTile(hex);
+    	}else if (actionTurn == ActionTurn.MOVE_PAWNS) {
         	inGameMovePawn(hex);
         } else if (actionTurn == ActionTurn.DISCOVER_TILE) {
             inGameDiscoverTile(hex);
@@ -457,6 +471,127 @@ public class Game {
         // TODO
     }
 
+    private void inGamePlayTile(Hexagon hex) {
+    	if(usedTile != null) {
+    		if(firstClic == true) {
+    			saveHexa = hex;
+    			EffectPawn effect;
+    			pawnToMove = null;
+    			switch(usedTile.getEffect()) {    		
+        		case BOAT_MOVE:
+                	if(hex.getBoat() != null && hex.getBoat().isOwnedBy(getCurrentPlayer())) {
+                		pawnToMove = hex.getBoat();
+                		effect = (EffectPawn) pawnToMove;
+            			effect.findPathEffect(hex, board, hexagonTripletList);
+                	}	
+        		break;
+        		case DOLPHIN_MOVE: 
+        			if(hex.nbExplorerColor(getCurrentPlayer().getColor()) == 1) {
+                    	for (Explorer e : hex.getExplorerList()) {
+        					if(e.getColor() == getCurrentPlayer().getColor()) {
+        						pawnToMove = e;
+        						break;
+        					}
+        				}                   	
+                    }
+        			if (pawnToMove == null) {
+                        if (board.getExternalPanel().getSelection() != null) {
+
+                            pawnToMove = (Pawn)board.getExternalPanel().getSelection();
+                            board.getExternalPanel().setSelection(null);
+                            board.getExternalPanel().setClickedHex(null);
+                            inGame(hex);
+                        } else if (hex.containsExplorerColor(getCurrentPlayer().getColor()) 
+                        		|| (hex.getBoat() != null 
+                        		&& hex.getBoat().isOwnedBy(getCurrentPlayer()))) {
+                        	
+                            board.getExternalPanel().setClickedHex(hex);
+                            board.setDisplayExternalPanel(true);
+                            board.getExternalPanel().setExternalPanelState(ExternalPanelState.PAWNPANEL);
+
+                        }
+                    } else {
+                    	Dolphin d = new Dolphin();
+                        d.findPath(hex, board, 3, hexagonTripletList);                  
+                    }
+        			
+        			
+        		break;
+        		case SHARK_LOST:
+        			if(!hex.getSharkList().isEmpty()) {
+        				pawnToMove = hex.getSharkList().get(0);
+            			effect = (EffectPawn) pawnToMove;
+            			effect.findPathEffect(hex, board, hexagonTripletList);
+        			}
+        			
+        		break;
+        		case SEASNAKE_LOST: 
+        			if(!hex.getSeaSnakeList().isEmpty()) {
+        				pawnToMove = hex.getSeaSnakeList().get(0);
+            			effect = (EffectPawn) pawnToMove;
+            			effect.findPathEffect(hex, board, hexagonTripletList);
+        			}
+        		break;
+        		case WHALE_LOST: 
+        			if(!hex.getWhaleList().isEmpty()) {
+        				pawnToMove = hex.getWhaleList().get(0);
+            			effect = (EffectPawn) pawnToMove;
+            			effect.findPathEffect(hex, board, hexagonTripletList);
+        			}
+        		break;
+        		default: break;
+        		}
+    			if(pawnToMove != null) {
+    				for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
+                        String s;
+                        switch (p.getRight()) {
+                            case NORMAL:
+                                s = "yellow";
+                                break;
+                            case BOAT:
+                                s = "purple";
+                                break;
+                            case DEATH:
+                                s = "red";
+                                break;
+                            default:
+                                s = "white";
+                                break;
+                        }
+                        p.getLeft().setHighlight(resolution, board, true, s);
+                    }
+
+                    firstClic = false;
+    			}
+    			
+    		}
+    		else if(firstClic == false  && pawnToMove != null ) {
+    			if(hexagonTripletList.getLeftList().contains(hex)) {
+        			pawnToMove.move(saveHexa, hex);
+        			for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
+                        p.getLeft().setHighlightColor(null);
+                        p.getLeft().setHighlight(resolution, board, false, null);
+                    }
+        			saveHexa.displayPawns(board);
+        			getCurrentPlayer().getTileList().remove(usedTile);
+        			saveHexa = null;
+        			firstClic = true;
+        			pawnToMove = null;
+        			usedTile = null;
+        			nextActionTurn();
+        		}
+    			else {
+    				for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
+                        p.getLeft().setHighlightColor(null);
+                        p.getLeft().setHighlight(resolution, board, false, null);
+                    }
+    				saveHexa = null;
+    				firstClic = true;
+    				pawnToMove = null;
+    			}
+    		}
+    	}
+    }
     
     /**
      * 
@@ -547,7 +682,6 @@ public class Game {
             	} else if(!board.isDisplayExternalPanel()){
                     if(destination == hex) {
                 		pawnToMove.move(saveHexa, hex);
-                        System.out.println("Mer inGameMovePawn");
                     } else {
                     	// A modifier avec monter sur bateau
                         System.out.println("Bateau inGameMovePawn");
@@ -719,4 +853,11 @@ public class Game {
             }
         }
     }
+    
+    /**
+	 * @return the actionInfo
+	 */
+	public ActionInfo getActionInfo() {
+		return actionInfo;
+	}
 }
