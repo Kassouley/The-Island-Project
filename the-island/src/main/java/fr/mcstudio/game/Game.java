@@ -485,8 +485,7 @@ public class Game {
         		case BOAT_MOVE:
                 	if(hex.getBoat() != null && hex.getBoat().isOwnedBy(getCurrentPlayer())) {
                 		pawnToMove = hex.getBoat();
-                		effect = (EffectPawn) pawnToMove;
-            			effect.findPathEffect(hex, board, hexagonTripletList);
+            			pawnToMove.findPath(hex, board, 3, hexagonTripletList);
                 	}	
         		break;
         		case DOLPHIN_MOVE: 
@@ -505,10 +504,7 @@ public class Game {
                             board.getExternalPanel().setSelection(null);
                             board.getExternalPanel().setClickedHex(null);
                             inGame(hex);
-                        } else if (hex.containsExplorerColor(getCurrentPlayer().getColor()) 
-                        		|| (hex.getBoat() != null 
-                        		&& hex.getBoat().isOwnedBy(getCurrentPlayer()))) {
-                        	
+                        } else if (hex.containsExplorerColor(getCurrentPlayer().getColor())) {
                             board.getExternalPanel().setClickedHex(hex);
                             board.setDisplayExternalPanel(true);
                             board.getExternalPanel().setExternalPanelState(ExternalPanelState.PAWNPANEL);
