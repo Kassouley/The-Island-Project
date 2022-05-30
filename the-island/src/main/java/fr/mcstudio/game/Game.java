@@ -158,7 +158,7 @@ public class Game {
 
                                     if (gameState == GameState.INITIALISATION) {
                                         int exit = 0;
-                                        if (hex.getTile() != null && hex.getExplorerList().isEmpty()) {
+                                        if (hex.getTile() != null /*&& hex.getExplorerList().isEmpty()*/) {
 
                                             hex.addPawn(getCurrentPlayer().getExplorerList().get(0));
                                             getCurrentPlayer().getExplorerList().remove(0);
