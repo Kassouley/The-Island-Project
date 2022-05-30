@@ -280,19 +280,12 @@ public class ActionInfo extends JLayeredPane {
 						game.setUsedTile((Tile)game.getBoard().getExternalPanel().getSelection());
 						game.getBoard().getExternalPanel().setSelection(null);
 					}
-					
-					
-					//Effectuer l'effet de la tuile
-					
-					//
-					//game.nextActionTurn();
 				} else {
 					game.getBoard().setDisplayExternalPanel(true);
 					game.getBoard().getExternalPanel().setExternalPanelState(ExternalPanelState.TILEEFFECTPANEL);
 				}
-				displayActionInfo(game);
 			}
-			
+			displayActionInfo(game);			
 		}
 	}
 
