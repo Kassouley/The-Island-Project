@@ -565,7 +565,9 @@ public class Game {
             		}
             	} else if(!board.isDisplayExternalPanel()){
                     if(destination == hex 
-                    		&& ((Explorer)pawnToMove).getStatus() != ExplorerStatus.ONBOAT) {
+                    		&& ((pawnToMove instanceof Explorer 
+                    				&& ((Explorer)pawnToMove).getStatus() != ExplorerStatus.ONBOAT)
+                    		|| pawnToMove instanceof Boat)) {
                 		pawnToMove.move(saveHexa, hex);
                     } else if(destination == hex 
                     		&& ((Explorer)pawnToMove).getStatus() == ExplorerStatus.ONBOAT) {
