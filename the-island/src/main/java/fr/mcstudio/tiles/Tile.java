@@ -143,7 +143,7 @@ public class Tile extends JLayeredPane {
 			e.setMovePoint(1);
 		}
 		if(hexagon.getTile().getEffect().getType() == "Verte"){
-			hexagon.getTile().applyEffect(hexagon,board);		  	
+			hexagon.getTile().applyEffect(hexagon,board);
 		}
 		else {
 			  p.getTileList().add(hexagon.getTile());
@@ -162,23 +162,32 @@ public class Tile extends JLayeredPane {
 	 * </p>
 	 * @since1.0
 	 */
-	public void applyEffect(Hexagon tilePosition,Board board) {
+	public void applyEffect(Hexagon hex,Board board) {
 		System.out.println(this.effect);
 		switch(this.effect) {
 		
 		case BOAT_MOVE : this.boatMoveEffect(board);break;
-		case BOAT : this.boatEffect(tilePosition, board);break;
+		case BOAT : this.boatEffect(hex, board);break;
 		case DOLPHIN_MOVE :this.dolphinMoveEffect(board); break;
 		case SEASNAKE_LOST : this.seasnakeLostEffect();break;
-		case SHARK : this.sharkEffect(tilePosition,board);break;
-		case SHARK_DEATH : this.sharkDeathEffect(tilePosition,board); break;
+		case SHARK : this.sharkEffect(hex,board);break;
+		case SHARK_DEATH : this.sharkDeathEffect(hex,board); break;
 		case SHARK_LOST : this.sharkLostEffect(); break;
-		case WHIRLPOOL : this.whirlpoolEffect(tilePosition,board); break;
+		case WHIRLPOOL : this.whirlpoolEffect(hex,board); break;
 		case VOLCANO : this.volcanoEffect(board); break;
-		case WHALE : this.whaleEffect(tilePosition,board); break;
-		case WHALE_DEATH : this.whaleDeathEffect(tilePosition,board);break;
+		case WHALE : this.whaleEffect(hex,board); break;
+		case WHALE_DEATH : this.whaleDeathEffect(hex,board);break;
 		case WHALE_LOST :this.whaleLostEffect(); break;
 		default : break;
+		}
+		if(!hex.getSharkList().isEmpty()) {
+			hex.getSharkList().get(0).makeEffect(hex);
+		}
+		if(!hex.getSeaSnakeList().isEmpty()) {
+			hex.getSeaSnakeList().get(0).makeEffect(hex);
+		}
+		if(!hex.getWhaleList().isEmpty()) {
+			hex.getWhaleList().get(0).makeEffect(hex);
 		}
 	}
 	
@@ -394,6 +403,37 @@ public class Tile extends JLayeredPane {
 	
 	public JLabel getTypeLabel() {
 		return typeLabel;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean checkPlayTile(Board board,Player p) {
+		switch(this.effect) {
+		case BOAT_MOVE : 
+			if(board.isBoatOnBoard()) {
+				return true;
+			}
+		case DOLPHIN_MOVE : 
+			if(board.isSwimmerOnBoard(p)) {
+				return true;
+			}
+		case SHARK_LOST : 
+			if(board.isSharkOnBoard()) {
+				return true;
+			}
+		case SEASNAKE_LOST : 		
+			if(board.isSeaSnakeOnBoard()) {
+				return true;
+			}
+		case WHALE_LOST : 
+			if(board.isWhaleOnBoard()) {
+				return true;
+			}
+		default : break;
+		}
+		return false;
 	}
 	
 }

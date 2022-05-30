@@ -176,7 +176,7 @@ public class ExternalPanel extends JLayeredPane {
             		bPairList.clear();
                     board.setDisplayExternalPanel(false);
                     setExternalPanelState(ExternalPanelState.VOID);
-                    board.getGame().inGame(clickedHex);
+                    board.getGame().getActionInfo().onClickTilesButton(board.getGame());
                 }
             });
         }
