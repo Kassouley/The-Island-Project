@@ -30,7 +30,7 @@ public class Main extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		int nbJoueur = 1;
+		int nbJoueur = 2;
 		players = new Player[nbJoueur];
 
 		Player P1 = new Player("Akunes", Color.BLUE, false, resolution);
@@ -40,7 +40,7 @@ public class Main extends JFrame {
 		avatar.setImage(scaleImage);
 		P1.setAvatar(avatar);
 		players[0] = P1;
-		/*
+		
 		Player P2 = new Player("Lo", Color.RED, false, resolution);
 		avatar = new ImageIcon(Main.class.getResource("/SideBar/avatar3.png"));
 		scaleImage = avatar.getImage().getScaledInstance(avatar.getIconWidth() * resolution / 90,
@@ -48,7 +48,7 @@ public class Main extends JFrame {
 		avatar.setImage(scaleImage);
 		P2.setAvatar(avatar);
 		players[1] = P2;
-		
+		/*
 		 * Player P3 = new Player("Lucasse", Color.YELLOW, false);
 		 * players[2] = P3;
 		 * Player P4 = new Player("Kev1", Color.GREEN, false);
