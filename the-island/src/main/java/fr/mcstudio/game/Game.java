@@ -24,8 +24,6 @@ import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
-import fr.mcstudio.pawns.Shark;
-import fr.mcstudio.pawns.Whale;
 import fr.mcstudio.tiles.Tile;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
@@ -141,32 +139,36 @@ public class Game {
 
                 if (SwingUtilities.isLeftMouseButton(e)) {
                 	if(board.isDisplayExternalPanel()) {
-                		
-                	}
-                    for (int i = 0; i < 13; i++) {
-                        for (int j = 0; j < 12; j++) {
-                            Hexagon hex = board.getHexagons()[i][j];
-                            if (!hex.isVoid()) {
-                                if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(),
-                                        e.getY() - hex.getY())) {
 
-                                    if (gameState == GameState.INITIALISATION) {
-                                        setAllPawn(hex);
-                                    } else if (gameState == GameState.PLAYING) {
-                                        if (actionTurn != ActionTurn.MOVE_MONSTER 
-                                                || board.getExternalPanel().getPawnType() != null) {
-                                            inGame(hex);
+        				board.setDisplayExternalPanel(false);
+        				board.getExternalPanel().setExternalPanelState(ExternalPanelState.VOID);
+        				inGame(null);
+                	} else {
+                		for (int i = 0; i < 13; i++) {
+                            for (int j = 0; j < 12; j++) {
+                                Hexagon hex = board.getHexagons()[i][j];
+                                if (!hex.isVoid()) {
+                                    if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(),
+                                            e.getY() - hex.getY())) {
+
+                                        if (gameState == GameState.INITIALISATION) {
+                                            setAllPawn(hex);
+                                        } else if (gameState == GameState.PLAYING) {
+                                            if (actionTurn != ActionTurn.MOVE_MONSTER 
+                                                    || board.getExternalPanel().getPawnType() != null) {
+                                                inGame(hex);
+                                            }
+                                        } else if (gameState == GameState.ENDING) {
+                                            endGame();
                                         }
-                                    } else if (gameState == GameState.ENDING) {
-                                        endGame();
-                                    }
 
-                                    actionInfo.displayActionInfo(getGame());
-                                    playerInfo.displayPlayerInfo(getGame(), resolution);
+                                        actionInfo.displayActionInfo(getGame());
+                                        playerInfo.displayPlayerInfo(getGame(), resolution);
+                                    }
                                 }
                             }
                         }
-                    }
+                	}
                 }
             }
 
@@ -274,11 +276,15 @@ public class Game {
      */
     public void nextTurn() {
         this.turnNumber++;
+		getCurrentPlayer().resetMovePointExplorer();
+		this.resetMovePointBoat();
         this.getCurrentPlayer().setMoveLeft(3);
         this.actionTurn = ActionTurn.PLAY_TILE;
     }
 
-    /**
+    
+
+	/**
      * 
      */
     public Player getCurrentPlayer() {
@@ -431,7 +437,7 @@ public class Game {
         } else if (actionTurn == ActionTurn.DISCOVER_TILE) {
             inGameDiscoverTile(hex);
         } else if (actionTurn == ActionTurn.MOVE_MONSTER) {
-    	    if (board.getExternalPanel().getPawnType() != null){ 
+    	    if (board.getExternalPanel().getPawnType() != null){
                 inGameMoveMonster(hex);
             }
         }
@@ -574,7 +580,7 @@ public class Game {
                     } else if(destination == hex 
                     		&& ((Explorer)pawnToMove).getStatus() == ExplorerStatus.ONBOAT) {
 
-                    	((Explorer) pawnToMove).move(hex.getBoat(), hex);
+                    	((Explorer) pawnToMove).move(saveHexa.getBoat(), hex);
                     } else if(destination == hex.getBoat()) {
                     	// A modifier avec monter sur bateau
                     	((Explorer) pawnToMove).move(saveHexa, hex.getBoat(), hex);
@@ -599,7 +605,6 @@ public class Game {
                     destination = null;                  
                     if(getCurrentPlayer().getMoveLeft() == 0) {
     					nextActionTurn();
-    					getCurrentPlayer().resetMovePointExplorer();
     				}
             	}
             }
@@ -746,4 +751,15 @@ public class Game {
             }
         }
     }
+    
+    private void resetMovePointBoat() {
+		for (int i = 0; i < 13; i++) {
+			for (int j = 0; j < 12; j++) {
+				Hexagon[][] hexagons = board.getHexagons();
+				if(hexagons[i][j].getBoat() != null) {
+					hexagons[i][j].getBoat().setMovePoint(3);
+				}
+			}
+		}
+	}
 }

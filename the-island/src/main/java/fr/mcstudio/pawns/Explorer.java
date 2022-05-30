@@ -198,6 +198,7 @@ public class Explorer extends Pawn {
                     this.status = ExplorerStatus.DEAD;
                 } else {
                     this.status = ExplorerStatus.SWIMMER;
+                    this.setMovePoint(1);
                     newPosition.addPawn(this);
                 }
                 break;
