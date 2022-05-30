@@ -107,16 +107,16 @@ public class Game {
         contentPane.add(actionInfo);
         actionInfoClickAction();
 
-        board.getHexagons()[1][1].getSeaSnakeList().add(new SeaSnake());
-        board.getHexagons()[1][1].displayPawns();
-        board.getHexagons()[2][10].getSeaSnakeList().add(new SeaSnake());
-        board.getHexagons()[2][10].displayPawns();
-        board.getHexagons()[10][0].getSeaSnakeList().add(new SeaSnake());
-        board.getHexagons()[10][0].displayPawns();
-        board.getHexagons()[11][10].getSeaSnakeList().add(new SeaSnake());
-        board.getHexagons()[11][10].displayPawns();
-        board.getHexagons()[6][5].getSeaSnakeList().add(new SeaSnake());
-        board.getHexagons()[6][5].displayPawns();
+        board.getHexagons()[1][1].getSeaSnakeList().add(new SeaSnake(board));
+        board.getHexagons()[1][1].displayPawns(board);
+        board.getHexagons()[2][10].getSeaSnakeList().add(new SeaSnake(board));
+        board.getHexagons()[2][10].displayPawns(board);
+        board.getHexagons()[10][0].getSeaSnakeList().add(new SeaSnake(board));
+        board.getHexagons()[10][0].displayPawns(board);
+        board.getHexagons()[11][10].getSeaSnakeList().add(new SeaSnake(board));
+        board.getHexagons()[11][10].displayPawns(board);
+        board.getHexagons()[6][5].getSeaSnakeList().add(new SeaSnake(board));
+        board.getHexagons()[6][5].displayPawns(board);
     }
 
     /**
@@ -171,9 +171,9 @@ public class Game {
 
                                             if (exit == players.length) {
 
-                                                Shark s = new Shark();
-                                                Whale w = new Whale();
-                                                SeaSnake ss = new SeaSnake();
+                                                Shark s = new Shark(board);
+                                                Whale w = new Whale(board);
+                                                SeaSnake ss = new SeaSnake(board);
                                                 Boat b = new Boat();
                                                 b.createImage(resolution);
                                                 //hex.addPawn(s);
@@ -185,7 +185,7 @@ public class Game {
                                             }
                                         }
 
-                                        hex.displayPawns();
+                                        hex.displayPawns(board);
 
                                     } else if (gameState == GameState.PLAYING) {
                                         inGame(hex);
@@ -661,7 +661,7 @@ public class Game {
                             p.getLeft().setHighlight(resolution, board, false, null);
                         }
                         hexagonTripletList.clear();
-                        saveHexa.displayPawns();
+                        saveHexa.displayPawns(board);
                         firstClic = true;
                         saveHexa = null;
                         pawnToMove = null;
@@ -769,7 +769,7 @@ public class Game {
 	                        p.getLeft().setHighlight(resolution, board, false, null);
 	                    }
 	                    hexagonTripletList.clear();
-	                    saveHexa.displayPawns();
+	                    saveHexa.displayPawns(board);
 	                    firstClic = true;
 	                    saveHexa = null;
 	                    pawnToMove = null;
@@ -792,7 +792,7 @@ public class Game {
         // players[turnOrder].getPseudo());
         // System.out.println(actionTurn + "\n");
 
-        if(hex != null) hex.displayPawns();
+        if(hex != null) hex.displayPawns(board);
     }
 
     /**
