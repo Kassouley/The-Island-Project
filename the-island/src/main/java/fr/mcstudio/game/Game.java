@@ -140,7 +140,9 @@ public class Game {
             public void mousePressed(MouseEvent e) {
 
                 if (SwingUtilities.isLeftMouseButton(e)) {
-
+                	if(board.isDisplayExternalPanel()) {
+                		
+                	}
                     for (int i = 0; i < 13; i++) {
                         for (int j = 0; j < 12; j++) {
                             Hexagon hex = board.getHexagons()[i][j];
