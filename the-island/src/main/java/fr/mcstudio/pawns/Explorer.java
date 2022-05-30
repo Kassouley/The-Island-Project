@@ -240,36 +240,39 @@ public class Explorer extends Pawn {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
         tmp.add(actualPosition);
         hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.BOAT));
-        for (int i = 1; i <= distance; i++) {
-            for (Hexagon hexagon : tmp) {
-                this.findPathAux(hexagon, board, hexagonTripletList, i);
-            }
-            
-            List<Hexagon> mem = new ArrayList<Hexagon>();
-            List<Hexagon> hexagonList = hexagonTripletList.getLeftList();
-            mem.addAll(tmp);
 
-            tmp.clear();
-            for (Hexagon hexagon : hexagonList) {
-                int index = hexagonList.indexOf(hexagon);
-                if ((this.getStatus() == ExplorerStatus.SWIMMER
-                        || hexagon.getType() != HexagonType.SEA)
-                        && hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
-                        
-                    tmp.add(hexagon);
+        if (this.getStatus() != ExplorerStatus.ONBOAT) {
+            for (int i = 1; i <= distance; i++) {
+                for (Hexagon hexagon : tmp) {
+                    this.findPathAux(hexagon, board, hexagonTripletList, i);
                 }
-            }
-
-            for (Hexagon hexagon : mem) {
-                if (tmp.contains(hexagon)) {
-                    tmp.remove(hexagon);
+                
+                List<Hexagon> mem = new ArrayList<Hexagon>();
+                List<Hexagon> hexagonList = hexagonTripletList.getLeftList();
+                mem.addAll(tmp);
+    
+                tmp.clear();
+                for (Hexagon hexagon : hexagonList) {
+                    int index = hexagonList.indexOf(hexagon);
+                    if ((this.getStatus() == ExplorerStatus.SWIMMER
+                            || hexagon.getType() != HexagonType.SEA)
+                            && hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
+                            
+                        tmp.add(hexagon);
+                    }
+                }
+    
+                for (Hexagon hexagon : mem) {
+                    if (tmp.contains(hexagon)) {
+                        tmp.remove(hexagon);
+                    }
                 }
             }
         }
 
         if (actualPosition.getBoat() != null) {
             if (actualPosition.getBoat().getExplorerList().contains(this)) {
-                if (!actualPosition.getWhaleList().isEmpty()
+                if (!actualPosition.getSharkList().isEmpty()
                         || !actualPosition.getSeaSnakeList().isEmpty()) {
                     hexagonTripletList.remove(0);
                     hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.DEATH));
@@ -283,6 +286,10 @@ public class Explorer extends Pawn {
                             || !actualPosition.getSeaSnakeList().isEmpty()) {
                         hexagonTripletList.remove(0);
                         hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.DEATH));
+                    } else {
+                        if (distance < 1) {
+                            hexagonTripletList.remove(0);
+                        }
                     }
                 } else {
                     hexagonTripletList.remove(0);
