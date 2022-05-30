@@ -468,7 +468,7 @@ public class Game {
             if(hex.nbExplorerColor(getCurrentPlayer().getColor()) + 
             		(hex.getBoat() != null 
             		&& hex.getBoat().isOwnedBy(getCurrentPlayer())?1:0) == 1) {
-            	if(hex.getBoat() != null) {
+            	if(hex.getBoat() != null && hex.getBoat().isOwnedBy(getCurrentPlayer())) {
             		pawnToMove = hex.getBoat();
             	}
             	else {
