@@ -12,18 +12,17 @@
 
 package fr.mcstudio.pawns;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
-import java.awt.Image;
+import javax.swing.ImageIcon;
 
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonListType;
-import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
@@ -126,30 +125,25 @@ public class Explorer extends Pawn {
      */
     public void move(Hexagon oldPosition, Hexagon newPosition) {
         oldPosition.removePawn(this);
-        switch (newPosition.getType()) {
-            case TILES:
-                this.status = ExplorerStatus.NORMAL;
-                this.setMovePoint(3);
-                newPosition.addPawn(this);
-                break;
-            case SEA:
-                this.status = ExplorerStatus.SWIMMER;
-                this.setMovePoint(1);
-                newPosition.addPawn(this);
-                
-                if (!newPosition.getSeaSnakeList().isEmpty()) {
-                    newPosition.getSeaSnakeList().get(0).makeEffect(newPosition);
-                } else if (!newPosition.getSharkList().isEmpty()) {
-                    newPosition.getSharkList().get(0).makeEffect(newPosition);
-                }
-                break;
-            case ISLAND:
-                this.status = ExplorerStatus.SAVED;
-                newPosition.addPawn(this);
-                break;
-            default:
-                System.out.println("Error : Hexagon type doesn't set.");
-                break;
+        if(newPosition.isTiles()) {
+        	this.status = ExplorerStatus.NORMAL;
+            this.setMovePoint(3);
+            newPosition.addPawn(this);
+        } else if(newPosition.isSea()) {
+        	this.status = ExplorerStatus.SWIMMER;
+            this.setMovePoint(1);
+            newPosition.addPawn(this);
+            
+            if (!newPosition.getSeaSnakeList().isEmpty()) {
+                newPosition.getSeaSnakeList().get(0).makeEffect(newPosition);
+            } else if (!newPosition.getSharkList().isEmpty()) {
+                newPosition.getSharkList().get(0).makeEffect(newPosition);
+            }
+        } else if(newPosition.isIsland()) {
+        	this.status = ExplorerStatus.SAVED;
+            newPosition.addPawn(this);
+        } else {
+            System.out.println("Error : Hexagon type doesn't set.");
         }
     }
 
@@ -187,27 +181,22 @@ public class Explorer extends Pawn {
      */
     public void move(Boat boat, Hexagon newPosition) {
         boat.removeExplorer(this);
-        switch (newPosition.getType()) {
-            case TILES:
-                // Move impossible
-                this.status = ExplorerStatus.NORMAL;
-                newPosition.addPawn(this);
-                break;
-            case SEA:
-                if (!newPosition.getSharkList().isEmpty()) {
-                    this.status = ExplorerStatus.DEAD;
-                } else {
-                    this.status = ExplorerStatus.SWIMMER;
-                    newPosition.addPawn(this);
-                }
-                break;
-            case ISLAND:
-                this.status = ExplorerStatus.SAVED;
-                newPosition.addPawn(this);
-                break;
-            default:
-                System.out.println("Error : Hexagon type doesn't set.");
-                break;
+        if(newPosition.isTiles()) {
+        	// Move impossible
+            this.status = ExplorerStatus.NORMAL;
+            newPosition.addPawn(this);
+        } else if(newPosition.isSea()) {
+        	 if (!newPosition.getSharkList().isEmpty()) {
+                 this.status = ExplorerStatus.DEAD;
+             } else {
+                 this.status = ExplorerStatus.SWIMMER;
+                 newPosition.addPawn(this);
+             }
+        } else if(newPosition.isIsland()) {
+        	this.status = ExplorerStatus.SAVED;
+            newPosition.addPawn(this);
+        } else {
+            System.out.println("Error : Hexagon type doesn't set.");
         }
     }
 
@@ -253,7 +242,7 @@ public class Explorer extends Pawn {
             for (Hexagon hexagon : hexagonList) {
                 int index = hexagonList.indexOf(hexagon);
                 if ((this.getStatus() == ExplorerStatus.SWIMMER
-                        || hexagon.getType() != HexagonType.SEA)
+                        || !hexagon.isSea())
                         && hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
                         
                     tmp.add(hexagon);
@@ -317,12 +306,12 @@ public class Explorer extends Pawn {
                         } else {
                             hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.BOAT));
                         }
-                    } else if (hexagon.getType() != HexagonType.SEA) {
+                    } else if (!hexagon.isSea()) {
                         hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.NORMAL));
                     }
                 } else {
                     if (hexagon.getBoat() != null && !hexagon.getBoat().isFull()
-                            && actualPosition.getType() != HexagonType.SEA) {
+                            && !actualPosition.isSea()) {
                         hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.BOAT));
                     } else {
                         if (hexagon.getSharkList().isEmpty()

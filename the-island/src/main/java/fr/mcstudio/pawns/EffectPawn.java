@@ -15,7 +15,6 @@ package fr.mcstudio.pawns;
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.HexagonListType;
-import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
@@ -79,7 +78,7 @@ public class EffectPawn extends Pawn {
                         && hexagons[i][j].getWhaleList().isEmpty()
                         && hexagons[i][j].getSeaSnakeList().isEmpty()
                         && hexagons[i][j].getBoat() == null
-                        && hexagons[i][j].getType() == HexagonType.SEA) {
+                        && hexagons[i][j].isSea()) {
                 		
                             
                     hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagons[i][j], 1, HexagonListType.NORMAL));

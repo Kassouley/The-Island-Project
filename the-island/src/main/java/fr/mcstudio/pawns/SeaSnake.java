@@ -21,7 +21,6 @@ import fr.mcstudio.enums.AnimationType;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.ExternalPanelState;
 import fr.mcstudio.enums.HexagonListType;
-import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
@@ -92,7 +91,7 @@ public class SeaSnake extends EffectPawn {
         for (Hexagon hexagon : tmp) {
             if (hexagon != null
                     && !hexagonTripletList.containsInTriplet(hexagon)
-                    && hexagon.getType() == HexagonType.SEA) {
+                    && hexagon.isSea()) {
                 
                 if (!hexagon.getExplorerList().isEmpty()
                         && hexagon.getBoat() != null && !hexagon.getBoat().isEmpty()) {

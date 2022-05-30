@@ -12,19 +12,16 @@ import fr.mcstudio.board.ActionInfo;
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.board.PlayerInfo;
+import fr.mcstudio.board.Tile;
 import fr.mcstudio.enums.ActionTurn;
 import fr.mcstudio.enums.ExternalPanelState;
 import fr.mcstudio.enums.GameState;
 import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.enums.PawnType;
 import fr.mcstudio.enums.TilesType;
-import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
-import fr.mcstudio.pawns.Shark;
-import fr.mcstudio.pawns.Whale;
-import fr.mcstudio.tiles.Tile;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
@@ -171,15 +168,15 @@ public class Game {
 
                                             if (exit == players.length) {
 
-                                                Shark s = new Shark(board);
+                                                /*Shark s = new Shark(board);
                                                 Whale w = new Whale(board);
                                                 SeaSnake ss = new SeaSnake(board);
                                                 Boat b = new Boat();
                                                 b.createImage(resolution);
-                                                //hex.addPawn(s);
-                                                //hex.addPawn(w);
-                                                //hex.addPawn(ss);
-                                                //hex.addPawn(b);
+                                                hex.addPawn(s);
+                                                hex.addPawn(w);
+                                                hex.addPawn(ss);
+                                                hex.addPawn(b);*/
                                                 gameState = GameState.PLAYING;
                                                 turnNumber = 0;
                                             }

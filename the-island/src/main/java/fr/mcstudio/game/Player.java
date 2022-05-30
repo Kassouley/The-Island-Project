@@ -17,10 +17,10 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import fr.mcstudio.board.Tile;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.pawns.Explorer;
-import fr.mcstudio.tiles.Tile;
 
 /**
  * <p>

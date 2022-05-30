@@ -13,106 +13,167 @@ import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.game.Game;
-import fr.mcstudio.tiles.Tile;
 
 @SuppressWarnings("serial")
 public class Board extends JLayeredPane{
-	private Hexagon[][] hexagons = new Hexagon[13][12];
+	
+	public Board(Game game, final int resolution) {
+		super();
+		this.game = game;
+		this.resolution = resolution;
 
-	public Hexagon[][] getHexagons() {
-		return hexagons;
+		setPanelBoundsFromResolution();
+		setLabel();
+		createBoard();
+		
+		externalPanel = new ExternalPanel(this, resolution);
+
+		
 	}
+	
 
+	private Game game;
+	
+	private int resolution;
+	
 	private JLabel boardLabel = new JLabel();
+
+	private ExternalPanel externalPanel;
+	private boolean displayExternalPanel = false;
+	
+	private int nbLine = 13;
+	private int nbColumn = 12;
+	private Hexagon[][] hexagons = new Hexagon[nbLine][nbColumn];
 	
 	private int nbBeach = 16;
 	private int nbForest = 16;
 	private int nbMountains = 8;
-
-	public int getNbBeach() {
-		return nbBeach;
+	
+	public Game getGame() {
+		
+		return game;
 	}
-
-	public int getNbForest() {
-		return nbForest;
-	}
-
-	public int getNbMountains() {
-		return nbMountains;
-	}
-
-	public void decreaseNbTile(TilesType type) {
-		switch(type) {
-			case BEACH:
-				this.nbBeach --;
+	
+	private void setPanelBoundsFromResolution() {
+		
+		switch (resolution) {
+			case 70:
+				setBounds(217, 0, 955, 770);
 				break;
-			case FOREST:
-				this.nbForest --;
+			case 80:
+				setBounds(248, 0, 1090, 880);
 				break;
-			case MOUNTAINS:
-				this.nbMountains --;
+			case 90:
+				setBounds(282, 0, 1230, 990);
+				break;
+			default:
 				break;
 		}
 	}
 	
-	private Game game;
+	private void setLabel() {
+		
+		ImageIcon icone = new ImageIcon(Board.class
+				.getResource("/Map_90.png"));
+		Image scaleImage = icone.getImage()
+				.getScaledInstance(getWidth(), getHeight(), 
+						Image.SCALE_SMOOTH);
+		icone.setImage(scaleImage);
+		boardLabel.setIcon(icone);
+		boardLabel.setBounds(0, 0, getWidth(), getHeight());
+		setLayer(boardLabel, 0);
+		add(boardLabel);
+	}
 	
-	private ExternalPanel externalPanel;
-	
-	private boolean displayExternalPanel = false;
 
 	public ExternalPanel getExternalPanel() {
+		
 		return externalPanel;
 	}
-
-	public Board(Game game, final int resolution) {
-		super();
-		this.game = game;
-		setLayer(boardLabel, 0);
-		setPanelBoundsFromResolution(resolution);
-		setLabel();
-		add(boardLabel);
+	
+	public boolean isDisplayExternalPanel() {
 		
-		externalPanel = new ExternalPanel(this, resolution);
+		return displayExternalPanel;
+	}
 
+	public void setDisplayExternalPanel(boolean displayExternalPanel) {
+		
+		this.displayExternalPanel = displayExternalPanel;
+	}
+	
+
+	
+	private void createBoard() {
+		
 		List<Tile> tilesList = CreateTiles(resolution);
+		
 		Random r = new Random();
-		for (int i = 0; i < 13; i++) {
-			for (int j = 0; j < 12; j++) {
+		
+		for (int i = 0; i < nbLine; i++) {
+			for (int j = 0; j < nbColumn; j++) {
+
 				hexagons[i][j] = new Hexagon(this, i, j, resolution);
-				if (isInMapBound(i,j)) {
-
-					if ((((i > 2 && j > 3 && i < 10 && j < 8)
-							|| (i > 4 && j > 1 && i < 8 && j < 10
-							&& (i != 6 || j != 9)))
-							&& (i != 6 || j != 5))
-							|| (i == 4 && j == 3)
-							|| (i == 8 && j == 3)) {
-						int n = r.nextInt(tilesList.size());
-						hexagons[i][j].setTile(tilesList.get(n));
-						tilesList.remove(n);
+				if (isInMapBound(i, j)) {
+					
+					if (isInIslandBounds(i, j)) {
+						
+						int randomTile = r.nextInt(tilesList.size());
+						hexagons[i][j].setTile(tilesList
+								.get(randomTile));
+						tilesList.remove(randomTile);
+						
 						hexagons[i][j].setType(HexagonType.TILES);
-						hexagons[i][j].getTile().getTypeLabel().setBounds(0, 0, 
-								resolution, resolution);
-						hexagons[i][j].add(hexagons[i][j].getTile().getTypeLabel());
+						hexagons[i][j].getTile()
+								.getTypeLabel()
+								.setBounds(0, 0, resolution, resolution);
+						hexagons[i][j].add(hexagons[i][j]
+								.getTile()
+								.getTypeLabel());
 
-					} else if (i == 1 && j == 0 || i == 1 && j == 11 ||
-							i == 11 && j == 0 || i == 11 && j == 11) {
+					} else if (isInEscapeBounds(i, j)) {
+						
 						hexagons[i][j].setType(HexagonType.ISLAND);
+						
 					} else {
+						
 						hexagons[i][j].setType(HexagonType.SEA);
+						
 					}
 				} else {
+					
 					hexagons[i][j].setType(HexagonType.VOID);
+					
 				}
 			}
 		}
+		
+	}
+	
+
+	public int getNbLine() {
+		
+		return nbLine;
+		
 	}
 
+	public int getNbColumn() {
+		
+		return nbColumn;
+		
+	}
+
+	public Hexagon[][] getHexagons() {
+		
+		return hexagons;
+		
+	}
+	
 	private List<Tile> CreateTiles(int resolution) {
+		
 		List<Tile> tiles = new ArrayList<Tile>();
 
-		for (int i = 0; i < 16; i++) {
+		for (int i = 0; i < nbBeach; i++) {
+			
 			Tile tile = new Tile(resolution);
 			tile.setType(TilesType.BEACH);
 			if (i < 3) {
@@ -136,7 +197,9 @@ public class Board extends JLayeredPane{
 			}
 			tiles.add(tile);
 		}
-		for (int i = 0; i < 16; i++) {
+		
+		for (int i = 0; i < nbForest; i++) {
+			
 			Tile tile = new Tile(resolution);
 			tile.setType(TilesType.FOREST);
 			if (i < 2) {
@@ -162,7 +225,9 @@ public class Board extends JLayeredPane{
 			}
 			tiles.add(tile);
 		}
-		for (int i = 0; i < 8; i++) {
+		
+		for (int i = 0; i < nbMountains; i++) {
+			
 			Tile tile = new Tile(resolution);
 			tile.setType(TilesType.MOUNTAINS);
 			if (i < 4) {
@@ -178,35 +243,47 @@ public class Board extends JLayeredPane{
 			}
 			tiles.add(tile);
 		}
-		return tiles;
-	}
-
-	private void setPanelBoundsFromResolution(int resolution) {
 		
-		switch (resolution) {
-			case 70:
-				setBounds(217, 0, 955, 770);
-				break;
-			case 80:
-				setBounds(248, 0, 1090, 880);
-				break;
-			case 90:
-				setBounds(282, 0, 1230, 990);
-				break;
-			default:
-				break;
-		}
+		return tiles;
+		
 	}
 	
-	private void setLabel() {
-		ImageIcon icone = new ImageIcon(Board.class.getResource("/Map_90.png"));
-		Image scaleImage = icone.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);;
-		icone.setImage(scaleImage);
-		boardLabel.setIcon(icone);
-		boardLabel.setBounds(0, 0, getWidth(), getHeight());
+	public int getNbBeach() {
+		
+		return nbBeach;
+		
+	}
+
+	public int getNbForest() {
+		
+		return nbForest;
+		
+	}
+
+	public int getNbMountains() {
+		
+		return nbMountains;
+		
+	}
+
+	public void decreaseNbTile(TilesType type) {
+		
+		switch(type) {
+			case BEACH:
+				this.nbBeach --;
+				break;
+			case FOREST:
+				this.nbForest --;
+				break;
+			case MOUNTAINS:
+				this.nbMountains --;
+				break;
+		}
+		
 	}
 	
 	public boolean isInMapBound(int line, int column) {
+		
 		if (((line != 0 || column != 0)
 				&& (line != 1 || column != 0)
 				&& (line != 3 || column != 0)
@@ -227,174 +304,258 @@ public class Board extends JLayeredPane{
 				|| line == 1 && column == 11 
 				|| line == 11 && column == 0 
 				|| line == 11 && column == 11) {
+			
 			return true;
 		}
 		
 		return false;
+		
+	}
+	
+	public boolean isInIslandBounds(int line, int column) {
+		
+		if ((((line > 2 && column > 3 
+				&& line < 10 && column < 8)
+				|| (line > 4 && column > 1 
+				&& line < 8 && column < 10
+				&& (line != 6 || column != 9)))
+				&& (line != 6 || column != 5))
+				|| (line == 4 && column == 3)
+				|| (line == 8 && column == 3)){
+			
+			return true;
+		}
+		
+		return false;
+		
+	}
+	
+	public boolean isInEscapeBounds(int line, int column) {
+		
+		if (line == 1 && column == 0 
+				|| line == 1 && column == 11 
+				|| line == 11 && column == 0 
+				|| line == 11 && column == 11){
+			
+			return true;
+		}
+		
+		return false;
+		
 	}
 
 	public Hexagon getTopLeft(Hexagon actualHexagon) {
+		
 		if (actualHexagon.getLine() - 1 >= 0 
 				&& actualHexagon.getLine() % 2 == 0 
 				&& isInMapBound(actualHexagon.getLine() - 1, 
 						actualHexagon.getColumn())) {
+			
 			return this.getHexagons()[actualHexagon.getLine() - 1]
 					[actualHexagon.getColumn()];
+			
 		} else if (actualHexagon.getLine() - 1 >= 0
 				&& actualHexagon.getColumn() - 1 >= 0
 				&& actualHexagon.getLine() % 2 == 1
 				&& isInMapBound(actualHexagon.getLine() - 1, 
 						actualHexagon.getColumn() - 1)) {
+			
 			return this.getHexagons()[actualHexagon.getLine() - 1]
 					[actualHexagon.getColumn() - 1];
+			
 		} else {
+			
 			return null;
 		}
+		
 	}
 
 	public Hexagon getTopRight(Hexagon actualHexagon) {
+		
 		if (actualHexagon.getLine() - 1 >= 0
 				&& actualHexagon.getColumn() + 1 < 12
 				&& actualHexagon.getLine() % 2 == 0
 				&& isInMapBound(actualHexagon.getLine() - 1, 
 						actualHexagon.getColumn() + 1)) {
-			return this.getHexagons()[actualHexagon.getLine() - 1][actualHexagon.getColumn() + 1];
+			
+			return this.getHexagons()[actualHexagon.getLine() - 1]
+					[actualHexagon.getColumn() + 1];
+			
 		} else if (actualHexagon.getLine() - 1 >= 0 
 				&& actualHexagon.getLine() % 2 == 1
 				&& isInMapBound(actualHexagon.getLine() - 1, 
 						actualHexagon.getColumn())) {
-			return this.getHexagons()[actualHexagon.getLine() - 1][actualHexagon.getColumn()];
+			
+			return this.getHexagons()[actualHexagon.getLine() - 1]
+					[actualHexagon.getColumn()];
+			
 		} else {
+			
 			return null;
 		}
+		
 	}
 
 	public Hexagon getLeft(Hexagon actualHexagon) {
+		
 		if (actualHexagon.getColumn() - 1 >= 0 
 				&& isInMapBound(actualHexagon.getLine(), 
 						actualHexagon.getColumn() - 1)) {
-			return this.getHexagons()[actualHexagon.getLine()][actualHexagon.getColumn() - 1];
+			
+			return this.getHexagons()[actualHexagon.getLine()]
+					[actualHexagon.getColumn() - 1];
+			
 		} else {
+			
 			return null;
 		}
+		
 	}
 
 	public Hexagon getRight(Hexagon actualHexagon) {
+		
 		if (actualHexagon.getColumn() + 1 < 12
 				&& isInMapBound(actualHexagon.getLine(), 
 						actualHexagon.getColumn() + 1)) {
-			return this.getHexagons()[actualHexagon.getLine()][actualHexagon.getColumn() + 1];
+			
+			return this.getHexagons()[actualHexagon.getLine()]
+					[actualHexagon.getColumn() + 1];
+			
 		} else {
+			
 			return null;
 		}
+		
 	}
 
 	public Hexagon getBottomLeft(Hexagon actualHexagon) {
+		
 		if (actualHexagon.getLine() + 1 < 13 
 				&& actualHexagon.getLine() % 2 == 0
 				&& isInMapBound(actualHexagon.getLine() + 1, 
 						actualHexagon.getColumn())) {
-			return this.getHexagons()[actualHexagon.getLine() + 1][actualHexagon.getColumn()];
+			
+			return this.getHexagons()[actualHexagon.getLine() + 1]
+					[actualHexagon.getColumn()];
+			
 		} else if (actualHexagon.getLine() + 1 < 13
 				&& actualHexagon.getColumn() - 1 >= 0
 				&& actualHexagon.getLine() % 2 == 1
 				&& isInMapBound(actualHexagon.getLine() + 1, 
 						actualHexagon.getColumn() - 1)) {
-			return this.getHexagons()[actualHexagon.getLine() + 1][actualHexagon.getColumn() - 1];
+			
+			return this.getHexagons()[actualHexagon.getLine() + 1]
+					[actualHexagon.getColumn() - 1];
+			
 		} else {
+			
 			return null;
 		}
+		
 	}
 
 	public Hexagon getBottomRight(Hexagon actualHexagon) {
+		
 		if (actualHexagon.getLine() + 1 < 13
 				&& actualHexagon.getColumn() + 1 < 12
 				&& actualHexagon.getLine() % 2 == 0
 				&& isInMapBound(actualHexagon.getLine() + 1, 
 						actualHexagon.getColumn() + 1)) {
-			return this.getHexagons()[actualHexagon.getLine() + 1][actualHexagon.getColumn() + 1];
+			
+			return this.getHexagons()[actualHexagon.getLine() + 1]
+					[actualHexagon.getColumn() + 1];
+			
 		} else if (actualHexagon.getLine() + 1 < 13 
 				&& actualHexagon.getLine() % 2 == 1
 				&& isInMapBound(actualHexagon.getLine() + 1, 
 						actualHexagon.getColumn())) {
-			return this.getHexagons()[actualHexagon.getLine() + 1][actualHexagon.getColumn()];
+			
+			return this.getHexagons()[actualHexagon.getLine() + 1]
+					[actualHexagon.getColumn()];
+			
 		} else {
+			
 			return null;
 		}
+		
 	}
 	
 	public boolean isNextToSea(Hexagon actualHexagon) {
+		
 		if(getTopLeft(actualHexagon).isSea()
 				|| getTopRight(actualHexagon).isSea()
 				|| getLeft(actualHexagon).isSea()
 				|| getRight(actualHexagon).isSea()
 				|| getBottomLeft(actualHexagon).isSea()
-				|| getBottomRight(actualHexagon).isSea())
+				|| getBottomRight(actualHexagon).isSea()) {
+
 			return true;
+		}
 		
 		return false;
+		
 	}
 	
-	public boolean canRemoveOutOfSea(Hexagon actualHexagon, TilesType tilesType) {
+	public boolean canRemoveOutOfSea(Hexagon actualHexagon
+			, TilesType tilesType) {
+		
 		for (int i = 0; i < 13; i++) {
 			for (int j = 0; j < 12; j++) {
 				Hexagon hex = this.getHexagons()[i][j];
-				if(hex.getTile() != null && hex.getTile().getType() == tilesType) {
+				if(hex.getTile() != null 
+						&& hex.getTile().getType() == tilesType) {
 					if(isNextToSea(hex)) {
+						
 						return false;
 					}
 				}
 			}
 		}
+		
 		return true;
+		
 	}
 
-	public Board getBoard() {
-		return this;
-	}
-	
 	public boolean isSharkOnBoard() {
 		for (int i = 0; i < 13; i++) {
 			for (int j = 0; j < 12; j++) {
-				if(this.getHexagons()[i][j].getSharkList().size() > 0)
+				if(this.getHexagons()[i][j].getSharkList().size() > 0) {
+
 					return true;
+				}
 			}
 		}
 		
 		return false;
+		
 	}
 	
 	public boolean isWhaleOnBoard() {
 		for (int i = 0; i < 13; i++) {
 			for (int j = 0; j < 12; j++) {
-				if(this.getHexagons()[i][j].getWhaleList().size() > 0)
+				if(this.getHexagons()[i][j].getWhaleList().size() > 0) {
+
 					return true;
+				}
 			}
 		}
 		
 		return false;
+		
 	}
 	
 	public boolean isSeaSnakeOnBoard() {
 		for (int i = 0; i < 13; i++) {
 			for (int j = 0; j < 12; j++) {
-				if(this.getHexagons()[i][j].getSeaSnakeList().size() > 0)
+				if(this.getHexagons()[i][j].getSeaSnakeList().size() > 0) {
+
 					return true;
+				}
 			}
 		}
 		
 		return false;
+		
 	}
-
-	public boolean isDisplayExternalPanel() {
-		return displayExternalPanel;
-	}
-
-	public void setDisplayExternalPanel(boolean displayExternalPanel) {
-		this.displayExternalPanel = displayExternalPanel;
-	}
-
-	public Game getGame() {
-		return game;
-	}
+	
 }

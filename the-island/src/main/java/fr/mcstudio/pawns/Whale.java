@@ -20,7 +20,6 @@ import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.AnimationType;
 import fr.mcstudio.enums.ExternalPanelState;
 import fr.mcstudio.enums.HexagonListType;
-import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
@@ -85,7 +84,7 @@ public class Whale extends EffectPawn {
         for (Hexagon hexagon : tmp) {
             if (hexagon != null
                     && !hexagonTripletList.containsInTriplet(hexagon)
-                    && hexagon.getType() == HexagonType.SEA) {
+                    && hexagon.isSea()) {
                 
                 if (hexagon.getBoat() != null && !hexagon.getBoat().isEmpty()) {
                     hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.DEATH));

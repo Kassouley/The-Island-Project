@@ -1,5 +1,5 @@
 
-package fr.mcstudio.tiles;
+package fr.mcstudio.board;
 
 import java.awt.Image;
 import java.util.ArrayList;
@@ -8,10 +8,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.SwingConstants;
 
-import fr.mcstudio.board.Board;
-import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.AnimationType;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.ExternalPanelState;
@@ -28,32 +25,37 @@ import fr.mcstudio.pawns.Whale;
  */
 @SuppressWarnings("serial")
 public class Tile extends JLayeredPane {
-
-	private TilesType type = null;
-	private TilesEffect effect = null;
-	private int resolution;
-	private JLabel typeLabel = new JLabel();
-	private JLabel effectLabel = new JLabel();
-
+	
 	/**
 	 * Default constructor
 	 */
 	public Tile(int resolution) {
+		super();
 		this.resolution = resolution;
-		this.typeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 	}
+
+	private int resolution;
+	
+	private TilesType type = null;
+	private TilesEffect effect = null;
+	private JLabel typeLabel = new JLabel();
+	private JLabel effectLabel = new JLabel();
+
 
 	/**
 	* 
 	*/
 	public TilesType getType() {
+		
 			return this.type;
+			
 	}
 
 	/**
 	* 
 	*/
 	public void setType(TilesType type) {
+		
 		ImageIcon icone = null;
 		Image scaleImage;
 		this.type = type;
@@ -65,71 +67,106 @@ public class Tile extends JLayeredPane {
 			icone = new ImageIcon(Tile.class.getResource("/Montagne.png"));
 		}
 		
-		scaleImage = icone.getImage().getScaledInstance(resolution, resolution,Image.SCALE_SMOOTH);
+		scaleImage = icone.getImage().getScaledInstance(resolution, 
+				resolution, 
+				Image.SCALE_SMOOTH);
+		
 		icone.setImage(scaleImage);
 		
 		this.typeLabel.setIcon(icone);
+		
 	}
 
 	/**
 	* 
 	*/
 	public TilesEffect getEffect() {
+		
 		return this.effect;
+		
 	}
 
 	/**
 	* 
 	*/
 	public void setEffect(TilesEffect effect) {
+		
 		ImageIcon icone = null;
 		Image scaleImage;
 		this.effect = effect;
 		
 		switch(effect) {
 			case BOAT_MOVE:
-				icone = new ImageIcon(Tile.class.getResource("/Bateau_move.png"));
+				icone = new ImageIcon(Tile.class
+						.getResource("/Bateau_move.png"));
 				break;
 			case BOAT:
-				icone = new ImageIcon(Tile.class.getResource("/Bateau.png"));
+				icone = new ImageIcon(Tile.class
+						.getResource("/Bateau.png"));
 				break;
 			case DOLPHIN_MOVE:
-				icone = new ImageIcon(Tile.class.getResource("/Dauphin_move.png"));
+				icone = new ImageIcon(Tile.class
+						.getResource("/Dauphin_move.png"));
 				break;
 			case SEASNAKE_LOST:
-				icone = new ImageIcon(Tile.class.getResource("/Serpent_de_mer.png"));
+				icone = new ImageIcon(Tile.class
+						.getResource("/Serpent_de_mer.png"));
 				break;
 			case SHARK:
-				icone = new ImageIcon(Tile.class.getResource("/Requin.png"));
+				icone = new ImageIcon(Tile.class
+						.getResource("/Requin.png"));
 				break;
 			case SHARK_DEATH:
-				icone = new ImageIcon(Tile.class.getResource("/Requin_mort.png"));
+				icone = new ImageIcon(Tile.class
+						.getResource("/Requin_mort.png"));
 				break;
 			case SHARK_LOST:
-				icone = new ImageIcon(Tile.class.getResource("/Requin_perdu.png"));
+				icone = new ImageIcon(Tile.class
+						.getResource("/Requin_perdu.png"));
 				break;
 			case WHIRLPOOL:
-				icone = new ImageIcon(Tile.class.getResource("/Tourbillon.png"));
+				icone = new ImageIcon(Tile.class
+						.getResource("/Tourbillon.png"));
 				break;
 			case VOLCANO:
-				icone = new ImageIcon(Tile.class.getResource("/Volcan.png"));
+				icone = new ImageIcon(Tile.class
+						.getResource("/Volcan.png"));
 				break;
 			case WHALE:
-				icone = new ImageIcon(Tile.class.getResource("/Baleine.png"));
+				icone = new ImageIcon(Tile.class
+						.getResource("/Baleine.png"));
 				break;
 			case WHALE_DEATH:
-				icone = new ImageIcon(Tile.class.getResource("/Baleine_mort.png"));
+				icone = new ImageIcon(Tile.class
+						.getResource("/Baleine_mort.png"));
 				break;
 			case WHALE_LOST:
-				icone = new ImageIcon(Tile.class.getResource("/Baleine_perdu.png"));
+				icone = new ImageIcon(Tile.class
+						.getResource("/Baleine_perdu.png"));
 				break;
 		}
 		
-		scaleImage = icone.getImage().getScaledInstance(resolution, resolution,Image.SCALE_SMOOTH);
+		scaleImage = icone.getImage().getScaledInstance(resolution, 
+				resolution,
+				Image.SCALE_SMOOTH);
 		icone.setImage(scaleImage);
 		
 		this.effectLabel.setIcon(icone);
+		
 	}
+	
+	public JLabel getTypeLabel() {
+		
+		return typeLabel;
+		
+	}
+
+	public JLabel getEffectLabel() {
+		
+		return effectLabel;
+		
+	}
+	
 
 	/*
 	 * <p>
@@ -138,14 +175,16 @@ public class Tile extends JLayeredPane {
 	 * @since1.0
 	 */
 	public void flipTile(Hexagon hexagon, Player p, Board board) {
+		
 		for(Explorer e : hexagon.getExplorerList()) {
 			e.setStatus(ExplorerStatus.SWIMMER);
 			e.setMovePoint(1);
 		}
+		
 		if(hexagon.getTile().getEffect().getType() == "Verte"){
+			
 			hexagon.getTile().applyEffect(hexagon,board);		  	
-		}
-		else {
+		} else {
 			  p.getTileList().add(hexagon.getTile());
 		}
 		
@@ -163,26 +202,50 @@ public class Tile extends JLayeredPane {
 	 * @since1.0
 	 */
 	public void applyEffect(Hexagon tilePosition,Board board) {
+		
 		System.out.println(this.effect);
 		switch(this.effect) {
-		
-		case BOAT_MOVE : this.boatMoveEffect(board);break;
-		case BOAT : this.boatEffect(tilePosition, board);break;
-		case DOLPHIN_MOVE :this.dolphinMoveEffect(board); break;
-		case SEASNAKE_LOST : this.seasnakeLostEffect();break;
-		case SHARK : this.sharkEffect(tilePosition,board);break;
-		case SHARK_DEATH : this.sharkDeathEffect(tilePosition,board); break;
-		case SHARK_LOST : this.sharkLostEffect(); break;
-		case WHIRLPOOL : this.whirlpoolEffect(tilePosition,board); break;
-		case VOLCANO : this.volcanoEffect(board); break;
-		case WHALE : this.whaleEffect(tilePosition,board); break;
-		case WHALE_DEATH : this.whaleDeathEffect(tilePosition,board);break;
-		case WHALE_LOST :this.whaleLostEffect(); break;
-		default : break;
+		case BOAT_MOVE : 
+			this.boatMoveEffect(board);
+			break;
+		case BOAT : 
+			this.boatEffect(tilePosition, board);
+			break;
+		case DOLPHIN_MOVE :
+			this.dolphinMoveEffect(board); 
+			break;
+		case SEASNAKE_LOST : 
+			this.seasnakeLostEffect();
+			break;
+		case SHARK : 
+			this.sharkEffect(tilePosition,board);
+			break;
+		case SHARK_DEATH :
+			this.sharkDeathEffect(tilePosition,board); 
+			break;
+		case SHARK_LOST : 
+			this.sharkLostEffect(); 
+			break;
+		case WHIRLPOOL : 
+			this.whirlpoolEffect(tilePosition,board); 
+			break;
+		case VOLCANO : 
+			this.volcanoEffect(board); 
+			break;
+		case WHALE : 
+			this.whaleEffect(tilePosition,board); 
+			break;
+		case WHALE_DEATH : 
+			this.whaleDeathEffect(tilePosition,board);
+			break;
+		case WHALE_LOST :
+			this.whaleLostEffect(); 
+			break;
+		default : 
+			break;
 		}
+		
 	}
-	
-	
 	
 	/**
 	 * <p>
@@ -191,9 +254,12 @@ public class Tile extends JLayeredPane {
 	 * </p>
 	 */
 	public void boatMoveEffect(Board board) {
-		board.getExternalPanel().setAnimationType(AnimationType.WIND);
+		
+		board.getExternalPanel()
+				.setAnimationType(AnimationType.WIND);
         board.setDisplayExternalPanel(true);
-        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+        board.getExternalPanel()
+        		.setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
 		//selectionnne un bateau
 		//le de placer de 1 a 3 cases
 	}
@@ -206,13 +272,17 @@ public class Tile extends JLayeredPane {
 	 * @param tilePosition Tuile actuelle
 	 */
 	public void boatEffect(Hexagon tilePosition, Board board) {
-		board.getExternalPanel().setAnimationType(AnimationType.BOAT_SUMMON);
+		
+		board.getExternalPanel()
+				.setAnimationType(AnimationType.BOAT_SUMMON);
         board.setDisplayExternalPanel(true);
-        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+        board.getExternalPanel()
+        		.setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
 		Boat b = new Boat();
         b.setPosition(0, 0, resolution, 68);
         b.createImage(resolution);
 		tilePosition.addPawn(b);
+		
 	}
 	
 	/**
@@ -222,11 +292,15 @@ public class Tile extends JLayeredPane {
 	 * </p>
 	 */
 	public void dolphinMoveEffect(Board board) {
-		board.getExternalPanel().setAnimationType(AnimationType.DOLPHIN_SUMMON);
+		
+		board.getExternalPanel()
+				.setAnimationType(AnimationType.DOLPHIN_SUMMON);
         board.setDisplayExternalPanel(true);
-        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+        board.getExternalPanel()
+        		.setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
 		//selectionnne un nageur
 		//le de placer de 1 a 3 cases
+        
 	}
 	
 	/**
@@ -248,11 +322,15 @@ public class Tile extends JLayeredPane {
 	 * @param tilePosition Tuile actuelle
 	 */
 	public void sharkEffect(Hexagon tilePosition, Board board) {
-		board.getExternalPanel().setAnimationType(AnimationType.SHARK_SUMMON);
+		
+		board.getExternalPanel()
+				.setAnimationType(AnimationType.SHARK_SUMMON);
         board.setDisplayExternalPanel(true);
-        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+        board.getExternalPanel()
+        		.setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
 		Shark s = new Shark(board);
 		tilePosition.addPawn(s);
+		
 	}
 	
 	/**
@@ -263,12 +341,16 @@ public class Tile extends JLayeredPane {
 	 * @param tilePosition Tuile actuelle
 	 */
 	public void sharkDeathEffect(Hexagon tilePosition, Board board) {
-		board.getExternalPanel().setAnimationType(AnimationType.SHARK_COUNTER);
+		
+		board.getExternalPanel()
+				.setAnimationType(AnimationType.SHARK_COUNTER);
         board.setDisplayExternalPanel(true);
-        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+        board.getExternalPanel()
+        		.setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
 		// a changer avec lucas
 		Shark s = new Shark(board);
 		tilePosition.removePawn(s);
+		
 	}
 	
 	/**
@@ -289,19 +371,28 @@ public class Tile extends JLayeredPane {
 	 * </p>
 	 */
 	public void whirlpoolEffect(Hexagon tilePosition,Board board) {
-		board.getExternalPanel().setAnimationType(AnimationType.WHIRLPOOL);
+		
+		board.getExternalPanel()
+				.setAnimationType(AnimationType.WHIRLPOOL);
         board.setDisplayExternalPanel(true);
-        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+        board.getExternalPanel()
+        		.setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
 		Hexagon[][] hexagons = board.getHexagons();
 		List<Hexagon> listNeighbors = new ArrayList<Hexagon>();
 
        
-		listNeighbors = findNeighbors(tilePosition, board);		
+		listNeighbors = tilePosition
+				.getAdjacentSeaHexagons(board);		
 		listNeighbors.add(tilePosition);
 		for(Hexagon hexagon :listNeighbors ) {
-			hexagons[hexagon.getLine()][hexagon.getColumn()].removeAllPawn();
-			hexagons[hexagon.getLine()][hexagon.getColumn()].displayPawns(board);
-		}										
+			hexagons[hexagon.getLine()]
+					[hexagon.getColumn()]
+							.removeAllPawn();
+			hexagons[hexagon.getLine()]
+					[hexagon.getColumn()]
+							.displayPawns(board);
+		}				
+		
 	}
 	
 	/**
@@ -311,10 +402,14 @@ public class Tile extends JLayeredPane {
 	 * </p>
 	 */
 	public void volcanoEffect(Board board) {
-		board.getExternalPanel().setAnimationType(AnimationType.VOLCANO);
+		
+		board.getExternalPanel()
+				.setAnimationType(AnimationType.VOLCANO);
         board.setDisplayExternalPanel(true);
-        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+        board.getExternalPanel()
+        		.setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
 		//endgame
+        
 	}
 	
 	/**
@@ -326,11 +421,15 @@ public class Tile extends JLayeredPane {
 	 * @since1.0
 	 */
 	public void whaleEffect(Hexagon tilePosition, Board board) {
-		board.getExternalPanel().setAnimationType(AnimationType.WHALE_SUMMON);
+		
+		board.getExternalPanel()
+				.setAnimationType(AnimationType.WHALE_SUMMON);
         board.setDisplayExternalPanel(true);
-        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+        board.getExternalPanel()
+        		.setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
 		Whale w = new Whale(board);
 		tilePosition.addPawn(w);	
+		
 	}
 	
 	/**
@@ -342,12 +441,16 @@ public class Tile extends JLayeredPane {
 	 * @since1.0
 	 */
 	public void whaleDeathEffect(Hexagon tilePosition, Board board) {
-		board.getExternalPanel().setAnimationType(AnimationType.WHALE_COUNTER);
+		
+		board.getExternalPanel()
+				.setAnimationType(AnimationType.WHALE_COUNTER);
         board.setDisplayExternalPanel(true);
-        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+        board.getExternalPanel()
+        		.setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
 		//a changer avec lucas
 		Whale w = new Whale(board);
 		tilePosition.removePawn(w);
+		
 	}
 	
 	/**
@@ -362,38 +465,6 @@ public class Tile extends JLayeredPane {
 		//selectionne la case ou on veut la deplacer (mer inoccupÃ©e)
 	}
 
-	/**
-	 * <p>
-	 * Renvoie tous les voisins d'une tuile dans une liste
-	 * </p>
-	 * @since2.0
-	 */
-	public List<Hexagon> findNeighbors(Hexagon actualPosition, Board board) {
-        List<Hexagon> tmp = new ArrayList<Hexagon>();
-        List<Hexagon> listHexagon = new ArrayList<Hexagon>();
-        
-        tmp.add(board.getTopLeft(actualPosition));
-        tmp.add(board.getTopRight(actualPosition));
-        tmp.add(board.getLeft(actualPosition));
-        tmp.add(board.getRight(actualPosition));
-        tmp.add(board.getBottomLeft(actualPosition));
-        tmp.add(board.getBottomRight(actualPosition));
-
-        for (Hexagon hexagon : tmp) {
-            if (hexagon != null
-                   && hexagon.isSea()) {
-                listHexagon.add(hexagon);
-            }
-        }
-		return listHexagon;
-    }
-
-	public JLabel getEffectLabel() {
-		return effectLabel;
-	}
 	
-	public JLabel getTypeLabel() {
-		return typeLabel;
-	}
 	
 }
