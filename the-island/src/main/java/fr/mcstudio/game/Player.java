@@ -317,7 +317,8 @@ public class Player {
         int cmpt = 0;
         for (Explorer e : currentExplorerList) {
             if (e.getStatus() == ExplorerStatus.NORMAL
-                    || e.getStatus() == ExplorerStatus.SWIMMER) {
+                    || e.getStatus() == ExplorerStatus.SWIMMER
+                    || e.getStatus() == ExplorerStatus.ONBOAT) {
                 cmpt++;
             }
         }

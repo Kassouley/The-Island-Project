@@ -463,15 +463,22 @@ public class Game {
      * @param hex
      */
     private void inGameMovePawn(Hexagon hex) {
-    	if (!hex.getExplorerList().isEmpty() && firstClic == true) {
+    	if (hex != null && (!hex.getExplorerList().isEmpty() || hex.getBoat() != null)  && firstClic == true) {
             saveHexa = hex;
-            if(hex.nbExplorerColor(getCurrentPlayer().getColor()) == 1) {
-            	for (Explorer e : hex.getExplorerList()) {
-					if(e.getColor() == getCurrentPlayer().getColor()) {
-						pawnToMove = e;
-						break;
-					}
-				}
+            if(hex.nbExplorerColor(getCurrentPlayer().getColor()) + 
+            		(hex.getBoat() != null 
+            		&& hex.getBoat().isOwnedBy(getCurrentPlayer())?1:0) == 1) {
+            	if(hex.getBoat() != null) {
+            		pawnToMove = hex.getBoat();
+            	}
+            	else {
+                	for (Explorer e : hex.getExplorerList()) {
+    					if(e.getColor() == getCurrentPlayer().getColor()) {
+    						pawnToMove = e;
+    						break;
+    					}
+    				}
+            	}
             }
             
             if (pawnToMove == null) {
@@ -481,7 +488,10 @@ public class Game {
                     board.getExternalPanel().setSelection(null);
                     board.getExternalPanel().setClickedHex(null);
                     inGame(hex);
-                } else if (hex.containsExplorerColor(getCurrentPlayer().getColor())) {
+                } else if (hex.containsExplorerColor(getCurrentPlayer().getColor()) 
+                		|| (hex.getBoat() != null 
+                		&& hex.getBoat().isOwnedBy(getCurrentPlayer()))) {
+                	
                     board.getExternalPanel().setClickedHex(hex);
                     board.setDisplayExternalPanel(true);
                     board.getExternalPanel().setExternalPanelState(ExternalPanelState.PAWNPANEL);
@@ -512,9 +522,14 @@ public class Game {
             }
         } else if (firstClic == false) {
             if (hexagonTripletList.getLeftList().contains(hex)) {
-            	if(hex.getBoat() == null && saveHexa.isTiles()) {
+            	if(hex == saveHexa && hex.isSea() && hex.getBoat() != null) {
+            		destination = hex.getBoat();
+
+                    System.out.println("Je suis jesus");
+            	} else if(hex.getBoat() == null || !saveHexa.isTiles()) {
             		destination = hex;
             	}
+            	
             	if(destination == null 
             			&& (saveHexa.isTiles() 
             			|| (saveHexa.getBoat() != null && saveHexa.getBoat().getExplorerList().contains(pawnToMove))) 
@@ -525,7 +540,6 @@ public class Game {
                         board.getExternalPanel().setClickedHex(null);
                         inGame(hex);
             		} else {
-                        System.out.println("Je suis jesus");
                 		board.getExternalPanel().setClickedHex(hex);
                         board.setDisplayExternalPanel(true);
                         board.getExternalPanel().setExternalPanelState(ExternalPanelState.BOATORSEA);
@@ -581,7 +595,7 @@ public class Game {
      * @param hex
      */
     private void inGameDiscoverTile(Hexagon hex) {
-    	if (hex.getTile() != null) {
+    	if (hex != null && hex.getTile() != null) {
             if ((hex.getTile().getType() == TilesType.BEACH 
                     || (hex.getTile().getType() == TilesType.FOREST
                             && board.getNbBeach() == 0)

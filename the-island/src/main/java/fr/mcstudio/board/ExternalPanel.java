@@ -138,7 +138,7 @@ public class ExternalPanel extends JLayeredPane {
 				setExternalPanelState(ExternalPanelState.VOID);
 				animationType = null;
 				animationPanel.removeAll();
-				board.getGame().inGame(clickedHex);
+				//board.getGame().inGame(clickedHex);
 			}
 
 			public void mouseReleased(MouseEvent e) {
@@ -268,6 +268,14 @@ public class ExternalPanel extends JLayeredPane {
 			Explorer explorer = clickedHex.getExplorerList().get(i);
 			if (board.getGame().getCurrentPlayer().getColor() == explorer.getColor()) {
 				bPairList.add(new Pair<JButton, JLayeredPane>(new JButton(explorer.getImage().getIcon()), explorer));
+			}
+			if((clickedHex.getBoat() != null 
+                	&& clickedHex.getBoat().
+                			isOwnedBy(board.
+                					getGame().
+                					getCurrentPlayer()))) {
+				
+				bPairList.add(new Pair<JButton, JLayeredPane>(new JButton(clickedHex.getBoat().getImage().getIcon()), clickedHex.getBoat()));
 			}
 		}
 		for (int i = 0; i < bPairList.size(); i++) {
