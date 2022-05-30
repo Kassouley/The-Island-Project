@@ -73,16 +73,6 @@ public class Game {
     /**
      * 
      */
-    private int initialTimer;
-
-    /**
-     * 
-     */
-    private int finalTimer;
-
-    /**
-     * 
-     */
     private int turnOrder;
 
     /**
@@ -103,7 +93,7 @@ public class Game {
         contentPane.add(board);
         boardClickAction();
 
-        actionInfo = new ActionInfo(resolution);
+        actionInfo = new ActionInfo(this, resolution);
         contentPane.add(actionInfo);
         actionInfoClickAction();
 
@@ -189,12 +179,15 @@ public class Game {
                                         hex.displayPawns(board);
 
                                     } else if (gameState == GameState.PLAYING) {
-                                        inGame(hex);
+                                        if (actionTurn != ActionTurn.MOVE_MONSTER 
+                                                || board.getExternalPanel().getPawnType() != null) {
+                                            inGame(hex);
+                                        }
                                     } else if (gameState == GameState.ENDING) {
                                         endGame();
                                     }
 
-                                    actionInfo.displayActionInfo(getGame(), resolution);
+                                    actionInfo.displayActionInfo(getGame());
                                     playerInfo.displayPlayerInfo(getGame(), resolution);
                                 }
                             }
@@ -336,6 +329,14 @@ public class Game {
      * 
      */
     public void nextActionTurn() {
+        if (this.actionTurn == ActionTurn.MOVE_MONSTER) {
+            this.turnNumber++;
+        }
+        this.pawnToMove = null;
+        this.destination = null;
+        this.usedTile = null;
+        this.board.getExternalPanel().setPawnType(null);
+
         this.actionTurn = this.actionTurn.next();
         /*
          * if(actionTurn == ActionTurn.PLAY_TILE) {
@@ -389,40 +390,14 @@ public class Game {
         return this.turnNumber / players.length;
     }
 
-    /**
-     * 
-     */
-    public void setInitialTimer(int initialTimer) {
-        this.initialTimer = initialTimer;
+    public Tile getUsedTile(){
+        return this.usedTile;
     }
 
-    /**
-     * 
-     */
-    public int getInitialTimer() {
-        return this.initialTimer;
+    public void setUsedTile(Tile usedTile){
+        this.usedTile = usedTile;
     }
 
-    /**
-     * 
-     */
-    public void setFinalTimer(int finalTimer) {
-        this.finalTimer = finalTimer;
-    }
-
-    /**
-     * 
-     */
-    public int getFinalTimer() {
-        return this.finalTimer;
-    }
-
-    /**
-     * 
-     */
-    public int currentTimer() {
-        return 1;
-    }
 
     /**
      * 
