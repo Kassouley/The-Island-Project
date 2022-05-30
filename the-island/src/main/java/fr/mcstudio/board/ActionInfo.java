@@ -22,8 +22,8 @@ public class ActionInfo extends JLayeredPane {
 	private JLabel actionInfoLabel = new JLabel();
 	private JPanel actionInfoPanel = new JPanel();
 
-	private JLabel actionTitle = new JLabel();
-	private JLabel actionDesc = new JLabel();
+	private JLabel actionTitle = new JLabel("null", SwingConstants.CENTER);
+	private JLabel actionDesc = new JLabel("null", SwingConstants.CENTER);
 
 	private JPanel actionLabel = new JPanel();
 
@@ -32,11 +32,53 @@ public class ActionInfo extends JLayeredPane {
 
 	public ActionInfo(Game game, int resolution) {
 		super();
-		setLayer(this.actionInfoLabel, 0);
+		this.setLayer(this.actionInfoLabel, 0);
 		this.setLayout(null);
-		setPanelBoundsFromResolution(resolution);
-		setLabel();
-		add(this.actionInfoLabel);
+		this.setPanelBoundsFromResolution(resolution);
+		this.setLabel();
+		this.add(this.actionInfoLabel);
+
+		this.actionInfoPanel.setLayout(null);
+		this.actionInfoPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
+		this.actionInfoPanel.setOpaque(false);
+		this.setLayer(actionInfoPanel, 1);
+		this.add(actionInfoPanel);
+
+		Font sizedFont = null;
+		try {
+			InputStream is = ActionInfo.class.getResourceAsStream("/Font/Treasuremap.ttf");
+			Font font = Font.createFont(Font.TRUETYPE_FONT, is);
+			sizedFont = font.deriveFont(15f);
+		} catch (Exception ex) {
+			System.err.println("Not loaded");
+		}
+
+		this.actionTitle.setFont(sizedFont);
+		this.actionTitle.setBounds(
+			0, 
+			32 * resolution / 90, 
+			this.getWidth(), 
+			70 * resolution / 90
+		);
+		this.actionInfoPanel.add(actionTitle);
+
+		this.actionDesc.setFont(sizedFont);
+		this.actionDesc.setBounds(
+			34 * resolution / 90, 
+			150 * resolution / 90, 
+			260 * resolution / 90, 
+			130 * resolution / 90
+		);
+		this.actionInfoPanel.add(actionDesc);
+
+		this.actionLabel.setOpaque(false);
+		this.actionLabel.setBounds(
+			34 * resolution / 90, 
+			290 * resolution / 90, 
+			260 * resolution / 90, 
+			300 * resolution / 90
+		);
+		this.actionInfoPanel.add(this.actionLabel);
 
 		String[] imagePath = {
 				"/SideBar/skipButton.png",
@@ -51,15 +93,6 @@ public class ActionInfo extends JLayeredPane {
 			"/sharkDice.png",
 			"/whaleDice.png"
 		};
-
-		Font sizedFont = null;
-		try {
-			InputStream is = ActionInfo.class.getResourceAsStream("/Font/Treasuremap.ttf");
-			Font font = Font.createFont(Font.TRUETYPE_FONT, is);
-			sizedFont = font.deriveFont(18f);
-		} catch (Exception ex) {
-			System.err.println("Not loaded");
-		}
 
 		ActionListener actionListener = null; 
 
@@ -126,10 +159,7 @@ public class ActionInfo extends JLayeredPane {
 				default:
 					break;
 			}
-
 			button.addActionListener(actionListener);
-
-			
 			buttons.add(button);
 		}
 
@@ -142,25 +172,15 @@ public class ActionInfo extends JLayeredPane {
 
 		}
 
-		this.actionInfoPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 50));
-		this.actionInfoPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
-		this.actionInfoPanel.setOpaque(false);
-		this.setLayer(actionInfoPanel, 1);
-		this.add(actionInfoPanel);
-
-		this.actionTitle.setFont(sizedFont);
-		this.actionTitle.setVerticalAlignment(SwingConstants.CENTER);
-		this.actionTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		this.actionInfoPanel.add(actionTitle);
-
-		this.actionDesc.setFont(sizedFont);
-		this.actionDesc.setVerticalAlignment(SwingConstants.CENTER);
-		this.actionDesc.setHorizontalAlignment(SwingConstants.CENTER);
-		this.actionInfoPanel.add(actionDesc);
-
-		this.actionLabel.setOpaque(false);
-		this.actionInfoPanel.add(this.actionLabel);
-		
+		this.buttons.get(SideBarButton.SKIP).setBounds(
+			0, 635 * resolution / 90, this.getWidth(), 115 * resolution / 90
+		);
+		this.buttons.get(SideBarButton.RULES).setBounds(
+			0, 750 * resolution / 90, this.getWidth(), 115 * resolution / 90
+		);
+		this.buttons.get(SideBarButton.QUIT).setBounds(
+			0, 875 * resolution / 90, this.getWidth(), 115 * resolution / 90
+		);
 		this.actionInfoPanel.add(this.buttons.get(SideBarButton.SKIP));
 		this.actionInfoPanel.add(this.buttons.get(SideBarButton.RULES));
 		this.actionInfoPanel.add(this.buttons.get(SideBarButton.QUIT));
@@ -168,14 +188,24 @@ public class ActionInfo extends JLayeredPane {
 
 	public void displayInitialActionInfo(Game game) {
 		this.actionTitle.setText("<html>Posez vos pions !</html>");
-		this.actionDesc.setText("<html><center>Posez vos 10 pions sur le plateau !</center></html>");
+		this.actionDesc.setText("<html><center>Posez vos 10 pions et 2 bateaux!</center></html>");
 		this.actionLabel.removeAll();
 		this.actionLabel.revalidate();
 		this.actionLabel.repaint();
 		JLabel pawnNumber = new JLabel(
-				"Il vous reste " + game.getCurrentPlayer().getExplorerList().size() + " exploreurs à poser");
-		pawnNumber.setVerticalAlignment(SwingConstants.CENTER);
-		pawnNumber.setHorizontalAlignment(SwingConstants.CENTER);
+			"Il vous reste " 
+			+ game.getCurrentPlayer().getExplorerList().size() 
+			+ " exploreurs et " 
+			+ game.getCurrentPlayer().getBoatToSet().size() 
+			+ " à poser",
+			SwingConstants.CENTER
+		);
+		JLabel pawnValue = new JLabel(
+			"L'exploreur que vous allez poser possède " 
+			+ game.getCurrentPlayer().getExplorerList().get(0).getTreasureValue() 
+			+ " trésors ",
+			SwingConstants.CENTER
+		);
 		actionLabel.add(pawnNumber);
 	}
 
@@ -183,6 +213,7 @@ public class ActionInfo extends JLayeredPane {
 
 		this.actionTitle.setText(game.getActionTurn().getTitle());
 		this.actionDesc.setText(game.getActionTurn().getDesc());
+
 		this.actionLabel.removeAll();
 		this.actionLabel.revalidate();
 		this.actionLabel.repaint();

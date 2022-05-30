@@ -12,13 +12,13 @@ public enum ActionTurn {
     public String getTitle() {
         switch (this) {
             case PLAY_TILE:
-                return "Jouez une tuile !";
+                return "<html><center>Jouez une tuile</center></html>";
             case MOVE_PAWNS:
-                return "Déplacez vos pions !";
+                return "Déplacez vos pions";
             case DISCOVER_TILE:
-                return "Retournez une tuile !";
+                return "Retournez une tuile";
             case MOVE_MONSTER:
-                return "Lancez le dé !";
+                return "Lancez le dé";
             default:
                 break;
         }
@@ -28,7 +28,7 @@ public enum ActionTurn {
     public String getDesc() {
         switch (this) {
             case PLAY_TILE:
-                return "<html><center>Jouez une tuile de votre main<br>ou passez votre action</center></html>";
+                return "<html><center>Jouez une tuile de votre main ou passez votre action</center></html>";
             case MOVE_PAWNS:
                 return "<html><center>Choisissez un explorateur<br>ou un bateau et déplacez le</center></html>";
             case DISCOVER_TILE:
