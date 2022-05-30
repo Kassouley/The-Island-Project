@@ -13,6 +13,7 @@ import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.board.PlayerInfo;
 import fr.mcstudio.enums.ActionTurn;
+import fr.mcstudio.enums.AnimationType;
 import fr.mcstudio.enums.Color;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.ExternalPanelState;
@@ -483,12 +484,17 @@ public class Game {
     			pawnToMove = null;
     			switch(usedTile.getEffect()) {    		
         		case BOAT_MOVE:
+        			
                 	if(hex.getBoat() != null && hex.getBoat().isOwnedBy(getCurrentPlayer())) {
                 		pawnToMove = hex.getBoat();
             			pawnToMove.findPath(hex, board, 3, hexagonTripletList);
                 	}	
+                	board.getExternalPanel().setAnimationType(AnimationType.WIND);
+        	        board.setDisplayExternalPanel(true);
+        	        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
         		break;
         		case DOLPHIN_MOVE: 
+        			
         			if(hex.nbExplorerColor(getCurrentPlayer().getColor()) == 1) {
                     	for (Explorer e : hex.getExplorerList()) {
         					if(e.getColor() == getCurrentPlayer().getColor()) {
@@ -512,7 +518,10 @@ public class Game {
                         }
                     } else {
                     	Dolphin d = new Dolphin();
-                        d.findPath(hex, board, 3, hexagonTripletList);                  
+                        d.findPath(hex, board, 3, hexagonTripletList); 
+                        board.getExternalPanel().setAnimationType(AnimationType.DOLPHIN_SUMMON);
+            	        board.setDisplayExternalPanel(true);
+            	        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
                     }
         			
         			

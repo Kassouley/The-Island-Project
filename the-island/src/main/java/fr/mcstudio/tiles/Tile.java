@@ -163,21 +163,13 @@ public class Tile extends JLayeredPane {
 	 * @since1.0
 	 */
 	public void applyEffect(Hexagon hex,Board board) {
-		System.out.println(this.effect);
 		switch(this.effect) {
 		
-		case BOAT_MOVE : this.boatMoveEffect(board);break;
 		case BOAT : this.boatEffect(hex, board);break;
-		case DOLPHIN_MOVE :this.dolphinMoveEffect(board); break;
-		case SEASNAKE_LOST : this.seasnakeLostEffect();break;
 		case SHARK : this.sharkEffect(hex,board);break;
-		case SHARK_DEATH : this.sharkDeathEffect(hex,board); break;
-		case SHARK_LOST : this.sharkLostEffect(); break;
 		case WHIRLPOOL : this.whirlpoolEffect(hex,board); break;
 		case VOLCANO : this.volcanoEffect(board); break;
 		case WHALE : this.whaleEffect(hex,board); break;
-		case WHALE_DEATH : this.whaleDeathEffect(hex,board);break;
-		case WHALE_LOST :this.whaleLostEffect(); break;
 		default : break;
 		}
 		if(!hex.getSharkList().isEmpty()) {
@@ -189,22 +181,6 @@ public class Tile extends JLayeredPane {
 		if(!hex.getWhaleList().isEmpty()) {
 			hex.getWhaleList().get(0).makeEffect(hex);
 		}
-	}
-	
-	
-	
-	/**
-	 * <p>
-	 * Déplace un bateau que vous controlez de 1 à 3 cases.
-	 * Tuile en début de tour.
-	 * </p>
-	 */
-	public void boatMoveEffect(Board board) {
-		board.getExternalPanel().setAnimationType(AnimationType.WIND);
-        board.setDisplayExternalPanel(true);
-        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
-		//selectionnne un bateau
-		//le de placer de 1 a 3 cases
 	}
 	
 	/**
@@ -222,31 +198,6 @@ public class Tile extends JLayeredPane {
         b.setPosition(0, 0, resolution, 68);
         b.createImage(resolution);
 		tilePosition.addPawn(b);
-	}
-	
-	/**
-	 * <p>
-	 * Déplace un nageur de 1 à 3 cases.
-	 * Tuile en début de tour.
-	 * </p>
-	 */
-	public void dolphinMoveEffect(Board board) {
-		board.getExternalPanel().setAnimationType(AnimationType.DOLPHIN_SUMMON);
-        board.setDisplayExternalPanel(true);
-        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
-		//selectionnne un nageur
-		//le de placer de 1 a 3 cases
-	}
-	
-	/**
-	 * <p>
-	 * Déplace un serpent de mer sur une case de mer vide.
-	 * Tuile en début de tour.
-	 * </p>
-	 */
-	public void seasnakeLostEffect() {
-		//selectionner un seasnake
-		//selectionne la case ou on veut la deplacer (mer inoccupÃ©e)
 	}
 		
 	/**
@@ -278,17 +229,6 @@ public class Tile extends JLayeredPane {
 		// a changer avec lucas
 		Shark s = new Shark(board);
 		tilePosition.removePawn(s);
-	}
-	
-	/**
-	 * <p>
-	 * Déplace un requin sur une case de mer vide.
-	 * Tuile en début de tour. 
-	 * </p>
-	 */
-	public void sharkLostEffect() {
-		//selectionner un requin
-		//selectionne la case ou on veut la deplacer (mer inoccupÃ©e)
 	}
 	
 	/**
