@@ -722,9 +722,12 @@ public class Game {
             }
         } else if (firstClic == false) {
             if (hexagonTripletList.getLeftList().contains(hex)) {
-            	if(hex == saveHexa && hex.isSea() && hex.getBoat() != null 
+            	if((hex == saveHexa && hex.getBoat() != null 
             			&& pawnToMove instanceof Explorer 
-            			&& ((Explorer)pawnToMove).getStatus() != ExplorerStatus.ONBOAT) {
+            			&& ((Explorer)pawnToMove).getStatus() != ExplorerStatus.ONBOAT) 
+            			|| (hex.getBoat() != null && saveHexa.getBoat() != null
+    					&& pawnToMove instanceof Explorer 
+            			&& ((Explorer)pawnToMove).getStatus() == ExplorerStatus.ONBOAT )) {
             		destination = hex.getBoat();
 
             	} else if(hex.getBoat() == null || !saveHexa.isTiles()) {
@@ -758,8 +761,12 @@ public class Game {
                     } else if(destination == hex 
                     		&& ((Explorer)pawnToMove).getStatus() == ExplorerStatus.ONBOAT) {
                     	((Explorer) pawnToMove).move(saveHexa.getBoat(), hex);
-                    } else if(destination == hex.getBoat()) {
+                    } else if(destination == hex.getBoat() 
+                    		&& ((Explorer)pawnToMove).getStatus() != ExplorerStatus.ONBOAT) {
                     	((Explorer) pawnToMove).move(saveHexa, hex.getBoat(), hex);
+                    } else if(destination == hex.getBoat() 
+                    		&& ((Explorer)pawnToMove).getStatus() == ExplorerStatus.ONBOAT) {
+                    	((Explorer) pawnToMove).move(saveHexa.getBoat(), hex.getBoat(), hex);
                     }
                     
                     for(int comp = 0; comp < hexagonTripletList.getLeftList().size();comp++) {
