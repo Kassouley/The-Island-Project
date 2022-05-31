@@ -126,7 +126,7 @@ public class Hexagon extends JLayeredPane {
    /**
     * This function returns true if the type of the hexagon is TILES, and false otherwise.
     * 
-    * @return The boolean value of the type of the hexagon.
+    * @return The boolean value if the hexagon's type is a HexagonType.TILES.
     */
     public boolean isTiles() {
         return this.type == HexagonType.TILES;
@@ -135,7 +135,7 @@ public class Hexagon extends JLayeredPane {
     /**
      * Returns true if the hexagon is a sea hexagon.
      * 
-     * @return The boolean value of the type of the hexagon.
+     * @return The boolean value if the hexagon's type is a HexagonType.SEA.
      */
     public boolean isSea() {
         return this.type == HexagonType.SEA;
@@ -144,7 +144,7 @@ public class Hexagon extends JLayeredPane {
     /**
      * "This function returns true if the hexagon is of type VOID, and false otherwise."
      * 
-     * @return The boolean value of the HexagonType.VOID
+     * @return The boolean value if the hexagon's type is a HexagonType.VOID
      */
     public boolean isVoid() {
         return this.type == HexagonType.VOID;
