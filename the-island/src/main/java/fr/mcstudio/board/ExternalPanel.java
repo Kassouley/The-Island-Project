@@ -195,6 +195,8 @@ public class ExternalPanel extends JLayeredPane {
 			public void mousePressed(MouseEvent e) {
 				board.setDisplayExternalPanel(false);
 				setExternalPanelState(ExternalPanelState.VOID);
+                board.getGame().getActionInfo().displayActionInfo(board.getGame());
+                board.getGame().getPlayerInfo().displayPlayerInfo(board.getGame(), resolution);
 				//board.getGame().inGame(clickedHex);
 			}
 
@@ -303,6 +305,8 @@ public class ExternalPanel extends JLayeredPane {
 			public void mousePressed(MouseEvent e) {
 				board.setDisplayExternalPanel(false);
 				setExternalPanelState(ExternalPanelState.VOID);
+                board.getGame().getActionInfo().displayActionInfo(board.getGame());
+                board.getGame().getPlayerInfo().displayPlayerInfo(board.getGame(), resolution);
 				board.getGame().inGame(null);
 			}
 
