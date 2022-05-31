@@ -13,4 +13,28 @@
     <scope>test</scope>
   </dependency>
   </dependencies>
+  
+  <developers>
+  	<developer>
+  		<name>Lucas Neto</name>
+  	</developer>
+  	<developer>
+  		<name>Loïk Simon</name>
+  	</developer>
+  	<developer>
+  		<name>Alexis Fiolet</name>
+  	</developer>
+  	<developer>
+  		<name>Kevin Troadec</name>
+  	</developer>
+  	<developer>
+  		<name>Bochra Houissa</name>
+  	</developer>
+  </developers>
+  
+  <organization>
+  	<name>MCStudio.h</name>
+  </organization>
+  
+  
 </project>
