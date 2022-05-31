@@ -20,6 +20,7 @@ import fr.mcstudio.enums.ExternalPanelState;
 import fr.mcstudio.enums.GameState;
 import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.enums.PawnType;
+import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.Dolphin;
@@ -577,6 +578,13 @@ public class Game {
     		else if(firstClic == false  && pawnToMove != null ) {
     			if(hexagonTripletList.getLeftList().contains(hex)) {
         			pawnToMove.move(saveHexa, hex);
+        			
+        			//defWithTile(hex,pawnToMove); 			
+        			if(!hex.getSharkList().isEmpty()) {
+        				hex.getSharkList().get(0).makeEffect(hex);
+        			}
+        			
+        			
         			for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
                         p.getLeft().setHighlightColor(null);
                         p.getLeft().setHighlight(resolution, board, false, null);
@@ -711,6 +719,9 @@ public class Game {
                     				&& ((Explorer)pawnToMove).getStatus() != ExplorerStatus.ONBOAT)
                     		|| pawnToMove instanceof Boat)) {
                 		pawnToMove.move(saveHexa, hex);
+                		if (!hex.getSharkList().isEmpty()) {
+                			hex.getSharkList().get(0).makeEffect(hex);
+                        }
 
                     } else if(destination == hex 
                     		&& ((Explorer)pawnToMove).getStatus() == ExplorerStatus.ONBOAT) {
@@ -775,7 +786,12 @@ public class Game {
             			|| board.isNextToSea(hex)) {
                     board.decreaseNbTile(hex.getTile().getType());
                     hex.discover(getCurrentPlayer(), board);
-
+                    if(!hex.getSharkList().isEmpty()) {
+            			hex.getSharkList().get(0).makeEffect(hex);
+            		}
+            		if(!hex.getWhaleList().isEmpty()) {
+            			hex.getWhaleList().get(0).makeEffect(hex);
+            		}
                     // ActionTurn est le changement d'action, � mettre en commentaire pour test
                     nextActionTurn();
             	}
@@ -894,5 +910,98 @@ public class Game {
 	 */
 	public ActionInfo getActionInfo() {
 		return actionInfo;
+	}
+	
+	private void defWithTile(Hexagon hex,Pawn pawnToKill) {
+		boolean checkJ1 = true,checkJ2 = true,checkJ3 = true,checkJ4 = true;
+		boolean playJ1 = false,playJ2 = false,playJ3 = false, playJ4 = false;
+		if(pawnToMove instanceof Shark || pawnToMove instanceof Whale) {
+			
+			for(Player p : players) {			
+				for(Tile t : p.getTileList()) {
+					if(t.getEffect() == TilesEffect.SHARK_DEATH) {
+						switch(p.getColor()) {
+						
+						case YELLOW : 
+							checkJ1 = false;
+							break;
+						case BLUE :
+							checkJ2 = false;
+							break;
+						case RED : 
+							checkJ3 = false;
+							break;
+						case GREEN :
+							checkJ4 = false;
+							break;
+						
+						default : break;
+						}
+					}
+				}				
+			}
+			for(Explorer e : hex.getExplorerList()) {
+				if(checkJ1 == false && e.getColor() == Color.YELLOW) {
+					//playJ1 = ask playing Tile ?
+					checkJ1 = true;
+				}
+				else if(checkJ2 == false && e.getColor() == Color.BLUE) {
+					// playJ2 = ask playing Tile ?
+					checkJ2 = true;
+				}
+				else if(checkJ3 == false && e.getColor() == Color.RED) {
+					// playJ3 = ask playing Tile ?
+					checkJ3 = true;
+				}
+				else if(checkJ4 == false && e.getColor() == Color.GREEN) {
+					// playJ4 =ask playing Tile ?
+					checkJ4 = true;
+				}
+				if(playJ1 == true || playJ2 == true || playJ3 == true || playJ4 == true ) {
+					hex.removePawn((Shark)pawnToKill);
+					break;
+				}
+			}
+			if(playJ1 == true) {
+				for(Player p : players) {
+					if(p.getColor()== Color.YELLOW) {
+						for(Tile t : p.getTileList()) {
+							p.getTileList().remove(t);
+						}
+					}
+						
+				}
+			}
+			if(playJ2 == true) {
+				for(Player p : players) {
+					if(p.getColor()== Color.BLUE) {
+						for(Tile t : p.getTileList()) {
+							p.getTileList().remove(t);
+						}
+					}
+						
+				}
+			}
+			if(playJ3 == true) {
+				for(Player p : players) {
+					if(p.getColor()== Color.RED) {
+						for(Tile t : p.getTileList()) {
+							p.getTileList().remove(t);
+						}
+					}
+						
+				}
+			}
+			if(playJ4 == true) {
+				for(Player p : players) {
+					if(p.getColor()== Color.GREEN) {
+						for(Tile t : p.getTileList()) {
+							p.getTileList().remove(t);
+						}
+					}
+						
+				}
+			}
+		}
 	}
 }

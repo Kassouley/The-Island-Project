@@ -163,23 +163,13 @@ public class Tile extends JLayeredPane {
 	 * @since1.0
 	 */
 	public void applyEffect(Hexagon hex,Board board) {
-		switch(this.effect) {
-		
+		switch(this.effect) {		
 		case BOAT : this.boatEffect(hex, board);break;
 		case SHARK : this.sharkEffect(hex,board);break;
 		case WHIRLPOOL : this.whirlpoolEffect(hex,board); break;
 		case VOLCANO : this.volcanoEffect(board); break;
 		case WHALE : this.whaleEffect(hex,board); break;
 		default : break;
-		}
-		if(!hex.getSharkList().isEmpty()) {
-			hex.getSharkList().get(0).makeEffect(hex);
-		}
-		if(!hex.getSeaSnakeList().isEmpty()) {
-			hex.getSeaSnakeList().get(0).makeEffect(hex);
-		}
-		if(!hex.getWhaleList().isEmpty()) {
-			hex.getWhaleList().get(0).makeEffect(hex);
 		}
 	}
 	
