@@ -31,11 +31,11 @@ public enum ActionTurn {
             case PLAY_TILE:
                 return "Jouez une tuile";
             case MOVE_PAWNS:
-                return "DÃ©placez vos pions";
+                return "Déplacez vos pions";
             case DISCOVER_TILE:
                 return "Retournez une tuile";
             case MOVE_MONSTER:
-                return "Lancez le dÃ©";
+                return "Lancez le dé";
             default:
                 break;
         }
@@ -54,13 +54,13 @@ public enum ActionTurn {
                 		+ "ou passez votre action</center></html>";
             case MOVE_PAWNS:
                 return "<html><center>Choisissez un explorateur<br>"
-                		+ "ou un bateau et dÃ©placez le</center></html>";
+                		+ "ou un bateau et déplacez le</center></html>";
             case DISCOVER_TILE:
-                return "<html><center>Retournez une tuile et<br>dÃ©couvrez "
-                		+ "ce qu'il se cache derriÃ¨re</center></html>";
+                return "<html><center>Retournez une tuile et<br>découvrez "
+                		+ "ce qu'il se cache derrière</center></html>";
             case MOVE_MONSTER:
-                return "<html><center>Lancez le dÃ© puis dÃ©placez<br>"
-                		+ "le monstre qui a Ã©tÃ© choisit</center></html>";
+                return "<html><center>Lancez le dé puis déplacez<br>"
+                		+ "le monstre qui a été choisit</center></html>";
             default:
                 break;
         }

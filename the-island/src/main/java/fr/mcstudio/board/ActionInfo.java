@@ -171,7 +171,7 @@ public class ActionInfo extends JLayeredPane {
 					public void actionPerformed(ActionEvent e) {
 						int option = JOptionPane
 								.showConfirmDialog(null, 
-										"Etes-vous sï¿½r "
+										"Etes-vous sûr "
 										+ "de vouloir quitter ?", 
 										"Quitter", 
 										JOptionPane.YES_NO_OPTION, 
@@ -331,7 +331,7 @@ public class ActionInfo extends JLayeredPane {
 				JLabel moveLeft = new JLabel(
 						"<html><center>Il vous reste " 
 						+ game.getCurrentPlayer().getMoveLeft()
-						+ " dÃ©placements</center></html>", 
+						+ " déplacements</center></html>", 
 						SwingConstants.CENTER);
 				moveLeft.setBounds(
 					0, 
@@ -402,12 +402,12 @@ public class ActionInfo extends JLayeredPane {
 			
 			if (game.getCurrentPlayer().getExplorerList().size() != 0) {
 				String pawnValue = new String(
-					"<br><br>L'explorateur que vous allez poser possÃ¨de " 
+					"<br><br>L'explorateur que vous allez poser possède " 
 					+ game.getCurrentPlayer()
 							.getExplorerList()
 							.get(0)
 							.getTreasureValue() 
-					+ " trÃ©sors</center></html>"
+					+ " trésors</center></html>"
 				);
 				initText = initText + pawnValue;
 			

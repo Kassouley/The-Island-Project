@@ -100,12 +100,12 @@ public class Accueil {
         this.layeredPane.setLayer(backgroundLabel, 0);
 		this.layeredPane.add(backgroundLabel);
 
-		this.music = new Musique(
+		/*this.music = new Musique(
 			Accueil.class.getClassLoader()
-					.getResource("Son/sample1.wav").getPath());
+					.getResource("Son/sample1.wav").getPath());*/
 
 		// Bouton MUTE :
-		ImageIcon muteRed = new ImageIcon(
+		/*ImageIcon muteRed = new ImageIcon(
 			Accueil.class
 					.getResource("/Menu/Menu/images_80/mute_red.png"));
 		Image scaleMuteRed = muteRed.getImage().getScaledInstance(
@@ -211,7 +211,7 @@ public class Accueil {
             		music.dimVolMusique();
             	}
             }
-        });
+        });*/
 	}
 
 	/**
@@ -242,7 +242,7 @@ public class Accueil {
 		this.layeredPane.add(backgroundLabel);
 
 		// Bouton MUTE :
-		ImageIcon muteRed = new ImageIcon(Accueil.class
+		/*ImageIcon muteRed = new ImageIcon(Accueil.class
 				.getResource("/Menu/Menu/images_80/mute_red.png"));
 		Image scaleMuteRed = muteRed.getImage()
 				.getScaledInstance(muteRed.getIconWidth() * resolution / 80,
@@ -335,7 +335,7 @@ public class Accueil {
             		music.dimVolMusique();
             	}
             }
-        });
+        });*/
 	}
 
 	/**
