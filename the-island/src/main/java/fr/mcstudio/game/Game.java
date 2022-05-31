@@ -3,6 +3,8 @@ package fr.mcstudio.game;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -41,12 +43,12 @@ public class Game {
     /**
      * Default constructor
      */
-    public Game(int resolution, JPanel contentPane, Player[] players) {
+    public Game(int resolution, JPanel contentPane, ArrayList<Player> players) {
         this.resolution = resolution;
         this.contentPane = contentPane;
         this.players = players;
         this.turnNumber = 0;
-        this.turnOrder = (int) (Math.random() * players.length);
+        this.turnOrder = (int) (Math.random() * players.size());
 
         // A set comme vous voulez pour effectuer des test sur les differentes actions
 
@@ -72,7 +74,7 @@ public class Game {
     /**
      * 
      */
-    private Player[] players;
+    private ArrayList<Player> players;
 
     /**
      * 
@@ -133,12 +135,12 @@ public class Game {
     /**
      * 
      */
-    private boolean checkJ;
+    private List<Boolean> checkJ = new ArrayList<Boolean>();
     
     /**
      * 
      */
-    private boolean playJ;
+    private List<Boolean> playJ = new ArrayList<Boolean>();
     
     private JLayeredPane destination;
     
@@ -292,14 +294,14 @@ public class Game {
      * 
      * @param players
      */
-    public void setPlayers(Player[] players) {
+    public void setPlayers(ArrayList<Player> players) {
         this.players = players;
     }
 
     /**
      * 
      */
-    public Player[] getPlayers() {
+    public ArrayList<Player> getPlayers() {
         return this.players;
     }
 
@@ -320,14 +322,14 @@ public class Game {
      * 
      */
     public Player getCurrentPlayer() {
-        return this.players[(this.turnOrder + this.turnNumber) % players.length];
+        return this.players.get((this.turnOrder + this.turnNumber) % players.size());
     }
 
     /**
      * 
      */
     public int getCurrentPlayerIndex() {
-        return (this.turnOrder + this.turnNumber) % players.length;
+        return (this.turnOrder + this.turnNumber) % players.size();
     }
 
     /**
@@ -362,13 +364,13 @@ public class Game {
             getCurrentPlayer().getBoatToSet().remove(0);
             nextTurn();
 
-            for (int x = 0; x < players.length; x++) {
+            for (int x = 0; x < players.size(); x++) {
                 if (getCurrentPlayer().getBoatToSet().isEmpty()) {
                     exit++;
                 }
             }
         }
-        if (exit == players.length) {
+        if (exit == players.size()) {
             gameState = GameState.PLAYING;
             actionInfo.displayActionInfo(getGame());
             playerInfo.displayPlayerInfo(getGame(), resolution);
@@ -442,7 +444,7 @@ public class Game {
      * 
      */
     public int getRound() {
-        return this.turnNumber / players.length;
+        return this.turnNumber / players.size();
     }
 
     public Tile getUsedTile(){
@@ -1003,31 +1005,21 @@ public class Game {
 		return actionInfo;
 	}
 	/**
-  *
-  */
+	 *
+	 */
+	@SuppressWarnings({ "removal", "static-access" })
 	private void defWithTile(Hexagon hex) {
-		/*boolean checkJ1 = true,checkJ2 = true,checkJ3 = true,checkJ4 = true;
-		boolean playJ1 = false,playJ2 = false,playJ3 = false, playJ4 = false;
+		if(checkJ.isEmpty() && playJ.isEmpty()) {
+			for(Player p : players) {
+				checkJ.add(new Boolean(true));
+				playJ.add(new Boolean(false));
+			}
+		}
 		if(pawnToMove instanceof Shark ) {			
 			for(Player p : players) {			
 				for(Tile t : p.getTileList()) {
 					if(t.getEffect() == TilesEffect.SHARK_DEATH) {
-						switch(p.getColor()) {				
-						case YELLOW : 
-							checkJ1 = false;
-							break;
-						case BLUE :
-							checkJ2 = false;
-							break;
-						case RED : 
-							checkJ3 = false;
-							break;
-						case GREEN :
-							checkJ4 = false;
-							break;
-						
-						default : break;
-						}
+						checkJ.set(players.indexOf(p), false);
 					}
 				}				
 			}
@@ -1035,31 +1027,41 @@ public class Game {
 			for(Player p : players) {			
 				for(Tile t : p.getTileList()) {
 					if(t.getEffect() == TilesEffect.WHALE_DEATH) {
-						switch(p.getColor()) {				
-						case YELLOW : 
-							checkJ1 = false;
-							break;
-						case BLUE :
-							checkJ2 = false;
-							break;
-						case RED : 
-							checkJ3 = false;
-							break;
-						case GREEN :
-							checkJ4 = false;
-							break;
-						
-						default : break;
-						}
+						checkJ.set(players.indexOf(p), false);
 					}
 				}				
 			}
 		}
-		if(!checkJ1 || !checkJ2 || !checkJ3 || !checkJ4) {
+		
+			if(checkJ.stream().filter(o -> o.getBoolean("false")).findFirst().isPresent()) {
+				for(Boolean b : checkJ) {
+					if(!b) {
+						
+						if (board.getExternalPanel().getSelection() != null) {         	
+                            pawnToMove = (Tile)board.getExternalPanel().getSelection();
+                            board.getExternalPanel().setSelection(null);
+                            inGame(hex);
+                        } else if (hex.containsExplorerColor(getCurrentPlayer().getColor())) {
+                            board.setDisplayExternalPanel(true);
+                            board.getExternalPanel().setExternalPanelState(ExternalPanelState.TILEEFFECTDEFENSEPANEL);
+                        }
+						
+						//ask tile
+						
+						/*
+						 * if yes
+						 * playJ.set(checkJ.indexOf(b),true)
+						 */
+					}
+				}
+				
+			}
+		
+		/*if(!checkJ.get|| !checkJ2 || !checkJ3 || !checkJ4) {
 			for(Explorer e : hex.getExplorerList()) {
-				if(checkJ1 == false && e.getColor() == Color.YELLOW) {
+				if(checkJ == false && e.getColor() == Color.YELLOW) {
 					//playJ1 = ask playing Tile ?
-					checkJ1 = true;
+					checkJ = true;
 				}
 				else if(checkJ2 == false && e.getColor() == Color.BLUE) {
 					// playJ2 = ask playing Tile ?

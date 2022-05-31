@@ -1,8 +1,11 @@
 package fr.mcstudio;
 
-import java.awt.*;
+import java.awt.EventQueue;
+import java.awt.Image;
+import java.awt.List;
+import java.util.ArrayList;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -13,7 +16,7 @@ import fr.mcstudio.game.Player;
 @SuppressWarnings("serial")
 public class Main extends JFrame {
 
-	private Player[] players;
+	private ArrayList<Player> players= new ArrayList<Player>();
 	private JPanel contentPane;
 
 	int resolution = 70;
@@ -30,8 +33,8 @@ public class Main extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		int nbJoueur = 2;
-		players = new Player[nbJoueur];
+		
+		
 
 		Player P1 = new Player("Akunes", Color.BLUE, false, resolution);
 		ImageIcon avatar = new ImageIcon(Main.class.getResource("/SideBar/avatar1.png"));
@@ -39,7 +42,7 @@ public class Main extends JFrame {
 				avatar.getIconHeight() * resolution / 90, Image.SCALE_SMOOTH);
 		avatar.setImage(scaleImage);
 		P1.setAvatar(avatar);
-		players[0] = P1;
+		players.add(P1);
 		
 		Player P2 = new Player("Lo", Color.RED, false, resolution);
 		avatar = new ImageIcon(Main.class.getResource("/SideBar/avatar3.png"));
@@ -47,7 +50,7 @@ public class Main extends JFrame {
 				avatar.getIconHeight() * resolution / 90, Image.SCALE_SMOOTH);
 		avatar.setImage(scaleImage);
 		P2.setAvatar(avatar);
-		players[1] = P2;
+		players.add(P2);
 		/*
 		 * Player P3 = new Player("Lucasse", Color.YELLOW, false);
 		 * players[2] = P3;
