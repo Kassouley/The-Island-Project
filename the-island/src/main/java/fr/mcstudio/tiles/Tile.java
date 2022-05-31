@@ -181,13 +181,24 @@ public class Tile extends JLayeredPane {
 	 * @param tilePosition Tuile actuelle
 	 */
 	public void boatEffect(Hexagon tilePosition, Board board) {
-		board.getExternalPanel().setAnimationType(AnimationType.BOAT_SUMMON);
-        board.setDisplayExternalPanel(true);
-        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
 		Boat b = new Boat(resolution);
         b.setPosition(0, 0, resolution, 68);
         b.createImage(resolution);
 		tilePosition.addPawn(b);
+		if(tilePosition.getExplorerList().size() > 3) {
+	        board.setDisplayExternalPanel(true);
+            board.getExternalPanel().setClickedHex(tilePosition);
+	        board.getExternalPanel().setExternalPanelState(ExternalPanelState.BOARDINGPANEL);
+			
+		} else {
+			board.getExternalPanel().setAnimationType(AnimationType.BOAT_SUMMON);
+	        board.setDisplayExternalPanel(true);
+	        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+	        for (int i = tilePosition.getExplorerList().size() - 1; i >= 0; i--) {
+	        	Explorer e = tilePosition.getExplorerList().get(i);
+	        	e.move(tilePosition, b, tilePosition);
+			}
+		}
 	}
 		
 	/**

@@ -294,7 +294,7 @@ public class Player {
      * 
      */
     public boolean haveExplorerOnBoard() {
-        for (Explorer e : this.explorerList) {
+        for (Explorer e : this.currentExplorerList) {
             if (e.getStatus() != ExplorerStatus.DEAD
                     || e.getStatus() != ExplorerStatus.SAVED) {
                 return true;
@@ -358,9 +358,9 @@ public class Player {
    		for(Explorer e : this.currentExplorerList) {
    			if(e.getStatus() == ExplorerStatus.SWIMMER) {
    				e.setMovePoint(1);
-   			}else if (e.getStatus() == ExplorerStatus.NORMAL) {
+   			} else {
    				e.setMovePoint(3);
-   			}				
+   			}
    		}
    	}
 
