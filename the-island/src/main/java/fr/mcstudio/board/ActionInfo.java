@@ -13,6 +13,7 @@ import fr.mcstudio.game.Game;
 import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.tiles.Tile;
 import fr.mcstudio.enums.ExternalPanelState;
+import fr.mcstudio.enums.GameState;
 import fr.mcstudio.enums.PawnType;
 import fr.mcstudio.enums.SideBarButton;
 
@@ -30,6 +31,9 @@ public class ActionInfo extends JLayeredPane {
 	private List<JButton> buttons = new ArrayList<JButton>();
 	private List<JLabel> diceImage =  new ArrayList<JLabel>();
 
+	
+	private Font sizedFont;
+
 	public ActionInfo(Game game, int resolution) {
 		super();
 		this.setLayer(this.actionInfoLabel, 0);
@@ -44,7 +48,6 @@ public class ActionInfo extends JLayeredPane {
 		this.setLayer(actionInfoPanel, 1);
 		this.add(actionInfoPanel);
 
-		Font sizedFont = null;
 		try {
 			InputStream is = ActionInfo.class.getResourceAsStream("/Font/Treasuremap.ttf");
 			Font font = Font.createFont(Font.TRUETYPE_FONT, is);
@@ -53,7 +56,7 @@ public class ActionInfo extends JLayeredPane {
 			System.err.println("Not loaded");
 		}
 
-		this.actionTitle.setFont(sizedFont);
+		this.actionTitle.setFont(this.sizedFont);
 		this.actionTitle.setBounds(
 			0, 
 			32 * resolution / 90, 
@@ -62,7 +65,7 @@ public class ActionInfo extends JLayeredPane {
 		);
 		this.actionInfoPanel.add(actionTitle);
 
-		this.actionDesc.setFont(sizedFont);
+		this.actionDesc.setFont(this.sizedFont);
 		this.actionDesc.setBounds(
 			34 * resolution / 90, 
 			150 * resolution / 90, 
@@ -72,9 +75,10 @@ public class ActionInfo extends JLayeredPane {
 		this.actionInfoPanel.add(actionDesc);
 
 		this.actionLabel.setOpaque(false);
+		this.actionLabel.setLayout(null);
 		this.actionLabel.setBounds(
 			34 * resolution / 90, 
-			290 * resolution / 90, 
+			250 * resolution / 90, 
 			260 * resolution / 90, 
 			300 * resolution / 90
 		);
@@ -107,6 +111,7 @@ public class ActionInfo extends JLayeredPane {
 			button.setContentAreaFilled(false);
 			button.setFocusPainted(false);
 			button.setBorderPainted(false);
+			
 
 			switch (image) {
 				case "/SideBar/skipButton.png":
@@ -137,6 +142,12 @@ public class ActionInfo extends JLayeredPane {
 							
 					break;
 				case "/SideBar/seeTilesButton.png":
+					button.setBounds(
+						0, 
+						0, 
+						this.actionLabel.getWidth(), 
+						this.actionLabel.getHeight()
+					);
 					actionListener = new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -146,6 +157,12 @@ public class ActionInfo extends JLayeredPane {
 								
 					break;
 				case "/SideBar/rollButton.png":
+					button.setBounds(
+						0, 
+						0, 
+						this.actionLabel.getWidth(), 
+						this.actionLabel.getHeight()
+					);
 					actionListener = new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -169,6 +186,9 @@ public class ActionInfo extends JLayeredPane {
 			image.getIconHeight() * resolution / 90, Image.SCALE_SMOOTH);
 			image.setImage(scaleImage);
 			this.diceImage.add(new JLabel(image));
+			this.diceImage.get(0).setBounds(
+				0, 0, this.actionLabel.getWidth(), this.actionLabel.getHeight()
+			);
 
 		}
 
@@ -186,29 +206,6 @@ public class ActionInfo extends JLayeredPane {
 		this.actionInfoPanel.add(this.buttons.get(SideBarButton.QUIT));
 	}
 
-	public void displayInitialActionInfo(Game game) {
-		this.actionTitle.setText("<html>Posez vos pions !</html>");
-		this.actionDesc.setText("<html><center>Posez vos 10 pions et 2 bateaux!</center></html>");
-		this.actionLabel.removeAll();
-		this.actionLabel.revalidate();
-		this.actionLabel.repaint();
-		JLabel pawnNumber = new JLabel(
-			"Il vous reste " 
-			+ game.getCurrentPlayer().getExplorerList().size() 
-			+ " exploreurs et " 
-			+ game.getCurrentPlayer().getBoatToSet().size() 
-			+ " à poser",
-			SwingConstants.CENTER
-		);
-		JLabel pawnValue = new JLabel(
-			"L'exploreur que vous allez poser possède " 
-			+ game.getCurrentPlayer().getExplorerList().get(0).getTreasureValue() 
-			+ " trésors ",
-			SwingConstants.CENTER
-		);
-		actionLabel.add(pawnNumber);
-	}
-
 	public void displayActionInfo(Game game) {
 
 		this.actionTitle.setText(game.getActionTurn().getTitle());
@@ -220,57 +217,111 @@ public class ActionInfo extends JLayeredPane {
 
 		this.buttons.get(SideBarButton.SKIP).setVisible(true);
 
-		switch (game.getActionTurn()) {
-			case PLAY_TILE:
-				
-				if(!game.getCurrentPlayer().getTileList().isEmpty()) {
-					actionLabel.add(this.buttons.get(SideBarButton.SEETILES));
-				} else {
-					actionLabel.add(new JLabel("Vous n'avez pas de tuile, appuyez sur < Passez votre tour >"));
-				}
-				break;
+		if (game.getGameState() == GameState.PLAYING) {
+			
+		
+			switch (game.getActionTurn()) {
+				case PLAY_TILE:
+					
+					if(!game.getCurrentPlayer().getTileList().isEmpty()) {
+						
+						actionLabel.add(this.buttons.get(SideBarButton.SEETILES));
+					} else {
+						JLabel text = new JLabel("<html><center>Vous n'avez pas de tuile, appuyez sur \"Passez votre tour\"</center></html>", 
+												SwingConstants.CENTER);
+						text.setBounds(
+							0, 
+							0, 
+							this.actionLabel.getWidth(), 
+							this.actionLabel.getHeight()
+						);
+						text.setFont(this.sizedFont);
+						actionLabel.add(text);
+					}
+					break;
 
-			case MOVE_PAWNS:
-				JLabel moveLeft = new JLabel(
-						"Il vous reste " + game.getCurrentPlayer().getMoveLeft() + " déplacements");
-				moveLeft.setVerticalAlignment(SwingConstants.CENTER);
-				moveLeft.setHorizontalAlignment(SwingConstants.CENTER);
-				actionLabel.add(moveLeft);
-				break;
+				case MOVE_PAWNS:
+					JLabel moveLeft = new JLabel(
+							"<html><center>Il vous reste " 
+							+ game.getCurrentPlayer().getMoveLeft()
+							+ " déplacements</center></html>", 
+							SwingConstants.CENTER);
+					moveLeft.setBounds(
+						0, 
+						0, 
+						this.actionLabel.getWidth(), 
+						this.actionLabel.getHeight()
+					);
+					moveLeft.setFont(this.sizedFont);
+					actionLabel.add(moveLeft);
+					break;
 
-			case DISCOVER_TILE:
-				this.buttons.get(SideBarButton.SKIP).setVisible(false);
-				break;
-
-			case MOVE_MONSTER:
-				if (game.getBoard().getExternalPanel().getPawnType() == null) {
-					actionLabel.add(this.buttons.get(SideBarButton.ROLL));
-					this.buttons.get(SideBarButton.ROLL).setVisible(true);
+				case DISCOVER_TILE:
 					this.buttons.get(SideBarButton.SKIP).setVisible(false);
-				} else {
-					if (!game.getBoard().isDisplayExternalPanel()) {	
-						this.buttons.get(SideBarButton.ROLL).setVisible(false);
-						switch (game.getBoard().getExternalPanel().getPawnType()) {
-							case SEASNAKE:
-								actionLabel.add(diceImage.get(0));
-								break;
-							case SHARK:
-								actionLabel.add(diceImage.get(1));
-								break;						
-							case WHALE:
-								actionLabel.add(diceImage.get(2));
-								break;
-							default:
-								break;
-						}
-					}	
-				}
-				break;
+					break;
 
-			default:
-				break;
+				case MOVE_MONSTER:
+					if (game.getBoard().getExternalPanel().getPawnType() == null) {
+						actionLabel.add(this.buttons.get(SideBarButton.ROLL));
+						this.buttons.get(SideBarButton.ROLL).setVisible(true);
+						this.buttons.get(SideBarButton.SKIP).setVisible(false);
+					} else {
+						if (!game.getBoard().isDisplayExternalPanel()) {	
+							this.buttons.get(SideBarButton.ROLL).setVisible(false);
+							switch (game.getBoard().getExternalPanel().getPawnType()) {
+								case SEASNAKE:
+									actionLabel.add(diceImage.get(0));
+									break;
+								case SHARK:
+									actionLabel.add(diceImage.get(1));
+									break;						
+								case WHALE:
+									actionLabel.add(diceImage.get(2));
+									break;
+								default:
+									break;
+							}
+						}	
+					}
+					break;
+
+				default:
+					break;
+			}
+		} else if(game.getGameState() == GameState.INITIALISATION) {
+			this.buttons.get(SideBarButton.SKIP).setVisible(false);
+			this.actionTitle.setText("<html>Posez vos pions !</html>");
+			this.actionDesc.setText("<html><center>Posez vos 10 pions et 2 bateaux!</center></html>");
+			this.actionLabel.removeAll();
+			this.actionLabel.revalidate();
+			this.actionLabel.repaint();
+			String initText = new String(
+				"<html><center>Il vous reste " 
+				+ game.getCurrentPlayer().getExplorerList().size() 
+				+ " explorateur(s) et " 
+				+ game.getCurrentPlayer().getBoatToSet().size() 
+				+ " bateau(x) à poser"
+			);
+			
+			if (game.getCurrentPlayer().getExplorerList().size() != 0) {
+				String pawnValue = new String("L'explorateur que vous allez poser possède " 
+											+ game.getCurrentPlayer().getExplorerList().get(0).getTreasureValue() 
+											+ " trésors</center></html>");
+				initText = initText + pawnValue;
+			
+			}
+			JLabel initTextLabel = new JLabel(initText, SwingConstants.CENTER);
+			initTextLabel.setFont(this.sizedFont);
+			initTextLabel.setBounds(
+				0, 
+				0, 
+				this.actionLabel.getWidth(), 
+				this.actionLabel.getHeight()
+			);	
+			actionLabel.add(initTextLabel);
 		}
 	}
+
 
 	public void onClickTilesButton(Game game){
 		if(!game.getCurrentPlayer().getTileList().isEmpty()) {
