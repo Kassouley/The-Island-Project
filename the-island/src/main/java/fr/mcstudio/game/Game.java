@@ -322,6 +322,10 @@ public class Game {
         return this;
     }
 
+    public GameState getGameState() {
+        return this.gameState;
+    }
+
     /**
      * 
      * @param hex
