@@ -754,6 +754,7 @@ public class Hexagon extends JLayeredPane {
 
             setLayer(pawnsToDisplay.get(i), 1);
             add(pawnsToDisplay.get(i));
+            
         }
     }
 

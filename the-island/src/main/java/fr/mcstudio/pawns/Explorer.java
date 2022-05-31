@@ -166,7 +166,7 @@ public class Explorer extends Pawn {
         oldPosition.removePawn(this);
         boat.addExplorer(this);
         this.status = ExplorerStatus.ONBOAT;
-        this.setMovePoint(0);
+        //this.setMovePoint(0);
         if (!boatPosition.getWhaleList().isEmpty()) {
             boatPosition.getWhaleList().get(0).makeEffect(boatPosition);
         }
@@ -254,7 +254,8 @@ public class Explorer extends Pawn {
             for (Hexagon hexagon : hexagonList) {
                 int index = hexagonList.indexOf(hexagon);
                 if ((this.getStatus() == ExplorerStatus.SWIMMER
-                        || hexagon.getType() != HexagonType.SEA)
+                        || hexagon.getType() != HexagonType.SEA
+                        || hexagonTripletList.get(index).getRight() == HexagonListType.BOAT)
                         && hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
                         
                     tmp.add(hexagon);
@@ -315,7 +316,8 @@ public class Explorer extends Pawn {
                     && !hexagonTripletList.containsInTriplet(hexagon)) {
 
                 if (actualPosition.getBoat() != null
-                        && actualPosition.getBoat().getExplorerList().contains(this)) {
+                		&& (actualPosition.getBoat().getExplorerList().contains(this)
+                        || hexagonTripletList.get(hexagonTripletList.getLeftList().indexOf(actualPosition)).getRight() == HexagonListType.BOAT)) {
                     if (hexagon.getBoat() != null
                             && !hexagon.getBoat().isFull()) {
                         if (!hexagon.getWhaleList().isEmpty()

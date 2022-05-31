@@ -667,7 +667,6 @@ public class Game {
     				}
             	}
             }
-            
             if (pawnToMove == null) {
                 if (board.getExternalPanel().getSelection() != null) {
 
@@ -717,7 +716,8 @@ public class Game {
             	} else if(hex.getBoat() == null || !saveHexa.isTiles()) {
             		destination = hex;
             	}
-            	
+
+                System.out.println(destination);
             	if(destination == null 
             			&& (saveHexa.isTiles() 
             			|| (saveHexa.getBoat() != null && saveHexa.getBoat().getExplorerList().contains(pawnToMove))) 
