@@ -138,12 +138,15 @@ public class Game {
             public void mousePressed(MouseEvent e) {
 
                 if (SwingUtilities.isLeftMouseButton(e)) {
-                	if(board.isDisplayExternalPanel()) {
+                	if(board.isDisplayExternalPanel()
+                			&& board.getExternalPanel()
+                			.getExternalPanelState() != 
+                			ExternalPanelState.BOARDINGPANEL) {
 
         				board.setDisplayExternalPanel(false);
         				board.getExternalPanel().setExternalPanelState(ExternalPanelState.VOID);
         				inGame(null);
-                	} else {
+                	} else if(!board.isDisplayExternalPanel()){
                 		for (int i = 0; i < 13; i++) {
                             for (int j = 0; j < 12; j++) {
                                 Hexagon hex = board.getHexagons()[i][j];
@@ -309,7 +312,7 @@ public class Game {
         int exit = 0;
 
         if (hex.isTiles() 
-                && hex.getExplorerList().isEmpty() 
+                //&& hex.getExplorerList().isEmpty() 
                 && !getCurrentPlayer().getExplorerList().isEmpty()) {
             hex.addPawn(getCurrentPlayer().getExplorerList().get(0));
             getCurrentPlayer().getCurrentExplorerList().add(getCurrentPlayer().getExplorerList().get(0));
@@ -351,7 +354,9 @@ public class Game {
         this.destination = null;
         this.usedTile = null;
         this.board.getExternalPanel().setPawnType(null);
-
+        if(isEnd()) {
+        	gameState = GameState.ENDING;
+        }
         this.actionTurn = this.actionTurn.next();
         /*
          * if(actionTurn == ActionTurn.PLAY_TILE) {

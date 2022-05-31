@@ -254,7 +254,7 @@ public class ActionInfo extends JLayeredPane {
 					game.nextActionTurn();
 				} else {
 					game.getBoard().setDisplayExternalPanel(true);
-					game.getBoard().getExternalPanel().setExternalPanelState(ExternalPanelState.TILEEFFECTPANEL);
+					game.getBoard().getExternalPanel().setExternalPanelState(ExternalPanelState.TILEEFFECTREDPANEL);
 				}
 			}
 			displayActionInfo(game);
