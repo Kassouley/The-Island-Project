@@ -231,7 +231,7 @@ public class Hexagon extends JLayeredPane {
     /**
      * This function removes a shark from the sharkList
      * 
-     * @param s Shark
+     * @param s The Shark to be removed from the list.
      */
     public void removePawn(Shark s) {
         this.sharkList.remove(s);
@@ -249,7 +249,7 @@ public class Hexagon extends JLayeredPane {
     /**
      * This function removes a SeaSnake from the seaSnakeList
      * 
-     * @param ss SeaSnake
+     * @param ss The SeaSnake to be removed from the list.
      */
     public void removePawn(SeaSnake ss) {
         this.seaSnakeList.remove(ss);
@@ -265,7 +265,7 @@ public class Hexagon extends JLayeredPane {
     }
 
     /**
-     * This function removes an effect pawn from the hexagon
+     * This function removes a pawn from the hexagon
      * 
      * @param ef EffectPawn
      */
