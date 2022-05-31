@@ -17,9 +17,11 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import fr.mcstudio.enums.AnimationType;
+import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.ExternalPanelState;
 import fr.mcstudio.enums.PawnType;
 import fr.mcstudio.pawns.Explorer;
+import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.tiles.Tile;
 import fr.mcstudio.util.Pair;
 import fr.mcstudio.util.PairList;
@@ -32,17 +34,21 @@ public class ExternalPanel extends JLayeredPane {
 	private JPanel boatOrSeaPanel;
 	private JPanel pawnPanel;
 	private JPanel dicePanel;
-	private JPanel tilesEffectsPanel;
+	private JPanel tilesEffectsRedPanel;
+	private JPanel tilesEffectsDefensePanel;
 	private JPanel animationPanel;
+	private JPanel boardingPanel;
 
 	private PairList<JButton, JLayeredPane> bPairList = new PairList<JButton, JLayeredPane>();
 	private PairList<AnimationType, JLabel> aPairList = new PairList<AnimationType, JLabel>();
+	private List<Explorer> boardingpawns = new ArrayList<Explorer>();
 	private List<JLabel> seaSnakeList = new ArrayList<JLabel>();
 	private List<JLabel> sharkList = new ArrayList<JLabel>();
 	private List<JLabel> whaleList = new ArrayList<JLabel>();
 
 	private JLayeredPane selection = null;
 	private PawnType pawnType;
+	private boolean choice = false;
 
 	private Hexagon clickedHex;
 	private AnimationType animationType;
@@ -64,10 +70,15 @@ public class ExternalPanel extends JLayeredPane {
 		this.boatOrSeaPanel.setLayout(new GridLayout(4, 0, 0, 0));
 		this.dicePanel = createDisplayPanel();
 		this.dicePanel.setLayout(new BorderLayout(0, 0));
-		this.tilesEffectsPanel = createDisplayPanel();
-		this.tilesEffectsPanel.setLayout(new GridLayout(4, 0, 0, 0));
+		this.tilesEffectsRedPanel = createDisplayPanel();
+		this.tilesEffectsRedPanel.setLayout(new GridLayout(4, 0, 0, 0));
+		this.tilesEffectsDefensePanel = createDisplayPanel();
+		this.tilesEffectsDefensePanel.setLayout(new GridLayout(1, 0, 0, 0));
 		this.animationPanel = createDisplayPanel();
 		this.animationPanel.setLayout(new BorderLayout(0, 0));
+		this.boardingPanel = createDisplayPanel();
+		this.boardingPanel.setLayout(new GridLayout(4, 0, 0, 0));
+		
 		this.setVisible(false);
 
 		board.setLayer(this, 4);
@@ -111,23 +122,71 @@ public class ExternalPanel extends JLayeredPane {
 			case DICEPANEL:
 				displayDicePanel();
 				break;
-			case TILEEFFECTPANEL:
-				displayTileEffectPanel();
+			case TILEEFFECTREDPANEL:
+				displayTileEffectRedPanel();
+				break;
+			case TILEEFFECTDEFENSEPANEL:
+				displayTileEffectDefensePanel();
 				break;
 			case ANIMATIONPANEL:
 				displayAnimationPanel();
 				break;
+			case BOARDINGPANEL:
+				displayBoardingPanel();
+				break;
+		}
+	}
+
+	private void displayBoardingPanel() {
+		boardingPanel.removeAll();
+		bPairList.clear();
+		boardingpawns.clear();
+		this.boardingPanel.setVisible(true);
+		
+		int explorerLength = clickedHex.getExplorerList().size();
+		for (int i = 0; i < explorerLength; i++) {
+			Explorer e = clickedHex.getExplorerList().get(i);
+			bPairList.add(new Pair<JButton,JLayeredPane>(new JButton(e.getImage().getIcon()), e));bPairList.get(i).getLeft().setFocusPainted(false);
+            bPairList.get(i).getLeft().setContentAreaFilled(false);
+            boardingPanel.add(bPairList.get(i).getLeft());
+                
+            bPairList.get(i).getLeft().addActionListener( new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int index = bPairList.getLeftList().indexOf(e.getSource());
+                    if(!boardingpawns.contains((Explorer) bPairList.get(index).getRight())) {
+                    	boardingpawns.add((Explorer) bPairList.get(index).getRight());
+
+                    	bPairList.remove(index);
+                    	boardingPanel.remove(index);
+                    	boardingPanel.revalidate();
+                    	boardingPanel.repaint();
+                    }
+                    if(boardingpawns.size() >= 3) {
+            	        board.getExternalPanel().setExternalPanelState(ExternalPanelState.VOID);
+                    	board.getExternalPanel().setAnimationType(AnimationType.BOAT_SUMMON);
+            	        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+            	        for(Explorer boatE : boardingpawns) {
+            	        	boatE.move(clickedHex, clickedHex.getBoat(), clickedHex);
+            			}
+                        board.getGame().inGame(clickedHex);
+            	        clickedHex = null;
+                    }
+                }
+            });
 		}
 	}
 
 	private void displayAnimationPanel() {
+		animationPanel.removeAll();
 		this.animationPanel.setVisible(true);
-
+		
 		if (aPairList.containsInPair(animationType)) {
 			int index = aPairList.getLeftList().indexOf(animationType);
 			animationPanel.add(aPairList.get(index).getRight(), BorderLayout.CENTER);
 		}
 
+		animationType = null;
 		animationPanel.addMouseListener(new MouseListener() {
 
 			public void mouseClicked(MouseEvent e) {
@@ -136,8 +195,6 @@ public class ExternalPanel extends JLayeredPane {
 			public void mousePressed(MouseEvent e) {
 				board.setDisplayExternalPanel(false);
 				setExternalPanelState(ExternalPanelState.VOID);
-				animationType = null;
-				animationPanel.removeAll();
 				//board.getGame().inGame(clickedHex);
 			}
 
@@ -152,34 +209,64 @@ public class ExternalPanel extends JLayeredPane {
 		});
 	}
 
-	private void displayTileEffectPanel() {
-		this.tilesEffectsPanel.setVisible(true);
-
-		int explorersHand = board.getGame().getCurrentPlayer().getTileList().size();
-        for (int i = 0; i < explorersHand; i++) {
-        	Tile tile = board.getGame().getCurrentPlayer().getTileList().get(i);
-        	
-    		bPairList.add(new Pair<JButton,JLayeredPane>(new JButton(tile.getEffectLabel().getIcon()), tile));
-            //bPairList.get(i).getLeft().setBackground(java.awt.Color.WHITE);
-            //bPairList.get(i).getLeft().setBorderPainted(false);
-            //bPairList.get(i).getLeft().setBorder(BorderFactory.createLineBorder(java.awt.Color.WHITE));
-            bPairList.get(i).getLeft().setFocusPainted(false);
+	private void displayTileEffectRedPanel() {
+		tilesEffectsRedPanel.removeAll();
+		bPairList.clear();
+		this.tilesEffectsRedPanel.setVisible(true);
+        for (Tile tile : board.getGame().getCurrentPlayer().getTileList()) {
+        	if(tile.getEffect().getType() == "Rouge") {
+        		bPairList.add(new Pair<JButton,JLayeredPane>(new JButton(tile.getEffectLabel().getIcon()), tile));
+        	}
+        }
+        
+        for (int i = 0; i < bPairList.size(); i++) {
+        	bPairList.get(i).getLeft().setFocusPainted(false);
             bPairList.get(i).getLeft().setContentAreaFilled(false);
-            tilesEffectsPanel.add(bPairList.get(i).getLeft());
+            tilesEffectsRedPanel.add(bPairList.get(i).getLeft());
                 
             bPairList.get(i).getLeft().addActionListener( new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     int index = bPairList.getLeftList().indexOf(e.getSource());
                     setSelection(bPairList.get(index).getRight());
-                    tilesEffectsPanel.removeAll();
-            		bPairList.clear();
                     board.setDisplayExternalPanel(false);
                     setExternalPanelState(ExternalPanelState.VOID);
                     board.getGame().getActionInfo().onClickTilesButton(board.getGame());
                 }
             });
-        }
+		}
+	}
+	
+	private void displayTileEffectDefensePanel() {
+		tilesEffectsDefensePanel.removeAll();
+		this.tilesEffectsDefensePanel.setVisible(true);
+		choice = false;
+		
+		JButton yes = new JButton(new ImageIcon(ExternalPanel.class.getResource("/yes_button.png")));
+		JButton no = new JButton(new ImageIcon(ExternalPanel.class.getResource("/no_button.png")));
+		tilesEffectsDefensePanel.add(yes);
+		tilesEffectsDefensePanel.add(no);
+		
+		yes.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				choice = true;
+				board.setDisplayExternalPanel(false);
+                setExternalPanelState(ExternalPanelState.VOID);
+			}
+			
+		});
+		no.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				choice = false;
+				board.setDisplayExternalPanel(false);
+                setExternalPanelState(ExternalPanelState.VOID);
+			}
+			
+		});
 	}
 
 	private void displayDicePanel() {
@@ -216,7 +303,7 @@ public class ExternalPanel extends JLayeredPane {
 			public void mousePressed(MouseEvent e) {
 				board.setDisplayExternalPanel(false);
 				setExternalPanelState(ExternalPanelState.VOID);
-				board.getGame().inGame(clickedHex);
+				board.getGame().inGame(null);
 			}
 
 			public void mouseReleased(MouseEvent e) {
@@ -231,6 +318,8 @@ public class ExternalPanel extends JLayeredPane {
 	}
 
 	private void displayBoatOrSea() {
+		boatOrSeaPanel.removeAll();
+		bPairList.clear();
 		this.boatOrSeaPanel.setVisible(true);
 		ImageIcon icon = new ImageIcon(ExternalPanel.class.getResource("/Mer.png"));
 		Image scaleImage;
@@ -249,8 +338,7 @@ public class ExternalPanel extends JLayeredPane {
 					int index = bPairList.getLeftList().indexOf(e.getSource());
 					setSelection(bPairList.get(index).getRight());
 
-					boatOrSeaPanel.removeAll();
-					bPairList.clear();
+					
 					board.setDisplayExternalPanel(false);
 					setExternalPanelState(ExternalPanelState.VOID);
 					board.getGame().inGame(clickedHex);
@@ -261,6 +349,8 @@ public class ExternalPanel extends JLayeredPane {
 	}
 
 	private void displayPawnPanel() {
+		pawnPanel.removeAll();
+		bPairList.clear();
 		this.pawnPanel.setVisible(true);
 
 		for (Explorer e : clickedHex.getExplorerList()) {
@@ -278,9 +368,11 @@ public class ExternalPanel extends JLayeredPane {
 			bPairList.add(new Pair<JButton, JLayeredPane>(new JButton(clickedHex.getBoat().getImage().getIcon()), clickedHex.getBoat()));
 			
 		}
-		for (Explorer e : clickedHex.getBoat().getExplorerList()) {
-			if (board.getGame().getCurrentPlayer().getColor() == e.getColor()) {
-				bPairList.add(new Pair<JButton, JLayeredPane>(new JButton(e.getImage().getIcon()), e));
+		if((clickedHex.getBoat() != null)){
+			for (Explorer e : clickedHex.getBoat().getExplorerList()) {
+				if (board.getGame().getCurrentPlayer().getColor() == e.getColor()) {
+					bPairList.add(new Pair<JButton, JLayeredPane>(new JButton(e.getImage().getIcon()), e));
+				}
 			}
 		}
 		for (int i = 0; i < bPairList.size(); i++) {
@@ -292,8 +384,6 @@ public class ExternalPanel extends JLayeredPane {
 				public void actionPerformed(ActionEvent e) {
 					int index = bPairList.getLeftList().indexOf(e.getSource());
 					setSelection(bPairList.get(index).getRight());
-					pawnPanel.removeAll();
-					bPairList.clear();
 					board.setDisplayExternalPanel(false);
 					setExternalPanelState(ExternalPanelState.VOID);
 					board.getGame().inGame(clickedHex);
@@ -435,7 +525,9 @@ public class ExternalPanel extends JLayeredPane {
 		this.pawnPanel.setVisible(false);
 		this.boatOrSeaPanel.setVisible(false);
 		this.dicePanel.setVisible(false);
-		this.tilesEffectsPanel.setVisible(false);
+		this.tilesEffectsRedPanel.setVisible(false);
+		this.tilesEffectsDefensePanel.setVisible(false);
+		this.boardingPanel.setVisible(false);
 		this.animationPanel.setVisible(false);
 		this.setVisible(false);
 
@@ -461,7 +553,6 @@ public class ExternalPanel extends JLayeredPane {
 	private void setLabel() {
 		ImageIcon icone = new ImageIcon(Board.class.getResource("/Menu/ExternalPanel.png"));
 		Image scaleImage = icone.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
-		;
 		icone.setImage(scaleImage);
 		backgroundPanel.setIcon(icone);
 		backgroundPanel.setBounds(0, 0, getWidth(), getHeight());
@@ -496,4 +587,9 @@ public class ExternalPanel extends JLayeredPane {
 	public void setSelection(JLayeredPane selection) {
 		this.selection = selection;
 	}
+
+	public boolean isChoice() {
+		return choice;
+	}
+
 }

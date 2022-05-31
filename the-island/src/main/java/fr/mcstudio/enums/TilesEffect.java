@@ -19,7 +19,7 @@ public enum TilesEffect {
 			+ "la tuile de terrain. Tout nageur occupant cette case de mer est retirï¿½ du jeu", "Verte"),
 	SHARK_DEATH("Requin Mort", "Quand un autre joueur dï¿½place un requin dans une case de mer occupée par lï¿½un "
 			+ "de vos nageurs, vous pouvez jouer cette tuile de terrain pour retirer le requin du "
-			+ "jeu. Tous les nageurs demeurent dans la case mer. ", "Défense"),
+			+ "jeu. Tous les nageurs demeurent dans la case mer. ", "Defense"),
 	SHARK_LOST("Requin Perdu", "Déplacez le requin de votre choix déjà présent sur le plateau de jeu sur nï¿½importe "
 			+ "quelle case de mer inoccupée.", "Rouge"),
 	
@@ -34,7 +34,7 @@ public enum TilesEffect {
 			"Quand un autre joueur déplace une baleine dans une case de mer occupée par un bateau que "
 					+ "vous contrï¿½lez, vous pouvez jouer cette tuile de terrain pour retirer la baleine du jeu. "
 					+ "Votre bateau demeure dans la case de mer",
-			"Dï¿½fense"),
+			"Defense"),
 	WHALE_LOST("Baleine Perdue", "Déplacez la baleine de votre choix déjà présente sur le plateau de jeu sur nï¿½importe "
 			+ "quelle case de mer inoccupée ", "Rouge");
 

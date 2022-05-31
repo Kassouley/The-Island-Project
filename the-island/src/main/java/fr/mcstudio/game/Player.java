@@ -358,9 +358,9 @@ public class Player {
    		for(Explorer e : this.currentExplorerList) {
    			if(e.getStatus() == ExplorerStatus.SWIMMER) {
    				e.setMovePoint(1);
-   			}else if (e.getStatus() == ExplorerStatus.NORMAL) {
+   			} else {
    				e.setMovePoint(3);
-   			}				
+   			}
    		}
    	}
 

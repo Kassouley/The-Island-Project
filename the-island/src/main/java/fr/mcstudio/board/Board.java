@@ -93,6 +93,8 @@ public class Board extends JLayeredPane{
 							|| (i == 8 && j == 3)) {
 						int n = r.nextInt(tilesList.size());
 						hexagons[i][j].setTile(tilesList.get(n));
+						if(tilesList.get(n).getEffect() == TilesEffect.BOAT && tilesList.get(n).getType() == TilesType.BEACH)
+							System.out.println(i + " " + j);
 						tilesList.remove(n);
 						hexagons[i][j].setType(HexagonType.TILES);
 						hexagons[i][j].getTile().getTypeLabel().setBounds(0, 0, 

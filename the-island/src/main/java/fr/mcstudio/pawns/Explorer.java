@@ -129,7 +129,6 @@ public class Explorer extends Pawn {
         switch (newPosition.getType()) {
             case TILES:
                 this.status = ExplorerStatus.NORMAL;
-                this.setMovePoint(3);
                 newPosition.addPawn(this);
                 break;
             case SEA:
@@ -167,7 +166,7 @@ public class Explorer extends Pawn {
         oldPosition.removePawn(this);
         boat.addExplorer(this);
         this.status = ExplorerStatus.ONBOAT;
-
+        this.setMovePoint(0);
         if (!boatPosition.getWhaleList().isEmpty()) {
             boatPosition.getWhaleList().get(0).makeEffect(boatPosition);
         }
@@ -198,6 +197,7 @@ public class Explorer extends Pawn {
                     this.status = ExplorerStatus.DEAD;
                 } else {
                     this.status = ExplorerStatus.SWIMMER;
+                    this.setMovePoint(0);
                     newPosition.addPawn(this);
                 }
                 break;
@@ -276,7 +276,9 @@ public class Explorer extends Pawn {
                     hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.DEATH));
                 } else {
                     hexagonTripletList.remove(0);
-                    hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.NORMAL));
+                    if (distance > 0) {
+                        hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.NORMAL));
+                    }
                 }
             } else {
                 if (!actualPosition.getBoat().isFull()) {
