@@ -583,6 +583,9 @@ public class Game {
         			if(!hex.getSharkList().isEmpty()) {
         				hex.getSharkList().get(0).makeEffect(hex);
         			}
+        			if(!hex.getWhaleList().isEmpty()) {
+        				hex.getWhaleList().get(0).makeEffect(hex);
+        			}
         			
         			
         			for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
@@ -719,9 +722,13 @@ public class Game {
                     				&& ((Explorer)pawnToMove).getStatus() != ExplorerStatus.ONBOAT)
                     		|| pawnToMove instanceof Boat)) {
                 		pawnToMove.move(saveHexa, hex);
-                		if (!hex.getSharkList().isEmpty()) {
-                			hex.getSharkList().get(0).makeEffect(hex);
-                        }
+                		//defWithTile(hex,pawnToMove); 			
+            			if(!hex.getSharkList().isEmpty()) {
+            				hex.getSharkList().get(0).makeEffect(hex);
+            			}
+            			if(!hex.getWhaleList().isEmpty()) {
+            				hex.getWhaleList().get(0).makeEffect(hex);
+            			}
 
                     } else if(destination == hex 
                     		&& ((Explorer)pawnToMove).getStatus() == ExplorerStatus.ONBOAT) {
@@ -786,12 +793,13 @@ public class Game {
             			|| board.isNextToSea(hex)) {
                     board.decreaseNbTile(hex.getTile().getType());
                     hex.discover(getCurrentPlayer(), board);
+                  //defWithTile(hex,pawnToMove); 
                     if(!hex.getSharkList().isEmpty()) {
-            			hex.getSharkList().get(0).makeEffect(hex);
-            		}
-            		if(!hex.getWhaleList().isEmpty()) {
-            			hex.getWhaleList().get(0).makeEffect(hex);
-            		}
+        				hex.getSharkList().get(0).makeEffect(hex);
+        			}
+        			if(!hex.getWhaleList().isEmpty()) {
+        				hex.getWhaleList().get(0).makeEffect(hex);
+        			}
                     // ActionTurn est le changement d'action, � mettre en commentaire pour test
                     nextActionTurn();
             	}
@@ -876,6 +884,14 @@ public class Game {
             } else if (firstClic == false) {
                 if (hexagonTripletList.getLeftList().contains(hex)) {
                     pawnToMove.move(saveHexa, hex);
+                  //defWithTile(hex,pawnToMove); 			
+        			if(!hex.getSharkList().isEmpty()) {
+        				hex.getSharkList().get(0).makeEffect(hex);
+        			}
+        			if(!hex.getWhaleList().isEmpty()) {
+        				hex.getWhaleList().get(0).makeEffect(hex);
+        			}
+        			
                     for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
                         p.getLeft().setHighlightColor(null);
                         p.getLeft().setHighlight(resolution, board, false, null);
