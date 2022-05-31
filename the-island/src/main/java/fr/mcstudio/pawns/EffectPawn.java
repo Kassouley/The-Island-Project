@@ -65,8 +65,11 @@ public class EffectPawn extends Pawn {
     public void move(Hexagon oldPosition, Hexagon newPosition) {
         oldPosition.removePawn(this);
         newPosition.addPawn(this);
-        if (!newPosition.getExplorerList().isEmpty() || newPosition.getBoat() != null) {
+        /*if (!newPosition.getExplorerList().isEmpty() || newPosition.getBoat() != null) {
             this.makeEffect(newPosition);
+        }*/
+        if( this instanceof SeaSnake && !newPosition.getExplorerList().isEmpty() || newPosition.getBoat() != null ) {
+        	this.makeEffect(newPosition);
         }
     }
     public void findPathEffect(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList) {
