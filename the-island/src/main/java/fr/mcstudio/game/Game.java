@@ -378,7 +378,9 @@ public class Game {
             playerInfo.displayPlayerInfo(getGame(), resolution);
             turnNumber = 0;
         }
-          
+
+    	actionInfo.displayActionInfo(getGame());
+        playerInfo.displayPlayerInfo(getGame(), resolution);
         hex.displayPawns(board);
     }
 

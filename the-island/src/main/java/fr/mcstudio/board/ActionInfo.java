@@ -304,7 +304,7 @@ public class ActionInfo extends JLayeredPane {
 			);
 			
 			if (game.getCurrentPlayer().getExplorerList().size() != 0) {
-				String pawnValue = new String("L'explorateur que vous allez poser possède " 
+				String pawnValue = new String("<br><br>L'explorateur que vous allez poser possède " 
 											+ game.getCurrentPlayer().getExplorerList().get(0).getTreasureValue() 
 											+ " trésors</center></html>");
 				initText = initText + pawnValue;
