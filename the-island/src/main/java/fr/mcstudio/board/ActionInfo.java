@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -140,6 +141,12 @@ public class ActionInfo extends JLayeredPane {
 					actionListener = new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
+							int option = JOptionPane.showConfirmDialog(null, "Etes-vous s�r de vouloir quitter ?", "Quitter", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+							if(option == JOptionPane.OK_OPTION)
+							{
+								game.getAccueil().reinitialize();
+								game.getAccueil().welcomeMenu();
+							}
 						}
 					};
 							

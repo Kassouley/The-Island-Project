@@ -13,6 +13,7 @@ import javax.swing.SwingConstants;
 import fr.mcstudio.enums.AnimationType;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.ExternalPanelState;
+import fr.mcstudio.enums.GameState;
 import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.game.Player;
@@ -262,6 +263,10 @@ public class Tile extends JLayeredPane {
 		board.getExternalPanel().setAnimationType(AnimationType.VOLCANO);
         board.setDisplayExternalPanel(true);
         board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+        
+        board.getGame().setGameState(GameState.ENDING);
+        board.getGame().endGame();
+        
 		//endgame
 	}
 	

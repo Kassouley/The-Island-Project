@@ -181,7 +181,7 @@ public class Accueil {
         });
 	}
 
-	private void reinitialize() {
+	public void reinitialize() {
 		this.setFrameSizeFromResolution(frame);
 		this.panel.setBounds(0, 0, this.frame.getWidth(), this.frame.getHeight());
 
@@ -323,7 +323,7 @@ public class Accueil {
 		}
 	}
 
-	private void welcomeMenu() {
+	public void welcomeMenu() {
 		clearWindow();
 	    
 	    // Titre :
@@ -449,7 +449,7 @@ public class Accueil {
 		this.panel.add(titleLabel);
         
         // Menu Choix Nombre Joueurs :
-        Choix choice = new Choix(layeredPane);
+        Choix choice = new Choix(this);
 		choice.displayChoice(this.panel, this.frame, this.resolution);
 
 		JButton retour = new JButton("Retour");
@@ -466,6 +466,10 @@ public class Accueil {
   
 		this.layeredPane.add(this.panel);
 		this.layeredPane.setLayer(this.panel, 1);
+	}
+
+	public JLayeredPane getLayeredPane() {
+		return layeredPane;
 	}
 
 	private void optionMenu() {

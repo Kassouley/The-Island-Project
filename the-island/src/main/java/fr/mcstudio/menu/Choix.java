@@ -20,15 +20,15 @@ import javax.swing.event.ChangeListener;
 
 public class Choix {
 	
-	private JLayeredPane layeredPane;
+	private Accueil accueil;
 	private static int nbJr ;
 	private JSlider slider;
 	private JTextField field;
 	private JButton button;
 	private JLabel text ;
     
-    public Choix(JLayeredPane layeredPane) {
-    	this.layeredPane = layeredPane;
+    public Choix(Accueil accueil) {
+    	this.accueil = accueil;
     }
 
     public void displayChoice(JPanel panel, JFrame frame, int resolution) {
@@ -74,7 +74,7 @@ public class Choix {
         		if (nbJr <= 1) {
         			JOptionPane.showMessageDialog(null, "Veuillez entrer le nombre de joueurs !" , "Attention",JOptionPane.WARNING_MESSAGE);
         		} else {
-        			Joueur menuJ = new Joueur(nbJr, layeredPane);
+        			Joueur menuJ = new Joueur(nbJr, accueil);
                     menuJ.displayPlayer(panel, frame, resolution);
                     slider.setEnabled(false);
         		}

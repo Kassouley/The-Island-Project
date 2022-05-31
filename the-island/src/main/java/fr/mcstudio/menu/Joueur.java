@@ -22,15 +22,15 @@ import fr.mcstudio.game.Player;
 
 public class Joueur {
 
-	private JLayeredPane layeredPane;
+	private Accueil accueil;
 	public String []tabJoueurs ; 
 	public boolean retour_bool = false ;
 	public int nbJr;
 	private ArrayList<Player> players= new ArrayList<Player>();
 
-	public Joueur(int nbJr, JLayeredPane layeredPane) {
+	public Joueur(int nbJr, Accueil accueil) {
 		this.nbJr = nbJr;
-		this.layeredPane = layeredPane;
+		this.accueil = accueil;
 	}
 
 	public void displayPlayer(JPanel panel, JFrame frame, int resolution) {
@@ -68,7 +68,7 @@ public class Joueur {
         {
             public void mousePressed(MouseEvent e)
             {
-            	layeredPane.removeAll();
+            	accueil.getLayeredPane().removeAll();
             	System.out.println(textfield[0].getText());
             	for (int i = 0; i < nbJr; i++) {
             		Player P = new Player(textfield[i].getText(), Color.values()[i], false, resolution);
@@ -81,7 +81,7 @@ public class Joueur {
 				}
             	
             	@SuppressWarnings("unused")
-				Game game = new Game(resolution, layeredPane, players);
+				Game game = new Game(resolution, accueil, players);
         		
             }
         });

@@ -24,6 +24,7 @@ import fr.mcstudio.enums.HexagonListType;
 import fr.mcstudio.enums.PawnType;
 import fr.mcstudio.enums.TilesEffect;
 import fr.mcstudio.enums.TilesType;
+import fr.mcstudio.menu.Accueil;
 import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.Dolphin;
 import fr.mcstudio.pawns.EffectPawn;
@@ -40,9 +41,10 @@ public class Game {
     /**
      * Default constructor
      */
-    public Game(int resolution, JLayeredPane layeredPane, ArrayList<Player> players) {
+    public Game(int resolution, Accueil accueil, ArrayList<Player> players) {
         this.resolution = resolution;
-        this.contentPane = layeredPane;
+        this.accueil = accueil;
+        this.contentPane = accueil.getLayeredPane();
         this.players = players;
         this.turnNumber = 0;
         this.turnOrder = (int) (Math.random() * players.size());
@@ -55,9 +57,11 @@ public class Game {
         initializeBoard();
     }
 
-    /**
+
+	/**
      * 
      */
+    private Accueil accueil;
     private Board board;
     private PlayerInfo playerInfo;
 
@@ -340,6 +344,10 @@ public class Game {
     public GameState getGameState() {
         return this.gameState;
     }
+    
+    public void setGameState(GameState gameState) {
+		this.gameState = gameState;
+	}
 
     /**
      * 
@@ -423,7 +431,8 @@ public class Game {
          */
     }
 
-    /**
+
+	/**
      * 
      */
     public ActionTurn getActionTurn() {
@@ -512,6 +521,7 @@ public class Game {
      * 
      */
     public void endGame() {
+        contentPane.removeAll();
         
     }
 
@@ -1076,5 +1086,10 @@ public class Game {
     public PlayerInfo getPlayerInfo() {
 		return playerInfo;
 
+	}
+    
+
+    public Accueil getAccueil() {
+		return accueil;
 	}
 }

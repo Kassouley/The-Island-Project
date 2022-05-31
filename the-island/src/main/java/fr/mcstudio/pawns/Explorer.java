@@ -163,7 +163,7 @@ public class Explorer extends Pawn {
         oldPosition.removePawn(this);
         boat.addExplorer(this);
         this.status = ExplorerStatus.ONBOAT;
-        this.setMovePoint(0);
+        //this.setMovePoint(0);
         if (!boatPosition.getWhaleList().isEmpty()) {
             boatPosition.getWhaleList().get(0).makeEffect(boatPosition);
         }
