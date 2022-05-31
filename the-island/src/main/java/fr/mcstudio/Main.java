@@ -40,6 +40,7 @@ public class Main extends JFrame {
 		avatar.setImage(scaleImage);
 		P1.setAvatar(avatar);
 		players[0] = P1;
+		
 		Player P2 = new Player("Lo", Color.RED, false, resolution);
 		avatar = new ImageIcon(Main.class.getResource("/SideBar/avatar3.png"));
 		scaleImage = avatar.getImage().getScaledInstance(avatar.getIconWidth() * resolution / 90,

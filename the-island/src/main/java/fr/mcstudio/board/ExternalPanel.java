@@ -231,7 +231,7 @@ public class ExternalPanel extends JLayeredPane {
                     setSelection(bPairList.get(index).getRight());
                     board.setDisplayExternalPanel(false);
                     setExternalPanelState(ExternalPanelState.VOID);
-                    board.getGame().inGame(null);
+                    board.getGame().getActionInfo().onClickTilesButton(board.getGame());
                 }
             });
 		}
