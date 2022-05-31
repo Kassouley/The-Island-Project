@@ -498,7 +498,7 @@ public class Game {
         			
         			if(hex.nbExplorerColor(getCurrentPlayer().getColor()) == 1) {
                     	for (Explorer e : hex.getExplorerList()) {
-        					if(e.getColor() == getCurrentPlayer().getColor()) {
+        					if(e.getColor() == getCurrentPlayer().getColor() && e.getStatus() == ExplorerStatus.SWIMMER) {
         						pawnToMove = e;
         						break;
         					}
