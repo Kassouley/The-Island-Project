@@ -55,10 +55,13 @@ public class Whale extends EffectPawn {
      */
     public void makeEffect(Hexagon hexagon) {
         if (hexagon.getBoat() != null) {
-            if (!hexagon.getBoat().getExplorerList().isEmpty()) {
-                this.board.getExternalPanel().setAnimationType(AnimationType.WHALE_ATTACK);
+            if (!hexagon.getBoat()
+            		.getExplorerList().isEmpty()) {
+                this.board.getExternalPanel()
+                .setAnimationType(AnimationType.WHALE_ATTACK);
                 this.board.setDisplayExternalPanel(true);
-                this.board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+                this.board.getExternalPanel()
+                .setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
                 hexagon.getBoat().sunk(hexagon);
             }
         }
@@ -78,7 +81,9 @@ public class Whale extends EffectPawn {
      * their type (NORMAL or DEATH).
      * @param distance the distance from the starting point
      */
-    public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
+    public void findPathAux(Hexagon actualPosition, Board board, 
+    		TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList,
+    		int distance) {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
         tmp.add(board.getTopLeft(actualPosition));
@@ -94,9 +99,13 @@ public class Whale extends EffectPawn {
                     && hexagon.getType() == HexagonType.SEA) {
                 
                 if (hexagon.getBoat() != null && !hexagon.getBoat().isEmpty()) {
-                    hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.DEATH));
+                    hexagonTripletList.add(
+                    		new Triplet<Hexagon,Integer,HexagonListType>
+                    		(hexagon, distance, HexagonListType.DEATH));
                 } else {
-                    hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.NORMAL));
+                    hexagonTripletList.add(
+                    		new Triplet<Hexagon,Integer,HexagonListType>
+                    		(hexagon, distance, HexagonListType.NORMAL));
                 }
             }
         }

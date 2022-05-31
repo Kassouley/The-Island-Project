@@ -27,7 +27,11 @@ import fr.mcstudio.pawns.Whale;
 public class Hexagon extends JLayeredPane {
 
    // Creating a hexagon object and adding it to a JLayeredPane.
-    public Hexagon(JLayeredPane boardPane, final int line, final int column, int resolution) {
+    public Hexagon(JLayeredPane boardPane, 
+    		final int line, 
+    		final int column, 
+    		int resolution) {
+    	
         super();
         this.line = line;
         this.column = column;
@@ -386,7 +390,10 @@ public class Hexagon extends JLayeredPane {
      * @param clicky the y coordinate of the click
      * @return a boolean value.
      */
-    public boolean isInDemiPlan(float ax, float ay, float bx, float by, float clickx, float clicky) {
+    public boolean isInDemiPlan(float ax, float ay, 
+    		float bx, float by, 
+    		float clickx, float clicky) {
+    	
         float d = (bx - ax) * (clicky - ay) - (by - ay) * (clickx - ax);
         if (d <= 0)
             return true;
@@ -430,7 +437,11 @@ public class Hexagon extends JLayeredPane {
      * @param highlight boolean, true if the tile should be highlighted, false if not
      * @param color the color of the highlight
      */
-    public void setHighlight(int resolution, JLayeredPane boardPane, boolean highlight, String color) {
+    public void setHighlight(int resolution, 
+    		JLayeredPane boardPane, 
+    		boolean highlight, 
+    		String color) {
+    	
         this.highlight = highlight;
         remove(highlightLabel);
         revalidate();
@@ -440,24 +451,30 @@ public class Hexagon extends JLayeredPane {
             ImageIcon icone = null;
             Image scaleImage;
             if (color == "white") {
-                icone = new ImageIcon(Tile.class.getResource("/HexagonBlanc.png"));
+                icone = new ImageIcon(Tile.class
+                		.getResource("/HexagonBlanc.png"));
             } else if (color == "yellow") {
-                icone = new ImageIcon(Tile.class.getResource("/HexagonJaune.png"));
+                icone = new ImageIcon(Tile.class
+                		.getResource("/HexagonJaune.png"));
                 highlightColor = "yellow";
             } else if (color == "red") {
-                icone = new ImageIcon(Tile.class.getResource("/HexagonRouge.png"));
+                icone = new ImageIcon(Tile.class
+                		.getResource("/HexagonRouge.png"));
                 highlightColor = "red";
             } else if (color == "purple") {
-                icone = new ImageIcon(Tile.class.getResource("/HexagonViolet.png"));
+                icone = new ImageIcon(Tile.class
+                		.getResource("/HexagonViolet.png"));
                 highlightColor = "purple";
             }
             switch (resolution) {
                 case 70:
-                    scaleImage = icone.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
+                    scaleImage = icone.getImage()
+                    		.getScaledInstance(70, 70, Image.SCALE_SMOOTH);
                     icone.setImage(scaleImage);
                     break;
                 case 80:
-                    scaleImage = icone.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+                    scaleImage = icone.getImage()
+                    		.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
                     icone.setImage(scaleImage);
                     break;
                 default:
@@ -728,7 +745,11 @@ public class Hexagon extends JLayeredPane {
                     y.get(i), resolution, imageSize);
             pawnsToDisplay.get(i).createPawnImage();
             if (pawnsToDisplay.get(i) instanceof Boat)
-                ((Boat) pawnsToDisplay.get(i)).displayBoatPawns(this.boat, resolution, pawnsToDisplay.size(), this);
+                ((Boat) pawnsToDisplay.get(i))
+                		.displayBoatPawns(this.boat, 
+                				resolution, 
+                				pawnsToDisplay.size(), 
+                				this);
 
             if (index.get(i) > 1)
                 pawnsToDisplay.get(i).addIndex(index.get(i), imageSize);
@@ -747,7 +768,8 @@ public class Hexagon extends JLayeredPane {
      * @return A boolean value.
      */
     public boolean containsExplorerColor(final Color color) {
-        return explorerList.stream().filter(o -> o.getColor().equals(color)).findFirst().isPresent();
+        return explorerList.stream().filter(o -> o.getColor()
+        		.equals(color)).findFirst().isPresent();
     }
 
     /**

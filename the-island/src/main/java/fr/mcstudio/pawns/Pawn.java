@@ -77,7 +77,8 @@ public class Pawn extends JLayeredPane {
      * @param size The size of the button in pixels.
      */
     public void setPosition(int x, int y, int resolution, int size) {
-        this.setBounds(x, y, (int) (size * ((float) resolution / 90)), (int) (size * ((float) resolution / 90)));
+        this.setBounds(x, y, (int) (size * ((float) resolution / 90)), 
+        		(int) (size * ((float) resolution / 90)));
     }
 
     /**
@@ -90,14 +91,17 @@ public class Pawn extends JLayeredPane {
      * @param hexagonTripletList a list of hexagons, their distance from the starting hexagon, and
      * their type (land, water, death)
      */
-    public void findPath(Hexagon actualPosition, Board board, int movePointLeft, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList) {
+    public void findPath(Hexagon actualPosition, Board board, 
+    		int movePointLeft, 
+    		TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList) {
         hexagonTripletList.clear();
         
         int distance = Math.min(movePointLeft, this.getMovePoint());
         
         List<Hexagon> tmp = new ArrayList<Hexagon>();
         tmp.add(actualPosition);
-        hexagonTripletList.add(new Triplet<Hexagon, Integer, HexagonListType>(actualPosition, 1, HexagonListType.BOAT));
+        hexagonTripletList.add(new Triplet<Hexagon, Integer, 
+        		HexagonListType>(actualPosition, 1, HexagonListType.BOAT));
         for (int i = 1; i <= distance; i++) {
             for (Hexagon hexagon : tmp) {
                 this.findPathAux(hexagon, board, hexagonTripletList, i);
@@ -110,7 +114,8 @@ public class Pawn extends JLayeredPane {
             tmp.clear();
             for (Hexagon hexagon : hexagonList) {
                 int index = hexagonList.indexOf(hexagon);
-                if (hexagonTripletList.get(index).getRight() != HexagonListType.DEATH) {
+                if (hexagonTripletList.get(index)
+                		.getRight() != HexagonListType.DEATH) {
                         
                     tmp.add(hexagon);
                 }
@@ -137,7 +142,9 @@ public class Pawn extends JLayeredPane {
      * type of hexagon list they are in.
      * @param distance the distance from the starting hexagon
      */
-    public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
+    public void findPathAux(Hexagon actualPosition, Board board, 
+    		TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, 
+    		int distance) {
     }
 
     /**
@@ -147,29 +154,39 @@ public class Pawn extends JLayeredPane {
         ImageIcon icon = null;
         Image scaleImage;
         if (this instanceof Shark) {
-            icon = new ImageIcon(Pawn.class.getResource("/pion_requin.png"));
+            icon = new ImageIcon(Pawn.class
+            		.getResource("/pion_requin.png"));
 
         } else if (this instanceof Whale) {
-            icon = new ImageIcon(Pawn.class.getResource("/pion_baleine.png"));
+            icon = new ImageIcon(Pawn.class
+            		.getResource("/pion_baleine.png"));
 
         } else if (this instanceof SeaSnake) {
-            icon = new ImageIcon(Pawn.class.getResource("/pion_serpent_de_mer.png"));
+            icon = new ImageIcon(Pawn.class
+            		.getResource("/pion_serpent_de_mer.png"));
 
         } else if (this instanceof Boat) {
-            icon = new ImageIcon(Pawn.class.getResource("/pion_bateau.png"));
+            icon = new ImageIcon(Pawn.class
+            		.getResource("/pion_bateau.png"));
 
         } else if (this instanceof Explorer) {
         	if(((Explorer)this).getColor() == Color.RED) {
-                icon = new ImageIcon(Pawn.class.getResource("/pion_rouge.png"));
+                icon = new ImageIcon(Pawn.class
+                		.getResource("/pion_rouge.png"));
         	} else if(((Explorer)this).getColor() == Color.GREEN) {
-                icon = new ImageIcon(Pawn.class.getResource("/pion_vert.png"));
+                icon = new ImageIcon(Pawn.class
+                		.getResource("/pion_vert.png"));
         	} else if(((Explorer)this).getColor() == Color.BLUE) {
-                icon = new ImageIcon(Pawn.class.getResource("/pion_bleu.png"));
+                icon = new ImageIcon(Pawn.class
+                		.getResource("/pion_bleu.png"));
         	} else if(((Explorer)this).getColor() == Color.YELLOW) {
-                icon = new ImageIcon(Pawn.class.getResource("/pion_jaune.png"));
+                icon = new ImageIcon(Pawn.class
+                		.getResource("/pion_jaune.png"));
         	}
         }
-        scaleImage = icon.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
+        scaleImage = icon.getImage().getScaledInstance(this.getWidth(), 
+        		this.getHeight(), 
+        		Image.SCALE_SMOOTH);
         icon.setImage(scaleImage);
         this.image.setIcon(icon);
         this.add(this.image);
@@ -186,9 +203,13 @@ public class Pawn extends JLayeredPane {
 		this.index = new JLabel(Integer.toString(index));
 		this.index.setFont(new Font("Tahoma", Font.BOLD,  size/2));
 		this.index.setForeground(java.awt.Color.WHITE);
-		int indexWidth = this.index.getFontMetrics(this.index.getFont()).stringWidth(this.index.getText());
-		int indexHeight = this.index.getFontMetrics(this.index.getFont()).getHeight();
-		this.index.setBounds(getWidth()/2 - indexWidth/2, getHeight()/2 - indexHeight/4, size/2, size/2);
+		int indexWidth = this.index.getFontMetrics(this.index.getFont())
+				.stringWidth(this.index.getText());
+		int indexHeight = this.index.getFontMetrics(this.index.getFont())
+				.getHeight();
+		this.index.setBounds(getWidth()/2 - indexWidth/2, 
+				getHeight()/2 - indexHeight/4, size/2, 
+				size/2);
 		this.setLayer(this.index, 2);
 		add(this.index);	
 	}

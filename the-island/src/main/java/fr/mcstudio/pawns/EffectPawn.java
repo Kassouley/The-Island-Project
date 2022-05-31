@@ -36,7 +36,9 @@ public class EffectPawn extends Pawn {
     public void move(Hexagon oldPosition, Hexagon newPosition) {
         oldPosition.removePawn(this);
         newPosition.addPawn(this);
-        if( this instanceof SeaSnake && !newPosition.getExplorerList().isEmpty() || newPosition.getBoat() != null ) {
+        if( this instanceof SeaSnake 
+        		&& !newPosition.getExplorerList().isEmpty() 
+        		|| newPosition.getBoat() != null ) {
         	this.makeEffect(newPosition);
         }
     }
@@ -49,7 +51,8 @@ public class EffectPawn extends Pawn {
      * @param board the board object
      * @param hexagonTripletList This is a list of hexagons that are available to move to.
      */
-    public void findPathEffect(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList) {
+    public void findPathEffect(Hexagon actualPosition, Board board, 
+    		TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList) {
         hexagonTripletList.clear();
         Hexagon[][] hexagons = board.getHexagons();
         for (int i = 0; i < 13; i++) {
@@ -60,7 +63,9 @@ public class EffectPawn extends Pawn {
                         && hexagons[i][j].getSeaSnakeList().isEmpty()
                         && hexagons[i][j].getBoat() == null
                         && hexagons[i][j].getType() == HexagonType.SEA) {
-                    hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagons[i][j], 1, HexagonListType.NORMAL));
+                    hexagonTripletList.add(
+                    		new Triplet<Hexagon,Integer,HexagonListType>
+                    		(hexagons[i][j], 1, HexagonListType.NORMAL));
                 }
             }
         }

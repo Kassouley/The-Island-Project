@@ -48,17 +48,21 @@ public class Choix {
     public void displayChoice(JPanel panel, JFrame frame, int resolution) {
         field = new JTextField(5);
         field.setEditable(false);
-        field.setFont(new Font("Showcard Gothic", Font.BOLD, 40 * resolution / 80));
+        field.setFont(new Font("Showcard Gothic", 
+        		Font.BOLD, 40 * resolution / 80));
         field.setHorizontalAlignment(SwingConstants.CENTER);
         //--------------------------------------------------------------------------------------- Font
-        field.setBounds(750 * resolution / 80, 350 * resolution / 80, 60 * resolution / 80, 60 * resolution / 80);
+        field.setBounds(750 * resolution / 80, 350 * resolution / 80, 
+        		60 * resolution / 80, 60 * resolution / 80);
         
         //	Text :
         text = new JLabel("Choisissez le nombre de joueurs de cette partie :");
-        text.setFont(new Font("Showcard Gothic", Font.PLAIN, 30 * resolution / 80));
+        text.setFont(new Font("Showcard Gothic", 
+        		Font.PLAIN, 30 * resolution / 80));
         //--------------------------------------------------------------------------------------- Font
         text.setForeground(Color.WHITE);
-        text.setBounds(420 * resolution / 80, 260 * resolution / 80, panel.getWidth()-(text.getX()*2), 40 * resolution / 80);
+        text.setBounds(420 * resolution / 80, 260 * resolution / 80, 
+        		panel.getWidth()-(text.getX()*2), 40 * resolution / 80);
         
         //	Slider :
         slider = new JSlider();
@@ -72,21 +76,28 @@ public class Choix {
             }
         });
         slider.setValue(2);
-        slider.setPreferredSize(new Dimension(panel.getWidth()-(text.getX()*2), 40 * resolution / 80));
-        slider.setBounds(420 * resolution / 80, 300 * resolution / 80, panel.getWidth()-(text.getX()*2), 40 * resolution / 80);
+        slider.setPreferredSize(new Dimension(panel.getWidth()-
+        		(text.getX()*2), 40 * resolution / 80));
+        slider.setBounds(420 * resolution / 80, 300 * resolution / 80, 
+        		panel.getWidth()-(text.getX()*2), 40 * resolution / 80);
         
         
         //	Bouton OK :
         button = new JButton("OK");
-        button.setFont(new Font("Showcard Gothic", Font.BOLD, 40 * resolution / 80));
+        button.setFont(new Font("Showcard Gothic", 
+        		Font.BOLD, 40 * resolution / 80));
         //------------------------------------------------------------------------------ Font
-        button.setBounds(830 * resolution / 80, 350 * resolution / 80, slider.getWidth()-(410 * resolution / 80), 60 * resolution / 80);
+        button.setBounds(830 * resolution / 80, 350 * resolution / 80, 
+        		slider.getWidth()-(410 * resolution / 80), 
+        		60 * resolution / 80);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
         		System.out.println("nJr = "+nbJr); 
         		if (nbJr <= 1) {
-        			JOptionPane.showMessageDialog(null, "Veuillez entrer le nombre de joueurs !" , "Attention",JOptionPane.WARNING_MESSAGE);
+        			JOptionPane.showMessageDialog(null, 
+        					"Veuillez entrer le nombre de joueurs !", 
+        					"Attention",JOptionPane.WARNING_MESSAGE);
         		} else {
         			Joueur menuJ = new Joueur(nbJr, accueil);
                     menuJ.displayPlayer(panel, frame, resolution);

@@ -103,7 +103,8 @@ public class Boat extends Pawn {
             maxAt = colorCount[i] > colorCount[maxAt] ? i : maxAt;
         }
 
-        return (colorCount[player.getColor().ordinal()] >= colorCount[maxAt]);
+        return (colorCount[player.getColor().ordinal()] >= 
+        		colorCount[maxAt]);
     }
 
     /**
@@ -135,10 +136,12 @@ public class Boat extends Pawn {
         newPosition.addPawn(this);
         if (!this.explorerList.isEmpty()) {
             if (!newPosition.getWhaleList().isEmpty()) {
-                newPosition.getWhaleList().get(0).makeEffect(newPosition);
+                newPosition.getWhaleList().get(0)
+                		.makeEffect(newPosition);
             }
             if (!newPosition.getSeaSnakeList().isEmpty()) {
-                newPosition.getSeaSnakeList().get(0).makeEffect(newPosition);
+                newPosition.getSeaSnakeList().get(0)
+                		.makeEffect(newPosition);
             }
         }
     }
@@ -154,7 +157,8 @@ public class Boat extends Pawn {
      * @param distance the distance from the starting point
      */
     public void findPathAux(Hexagon actualPosition, Board board, 
-            TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
+            TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, 
+            int distance) {
 
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
@@ -175,9 +179,13 @@ public class Boat extends Pawn {
                         || (hexagon.getSeaSnakeList().isEmpty()
                         && hexagon.getWhaleList().isEmpty())) {
                             
-                    hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.NORMAL));
+                    hexagonTripletList.add(
+                    		new Triplet<Hexagon,Integer,HexagonListType>
+                    		(hexagon, distance, HexagonListType.NORMAL));
                 } else {
-                    hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.DEATH));
+                    hexagonTripletList.add(
+                    		new Triplet<Hexagon,Integer,HexagonListType>
+                    		(hexagon, distance, HexagonListType.DEATH));
                 }
             }
         }
@@ -191,7 +199,11 @@ public class Boat extends Pawn {
      * @param nbPawn the number of pawns on the boat
      * @param hex the hexagon where the boat is
      */
-    public void displayBoatPawns(Boat boat, int resolution, int nbPawn, Hexagon hex) {
+    public void displayBoatPawns(Boat boat, 
+    		int resolution, 
+    		int nbPawn, 
+    		Hexagon hex) {
+    	
 		List<Integer> x = new ArrayList<Integer>();
         List<Integer> y = new ArrayList<Integer>();
         explorerToDisplay.clear();
@@ -238,7 +250,8 @@ public class Boat extends Pawn {
             icon = new ImageIcon(Pawn.class.getResource("/pion_jaune.png"));
     	}
 
-		scaleImage = icon.getImage().getScaledInstance(e.getWidth(), e.getHeight(), Image.SCALE_SMOOTH);
+		scaleImage = icon.getImage().getScaledInstance(e.getWidth(), 
+				e.getHeight(), Image.SCALE_SMOOTH);
         icon.setImage(scaleImage);
 
         e.getImage().setIcon(icon);
@@ -257,7 +270,8 @@ public class Boat extends Pawn {
         Image scaleImage;
 
         icon = new ImageIcon(Pawn.class.getResource("/pion_bateau.png"));
-        scaleImage = icon.getImage().getScaledInstance(resolution, resolution, Image.SCALE_SMOOTH);
+        scaleImage = icon.getImage().getScaledInstance(resolution, resolution, 
+        		Image.SCALE_SMOOTH);
         icon.setImage(scaleImage);
 
         this.image.setIcon(icon);
@@ -270,7 +284,8 @@ public class Boat extends Pawn {
      * @return A boolean value.
      */
     public boolean containsExplorerColor(final Color color) {
-        return explorerList.stream().filter(o -> o.getColor().equals(color)).findFirst().isPresent();
+        return explorerList.stream().filter(o -> o.getColor().equals(color))
+        		.findFirst().isPresent();
     }
 
    /**

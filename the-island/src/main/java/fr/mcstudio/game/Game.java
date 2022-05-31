@@ -110,7 +110,8 @@ public class Game {
     private Hexagon saveHexa;
 
     // Creating a new TripletList object.
-    private TripletList<Hexagon, Integer, HexagonListType> hexagonTripletList = new TripletList<Hexagon, Integer, HexagonListType>();
+    private TripletList<Hexagon, Integer, HexagonListType> 
+    hexagonTripletList = new TripletList<Hexagon, Integer, HexagonListType>();
 
     /**
      * It creates a new board and initialize it.
@@ -165,28 +166,39 @@ public class Game {
         				board.setDisplayExternalPanel(false);
                         actionInfo.displayActionInfo(getGame());
                         playerInfo.displayPlayerInfo(getGame(), resolution);
-                        if(board.getExternalPanel().getExternalPanelState() != ExternalPanelState.ANIMATIONPANEL)
+                        if(board.getExternalPanel()
+                        		.getExternalPanelState() != ExternalPanelState
+                        		.ANIMATIONPANEL)
                         	inGame(null);
-        				board.getExternalPanel().setExternalPanelState(ExternalPanelState.VOID);
+        				board.getExternalPanel()
+        				.setExternalPanelState(ExternalPanelState.VOID);
                 	} else if(!board.isDisplayExternalPanel()){
 
                 		for (int i = 0; i < 13; i++) {
                             for (int j = 0; j < 12; j++) {
                                 Hexagon hex = board.getHexagons()[i][j];
                                 if (!hex.isVoid()) {
-                                    if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(),
+                                    if (hex.isInHexagonfloat(resolution, 
+                                    		e.getX() - hex.getX(),
                                             e.getY() - hex.getY())) {
 
-                                        actionInfo.displayActionInfo(getGame());
-                                        playerInfo.displayPlayerInfo(getGame(), resolution);
-                                        if (gameState == GameState.INITIALISATION) {
+                                        actionInfo.displayActionInfo(
+                                        		getGame());
+                                        playerInfo.displayPlayerInfo(getGame(), 
+                                        		resolution);
+                                        if (gameState == GameState
+                                        		.INITIALISATION) {
                                             setAllPawn(hex);
-                                        } else if (gameState == GameState.PLAYING) {
-                                            if (actionTurn != ActionTurn.MOVE_MONSTER 
-                                                    || board.getExternalPanel().getPawnType() != null) {
+                                        } else if (gameState == GameState
+                                        		.PLAYING) {
+                                            if (actionTurn != ActionTurn
+                                            		.MOVE_MONSTER 
+                                                    || board.getExternalPanel()
+                                                    .getPawnType() != null) {
                                                 inGame(hex);
                                             }
-                                        } else if (gameState == GameState.ENDING) {
+                                        } else if (gameState == GameState
+                                        		.ENDING) {
                                             endGame();
                                         }
 
@@ -221,13 +233,23 @@ public class Game {
                         for (int j = 0; j < 12; j++) {
                             Hexagon hex = board.getHexagons()[i][j];
                             if (!hex.isVoid()) {
-                                if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(), e.getY() - hex.getY())) {
+                                if (hex.isInHexagonfloat(resolution, 
+                                		e.getX() - hex.getX(), 
+                                		e.getY() - hex.getY())) {
                                     if (!hex.isHighlight())
-                                        hex.setHighlight(resolution, board, true, "white");
+                                        hex.setHighlight(resolution, 
+                                        		board, 
+                                        		true, 
+                                        		"white");
 
                                 } else {
-                                    if (hex.isHighlight() && hex.getHighlightColor() == null) {
-                                        hex.setHighlight(resolution, board, false, null);
+                                    if (hex.isHighlight() 
+                                    		&& hex
+                                    		.getHighlightColor() == null) {
+                                        hex.setHighlight(resolution, 
+                                        		board, 
+                                        		false, 
+                                        		null);
                                     }
                                 }
                             }
@@ -287,7 +309,8 @@ public class Game {
      * @return The current player.
      */
     public Player getCurrentPlayer() {
-        return this.players.get((this.turnOrder + this.turnNumber) % players.size());
+        return this.players.get((this.turnOrder + this.turnNumber) % 
+        		players.size());
     }
 
     /**
@@ -341,7 +364,8 @@ public class Game {
                 && hex.getExplorerList().isEmpty() 
                 && !getCurrentPlayer().getExplorerList().isEmpty()) {
             hex.addPawn(getCurrentPlayer().getExplorerList().get(0));
-            getCurrentPlayer().getCurrentExplorerList().add(getCurrentPlayer().getExplorerList().get(0));
+            getCurrentPlayer().getCurrentExplorerList()
+            		.add(getCurrentPlayer().getExplorerList().get(0));
             getCurrentPlayer().getExplorerList().remove(0);
             nextTurn();
         }
@@ -512,41 +536,58 @@ public class Game {
     			switch(usedTile.getEffect()) {    		
         		case BOAT_MOVE:
         			
-                	if(hex.getBoat() != null && hex.getBoat().isOwnedBy(getCurrentPlayer())) {
+                	if(hex.getBoat() != null && hex.getBoat()
+                			.isOwnedBy(getCurrentPlayer())) {
                 		pawnToMove = hex.getBoat();
             			pawnToMove.findPath(hex, board, 3, hexagonTripletList);
                 	}	
-                	board.getExternalPanel().setAnimationType(AnimationType.WIND);
+                	board.getExternalPanel()
+                			.setAnimationType(AnimationType.WIND);
         	        board.setDisplayExternalPanel(true);
-        	        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+        	        board.getExternalPanel()
+        	        		.setExternalPanelState(ExternalPanelState
+        	        				.ANIMATIONPANEL);
         		break;
         		case DOLPHIN_MOVE: 
         			
-        			if(hex.nbExplorerColor(getCurrentPlayer().getColor()) == 1) {
+        			if(hex.nbExplorerColor(getCurrentPlayer()
+        					.getColor()) == 1) {
                     	for (Explorer e : hex.getExplorerList()) {
-        					if(e.getColor() == getCurrentPlayer().getColor() && e.getStatus() == ExplorerStatus.SWIMMER) {
+        					if(e.getColor() == getCurrentPlayer()
+        							.getColor() 
+        							&& e.getStatus() == ExplorerStatus
+        							.SWIMMER) {
         						pawnToMove = e;
         						break;
         					}
         				}                   	
                     }
         			if (pawnToMove == null) {
-                        if (board.getExternalPanel().getSelection() != null) {         	
-                            pawnToMove = (Pawn)board.getExternalPanel().getSelection();
+                        if (board.getExternalPanel()
+                        		.getSelection() != null) {         	
+                            pawnToMove = (Pawn)board.getExternalPanel()
+                            		.getSelection();
                             board.getExternalPanel().setSelection(null);
                             board.getExternalPanel().setClickedHex(null);
                             inGame(hex);
-                        } else if (hex.containsExplorerColor(getCurrentPlayer().getColor())) {
+                        } else if (hex.containsExplorerColor(getCurrentPlayer()
+                        		.getColor())) {
                             board.getExternalPanel().setClickedHex(hex);
                             board.setDisplayExternalPanel(true);
-                            board.getExternalPanel().setExternalPanelState(ExternalPanelState.PAWNPANEL);
+                            board.getExternalPanel()
+                            		.setExternalPanelState(ExternalPanelState
+                            				.PAWNPANEL);
                         }
                     } else {
                     	Dolphin d = new Dolphin();
                         d.findPath(hex, board, 3, hexagonTripletList); 
-                        board.getExternalPanel().setAnimationType(AnimationType.DOLPHIN_SUMMON);
+                        board.getExternalPanel()
+                        		.setAnimationType(AnimationType
+                        				.DOLPHIN_SUMMON);
             	        board.setDisplayExternalPanel(true);
-            	        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+            	        board.getExternalPanel()
+            	        		.setExternalPanelState(ExternalPanelState
+            	        				.ANIMATIONPANEL);
                     }
         			
         			
@@ -576,7 +617,8 @@ public class Game {
         		default: break;
         		}
     			if(pawnToMove != null) {
-    				for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
+    				for (Triplet<Hexagon, Integer, HexagonListType> p : 
+    						hexagonTripletList) {
                         String s;
                         switch (p.getRight()) {
                             case NORMAL:
@@ -606,7 +648,8 @@ public class Game {
                     playJ.clear();
         			defWithTile(hex);
         			
-        			for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
+        			for (Triplet<Hexagon, Integer, HexagonListType> p : 
+        					hexagonTripletList) {
                         p.getLeft().setHighlightColor(null);
                         p.getLeft().setHighlight(resolution, board, false, null);
                     }
@@ -628,7 +671,8 @@ public class Game {
                     }
         		}
     			else {
-    				for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
+    				for (Triplet<Hexagon, Integer, HexagonListType> p : 
+    						hexagonTripletList) {
                         p.getLeft().setHighlightColor(null);
                         p.getLeft().setHighlight(resolution, board, false, null);
                     }
@@ -647,7 +691,10 @@ public class Game {
      * @param hex the hexagon that was clicked
      */
     private void inGameMovePawn(Hexagon hex) {
-    	if (hex != null && (!hex.getExplorerList().isEmpty() || hex.getBoat() != null)  && firstClic == true) {
+    	if (hex != null 
+    			&& (!hex.getExplorerList().isEmpty() 
+    					|| hex.getBoat() != null)  
+    			&& firstClic == true) {
     		Color plColor = getCurrentPlayer().getColor();
             saveHexa = hex;
             if(hex.nbExplorerColor(plColor) + 
@@ -684,7 +731,8 @@ public class Game {
             if (pawnToMove == null) {
                 if (board.getExternalPanel().getSelection() != null) {
 
-                    pawnToMove = (Pawn)board.getExternalPanel().getSelection();
+                    pawnToMove = (Pawn)board.getExternalPanel()
+                    		.getSelection();
                     board.getExternalPanel().setSelection(null);
                     board.getExternalPanel().setClickedHex(null);
                     inGame(hex);
@@ -694,12 +742,18 @@ public class Game {
                 	
                     board.getExternalPanel().setClickedHex(hex);
                     board.setDisplayExternalPanel(true);
-                    board.getExternalPanel().setExternalPanelState(ExternalPanelState.PAWNPANEL);
+                    board.getExternalPanel()
+                    		.setExternalPanelState(ExternalPanelState
+                    				.PAWNPANEL);
 
                 }
             } else {
-                pawnToMove.findPath(hex, board, getCurrentPlayer().getMoveLeft(), hexagonTripletList);
-                for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
+                pawnToMove.findPath(hex, 
+                		board, 
+                		getCurrentPlayer().getMoveLeft(), 
+                		hexagonTripletList);
+                for (Triplet<Hexagon, Integer, HexagonListType> p : 
+                		hexagonTripletList) {
                     String s;
                     switch (p.getRight()) {
                         case NORMAL:
@@ -724,10 +778,12 @@ public class Game {
             if (hexagonTripletList.getLeftList().contains(hex)) {
             	if((hex == saveHexa && hex.getBoat() != null 
             			&& pawnToMove instanceof Explorer 
-            			&& ((Explorer)pawnToMove).getStatus() != ExplorerStatus.ONBOAT) 
+            			&& ((Explorer)pawnToMove).getStatus() != ExplorerStatus
+            				.ONBOAT) 
             			|| (hex.getBoat() != null && saveHexa.getBoat() != null
     					&& pawnToMove instanceof Explorer 
-            			&& ((Explorer)pawnToMove).getStatus() == ExplorerStatus.ONBOAT )) {
+            			&& ((Explorer)pawnToMove).getStatus() == ExplorerStatus
+            				.ONBOAT )) {
             		destination = hex.getBoat();
 
             	} else if(hex.getBoat() == null || !saveHexa.isTiles()) {
@@ -736,7 +792,8 @@ public class Game {
             	
             	if(destination == null 
             			&& (saveHexa.isTiles() 
-            			|| (saveHexa.getBoat() != null && saveHexa.getBoat().getExplorerList().contains(pawnToMove))) 
+            			|| (saveHexa.getBoat() != null && saveHexa.getBoat()
+            				.getExplorerList().contains(pawnToMove))) 
             			&& hex.getBoat() != null) {
             		if (board.getExternalPanel().getSelection() != null) {
                         destination = board.getExternalPanel().getSelection();
@@ -746,12 +803,14 @@ public class Game {
             		} else {
                 		board.getExternalPanel().setClickedHex(hex);
                         board.setDisplayExternalPanel(true);
-                        board.getExternalPanel().setExternalPanelState(ExternalPanelState.BOATORSEA);
+                        board.getExternalPanel()
+                        .setExternalPanelState(ExternalPanelState.BOATORSEA);
             		}
             	} else if(!board.isDisplayExternalPanel()){
                     if(destination == hex 
                     		&& ((pawnToMove instanceof Explorer 
-                    				&& ((Explorer)pawnToMove).getStatus() != ExplorerStatus.ONBOAT)
+                    		&& ((Explorer)pawnToMove).getStatus() != 
+                    			ExplorerStatus.ONBOAT)
                     		|| pawnToMove instanceof Boat)) {
                 		pawnToMove.move(saveHexa, hex);
                         checkJ.clear();
@@ -759,25 +818,41 @@ public class Game {
                 		defWithTile(hex);
 
                     } else if(destination == hex 
-                    		&& ((Explorer)pawnToMove).getStatus() == ExplorerStatus.ONBOAT) {
-                    	((Explorer) pawnToMove).move(saveHexa.getBoat(), hex);
+                    		&& ((Explorer)pawnToMove).getStatus() == 
+                    		ExplorerStatus.ONBOAT) {
+                    	((Explorer) pawnToMove).move(saveHexa.getBoat(), 
+                    			hex);
                     } else if(destination == hex.getBoat() 
-                    		&& ((Explorer)pawnToMove).getStatus() != ExplorerStatus.ONBOAT) {
-                    	((Explorer) pawnToMove).move(saveHexa, hex.getBoat(), hex);
+                    		&& ((Explorer)pawnToMove).getStatus() != 
+                    		ExplorerStatus.ONBOAT) {
+                    	((Explorer) pawnToMove).move(saveHexa, hex.getBoat(), 
+                    			hex);
                     } else if(destination == hex.getBoat() 
-                    		&& ((Explorer)pawnToMove).getStatus() == ExplorerStatus.ONBOAT) {
-                    	((Explorer) pawnToMove).move(saveHexa.getBoat(), hex.getBoat(), hex);
+                    		&& ((Explorer)pawnToMove).getStatus() == 
+                    		ExplorerStatus.ONBOAT) {
+                    	((Explorer) pawnToMove).move(saveHexa.getBoat(), 
+                    			hex.getBoat(), 
+                    			hex);
                     }
                     
-                    for(int comp = 0; comp < hexagonTripletList.getLeftList().size();comp++) {
+                    for(int comp = 0; comp < hexagonTripletList.getLeftList()
+                    		.size();comp++) {
     					if(hexagonTripletList.getLeftList().get(comp) == hex) {
-    						getCurrentPlayer().setMoveLeft(getCurrentPlayer().getMoveLeft()-hexagonTripletList.getMiddleList().get(comp));
-    						pawnToMove.setMovePoint(pawnToMove.getMovePoint() -hexagonTripletList.getMiddleList().get(comp));
+    						getCurrentPlayer().setMoveLeft(getCurrentPlayer()
+    								.getMoveLeft() - hexagonTripletList
+    								.getMiddleList().get(comp));
+    						pawnToMove.setMovePoint(pawnToMove.getMovePoint()
+    								- hexagonTripletList.getMiddleList()
+    								.get(comp));
     					}
     				}
-                    for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
+                    for (Triplet<Hexagon, Integer, HexagonListType> p : 
+                    		hexagonTripletList) {
                         p.getLeft().setHighlightColor(null);
-                        p.getLeft().setHighlight(resolution, board, false, null);
+                        p.getLeft().setHighlight(resolution, 
+                        		board, 
+                        		false, 
+                        		null);
                     }
                     hexagonTripletList.clear();
                     saveHexa.displayPawns(board);
@@ -788,19 +863,22 @@ public class Game {
                     if(getCurrentPlayer().getMoveLeft() == 0) {
                     	 if(board.isDisplayExternalPanel()) {
                              actionInfo.displayActionInfo(getGame());
-                             playerInfo.displayPlayerInfo(getGame(), resolution);
+                             playerInfo.displayPlayerInfo(getGame(), 
+                            		 resolution);
                              nextActionTurn();
                          }
                          else {
                         	 nextActionTurn();
                         	 actionInfo.displayActionInfo(getGame());
-                        	 playerInfo.displayPlayerInfo(getGame(), resolution);
+                        	 playerInfo.displayPlayerInfo(getGame(), 
+                        			 resolution);
                          }
     				}
             	}
             }
             else {
-				for(Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
+				for(Triplet<Hexagon, Integer, HexagonListType> p : 
+						hexagonTripletList) {
 					p.getLeft().setHighlightColor(null);
 					p.getLeft().setHighlight(resolution, board, false, null);
 				}
@@ -861,28 +939,37 @@ public class Game {
     public void inGameMoveMonster(Hexagon hex) {
     	if (board.getExternalPanel().getPawnType() == null) {
         	board.setDisplayExternalPanel(true);
-        	board.getExternalPanel().setExternalPanelState(ExternalPanelState.DICEPANEL);
+        	board.getExternalPanel()
+        		.setExternalPanelState(ExternalPanelState.DICEPANEL);
 
         } else if(!board.isDisplayExternalPanel()) {
         	if(board.getExternalPanel().getPawnType() == PawnType.SHARK) {
         		if(!board.isSharkOnBoard()) {
         			System.out.println("Il n'y a pas de requins !");
                     nextTurn();
-        		} else if(hex != null && hex.getSharkList().isEmpty() && firstClic == true) {
+        		} else if(hex != null 
+        				&& hex.getSharkList().isEmpty() 
+        				&& firstClic == true) {
         			return;
         		}
-        	} else if(board.getExternalPanel().getPawnType() == PawnType.SEASNAKE) {
+        	} else if(board.getExternalPanel()
+        			.getPawnType() == PawnType.SEASNAKE) {
         		if(!board.isSeaSnakeOnBoard()) {
                     board.getExternalPanel().setPawnType(null);
                     nextTurn();
-        		} else if(hex != null && hex.getSeaSnakeList().isEmpty() && firstClic == true) {
+        		} else if(hex != null 
+        				&& hex.getSeaSnakeList().isEmpty() 
+        				&& firstClic == true) {
         			return;
         		}
-        	} else if(board.getExternalPanel().getPawnType() == PawnType.WHALE) {
+        	} else if(board.getExternalPanel()
+        			.getPawnType() == PawnType.WHALE) {
         		if(!board.isWhaleOnBoard()) {
                     board.getExternalPanel().setPawnType(null);
                     nextTurn();
-        		} else if(hex != null && hex.getWhaleList().isEmpty() && firstClic == true) {
+        		} else if(hex != null 
+        				&& hex.getWhaleList().isEmpty() 
+        				&& firstClic == true) {
         			return;
         		}
         	}
@@ -903,7 +990,8 @@ public class Game {
         		}
 
                 pawnToMove.findPath(hex, board, 3, hexagonTripletList);
-                for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
+                for (Triplet<Hexagon, Integer, HexagonListType> p : 
+                		hexagonTripletList) {
                     String s;
                     switch (p.getRight()) {
                         case NORMAL:
@@ -927,9 +1015,13 @@ public class Game {
                     playJ.clear();
                     defWithTile(hex); 
         			
-                    for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
+                    for (Triplet<Hexagon, Integer, HexagonListType> p : 
+                    		hexagonTripletList) {
                         p.getLeft().setHighlightColor(null);
-                        p.getLeft().setHighlight(resolution, board, false, null);
+                        p.getLeft().setHighlight(resolution, 
+                        		board, 
+                        		false, 
+                        		null);
                     }
                     hexagonTripletList.clear();
                     saveHexa.displayPawns(board);
@@ -949,9 +1041,13 @@ public class Game {
                         playerInfo.displayPlayerInfo(getGame(), resolution);
                     }
                 } else {
-    				for(Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
+    				for(Triplet<Hexagon, Integer, HexagonListType> p : 
+    						hexagonTripletList) {
     					p.getLeft().setHighlightColor(null);
-    					p.getLeft().setHighlight(resolution, board, false, null);
+    					p.getLeft().setHighlight(resolution, 
+    							board, 
+    							false, 
+    							null);
     				}
     				firstClic = true;
     				saveHexa = null;
@@ -1030,33 +1126,48 @@ public class Game {
 				|| playJ.stream().anyMatch(o -> o.booleanValue() == true)) {
 			Boolean b = null;
 			if(checkJ.stream().anyMatch(o -> o.booleanValue() == false))
-					b = checkJ.stream().filter(o -> o.booleanValue() == false).findFirst().get();
+					b = checkJ.stream().filter(o -> o.booleanValue() == false)
+					.findFirst().get();
 			if(!playJ.stream().anyMatch(o -> o.booleanValue() == true)) {
-				if (board.getExternalPanel().getChoice()!= null) {         	
-                    playJ.set(checkJ.indexOf(b), board.getExternalPanel().getChoice());
+				if (board.getExternalPanel().getChoice()!= null) {   
+					
+                    playJ.set(checkJ.indexOf(b), board.getExternalPanel()
+                    		.getChoice());
                     checkJ.set(checkJ.indexOf(b), true);
                     board.getExternalPanel().setChoice(null);
             		board.getExternalPanel().setClickedHex(null);
                     defWithTile(hex);
                 } else {
+                	
                     board.setDisplayExternalPanel(true);
             		board.getExternalPanel().setClickedHex(hex);
-                    board.getExternalPanel().setExternalPanelState(ExternalPanelState.TILEEFFECTDEFENSEPANEL);
+                    board.getExternalPanel()
+                    .setExternalPanelState(ExternalPanelState
+                    		.TILEEFFECTDEFENSEPANEL);
                 }
 			} else {
-				if(!hex.getSharkList().isEmpty() && !hex.getExplorerList().isEmpty()) {
+				if(!hex.getSharkList().isEmpty() 
+						&& !hex.getExplorerList().isEmpty()) {
+					
 					hex.getSharkList().clear();
-		            this.board.getExternalPanel().setAnimationType(AnimationType.SHARK_COUNTER);
+		            this.board.getExternalPanel()
+		            		.setAnimationType(AnimationType.SHARK_COUNTER);
 		            this.board.setDisplayExternalPanel(true);
-		            this.board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+		            this.board.getExternalPanel()
+		            		.setExternalPanelState(ExternalPanelState
+		            				.ANIMATIONPANEL);
 				}
 	            if(!hex.getWhaleList().isEmpty() 
 	            		&& hex.getBoat() != null 
 	            		&& !hex.getBoat().getExplorerList().isEmpty()) {
+	            	
 					hex.getWhaleList().clear();
-	                this.board.getExternalPanel().setAnimationType(AnimationType.WHALE_COUNTER);
+	                this.board.getExternalPanel()
+	                		.setAnimationType(AnimationType.WHALE_COUNTER);
 	                this.board.setDisplayExternalPanel(true);
-	                this.board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+	                this.board.getExternalPanel()
+	                		.setExternalPanelState(ExternalPanelState
+	                				.ANIMATIONPANEL);
 	            }
 	            hex.displayPawns(board);
 			}

@@ -42,22 +42,19 @@ public class Board extends JLayeredPane{
 				hexagons[i][j] = new Hexagon(this, i, j, resolution);
 				if (isInMapBound(i,j)) {
 
-					if ((((i > 2 && j > 3 && i < 10 && j < 8)
-							|| (i > 4 && j > 1 && i < 8 && j < 10
-							&& (i != 6 || j != 9)))
-							&& (i != 6 || j != 5))
-							|| (i == 4 && j == 3)
-							|| (i == 8 && j == 3)) {
+					if (isInIslandBounds(i, j)) {
 						int n = r.nextInt(tilesList.size());
 						hexagons[i][j].setTile(tilesList.get(n));
 						tilesList.remove(n);
 						hexagons[i][j].setType(HexagonType.TILES);
-						hexagons[i][j].getTile().getTypeLabel().setBounds(0, 0, 
-								resolution, resolution);
-						hexagons[i][j].add(hexagons[i][j].getTile().getTypeLabel());
+						hexagons[i][j].getTile()
+								.getTypeLabel()
+								.setBounds(0, 0, 
+										resolution, resolution);
+						hexagons[i][j].add(hexagons[i][j].getTile()
+								.getTypeLabel());
 
-					} else if (i == 1 && j == 0 || i == 1 && j == 11 ||
-							i == 11 && j == 0 || i == 11 && j == 11) {
+					} else if (isInEscapeBounds(i, j)) {
 						hexagons[i][j].setType(HexagonType.ISLAND);
 					} else {
 						hexagons[i][j].setType(HexagonType.SEA);
@@ -262,15 +259,19 @@ public class Board extends JLayeredPane{
 	 * JLabel's icon to the scaled image
 	 */
 	private void setLabel() {
-		ImageIcon icone = new ImageIcon(Board.class.getResource("/Map_90.png"));
-		Image scaleImage = icone.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);;
+		ImageIcon icone = new ImageIcon(Board.class
+				.getResource("/Map_90.png"));
+		Image scaleImage = icone.getImage()
+				.getScaledInstance(getWidth(), 
+						getHeight(), 
+						Image.SCALE_SMOOTH);
 		icone.setImage(scaleImage);
 		boardLabel.setIcon(icone);
 		boardLabel.setBounds(0, 0, getWidth(), getHeight());
 	}
 	
 	/**
-	 * Return true if the hexagon is a playable hexagon
+	 * Return true if the hexagon is in the playable Map Zone
 	 * 
 	 * @param line the line of the map
 	 * @param column the column of the map
@@ -301,6 +302,52 @@ public class Board extends JLayeredPane{
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Return true if the hexagon is the starting Island Zone
+	 * 
+	 * @param line the line of the map
+	 * @param column the column of the map
+	 * @return The method is returning a boolean value.
+	 */
+	public boolean isInIslandBounds(int line, int column) {
+		
+		if ((((line > 2 && column > 3 
+				&& line < 10 && column < 8)
+				|| (line > 4 && column > 1 
+				&& line < 8 && column < 10
+				&& (line != 6 || column != 9)))
+				&& (line != 6 || column != 5))
+				|| (line == 4 && column == 3)
+				|| (line == 8 && column == 3)){
+			
+			return true;
+		}
+		
+		return false;
+		
+	}
+	
+	/**
+	 * Return true if the hexagon is in the Escape Zone
+	 * 
+	 * @param line the line of the map
+	 * @param column the column of the map
+	 * @return The method is returning a boolean value.
+	 */
+	public boolean isInEscapeBounds(int line, int column) {
+		
+		if (line == 1 && column == 0 
+				|| line == 1 && column == 11 
+				|| line == 11 && column == 0 
+				|| line == 11 && column == 11){
+			
+			return true;
+		}
+		
+		return false;
+		
 	}
 
 	/**
@@ -340,12 +387,14 @@ public class Board extends JLayeredPane{
 				&& actualHexagon.getLine() % 2 == 0
 				&& isInMapBound(actualHexagon.getLine() - 1, 
 						actualHexagon.getColumn() + 1)) {
-			return this.getHexagons()[actualHexagon.getLine() - 1][actualHexagon.getColumn() + 1];
+			return this.getHexagons()[actualHexagon.getLine() - 1]
+					[actualHexagon.getColumn() + 1];
 		} else if (actualHexagon.getLine() - 1 >= 0 
 				&& actualHexagon.getLine() % 2 == 1
 				&& isInMapBound(actualHexagon.getLine() - 1, 
 						actualHexagon.getColumn())) {
-			return this.getHexagons()[actualHexagon.getLine() - 1][actualHexagon.getColumn()];
+			return this.getHexagons()[actualHexagon.getLine() - 1]
+					[actualHexagon.getColumn()];
 		} else {
 			return null;
 		}
@@ -361,7 +410,8 @@ public class Board extends JLayeredPane{
 		if (actualHexagon.getColumn() - 1 >= 0 
 				&& isInMapBound(actualHexagon.getLine(), 
 						actualHexagon.getColumn() - 1)) {
-			return this.getHexagons()[actualHexagon.getLine()][actualHexagon.getColumn() - 1];
+			return this.getHexagons()[actualHexagon.getLine()]
+					[actualHexagon.getColumn() - 1];
 		} else {
 			return null;
 		}
@@ -377,7 +427,8 @@ public class Board extends JLayeredPane{
 		if (actualHexagon.getColumn() + 1 < 12
 				&& isInMapBound(actualHexagon.getLine(), 
 						actualHexagon.getColumn() + 1)) {
-			return this.getHexagons()[actualHexagon.getLine()][actualHexagon.getColumn() + 1];
+			return this.getHexagons()[actualHexagon.getLine()]
+					[actualHexagon.getColumn() + 1];
 		} else {
 			return null;
 		}
@@ -394,13 +445,15 @@ public class Board extends JLayeredPane{
 				&& actualHexagon.getLine() % 2 == 0
 				&& isInMapBound(actualHexagon.getLine() + 1, 
 						actualHexagon.getColumn())) {
-			return this.getHexagons()[actualHexagon.getLine() + 1][actualHexagon.getColumn()];
+			return this.getHexagons()[actualHexagon.getLine() + 1]
+					[actualHexagon.getColumn()];
 		} else if (actualHexagon.getLine() + 1 < 13
 				&& actualHexagon.getColumn() - 1 >= 0
 				&& actualHexagon.getLine() % 2 == 1
 				&& isInMapBound(actualHexagon.getLine() + 1, 
 						actualHexagon.getColumn() - 1)) {
-			return this.getHexagons()[actualHexagon.getLine() + 1][actualHexagon.getColumn() - 1];
+			return this.getHexagons()[actualHexagon.getLine() + 1]
+					[actualHexagon.getColumn() - 1];
 		} else {
 			return null;
 		}
@@ -418,12 +471,14 @@ public class Board extends JLayeredPane{
 				&& actualHexagon.getLine() % 2 == 0
 				&& isInMapBound(actualHexagon.getLine() + 1, 
 						actualHexagon.getColumn() + 1)) {
-			return this.getHexagons()[actualHexagon.getLine() + 1][actualHexagon.getColumn() + 1];
+			return this.getHexagons()[actualHexagon.getLine() + 1]
+					[actualHexagon.getColumn() + 1];
 		} else if (actualHexagon.getLine() + 1 < 13 
 				&& actualHexagon.getLine() % 2 == 1
 				&& isInMapBound(actualHexagon.getLine() + 1, 
 						actualHexagon.getColumn())) {
-			return this.getHexagons()[actualHexagon.getLine() + 1][actualHexagon.getColumn()];
+			return this.getHexagons()[actualHexagon.getLine() + 1]
+					[actualHexagon.getColumn()];
 		} else {
 			return null;
 		}
@@ -472,11 +527,15 @@ public class Board extends JLayeredPane{
 	 * @param tilesType the type of tile you want to check
 	 * @return A boolean value.
 	 */
-	public boolean canRemoveOutOfSea(Hexagon actualHexagon, TilesType tilesType) {
+	public boolean canRemoveOutOfSea(Hexagon actualHexagon, 
+			TilesType tilesType) {
+		
 		for (int i = 0; i < 13; i++) {
 			for (int j = 0; j < 12; j++) {
 				Hexagon hex = this.getHexagons()[i][j];
-				if(hex.getTile() != null && hex.getTile().getType() == tilesType) {
+				if(hex.getTile() != null 
+						&& hex.getTile().getType() == tilesType) {
+					
 					if(isNextToSea(hex)) {
 						return false;
 					}
@@ -484,6 +543,7 @@ public class Board extends JLayeredPane{
 			}
 		}
 		return true;
+		
 	}
 
 	/**
@@ -583,7 +643,8 @@ public class Board extends JLayeredPane{
 		for (int i = 0; i < 13; i++) {
 			for (int j = 0; j < 12; j++) {
 				for(Explorer e : this.getHexagons()[i][j].getExplorerList()) {
-					if(e.getStatus() == ExplorerStatus.SWIMMER && e.getColor() == p.getColor()) {
+					if(e.getStatus() == ExplorerStatus.SWIMMER 
+							&& e.getColor() == p.getColor()) {
 						return true;
 					}
 				}

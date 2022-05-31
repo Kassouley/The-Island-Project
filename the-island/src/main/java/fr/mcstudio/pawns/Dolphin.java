@@ -30,7 +30,9 @@ public class Dolphin extends Pawn {
     * and a HexagonListType.
     * @param distance the distance from the starting point
     */
-    public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
+    public void findPathAux(Hexagon actualPosition, Board board, 
+    		TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, 
+    		int distance) {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
         tmp.add(board.getTopLeft(actualPosition));
@@ -47,9 +49,13 @@ public class Dolphin extends Pawn {
                 
                 if (!hexagon.getSharkList().isEmpty()
                         || !hexagon.getSeaSnakeList().isEmpty()) {
-                    hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.DEATH));
+                    hexagonTripletList.add(
+                    		new Triplet<Hexagon,Integer,HexagonListType>
+                    		(hexagon, distance, HexagonListType.DEATH));
                 } else {
-                    hexagonTripletList.add(new Triplet<Hexagon,Integer,HexagonListType>(hexagon, distance, HexagonListType.NORMAL));
+                    hexagonTripletList.add(
+                    		new Triplet<Hexagon,Integer,HexagonListType>
+                    		(hexagon, distance, HexagonListType.NORMAL));
                 }
             }
         }

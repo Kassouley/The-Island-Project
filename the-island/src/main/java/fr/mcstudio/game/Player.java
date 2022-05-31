@@ -180,7 +180,8 @@ public class Player {
         if (moveLeft >= 0) {
             this.moveLeft = moveLeft;
         } else {
-            System.out.println("Error : the number of move left cant be negative.");
+            System.out.println("Error : the number of move "
+            		+ "left cant be negative.");
         }
     }
 

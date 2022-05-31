@@ -80,29 +80,34 @@ public class Accueil {
 		this.frame.setContentPane(layeredPane);
 		this.frame.getContentPane().setLayout(null);
 		this.panel.setLayout(null);
-		this.panel.setBounds(0, 0, this.frame.getWidth(), this.frame.getHeight());
+		this.panel.setBounds(0, 0, this.frame.getWidth(), 
+				this.frame.getHeight());
 		this.panel.setOpaque(false);
 	    
 	    // Background : 
 		ImageIcon background = new ImageIcon(
 			Accueil.class.getResource("/Menu/Menu/background.jpg"));
 		Image scaleImage = background.getImage().getScaledInstance(
-			this.frame.getWidth(), this.frame.getHeight(), Image.SCALE_SMOOTH);;
+			this.frame.getWidth(), this.frame.getHeight(), 
+			Image.SCALE_SMOOTH);;
 		background.setImage(scaleImage);
 
 		JLabel backgroundLabel = new JLabel(background);
 		backgroundLabel.setBounds(
-			0, 0, background.getIconWidth(), background.getIconHeight());
+			0, 0, background.getIconWidth(), 
+			background.getIconHeight());
 
         this.layeredPane.setLayer(backgroundLabel, 0);
 		this.layeredPane.add(backgroundLabel);
 
 		this.music = new Musique(
-			Accueil.class.getClassLoader().getResource("Son/sample1.wav").getPath());
+			Accueil.class.getClassLoader()
+					.getResource("Son/sample1.wav").getPath());
 
 		// Bouton MUTE :
 		ImageIcon muteRed = new ImageIcon(
-			Accueil.class.getResource("/Menu/Menu/images_80/mute_red.png"));
+			Accueil.class
+					.getResource("/Menu/Menu/images_80/mute_red.png"));
 		Image scaleMuteRed = muteRed.getImage().getScaledInstance(
 			muteRed.getIconWidth() * resolution / 80,
 			muteRed.getIconHeight() * resolution / 80, 
@@ -110,7 +115,8 @@ public class Accueil {
 		);
 		muteRed.setImage(scaleMuteRed);
 		ImageIcon muteBrown = new ImageIcon(
-			Accueil.class.getResource("/Menu/Menu/images_80/mute_marron.png"));
+			Accueil.class
+					.getResource("/Menu/Menu/images_80/mute_marron.png"));
 		Image scaleMuteBrown = muteBrown.getImage().getScaledInstance(
 			muteBrown.getIconWidth() * resolution / 80,
 			muteBrown.getIconHeight() * resolution / 80,
@@ -158,7 +164,8 @@ public class Accueil {
 	    
 	    // Bouton UP :
 		ImageIcon levelUp = new ImageIcon(
-			Accueil.class.getResource("/Menu/Menu/images_80/volume_up.png"));
+			Accueil.class
+					.getResource("/Menu/Menu/images_80/volume_up.png"));
 		Image scaleLevelUp = levelUp.getImage().getScaledInstance(
 			levelUp.getIconWidth() * resolution / 80,
 			levelUp.getIconHeight() * resolution / 80, 
@@ -183,7 +190,8 @@ public class Accueil {
         
     	// Bouton down :
 	 	ImageIcon levelDown = new ImageIcon(
-			 Accueil.class.getResource("/Menu/Menu/images_80/volume_down.png"));
+			 Accueil.class
+			 		.getResource("/Menu/Menu/images_80/volume_down.png"));
 		Image scaleLevelDown = levelDown.getImage().getScaledInstance(
 			levelDown.getIconWidth() * resolution / 80,
 			levelDown.getIconHeight() * resolution / 80, 
@@ -191,7 +199,10 @@ public class Accueil {
 		levelDown.setImage(scaleLevelDown);
 
 		JLabel levelDownLabel = new JLabel(levelDown);
-	    levelDownLabel.setBounds(65 * resolution / 80, 120 * resolution / 80, levelDown.getIconWidth(), levelDown.getIconHeight());
+	    levelDownLabel.setBounds(65 * resolution / 80, 
+	    		120 * resolution / 80, 
+	    		levelDown.getIconWidth(), 
+	    		levelDown.getIconHeight());
         layeredPane.setLayer(levelDownLabel, 1);
 	    layeredPane.add(levelDownLabel);
         levelDownLabel.addMouseListener(new MouseAdapter() {
@@ -209,27 +220,38 @@ public class Accueil {
 	 */
 	public void reinitialize() {
 		this.setFrameSizeFromResolution(frame);
-		this.panel.setBounds(0, 0, this.frame.getWidth(), this.frame.getHeight());
+		this.panel.setBounds(0, 0, this.frame.getWidth(), 
+				this.frame.getHeight());
 
 		this.layeredPane.removeAll();
 
-		ImageIcon background = new ImageIcon(Accueil.class.getResource("/Menu/Menu/background.jpg"));
-		Image scaleImage = background.getImage().getScaledInstance(this.frame.getWidth(), this.frame.getHeight(), Image.SCALE_SMOOTH);;
+		ImageIcon background = new ImageIcon(Accueil.class
+				.getResource("/Menu/Menu/background.jpg"));
+		Image scaleImage = background.getImage()
+				.getScaledInstance(this.frame.getWidth(), 
+						this.frame.getHeight(), 
+						Image.SCALE_SMOOTH);
 		background.setImage(scaleImage);
 
 		JLabel backgroundLabel = new JLabel(background);
-		backgroundLabel.setBounds(0, 0, background.getIconWidth(), background.getIconHeight());
+		backgroundLabel.setBounds(0, 0, 
+				background.getIconWidth(), 
+				background.getIconHeight());
 
         this.layeredPane.setLayer(backgroundLabel, 0);
 		this.layeredPane.add(backgroundLabel);
 
 		// Bouton MUTE :
-		ImageIcon muteRed = new ImageIcon(Accueil.class.getResource("/Menu/Menu/images_80/mute_red.png"));
-		Image scaleMuteRed = muteRed.getImage().getScaledInstance(muteRed.getIconWidth() * resolution / 80,
+		ImageIcon muteRed = new ImageIcon(Accueil.class
+				.getResource("/Menu/Menu/images_80/mute_red.png"));
+		Image scaleMuteRed = muteRed.getImage()
+				.getScaledInstance(muteRed.getIconWidth() * resolution / 80,
 			muteRed.getIconHeight() * resolution / 80, Image.SCALE_SMOOTH);
 		muteRed.setImage(scaleMuteRed);
-		ImageIcon muteBrown = new ImageIcon(Accueil.class.getResource("/Menu/Menu/images_80/mute_marron.png"));
-		Image scaleMuteBrown = muteBrown.getImage().getScaledInstance(muteBrown.getIconWidth() * resolution / 80,
+		ImageIcon muteBrown = new ImageIcon(Accueil.class
+				.getResource("/Menu/Menu/images_80/mute_marron.png"));
+		Image scaleMuteBrown = muteBrown.getImage()
+				.getScaledInstance(muteBrown.getIconWidth() * resolution / 80,
 			muteBrown.getIconHeight() * resolution / 80, Image.SCALE_SMOOTH);
 		muteBrown.setImage(scaleMuteBrown);
 
@@ -239,7 +261,8 @@ public class Accueil {
 		} else {
 			muteLabel.setIcon(muteBrown);
 		}
-	    muteLabel.setBounds(50 * resolution / 80, 35 * resolution / 80, muteBrown.getIconWidth(), muteBrown.getIconHeight());
+	    muteLabel.setBounds(50 * resolution / 80, 35 * resolution / 80, 
+	    		muteBrown.getIconWidth(), muteBrown.getIconHeight());
         this.layeredPane.setLayer(muteLabel, 1);
 	    this.layeredPane.add(muteLabel);
 	    muteLabel.addMouseListener(new MouseAdapter() {
@@ -273,13 +296,16 @@ public class Accueil {
         });
 	    
 	    // Bouton UP :
-		ImageIcon levelUp = new ImageIcon(Accueil.class.getResource("/Menu/Menu/images_80/volume_up.png"));
-		Image scaleLevelUp = levelUp.getImage().getScaledInstance(levelUp.getIconWidth() * resolution / 80,
+		ImageIcon levelUp = new ImageIcon(Accueil.class
+				.getResource("/Menu/Menu/images_80/volume_up.png"));
+		Image scaleLevelUp = levelUp.getImage()
+				.getScaledInstance(levelUp.getIconWidth() * resolution / 80,
 			levelUp.getIconHeight() * resolution / 80, Image.SCALE_SMOOTH);
 		levelUp.setImage(scaleLevelUp);
 
 		JLabel levelUpLabel = new JLabel(levelUp);
-	    levelUpLabel.setBounds(65 * resolution / 80, 170 * resolution / 80, levelUp.getIconWidth(), levelUp.getIconHeight());
+	    levelUpLabel.setBounds(65 * resolution / 80, 170 * resolution / 80, 
+	    		levelUp.getIconWidth(), levelUp.getIconHeight());
         layeredPane.setLayer(levelUpLabel, 1);
 	    layeredPane.add(levelUpLabel);
         levelUpLabel.addMouseListener(new MouseAdapter() {
@@ -291,13 +317,16 @@ public class Accueil {
         });
         
     	// Bouton down :
-	 	ImageIcon levelDown = new ImageIcon(Accueil.class.getResource("/Menu/Menu/images_80/volume_down.png"));
-		Image scaleLevelDown = levelDown.getImage().getScaledInstance(levelDown.getIconWidth() * resolution / 80,
+	 	ImageIcon levelDown = new ImageIcon(Accueil.class
+	 			.getResource("/Menu/Menu/images_80/volume_down.png"));
+		Image scaleLevelDown = levelDown.getImage()
+				.getScaledInstance(levelDown.getIconWidth() * resolution / 80,
 			levelDown.getIconHeight() * resolution / 80, Image.SCALE_SMOOTH);
 		levelDown.setImage(scaleLevelDown);
 
 		JLabel levelDownLabel = new JLabel(levelDown);
-	    levelDownLabel.setBounds(65 * resolution / 80, 120 * resolution / 80, levelDown.getIconWidth(), levelDown.getIconHeight());
+	    levelDownLabel.setBounds(65 * resolution / 80, 120 * resolution / 80, 
+	    		levelDown.getIconWidth(), levelDown.getIconHeight());
         layeredPane.setLayer(levelDownLabel, 1);
 	    layeredPane.add(levelDownLabel);
         levelDownLabel.addMouseListener(new MouseAdapter() {
@@ -349,27 +378,35 @@ public class Accueil {
 		clearWindow();
 	    
 	    // Titre :
-		ImageIcon title = new ImageIcon(Accueil.class.getResource("/Menu/Menu/images_80/titre.png"));
-		Image scaleTitle = title.getImage().getScaledInstance(title.getIconWidth() * resolution / 80,
+		ImageIcon title = new ImageIcon(Accueil.class
+				.getResource("/Menu/Menu/images_80/titre.png"));
+		Image scaleTitle = title.getImage()
+				.getScaledInstance(title.getIconWidth() * resolution / 80,
 			title.getIconHeight() * resolution / 80, Image.SCALE_SMOOTH);
 		title.setImage(scaleTitle);
 
 		JLabel titleLabel = new JLabel(title);
-	    titleLabel.setBounds(592 * resolution / 80, 150 * resolution / 80, title.getIconWidth(), title.getIconHeight());
+	    titleLabel.setBounds(592 * resolution / 80, 150 * resolution / 80, 
+	    		title.getIconWidth(), title.getIconHeight());
 		this.panel.add(titleLabel);
 	    
         // Bouton JOUER :
-		ImageIcon play = new ImageIcon(Accueil.class.getResource("/Menu/Menu/images_80/jouer1.png"));
-		Image scalePlay = play.getImage().getScaledInstance(play.getIconWidth() * resolution / 80,
+		ImageIcon play = new ImageIcon(Accueil.class
+				.getResource("/Menu/Menu/images_80/jouer1.png"));
+		Image scalePlay = play.getImage()
+				.getScaledInstance(play.getIconWidth() * resolution / 80,
 			play.getIconHeight() * resolution / 80, Image.SCALE_SMOOTH);
 		play.setImage(scalePlay);
-		ImageIcon play2 = new ImageIcon(Accueil.class.getResource("/Menu/Menu/images_80/jouer2.png"));
-		Image scalePlay2 = play2.getImage().getScaledInstance(play2.getIconWidth() * resolution / 80,
+		ImageIcon play2 = new ImageIcon(Accueil.class
+				.getResource("/Menu/Menu/images_80/jouer2.png"));
+		Image scalePlay2 = play2.getImage()
+				.getScaledInstance(play2.getIconWidth() * resolution / 80,
 			play2.getIconHeight() * resolution / 80, Image.SCALE_SMOOTH);
 		play2.setImage(scalePlay2);
 
 		JLabel playLabel = new JLabel(play);
-	    playLabel.setBounds(692 * resolution / 80, 400 * resolution / 80, play.getIconWidth(), play.getIconHeight());
+	    playLabel.setBounds(692 * resolution / 80, 400 * resolution / 80, 
+	    		play.getIconWidth(), play.getIconHeight());
 		this.panel.add(playLabel);  
 	    playLabel.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
@@ -387,17 +424,22 @@ public class Accueil {
 
 	    
         // Bouton OPTIONS :
-		ImageIcon settings = new ImageIcon(Accueil.class.getResource("/Menu/Menu/images_80/option1.png"));
-		Image scaleSettings = settings.getImage().getScaledInstance(settings.getIconWidth() * resolution / 80,
+		ImageIcon settings = new ImageIcon(Accueil.class
+				.getResource("/Menu/Menu/images_80/option1.png"));
+		Image scaleSettings = settings.getImage()
+				.getScaledInstance(settings.getIconWidth() * resolution / 80,
 			settings.getIconHeight() * resolution / 80, Image.SCALE_SMOOTH);
 		settings.setImage(scaleSettings);
-		ImageIcon settings2 = new ImageIcon(Accueil.class.getResource("/Menu/Menu/images_80/option2.png"));
-		Image scaleSettings2 = settings2.getImage().getScaledInstance(settings2.getIconWidth() * resolution / 80,
+		ImageIcon settings2 = new ImageIcon(Accueil.class
+				.getResource("/Menu/Menu/images_80/option2.png"));
+		Image scaleSettings2 = settings2.getImage()
+				.getScaledInstance(settings2.getIconWidth() * resolution / 80,
 			settings2.getIconHeight() * resolution / 80, Image.SCALE_SMOOTH);
 		settings2.setImage(scaleSettings2);
 
 		JLabel settingsLabel = new JLabel(settings);
-	    settingsLabel.setBounds(950 * resolution / 80, 525 * resolution / 80, settings.getIconWidth(), settings.getIconHeight());
+	    settingsLabel.setBounds(950 * resolution / 80, 525 * resolution / 80, 
+	    		settings.getIconWidth(), settings.getIconHeight());
 		this.panel.add(settingsLabel);
 	    settingsLabel.addMouseListener(new MouseAdapter() {
 	    	public void mouseEntered(MouseEvent e) {
@@ -415,17 +457,22 @@ public class Accueil {
 	    
 	    
 	    // Bouton QUITTER :
-		ImageIcon quit = new ImageIcon(Accueil.class.getResource("/Menu/Menu/images_80/quittez1.png"));
-		Image scaleQuit = quit.getImage().getScaledInstance(quit.getIconWidth() * resolution / 80,
+		ImageIcon quit = new ImageIcon(Accueil.class
+				.getResource("/Menu/Menu/images_80/quittez1.png"));
+		Image scaleQuit = quit.getImage()
+				.getScaledInstance(quit.getIconWidth() * resolution / 80,
 			quit.getIconHeight() * resolution / 80, Image.SCALE_SMOOTH);
 		quit.setImage(scaleQuit);
-		ImageIcon quit2 = new ImageIcon(Accueil.class.getResource("/Menu/Menu/images_80/quittez2.png"));
-		Image scaleQuit2 = quit2.getImage().getScaledInstance(quit2.getIconWidth() * resolution / 80,
+		ImageIcon quit2 = new ImageIcon(Accueil.class
+				.getResource("/Menu/Menu/images_80/quittez2.png"));
+		Image scaleQuit2 = quit2.getImage()
+				.getScaledInstance(quit2.getIconWidth() * resolution / 80,
 			quit2.getIconHeight() * resolution / 80, Image.SCALE_SMOOTH);
 		quit2.setImage(scaleQuit2);
 
 		JLabel quitLabel = new JLabel(quit);
-	    quitLabel.setBounds(450 * resolution / 80, 520 * resolution / 80, quit.getIconWidth(), quit.getIconHeight());
+	    quitLabel.setBounds(450 * resolution / 80, 520 * resolution / 80, 
+	    		quit.getIconWidth(), quit.getIconHeight());
 		this.panel.add(quitLabel);	  
 	    quitLabel.addMouseListener(new MouseAdapter() {
 	    	public void mouseEntered(MouseEvent e) {
@@ -433,7 +480,10 @@ public class Accueil {
             }
                        
             public void mousePressed(MouseEvent e) {		
-				int option = JOptionPane.showConfirmDialog(null, "Etes-vous sûr de vouloir quitter ?", "Quitter", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				int option = JOptionPane.showConfirmDialog(null, 
+						"Etes-vous sûr de vouloir quitter ?", 
+						"Quitter", JOptionPane.YES_NO_OPTION, 
+						JOptionPane.QUESTION_MESSAGE);
 				if(option == JOptionPane.OK_OPTION) {
 					System.exit(0);
 				}
@@ -456,13 +506,16 @@ public class Accueil {
 	private void launchMenu() {
 		clearWindow();
 		// Titre :
-		ImageIcon title = new ImageIcon(Accueil.class.getResource("/Menu/Menu/titre_jouer.png"));
-		Image scaleTitle = title.getImage().getScaledInstance(title.getIconWidth() * resolution / 80,
+		ImageIcon title = new ImageIcon(Accueil.class
+				.getResource("/Menu/Menu/titre_jouer.png"));
+		Image scaleTitle = title.getImage()
+				.getScaledInstance(title.getIconWidth() * resolution / 80,
 			title.getIconHeight() * resolution / 80, Image.SCALE_SMOOTH);
 		title.setImage(scaleTitle);
 
 		JLabel titleLabel = new JLabel(title);
-	    titleLabel.setBounds(517 * resolution / 80, 100 * resolution / 80, title.getIconWidth(), title.getIconHeight());
+	    titleLabel.setBounds(517 * resolution / 80, 100 * resolution / 80, 
+	    		title.getIconWidth(), title.getIconHeight());
 		this.panel.add(titleLabel);
         
         // Menu Choix Nombre Joueurs :
@@ -470,8 +523,11 @@ public class Accueil {
 		choice.displayChoice(this.panel, this.frame, this.resolution);
 
 		JButton retour = new JButton("Retour");
-		retour.setFont(new Font("Showcard Gothic", Font.BOLD, 30 * resolution / 80));
-		retour.setBounds(710 * resolution / 80, this.panel.getHeight() - 50 * resolution / 80 - 50, 250 * resolution / 80, 50 * resolution / 80);
+		retour.setFont(new Font("Showcard Gothic", 
+				Font.BOLD, 30 * resolution / 80));
+		retour.setBounds(710 * resolution / 80, 
+				this.panel.getHeight() - 50 * resolution / 80 - 50, 
+				250 * resolution / 80, 50 * resolution / 80);
 		this.panel.add(retour);
 		retour.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
@@ -498,31 +554,39 @@ public class Accueil {
 	private void optionMenu() {
 		clearWindow();
 		// Titre :
-		ImageIcon title = new ImageIcon(Accueil.class.getResource("/Menu/Menu/titre_jouer.png"));
-		Image scaleTitle = title.getImage().getScaledInstance(title.getIconWidth() * resolution / 80,
+		ImageIcon title = new ImageIcon(Accueil.class
+				.getResource("/Menu/Menu/titre_jouer.png"));
+		Image scaleTitle = title.getImage()
+				.getScaledInstance(title.getIconWidth() * resolution / 80,
 			title.getIconHeight() * resolution / 80, Image.SCALE_SMOOTH);
 		title.setImage(scaleTitle);
 
 		JLabel titleLabel = new JLabel(title);
-	    titleLabel.setBounds(517 * resolution / 80, 100 * resolution / 80, title.getIconWidth(), title.getIconHeight());
+	    titleLabel.setBounds(517 * resolution / 80, 100 * resolution / 80, 
+	    		title.getIconWidth(), title.getIconHeight());
 		this.panel.add(titleLabel);
 		    
 		// OPTION :
 		JLabel lblNewLabel = new JLabel("OPTIONS");
-		lblNewLabel.setFont(new Font("Showcard Gothic", Font.PLAIN, 60 * resolution / 80));
+		lblNewLabel.setFont(new Font("Showcard Gothic", 
+				Font.PLAIN, 60 * resolution / 80));
 	    lblNewLabel.setForeground(Color.WHITE);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(550 * resolution / 80, 300 * resolution / 80, 553 * resolution / 80, 110 * resolution / 80);
+		lblNewLabel.setBounds(550 * resolution / 80, 300 * resolution / 80, 
+				553 * resolution / 80, 110 * resolution / 80);
 		this.panel.add(lblNewLabel);
 		
 		// Bouton AIDE :
-		ImageIcon help = new ImageIcon(Accueil.class.getResource("/Menu/Menu/images_80/aide_1.png"));
-		Image scaleHelp = help.getImage().getScaledInstance(help.getIconWidth() * resolution / 80,
+		ImageIcon help = new ImageIcon(Accueil.class
+				.getResource("/Menu/Menu/images_80/aide_1.png"));
+		Image scaleHelp = help.getImage()
+				.getScaledInstance(help.getIconWidth() * resolution / 80,
 			help.getIconHeight() * resolution / 80, Image.SCALE_SMOOTH);
 		help.setImage(scaleHelp);
 
 		JLabel helpLabel = new JLabel(help);
-	    helpLabel.setBounds(550 * resolution / 80, 430 * resolution / 80, help.getIconWidth(), help.getIconHeight());
+	    helpLabel.setBounds(550 * resolution / 80, 430 * resolution / 80, 
+	    		help.getIconWidth(), help.getIconHeight());
 		this.panel.add(helpLabel);
         helpLabel.addMouseListener(new MouseAdapter() {
 	    	public void mousePressed(MouseEvent e) {		
@@ -535,7 +599,9 @@ public class Accueil {
 				);
 				if(option == JOptionPane.OK_OPTION) {
 					try {
-						Desktop.getDesktop().browse(new URI("http://carnetdesgeekeries.com/j2s-the-island-asmodee/"));
+						Desktop.getDesktop()
+							.browse(new URI("http://carnetdesgeekeries.com"
+									+ "/j2s-the-island-asmodee/"));
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					} catch (URISyntaxException e1) {
@@ -548,18 +614,26 @@ public class Accueil {
 		
 				
 		// Bouton DIMENSIONS :	
-		ImageIcon dimensions = new ImageIcon(Accueil.class.getResource("/Menu/Menu/images_80/dim_1.png"));
-		Image scaleDimensions = dimensions.getImage().getScaledInstance(dimensions.getIconWidth() * resolution / 80,
+		ImageIcon dimensions = new ImageIcon(Accueil.class
+				.getResource("/Menu/Menu/images_80/dim_1.png"));
+		Image scaleDimensions = dimensions.getImage()
+				.getScaledInstance(dimensions.getIconWidth() * resolution / 80,
 			dimensions.getIconHeight() * resolution / 80, Image.SCALE_SMOOTH);
 		dimensions.setImage(scaleDimensions);
 
 		JLabel dimensionsLabel = new JLabel(dimensions);
-	    dimensionsLabel.setBounds(950 * resolution / 80, 430 * resolution / 80, dimensions.getIconWidth(), dimensions.getIconHeight());
+	    dimensionsLabel.setBounds(950 * resolution / 80, 430 * resolution / 80, 
+	    		dimensions.getIconWidth(), dimensions.getIconHeight());
 		this.panel.add(dimensionsLabel);
         dimensionsLabel.addMouseListener(new MouseAdapter() {
 	    	public void mousePressed(MouseEvent e) {
-        		JList<String> list = new JList<String>(new String[] {"Petit : 1432 x 809", "Moyen : 1635 x 919" , "Grand : 1850 x 1029" });
-        		JOptionPane.showMessageDialog(null, list, "Choix du dimensionnement", JOptionPane.PLAIN_MESSAGE);
+        		JList<String> list = new JList<String>(
+        				new String[] {"Petit : 1432 x 809", 
+        						"Moyen : 1635 x 919" , 
+        						"Grand : 1850 x 1029" });
+        		JOptionPane.showMessageDialog(null, list, 
+        				"Choix du dimensionnement", 
+        				JOptionPane.PLAIN_MESSAGE);
         		
         		if(list.getSelectedValue() == "Petit : 1432 x 809") {
         			resolution = 70 ;        			
@@ -578,13 +652,16 @@ public class Accueil {
         
         
         // Bouton RETOUR :	
-		ImageIcon back = new ImageIcon(Accueil.class.getResource("/Menu/Menu/images_80/retour_1.png"));
-		Image scaleBack = back.getImage().getScaledInstance(back.getIconWidth() * resolution / 80,
+		ImageIcon back = new ImageIcon(Accueil.class
+				.getResource("/Menu/Menu/images_80/retour_1.png"));
+		Image scaleBack = back.getImage()
+				.getScaledInstance(back.getIconWidth() * resolution / 80,
 			back.getIconHeight() * resolution / 80, Image.SCALE_SMOOTH);
 		back.setImage(scaleBack);
 
 		JLabel backLabel = new JLabel(back);
-	    backLabel.setBounds(750 * resolution / 80, 600 * resolution / 80, back.getIconWidth(), back.getIconHeight());
+	    backLabel.setBounds(750 * resolution / 80, 600 * resolution / 80, 
+	    		back.getIconWidth(), back.getIconHeight());
 		this.panel.add(backLabel);
         backLabel.addMouseListener(new MouseAdapter() {
 	    	public void mousePressed(MouseEvent e) {

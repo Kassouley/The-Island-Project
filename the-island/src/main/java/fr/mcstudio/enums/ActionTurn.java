@@ -2,7 +2,10 @@ package fr.mcstudio.enums;
 
 // Creating an enum of different ActionTurn.
 public enum ActionTurn {
-    PLAY_TILE, MOVE_PAWNS, DISCOVER_TILE, MOVE_MONSTER;
+    PLAY_TILE, 
+    MOVE_PAWNS, 
+    DISCOVER_TILE, 
+    MOVE_MONSTER;
 
     // Creating an array of the enum values.
     private static ActionTurn[] vals = values();
@@ -47,13 +50,17 @@ public enum ActionTurn {
     public String getDesc() {
         switch (this) {
             case PLAY_TILE:
-                return "<html><center>Jouez une tuile de votre main ou passez votre action</center></html>";
+                return "<html><center>Jouez une tuile de votre main "
+                		+ "ou passez votre action</center></html>";
             case MOVE_PAWNS:
-                return "<html><center>Choisissez un explorateur<br>ou un bateau et déplacez le</center></html>";
+                return "<html><center>Choisissez un explorateur<br>"
+                		+ "ou un bateau et déplacez le</center></html>";
             case DISCOVER_TILE:
-                return "<html><center>Retournez une tuile et<br>découvrez ce qu'il se cache derrière</center></html>";
+                return "<html><center>Retournez une tuile et<br>découvrez "
+                		+ "ce qu'il se cache derrière</center></html>";
             case MOVE_MONSTER:
-                return "<html><center>Lancez le dé puis déplacez<br>le monstre qui a été choisit</center></html>";
+                return "<html><center>Lancez le dé puis déplacez<br>"
+                		+ "le monstre qui a été choisit</center></html>";
             default:
                 break;
         }

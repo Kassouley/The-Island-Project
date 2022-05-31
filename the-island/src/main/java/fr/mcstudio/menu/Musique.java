@@ -24,12 +24,16 @@ public class Musique {
 		} 
  
 		try {
-			audioStream = AudioSystem.getAudioInputStream(new File(url).getAbsoluteFile());
+			audioStream = AudioSystem.getAudioInputStream(new File(url).
+					getAbsoluteFile());
 			clip.open(audioStream);
-		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e1) {
+		} catch (LineUnavailableException 
+				| IOException 
+				| UnsupportedAudioFileException e1) {
 			e1.printStackTrace();
 		} 
-		((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(0);	
+		((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN))
+				.setValue(0);	
 	}
 	
 	// A variable that is used to store the audio file.
@@ -47,7 +51,8 @@ public class Musique {
 	public void jouerMusique() {
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
 		clip.start();
-		((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(0);
+		((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN))
+				.setValue(0);
 	}
 	
 	/**
@@ -61,7 +66,8 @@ public class Musique {
 	 * It increases the volume of the music by 2
 	 */
 	public void augVolMusique() {
-		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl
+				.Type.MASTER_GAIN);
 		if(level<=5.9999995)
 			level = level+2 ;
 		gainControl.setValue(level);
@@ -71,7 +77,8 @@ public class Musique {
 	 * This function is used to decrease the volume of the music
 	 */
 	public void dimVolMusique() {
-		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl
+				.Type.MASTER_GAIN);
 		gainControl.setValue(level-2f);
 		level = level-2 ;
 	}

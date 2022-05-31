@@ -29,7 +29,8 @@ public class PlayerInfo extends JLayeredPane {
 		this.add(this.playerInfoLabel);
 
 		this.playerInfoPanel.setLayout(null);
-		this.playerInfoPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
+		this.playerInfoPanel.setBounds(0, 0, 
+				this.getWidth(), this.getHeight());
 		this.playerInfoPanel.setOpaque(false);
 		this.setLayer(playerInfoPanel, 1);
 		this.add(playerInfoPanel);
@@ -37,7 +38,8 @@ public class PlayerInfo extends JLayeredPane {
 		// It's creating a new Font object and assigning it to the variable sizedFont.
 		Font sizedFont = null;
 		try {
-			InputStream is = ActionInfo.class.getResourceAsStream("/Font/Treasuremap.ttf");
+			InputStream is = ActionInfo.class
+					.getResourceAsStream("/Font/Treasuremap.ttf");
 			Font font = Font.createFont(Font.TRUETYPE_FONT, is);
 			sizedFont = font.deriveFont(18f);
 		} catch (Exception ex) {
@@ -58,8 +60,10 @@ public class PlayerInfo extends JLayeredPane {
 			this.infosPlayer.add(text);
 		}
 
-		this.avatarPlayer.setBounds(15 * resolution / 90, 120 * resolution / 90,
-				256 * resolution / 90, 256 * resolution / 90);
+		this.avatarPlayer.setBounds(15 * resolution / 90, 
+				120 * resolution / 90,
+				256 * resolution / 90, 
+				256 * resolution / 90);
 		this.playerInfoPanel.add(avatarPlayer);
 	}
 
@@ -104,9 +108,12 @@ public class PlayerInfo extends JLayeredPane {
 				Integer.toString(currentPlayer.getNumberExplorerAlive()),
 				Integer.toString(currentPlayer.getNumberExplorerSaved()),
 				Integer.toString(currentPlayer.getNumberExplorerDead()),
-				players.get((game.getCurrentPlayerIndex() + 1) % players.size()).getPseudo(),
-				players.get((game.getCurrentPlayerIndex() + 2) % players.size()).getPseudo(),
-				players.get((game.getCurrentPlayerIndex() + 3) % players.size()).getPseudo()
+				players.get((game.getCurrentPlayerIndex() + 1) % 
+						players.size()).getPseudo(),
+				players.get((game.getCurrentPlayerIndex() + 2) % 
+						players.size()).getPseudo(),
+				players.get((game.getCurrentPlayerIndex() + 3) % 
+						players.size()).getPseudo()
 		};
 
 		for (String text : textInfo) {
@@ -143,8 +150,12 @@ public class PlayerInfo extends JLayeredPane {
 	 * background to the scaled image
 	 */
 	private void setLabel() {
-		ImageIcon icone = new ImageIcon(PlayerInfo.class.getResource("/PlayerInfo.png"));
-		Image scaleImage = icone.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+		ImageIcon icone = new ImageIcon(PlayerInfo.class
+				.getResource("/PlayerInfo.png"));
+		Image scaleImage = icone.getImage()
+				.getScaledInstance(getWidth(), 
+						getHeight(), 
+						Image.SCALE_SMOOTH);
 		;
 		icone.setImage(scaleImage);
 		playerInfoLabel.setIcon(icone);

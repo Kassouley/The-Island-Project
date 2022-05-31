@@ -46,32 +46,45 @@ public class Joueur {
 		
 		for(int i=0 ; i<this.nbJr ; i++) {
 			jlabels[i] = new JLabel("Joueur "+(i+1));
-			jlabels[i].setBounds(a, b - 50 * resolution / 80, 200 * resolution / 80, 60 * resolution / 80);
+			jlabels[i].setBounds(a, b - 50 * resolution / 80, 
+					200 * resolution / 80, 60 * resolution / 80);
 			
-			jlabels[i].setFont(new Font("Showcard Gothic", Font.PLAIN, 30 * resolution / 80));
+			jlabels[i].setFont(new Font("Showcard Gothic", 
+					Font.PLAIN, 30 * resolution / 80));
 			jlabels[i].setForeground(java.awt.Color.WHITE);
 			
 			textfield[i] = new JTextField();
-			textfield[i].setBounds(a+(200 * resolution / 80), b - 40 * resolution / 80, 200 * resolution / 80, 30 * resolution / 80);
-			textfield[i].setFont(new Font("Showcard Gothic", Font.PLAIN, 30 * resolution / 80));
+			textfield[i].setBounds(a+(200 * resolution / 80), 
+					b - 40 * resolution / 80, 200 * resolution / 80, 
+					30 * resolution / 80);
+			textfield[i].setFont(new Font("Showcard Gothic", 
+					Font.PLAIN, 30 * resolution / 80));
     		b = b + 60;
     		panel.add(jlabels[i]);
     		panel.add(textfield[i]);
 		}
 		
 		JButton btnNewButton = new JButton("Commencer !");
-		btnNewButton.setFont(new Font("Showcard Gothic", Font.BOLD, 30 * resolution / 80));
-		btnNewButton.setBounds(710 * resolution / 80, panel.getHeight() - 100 * resolution / 80 - 60, 250 * resolution / 80, 50 * resolution / 80);
+		btnNewButton.setFont(new Font("Showcard Gothic", Font.BOLD, 
+				30 * resolution / 80));
+		btnNewButton.setBounds(710 * resolution / 80, 
+				panel.getHeight() - 100 * resolution / 80 - 60, 
+				250 * resolution / 80, 50 * resolution / 80);
 		panel.add(btnNewButton);
 		btnNewButton.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
             	accueil.getLayeredPane().removeAll();
             	System.out.println(textfield[0].getText());
             	for (int i = 0; i < nbJr; i++) {
-            		Player P = new Player(textfield[i].getText(), Color.values()[i], false, resolution);
-            		ImageIcon avatar = new ImageIcon(Joueur.class.getResource("/SideBar/avatar" + (i+1) + ".png"));
-            		Image scaleImage = avatar.getImage().getScaledInstance(avatar.getIconWidth() * resolution / 90,
-            				avatar.getIconHeight() * resolution / 90, Image.SCALE_SMOOTH);
+            		Player P = new Player(textfield[i].getText(), 
+            				Color.values()[i], false, resolution);
+            		ImageIcon avatar = new ImageIcon(Joueur.class
+            				.getResource("/SideBar/avatar" + (i+1) + ".png"));
+            		Image scaleImage = avatar.getImage()
+            				.getScaledInstance(avatar.getIconWidth() * 
+            						resolution / 90,
+            				avatar.getIconHeight() * resolution / 90, 
+            				Image.SCALE_SMOOTH);
             		avatar.setImage(scaleImage);
             		P.setAvatar(avatar);
             		players.add(P);

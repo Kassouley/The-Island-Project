@@ -8,7 +8,8 @@ import java.util.List;
 /**
  * The TripletList class is a list of Triplet objects
  */
-public class TripletList<Left,Middle,Right> extends ArrayList<Triplet<Left,Middle,Right>> {
+public class TripletList<Left,Middle,Right> 
+		extends ArrayList<Triplet<Left,Middle,Right>> {
     
     // It's a constructor.
     public TripletList() {
