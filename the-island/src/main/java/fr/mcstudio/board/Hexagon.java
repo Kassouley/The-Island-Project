@@ -92,11 +92,7 @@ public class Hexagon extends JLayeredPane {
      * @return The tile object.
      */
     public Tile getTile() {
-        if (this.tile == null) {
-            return null;  
-        } else {
             return this.tile;
-        }
     }
 
     /**
@@ -401,7 +397,7 @@ public class Hexagon extends JLayeredPane {
     /**
      * This function returns the line number of the current object
      * 
-     * @return The line number of the error.
+     * @return The line number of the cell.
      */
     public int getLine() {
         return line;
