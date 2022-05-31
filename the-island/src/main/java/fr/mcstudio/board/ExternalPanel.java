@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 
 import fr.mcstudio.enums.AnimationType;
 import fr.mcstudio.enums.ExternalPanelState;
+import fr.mcstudio.enums.HelpType;
 import fr.mcstudio.enums.PawnType;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.util.Pair;
@@ -35,9 +36,11 @@ public class ExternalPanel extends JLayeredPane {
 	private JPanel tilesEffectsDefensePanel;
 	private JPanel animationPanel;
 	private JPanel boardingPanel;
+	private JPanel helpPanel;
 
 	private PairList<JButton, JLayeredPane> bPairList = new PairList<JButton, JLayeredPane>();
 	private PairList<AnimationType, JLabel> aPairList = new PairList<AnimationType, JLabel>();
+	private PairList<HelpType, JLabel> hPairList = new PairList<HelpType, JLabel>();
 	private List<Explorer> boardingpawns = new ArrayList<Explorer>();
 	private List<JLabel> seaSnakeList = new ArrayList<JLabel>();
 	private List<JLabel> sharkList = new ArrayList<JLabel>();
@@ -49,6 +52,7 @@ public class ExternalPanel extends JLayeredPane {
 
 	private Hexagon clickedHex;
 	private AnimationType animationType;
+	private HelpType helpType;
 
 	private ExternalPanelState externalPanelState = ExternalPanelState.VOID;
 	private int resolution;
@@ -75,6 +79,8 @@ public class ExternalPanel extends JLayeredPane {
 		this.animationPanel.setLayout(new BorderLayout(0, 0));
 		this.boardingPanel = createDisplayPanel();
 		this.boardingPanel.setLayout(new GridLayout(4, 0, 0, 0));
+		this.helpPanel = createDisplayPanel();
+		this.helpPanel.setLayout(new BorderLayout(0, 0));
 		
 		this.setVisible(false);
 
@@ -83,6 +89,7 @@ public class ExternalPanel extends JLayeredPane {
 
 		this.initMonsterLists();
 		this.initAnimationList();
+		this.initHelpList();
 	}
 
 	public ExternalPanelState getExternalPanelState() {
@@ -131,8 +138,48 @@ public class ExternalPanel extends JLayeredPane {
 			case BOARDINGPANEL:
 				displayBoardingPanel();
 				break;
+			case HELPPANEL:
+				displayHelpPanel();
+				break;
 		}
 	}
+
+	private void displayHelpPanel() {
+		helpPanel.removeAll();
+		this.helpPanel.setVisible(true);
+		
+		if (hPairList.containsInPair(helpType)) {
+			int index = hPairList.getLeftList().indexOf(helpType);
+			helpPanel.add(hPairList.get(index).getRight(), BorderLayout.CENTER);
+		}
+
+		helpType = null;
+		helpPanel.addMouseListener(new MouseListener() {
+
+			public void mouseClicked(MouseEvent e) {
+			}
+
+			public void mousePressed(MouseEvent e) {
+				board.setDisplayExternalPanel(false);
+				setExternalPanelState(ExternalPanelState.VOID);
+                board.getGame().getActionInfo().displayActionInfo(board.getGame());
+                board.getGame().getPlayerInfo().displayPlayerInfo(board.getGame(), resolution);
+				//board.getGame().inGame(clickedHex);
+			}
+
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			public void mouseExited(MouseEvent e) {
+			}
+		});
+		
+	}
+
+	
 
 	private void displayBoardingPanel() {
 		boardingPanel.removeAll();
@@ -506,6 +553,49 @@ public class ExternalPanel extends JLayeredPane {
 			)
 		);
 	}
+	
+	private void initHelpList() {
+		this.hPairList.add(
+				new Pair<HelpType,JLabel>(
+					HelpType.INITIALISATION,
+					new JLabel(
+						new ImageIcon(ExternalPanel.class.getResource("/Help/helpInit.png"))
+					)
+				)
+			);
+		this.hPairList.add(
+				new Pair<HelpType,JLabel>(
+					HelpType.TILEEFFECT,
+					new JLabel(
+						new ImageIcon(ExternalPanel.class.getResource("/Help/helpPlayTile.png"))
+					)
+				)
+			);
+		this.hPairList.add(
+				new Pair<HelpType,JLabel>(
+					HelpType.MOVEPAWN,
+					new JLabel(
+						new ImageIcon(ExternalPanel.class.getResource("/Help/helpMovePawn.png"))
+					)
+				)
+			);
+		this.hPairList.add(
+				new Pair<HelpType,JLabel>(
+					HelpType.DISCOVER,
+					new JLabel(
+						new ImageIcon(ExternalPanel.class.getResource("/Help/helpDiscoverTile.png"))
+					)
+				)
+			);
+		this.hPairList.add(
+				new Pair<HelpType,JLabel>(
+					HelpType.MOVEMONSTER,
+					new JLabel(
+						new ImageIcon(ExternalPanel.class.getResource("/Help/helpRollMonster.png"))
+					)
+				)
+			);
+	}
 
 	public Hexagon getClickedHex() {
 		return clickedHex;
@@ -536,6 +626,7 @@ public class ExternalPanel extends JLayeredPane {
 		this.tilesEffectsDefensePanel.setVisible(false);
 		this.boardingPanel.setVisible(false);
 		this.animationPanel.setVisible(false);
+		this.helpPanel.setVisible(false);
 		this.setVisible(false);
 
 	}
@@ -564,6 +655,10 @@ public class ExternalPanel extends JLayeredPane {
 		backgroundPanel.setIcon(icone);
 		backgroundPanel.setBounds(0, 0, getWidth(), getHeight());
 		this.add(backgroundPanel);
+	}
+	
+	public void setHelpType(HelpType helpType) {
+		this.helpType = helpType;
 	}
 
 	/*

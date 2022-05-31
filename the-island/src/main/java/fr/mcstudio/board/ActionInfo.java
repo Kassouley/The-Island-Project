@@ -16,8 +16,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import fr.mcstudio.enums.AnimationType;
 import fr.mcstudio.enums.ExternalPanelState;
 import fr.mcstudio.enums.GameState;
+import fr.mcstudio.enums.HelpType;
 import fr.mcstudio.enums.SideBarButton;
 import fr.mcstudio.game.Game;
 
@@ -133,6 +135,14 @@ public class ActionInfo extends JLayeredPane {
 					actionListener = new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
+							if(game.getGameState() == GameState.INITIALISATION) {
+								game.getBoard().getExternalPanel().setHelpType(HelpType.INITIALISATION);
+							} else {
+
+								game.getBoard().getExternalPanel().setHelpType(HelpType.values()[game.getActionTurn().ordinal()+1]);
+							}
+							game.getBoard().setDisplayExternalPanel(true);
+							game.getBoard().getExternalPanel().setExternalPanelState(ExternalPanelState.HELPPANEL);
 						}
 					};
 						
@@ -289,7 +299,18 @@ public class ActionInfo extends JLayeredPane {
 									actionLabel.add(diceImage.get(2));
 									break;
 								default:
-									break;
+									System.out.println("pas dedans");
+                                    JLabel text = new JLabel("<html><center>Il n'y a pas ce monstre</center></html>", 
+                                                    SwingConstants.CENTER);
+                                    text.setBounds(
+                                        0, 
+                                        0, 
+                                        this.actionLabel.getWidth(), 
+                                        this.actionLabel.getHeight()
+                                    );
+                                    text.setFont(this.sizedFont);
+                                    actionLabel.add(text);
+                                    break;
 							}
 						}	
 					}

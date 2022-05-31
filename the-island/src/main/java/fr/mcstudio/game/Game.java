@@ -55,6 +55,8 @@ public class Game {
         this.gameState = GameState.INITIALISATION;
 
         initializeBoard();
+        actionInfo.displayActionInfo(getGame());
+        playerInfo.displayPlayerInfo(getGame(), resolution);
     }
 
 
@@ -169,7 +171,10 @@ public class Game {
                 	if(board.isDisplayExternalPanel()
                 			&& board.getExternalPanel()
                 			.getExternalPanelState() != 
-                			ExternalPanelState.BOARDINGPANEL) {
+                			ExternalPanelState.BOARDINGPANEL
+                			&& board.getExternalPanel()
+                			.getExternalPanelState() != 
+                			ExternalPanelState.TILEEFFECTDEFENSEPANEL) {
 
         				board.setDisplayExternalPanel(false);
                         actionInfo.displayActionInfo(getGame());
@@ -521,7 +526,8 @@ public class Game {
      * 
      */
     public void endGame() {
-        contentPane.removeAll();
+        accueil.reinitialize();
+        accueil.welcomeMenu();
         
     }
 
