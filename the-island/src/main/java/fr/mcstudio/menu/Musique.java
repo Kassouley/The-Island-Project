@@ -13,14 +13,11 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class Musique {
 	
 	Clip clip = null; 	            	
-	AudioInputStream audioStream; 
-	String url ;
+	AudioInputStream audioStream;
 	float level ; 
 	
-	public Musique(String urlSon)
-	{
-		url = urlSon ;
-       		
+	public Musique(String url)
+	{  		
 		try {
 			clip = AudioSystem.getClip();
 		} catch (LineUnavailableException e1) {
@@ -36,9 +33,7 @@ public class Musique {
 			e1.printStackTrace();
 		} 
 			
-		float level = clip.getLevel() ; 
-
-    	
+		this.level = clip.getLevel() ; 
 	}
 	
 	public void jouerMusique()
