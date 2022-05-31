@@ -401,7 +401,7 @@ public class Hexagon extends JLayeredPane {
     /**
      * This function returns the line number of the current object
      * 
-     * @return The line number of the error.
+     * @return The line number of the cell.
      */
     public int getLine() {
         return line;
