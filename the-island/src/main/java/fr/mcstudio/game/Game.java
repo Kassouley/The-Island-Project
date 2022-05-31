@@ -502,7 +502,6 @@ public class Game {
     		if(firstClic == true) {
     			saveHexa = hex;
     			EffectPawn effect;
-    			pawnToMove = null;
     			switch(usedTile.getEffect()) {    		
         		case BOAT_MOVE:
         			
@@ -525,8 +524,7 @@ public class Game {
         				}                   	
                     }
         			if (pawnToMove == null) {
-                        if (board.getExternalPanel().getSelection() != null) {
-
+                        if (board.getExternalPanel().getSelection() != null) {         	
                             pawnToMove = (Pawn)board.getExternalPanel().getSelection();
                             board.getExternalPanel().setSelection(null);
                             board.getExternalPanel().setClickedHex(null);
@@ -535,7 +533,6 @@ public class Game {
                             board.getExternalPanel().setClickedHex(hex);
                             board.setDisplayExternalPanel(true);
                             board.getExternalPanel().setExternalPanelState(ExternalPanelState.PAWNPANEL);
-
                         }
                     } else {
                     	Dolphin d = new Dolphin();

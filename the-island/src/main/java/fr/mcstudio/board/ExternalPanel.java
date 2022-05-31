@@ -383,7 +383,7 @@ public class ExternalPanel extends JLayeredPane {
 			pawnPanel.add(bPairList.get(i).getLeft());
 			bPairList.get(i).getLeft().addActionListener(new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent e) {				
 					int index = bPairList.getLeftList().indexOf(e.getSource());
 					setSelection(bPairList.get(index).getRight());
 					board.setDisplayExternalPanel(false);
