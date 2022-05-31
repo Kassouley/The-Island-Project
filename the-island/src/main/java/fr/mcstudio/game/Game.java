@@ -28,6 +28,8 @@ import fr.mcstudio.pawns.EffectPawn;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
+import fr.mcstudio.pawns.Shark;
+import fr.mcstudio.pawns.Whale;
 import fr.mcstudio.tiles.Tile;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
@@ -1121,6 +1123,7 @@ public class Game {
 					
 			}
 		}
+	}
 
     public PlayerInfo getPlayerInfo() {
 		return playerInfo;
