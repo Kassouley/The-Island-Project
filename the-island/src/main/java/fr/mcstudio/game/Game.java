@@ -30,8 +30,6 @@ import fr.mcstudio.pawns.EffectPawn;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
-import fr.mcstudio.pawns.Shark;
-import fr.mcstudio.pawns.Whale;
 import fr.mcstudio.tiles.Tile;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
@@ -508,7 +506,7 @@ public class Game {
      * 
      */
     public void endGame() {
-        // TODO
+        
     }
 
     private void inGamePlayTile(Hexagon hex) {
@@ -609,14 +607,10 @@ public class Game {
     		else if(firstClic == false  && pawnToMove != null ) {
     			if(hexagonTripletList.getLeftList().contains(hex)) {
         			pawnToMove.move(saveHexa, hex);
-        			
-        			//defWithTile(hex); 			
-        			if(!hex.getSharkList().isEmpty()) {
-        				hex.getSharkList().get(0).makeEffect(hex);
-        			}
-        			if(!hex.getWhaleList().isEmpty()) {
-        				hex.getWhaleList().get(0).makeEffect(hex);
-        			}
+
+                    checkJ.clear();
+                    playJ.clear();
+        			defWithTile(hex);
         			
         			
         			for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
@@ -762,13 +756,9 @@ public class Game {
                     				&& ((Explorer)pawnToMove).getStatus() != ExplorerStatus.ONBOAT)
                     		|| pawnToMove instanceof Boat)) {
                 		pawnToMove.move(saveHexa, hex);
-                		//defWithTile(hex,pawnToMove); 			
-            			if(!hex.getSharkList().isEmpty()) {
-            				hex.getSharkList().get(0).makeEffect(hex);
-            			}
-            			if(!hex.getWhaleList().isEmpty()) {
-            				hex.getWhaleList().get(0).makeEffect(hex);
-            			}
+                        checkJ.clear();
+                        playJ.clear();
+                		defWithTile(hex);
 
                     } else if(destination == hex 
                     		&& ((Explorer)pawnToMove).getStatus() == ExplorerStatus.ONBOAT) {
@@ -841,13 +831,8 @@ public class Game {
             			|| board.isNextToSea(hex)) {
                     board.decreaseNbTile(hex.getTile().getType());
                     hex.discover(getCurrentPlayer(), board);
-                  //defWithTile(hex,pawnToMove); 
-                    if(!hex.getSharkList().isEmpty()) {
-        				      hex.getSharkList().get(0).makeEffect(hex);
-        			      }
-                    if(!hex.getWhaleList().isEmpty()) {
-                      hex.getWhaleList().get(0).makeEffect(hex);
-                    }
+                    defWithTile(hex); 
+                    
                     // ActionTurn est le changement d'action, � mettre en commentaire pour test
                     if(board.isDisplayExternalPanel()) {
                         actionInfo.displayActionInfo(getGame());
@@ -941,13 +926,9 @@ public class Game {
             } else if (firstClic == false) {
                 if (hexagonTripletList.getLeftList().contains(hex)) {
                     pawnToMove.move(saveHexa, hex);
-                  //defWithTile(hex,pawnToMove); 			
-        			if(!hex.getSharkList().isEmpty()) {
-        				hex.getSharkList().get(0).makeEffect(hex);
-        			}
-        			if(!hex.getWhaleList().isEmpty()) {
-        				hex.getWhaleList().get(0).makeEffect(hex);
-        			}
+                    checkJ.clear();
+                    playJ.clear();
+                    defWithTile(hex); 
         			
                     for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
                         p.getLeft().setHighlightColor(null);
@@ -1007,56 +988,94 @@ public class Game {
 	/**
 	 *
 	 */
-	@SuppressWarnings({ "removal", "static-access" })
-	private void defWithTile(Hexagon hex) {
+	@SuppressWarnings("removal")
+	public void defWithTile(Hexagon hex) {
 		if(checkJ.isEmpty() && playJ.isEmpty()) {
 			for(Player p : players) {
 				checkJ.add(new Boolean(true));
 				playJ.add(new Boolean(false));
 			}
-		}
-		if(pawnToMove instanceof Shark ) {			
-			for(Player p : players) {			
-				for(Tile t : p.getTileList()) {
-					if(t.getEffect() == TilesEffect.SHARK_DEATH) {
-						checkJ.set(players.indexOf(p), false);
-					}
-				}				
-			}
-		}else if(pawnToMove instanceof Whale ) {					
-			for(Player p : players) {			
-				for(Tile t : p.getTileList()) {
-					if(t.getEffect() == TilesEffect.WHALE_DEATH) {
-						checkJ.set(players.indexOf(p), false);
-					}
-				}				
-			}
-		}
-		
-			if(checkJ.stream().filter(o -> o.getBoolean("false")).findFirst().isPresent()) {
-				for(Boolean b : checkJ) {
-					if(!b) {
-						
-						if (board.getExternalPanel().getSelection() != null) {         	
-                            pawnToMove = (Tile)board.getExternalPanel().getSelection();
-                            board.getExternalPanel().setSelection(null);
-                            inGame(hex);
-                        } else if (hex.containsExplorerColor(getCurrentPlayer().getColor())) {
-                            board.setDisplayExternalPanel(true);
-                            board.getExternalPanel().setExternalPanelState(ExternalPanelState.TILEEFFECTDEFENSEPANEL);
-                        }
-						
-						//ask tile
-						
-						/*
-						 * if yes
-						 * playJ.set(checkJ.indexOf(b),true)
-						 */
+			if(!hex.getExplorerList().isEmpty() 
+					&& !hex.getSharkList().isEmpty()) {
+				for(Player p : players) {
+					if(hex.containsExplorerColor(p.getColor())) {
+						for(Tile t : p.getTileList()) {
+							if(t.getEffect() == TilesEffect.SHARK_DEATH) {
+								System.out.println("haha counter !");
+								checkJ.set(players.indexOf(p), false);
+							}
+						}	
+					}			
+				}
+			}else if(hex.getBoat() != null 
+					&& !hex.getBoat().getExplorerList().isEmpty() 
+					&& !hex.getWhaleList().isEmpty()) {					
+				for(Player p : players) {	
+					if(hex.containsExplorerColor(p.getColor())) {
+						for(Tile t : p.getTileList()) {
+							if(t.getEffect() == TilesEffect.WHALE_DEATH) {
+								checkJ.set(players.indexOf(p), false);
+							}
+						}
 					}
 				}
-				
 			}
+		}
 		
+		if(checkJ.stream().anyMatch(o -> o.booleanValue() == false) 
+				|| playJ.stream().anyMatch(o -> o.booleanValue() == true)) {
+			Boolean b = null;
+			if(checkJ.stream().anyMatch(o -> o.booleanValue() == false))
+					b = checkJ.stream().filter(o -> o.booleanValue() == false).findFirst().get();
+			if(!playJ.stream().anyMatch(o -> o.booleanValue() == true)) {
+				if (board.getExternalPanel().getChoice()!= null) {         	
+                    playJ.set(checkJ.indexOf(b), board.getExternalPanel().getChoice());
+                    checkJ.set(checkJ.indexOf(b), true);
+                    board.getExternalPanel().setChoice(null);
+            		board.getExternalPanel().setClickedHex(null);
+                    defWithTile(hex);
+                } else {
+                    board.setDisplayExternalPanel(true);
+            		board.getExternalPanel().setClickedHex(hex);
+                    board.getExternalPanel().setExternalPanelState(ExternalPanelState.TILEEFFECTDEFENSEPANEL);
+                }
+			} else {
+				if(!hex.getSharkList().isEmpty() && !hex.getExplorerList().isEmpty()) {
+					hex.getSharkList().clear();
+		            this.board.getExternalPanel().setAnimationType(AnimationType.SHARK_COUNTER);
+		            this.board.setDisplayExternalPanel(true);
+		            this.board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+				}
+	            if(!hex.getWhaleList().isEmpty() 
+	            		&& hex.getBoat() != null 
+	            		&& !hex.getBoat().getExplorerList().isEmpty()) {
+					hex.getWhaleList().clear();
+	                this.board.getExternalPanel().setAnimationType(AnimationType.WHALE_COUNTER);
+	                this.board.setDisplayExternalPanel(true);
+	                this.board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+	            }
+	            hex.displayPawns(board);
+			}
+			
+			/*
+			}*/
+				
+				//ask tile
+				
+				/*
+				 * if yes
+				 * playJ.set(checkJ.indexOf(b),true)
+				 */
+			
+		} else {
+			if(!hex.getSharkList().isEmpty()) {
+		      hex.getSharkList().get(0).makeEffect(hex);
+			}
+            if(!hex.getWhaleList().isEmpty()) {
+              hex.getWhaleList().get(0).makeEffect(hex);
+            }
+            hex.displayPawns(board);
+		}
 		/*if(!checkJ.get|| !checkJ2 || !checkJ3 || !checkJ4) {
 			for(Explorer e : hex.getExplorerList()) {
 				if(checkJ == false && e.getColor() == Color.YELLOW) {

@@ -69,7 +69,7 @@ public class PlayerInfo extends JLayeredPane {
 	public void displayPlayerInfo(Game game, int resolution) {
 
 		Player currentPlayer = game.getCurrentPlayer();
-		Player[] players = game.getPlayers();
+		ArrayList<Player> players = game.getPlayers();
 		int i = 0;
 
 		String[] textInfo = {
@@ -77,9 +77,9 @@ public class PlayerInfo extends JLayeredPane {
 				Integer.toString(currentPlayer.getNumberExplorerAlive()),
 				Integer.toString(currentPlayer.getNumberExplorerSaved()),
 				Integer.toString(currentPlayer.getNumberExplorerDead()),
-				players[(game.getCurrentPlayerIndex() + 1) % players.length].getPseudo(),
-				players[(game.getCurrentPlayerIndex() + 2) % players.length].getPseudo(),
-				players[(game.getCurrentPlayerIndex() + 3) % players.length].getPseudo()
+				players.get((game.getCurrentPlayerIndex() + 1) % players.size()).getPseudo(),
+				players.get((game.getCurrentPlayerIndex() + 2) % players.size()).getPseudo(),
+				players.get((game.getCurrentPlayerIndex() + 3) % players.size()).getPseudo()
 		};
 
 		for (String text : textInfo) {
