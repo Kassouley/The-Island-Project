@@ -168,7 +168,8 @@ public class Boat extends Pawn {
         for (Hexagon hexagon : tmp) {
             if (hexagon != null
                     && !hexagonTripletList.containsInTriplet(hexagon)
-                    && hexagon.getType() == HexagonType.SEA) {
+                    && hexagon.getType() == HexagonType.SEA
+                    && hexagon.getBoat() == null) {
 
                 if (this.explorerList.isEmpty()
                         || (hexagon.getSeaSnakeList().isEmpty()
