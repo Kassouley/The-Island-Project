@@ -1060,17 +1060,6 @@ public class Game {
 	            }
 	            hex.displayPawns(board);
 			}
-			
-			/*
-			}*/
-				
-				//ask tile
-				
-				/*
-				 * if yes
-				 * playJ.set(checkJ.indexOf(b),true)
-				 */
-			
 		} else {
 			if(!hex.getSharkList().isEmpty()) {
 		      hex.getSharkList().get(0).makeEffect(hex);
@@ -1080,97 +1069,6 @@ public class Game {
             }
             hex.displayPawns(board);
 		}
-		/*if(!checkJ.get|| !checkJ2 || !checkJ3 || !checkJ4) {
-			for(Explorer e : hex.getExplorerList()) {
-				if(checkJ == false && e.getColor() == Color.YELLOW) {
-					//playJ1 = ask playing Tile ?
-					checkJ = true;
-				}
-				else if(checkJ2 == false && e.getColor() == Color.BLUE) {
-					// playJ2 = ask playing Tile ?
-					checkJ2 = true;
-				}
-				else if(checkJ3 == false && e.getColor() == Color.RED) {
-					// playJ3 = ask playing Tile ?
-					checkJ3 = true;
-				}
-				else if(checkJ4 == false && e.getColor() == Color.GREEN) {
-					// playJ4 =ask playing Tile ?
-					checkJ4 = true;
-				}
-				if(playJ1 == true || playJ2 == true || playJ3 == true || playJ4 == true ) {
-					if(pawnToMove instanceof Shark) {
-						hex.removePawn((Shark)pawnToMove);
-					}
-					else if(pawnToMove instanceof Whale) {
-						hex.removePawn((Whale)pawnToMove);
-					}						
-					break;
-				}
-			}
-			if(playJ1 == true) {
-				for(Player p : players) {
-					if(p.getColor()== Color.YELLOW) {
-						for(Tile t : p.getTileList()) {
-							if(t.getEffect() == TilesEffect.SHARK_DEATH && pawnToMove instanceof Shark) {
-								p.getTileList().remove(t);
-								break;
-							}else if(t.getEffect() == TilesEffect.WHALE_DEATH && pawnToMove instanceof Whale) {
-								p.getTileList().remove(t);
-								break;
-							}
-							
-						}
-					}
-						
-				}
-			}else if(playJ2 == true) {
-				for(Player p : players) {
-					if(p.getColor()== Color.BLUE) {
-						for(Tile t : p.getTileList()) {
-							if(t.getEffect() == TilesEffect.SHARK_DEATH && pawnToMove instanceof Shark) {
-								p.getTileList().remove(t);
-								break;
-							}else if(t.getEffect() == TilesEffect.WHALE_DEATH && pawnToMove instanceof Whale) {
-								p.getTileList().remove(t);
-								break;
-							}
-						}
-					}
-						
-				}
-			}else if(playJ3 == true) {
-				for(Player p : players) {
-					if(p.getColor()== Color.RED) {
-						for(Tile t : p.getTileList()) {
-							if(t.getEffect() == TilesEffect.SHARK_DEATH && pawnToMove instanceof Shark) {
-								p.getTileList().remove(t);
-								break;
-							}else if(t.getEffect() == TilesEffect.WHALE_DEATH && pawnToMove instanceof Whale) {
-								p.getTileList().remove(t);
-								break;
-							}
-						}
-					}
-						
-				}
-			}else if(playJ4 == true) {
-				for(Player p : players) {
-					if(p.getColor()== Color.GREEN) {
-						for(Tile t : p.getTileList()) {
-							if(t.getEffect() == TilesEffect.SHARK_DEATH && pawnToMove instanceof Shark) {
-								p.getTileList().remove(t);
-								break;
-							}else if(t.getEffect() == TilesEffect.WHALE_DEATH && pawnToMove instanceof Whale) {
-								p.getTileList().remove(t);
-								break;
-							}
-						}
-					}
-						
-				}
-			}
-		}*/
 	}
 
     public PlayerInfo getPlayerInfo() {
