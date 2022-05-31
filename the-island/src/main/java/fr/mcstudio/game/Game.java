@@ -605,7 +605,16 @@ public class Game {
         			firstClic = true;
         			pawnToMove = null;
         			usedTile = null;
-        			nextActionTurn();
+        			if(board.isDisplayExternalPanel()) {
+                        actionInfo.displayActionInfo(getGame());
+                        playerInfo.displayPlayerInfo(getGame(), resolution);
+                        nextActionTurn();
+                    }
+                    else {
+                   	 nextActionTurn();
+                   	 actionInfo.displayActionInfo(getGame());
+                   	 playerInfo.displayPlayerInfo(getGame(), resolution);
+                    }
         		}
     			else {
     				for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
@@ -764,9 +773,9 @@ public class Game {
                              nextActionTurn();
                          }
                          else {
-                             nextActionTurn();
-                         	actionInfo.displayActionInfo(getGame());
-                             playerInfo.displayPlayerInfo(getGame(), resolution);
+                        	 nextActionTurn();
+                        	 actionInfo.displayActionInfo(getGame());
+                        	 playerInfo.displayPlayerInfo(getGame(), resolution);
                          }
     				}
             	}

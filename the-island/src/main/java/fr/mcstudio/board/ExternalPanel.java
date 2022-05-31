@@ -17,11 +17,9 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import fr.mcstudio.enums.AnimationType;
-import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.ExternalPanelState;
 import fr.mcstudio.enums.PawnType;
 import fr.mcstudio.pawns.Explorer;
-import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.tiles.Tile;
 import fr.mcstudio.util.Pair;
 import fr.mcstudio.util.PairList;
