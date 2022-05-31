@@ -21,15 +21,12 @@ import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.pawns.Whale;
 
 @SuppressWarnings("serial")
+/**
+ * Hexagon is a JLayeredPane that contains a Tile, a Boat, and a list of Pawns
+ */
 public class Hexagon extends JLayeredPane {
 
-    /**
-     * <p>
-     * Constructeur par défaut
-     * </p>
-     */
-    Hexagon hexagon = this;
-
+   // Creating a hexagon object and adding it to a JLayeredPane.
     public Hexagon(JLayeredPane boardPane, final int line, final int column, int resolution) {
         super();
         this.line = line;
@@ -47,202 +44,174 @@ public class Hexagon extends JLayeredPane {
         boardPane.add(this);
     }
 
+    // Declaring a variable called resolution.
     private int resolution;
 
-    /**
-     * <p>
-     * Ligne de l'hexagone dans le board
-     * </p>
-     */
+    // Declaring a variable called line.
     private int line;
 
-    /**
-     * <p>
-     * Colonne de l'hexagone dans le board
-     * </p>
-     */
+    // Declaring a variable called column.
     private int column;
 
-    /**
-     * <p>
-     * tuile de l'hexagone dans le board
-     * </p>
-     */
+    // Declaring a variable called type.
     private Tile tile = null;
 
-    /**
-     * 
-     */
+    // Declaring a variable called boat.
     private HexagonType type;
 
+    // Declaring a private boolean variable called highlight.
     private boolean highlight;
 
+    // Creating a new JLabel object.
     private JLabel highlightLabel = new JLabel();
 
+    // Declaring a variable called highlightColor and initializing it to null.
     private String highlightColor = null;
 
+    // Creating a new ArrayList of Pawns.
     private List<Pawn> pawnsToDisplay = new ArrayList<Pawn>();
 
-    /**
-     * <p>
-     * Liste des exploreurs presents sur l'hexagone dans le board
-     * </p>
-     */
+    // Creating a new ArrayList of type Explorer.
     private List<Explorer> explorerList = new ArrayList<Explorer>();
 
-    /**
-     * <p>
-     * Liste des requins presents sur l'hexagone dans le board
-     * </p>
-     */
+    // Creating a new ArrayList of Shark objects.
     private List<Shark> sharkList = new ArrayList<Shark>();
 
-    /**
-     * <p>
-     * Liste des baleines presents sur l'hexagone dans le board
-     * </p>
-     */
+    // Creating a new ArrayList of Whale objects.
     private List<Whale> whaleList = new ArrayList<Whale>();
 
-    /**
-     * <p>
-     * Liste des serpents de mer presents sur l'hexagone dans le board
-     * </p>
-     */
+    // Creating a new ArrayList of SeaSnake objects.
     private List<SeaSnake> seaSnakeList = new ArrayList<SeaSnake>();
 
-    /**
-     * <p>
-     * 
-     * </p>
-     */
+    // Declaring a variable called boat of type Boat.
     private Boat boat = null;
 
     /**
-     * <p>
+     * If the tile is null, return null, otherwise return the tile
      * 
-     * </p>
+     * @return The tile object.
      */
     public Tile getTile() {
         if (this.tile == null) {
-            return null;
+            return null;  
         } else {
             return this.tile;
         }
-
     }
 
+    /**
+     * This function sets the tile of the current object to the tile passed in as a parameter
+     * 
+     * @param tile The tile that the player is currently on.
+     */
     public void setTile(Tile tile) {
         this.tile = tile;
     }
 
     /**
-     * <p>
+     * This function sets the type of the hexagon to the type passed in
      * 
-     * </p>
+     * @param type The type of the hexagon.
      */
     public void setType(HexagonType type) {
         this.type = type;
     }
 
+    
     /**
-     * <p>
+     * This function returns the type of the hexagon
      * 
-     * </p>
+     * @return The type of the hexagon.
      */
     public HexagonType getType() {
         return this.type;
     }
 
-    /**
-     * 
-     */
+   /**
+    * This function returns true if the type of the hexagon is TILES, and false otherwise.
+    * 
+    * @return The boolean value of the type of the hexagon.
+    */
     public boolean isTiles() {
         return this.type == HexagonType.TILES;
     }
 
     /**
+     * Returns true if the hexagon is a sea hexagon.
      * 
+     * @return The boolean value of the type of the hexagon.
      */
     public boolean isSea() {
         return this.type == HexagonType.SEA;
     }
 
     /**
+     * "This function returns true if the hexagon is of type VOID, and false otherwise."
      * 
+     * @return The boolean value of the HexagonType.VOID
      */
     public boolean isVoid() {
         return this.type == HexagonType.VOID;
     }
 
     /**
+     * Returns true if the hexagon is an island.
      * 
+     * @return The type of the hexagon.
      */
     public boolean isIsland() {
         return this.type == HexagonType.ISLAND;
     }
 
     /**
-     * <p>
-     * Ajoute un explorateur à l'hexagone
-     * </p>
+     * This function adds an explorer to the list of explorers
      * 
-     * @return
+     * @param e Explorer
      */
     public void addPawn(Explorer e) {
         this.explorerList.add(e);
     }
 
     /**
-     * <p>
-     * Ajoute un requin à l'hexagone
-     * </p>
+     * This function adds a shark to the list of sharks
      * 
-     * @return
+     * @param s Shark
      */
     public void addPawn(Shark s) {
         this.sharkList.add(s);
     }
 
-    /**
-     * <p>
-     * Ajoute une baleine à l'hexagone
-     * </p>
-     * 
-     * @return
-     */
+   /**
+    * This function adds a whale to the whaleList
+    * 
+    * @param w The whale object that is being added to the list.
+    */
     public void addPawn(Whale w) {
         this.whaleList.add(w);
     }
 
     /**
-     * <p>
-     * Ajoute un serpent de mer à l'hexagone
-     * </p>
+     * This function adds a SeaSnake object to the seaSnakeList ArrayList
      * 
-     * @return
+     * @param ss SeaSnake
      */
     public void addPawn(SeaSnake ss) {
         this.seaSnakeList.add(ss);
     }
 
     /**
-     * <p>
-     * Ajoute un bateau à l'hexagone
-     * </p>
+     * Adding a boat to the hexagon
      * 
-     * @return
+     * @param b Boat
      */
     public void addPawn(Boat b) {
         this.boat = b;
     }
 
     /**
-     * <p>
+     * This function adds a pawn to the appropriate list
      * 
-     * </p>
-     * 
-     * @return
+     * @param ef EffectPawn
      */
     public void addPawn(EffectPawn ef) {
         if (ef instanceof Shark) {
@@ -255,66 +224,54 @@ public class Hexagon extends JLayeredPane {
     }
 
     /**
-     * <p>
-     * Retire l'exploreur de l'hexagone
-     * </p>
+     * This function removes an explorer from the explorer list
      * 
-     * @return
+     * @param e The explorer to be removed from the list.
      */
     public void removePawn(Explorer e) {
         this.explorerList.remove(e);
     }
 
     /**
-     * <p>
-     * Retire le requin de l'hexagone
-     * </p>
+     * This function removes a shark from the sharkList
      * 
-     * @return
+     * @param s Shark
      */
     public void removePawn(Shark s) {
         this.sharkList.remove(s);
     }
 
     /**
-     * <p>
-     * Retire la baleine de l'hexagone
-     * </p>
+     * This function removes a whale from the whaleList
      * 
-     * @return
+     * @param w The whale to be removed from the list.
      */
     public void removePawn(Whale w) {
         this.whaleList.remove(w);
     }
 
     /**
-     * <p>
-     * Retire le serpent de mer de l'hexagone
-     * </p>
+     * This function removes a SeaSnake from the seaSnakeList
      * 
-     * @return
+     * @param ss SeaSnake
      */
     public void removePawn(SeaSnake ss) {
         this.seaSnakeList.remove(ss);
     }
 
     /**
-     * <p>
-     * Retire le bateau de l'hexagone
-     * </p>
+     * Removes a boat from the hexagon
      * 
-     * @return
+     * @param b The boat to be removed
      */
     public void removePawn(Boat b) {
         this.boat = null;
     }
 
     /**
-     * <p>
+     * This function removes an effect pawn from the hexagon
      * 
-     * </p>
-     * 
-     * @return
+     * @param ef EffectPawn
      */
     public void removePawn(EffectPawn ef) {
         if (ef instanceof Shark) {
@@ -327,97 +284,90 @@ public class Hexagon extends JLayeredPane {
     }
 
     /**
-     * <p>
-     * Accesseur au(x) explorateur(s) dans l'hexagone
-     * </p>
+     * This function returns a list of explorers
+     * 
+     * @return The list of explorers.
      */
     public List<Explorer> getExplorerList() {
         return this.explorerList;
     }
 
     /**
-     * <p>
-     * Accesseur au(x) requin(s) dans l'hexagone
-     * </p>
+     * This function returns a list of sharks
+     * 
+     * @return The list of sharks.
      */
     public List<Shark> getSharkList() {
         return this.sharkList;
     }
-
+    
     /**
-     * <p>
-     * Accesseur au(x) baleine(s) dans l'hexagone
-     * </p>
+     * This function returns a list of whales
+     * 
+     * @return The whaleList is being returned.
      */
     public List<Whale> getWhaleList() {
         return this.whaleList;
     }
 
     /**
-     * <p>
-     * Accesseur au(x) serpent(s) de mer dans l'hexagone
-     * </p>
+     * This function returns a list of sea snakes
+     * 
+     * @return The list of sea snakes.
      */
     public List<SeaSnake> getSeaSnakeList() {
         return this.seaSnakeList;
     }
 
     /**
-     * <p>
-     * Accesseur au bateau dans l'hexagone
-     * </p>
+     * This function returns the boat object
+     * 
+     * @return The boat object.
      */
     public Boat getBoat() {
         return this.boat;
     }
 
+    /**
+     * Return true if the click is in the hexagon.
+     * 
+     * @param resolution the size of the hexagon
+     * @param clickx x coordinate of the click
+     * @param clicky the y coordinate of the click
+     * @return A boolean value.
+     */
     public boolean isInHexagonfloat(int resolution, float clickx, float clicky) {
 
         switch (resolution) {
             case 70:
-                if (isInDemiPlan(35, 0, 0, 15, clickx, clicky) &&
-                        isInDemiPlan(69, 15, 35, 0, clickx, clicky)
-                        &&
-                        isInDemiPlan(0, 54, 35, 69, clickx, clicky)
-                        &&
-                        isInDemiPlan(35, 69, 69, 54, clickx,
-                                clicky)
-                        &&
-                        isInDemiPlan(0, 15, 0, 54, clickx, clicky) &&
-                        isInDemiPlan(69, 54, 69, 15, clickx,
-                                clicky)) {
+                if (isInDemiPlan(35, 0, 0, 15, clickx, clicky)
+                        && isInDemiPlan(69, 15, 35, 0, clickx, clicky)
+                        && isInDemiPlan(0, 54, 35, 69, clickx, clicky)
+                        && isInDemiPlan(35, 69, 69, 54, clickx, clicky)
+                        && isInDemiPlan(0, 15, 0, 54, clickx, clicky) 
+                        && isInDemiPlan(69, 54, 69, 15, clickx, clicky)) {
                     return true;
                 } else {
                     return false;
                 }
             case 80:
-                if (isInDemiPlan(40, 0, 0, 17, clickx, clicky) &&
-                        isInDemiPlan(79, 17, 40, 0, clickx, clicky)
-                        &&
-                        isInDemiPlan(0, 62, 40, 79, clickx, clicky)
-                        &&
-                        isInDemiPlan(40, 79, 79, 62, clickx,
-                                clicky)
-                        &&
-                        isInDemiPlan(0, 17, 0, 62, clickx, clicky) &&
-                        isInDemiPlan(79, 62, 79, 17, clickx,
-                                clicky)) {
+                if (isInDemiPlan(40, 0, 0, 17, clickx, clicky) 
+                        && isInDemiPlan(79, 17, 40, 0, clickx, clicky)
+                        && isInDemiPlan(0, 62, 40, 79, clickx, clicky)
+                        && isInDemiPlan(40, 79, 79, 62, clickx, clicky)
+                        && isInDemiPlan(0, 17, 0, 62, clickx, clicky) 
+                        && isInDemiPlan(79, 62, 79, 17, clickx, clicky)) {
                     return true;
                 } else {
                     return false;
                 }
             case 90:
-                if (isInDemiPlan(45, 0, 0, 20, clickx, clicky) &&
-                        isInDemiPlan(89, 20, 45, 0, clickx, clicky)
-                        &&
-                        isInDemiPlan(0, 69, 45, 89, clickx, clicky)
-                        &&
-                        isInDemiPlan(45, 89, 89, 69, clickx,
-                                clicky)
-                        &&
-                        isInDemiPlan(0, 20, 0, 69, clickx, clicky) &&
-                        isInDemiPlan(89, 69, 89, 20, clickx,
-                                clicky)) {
+                if (isInDemiPlan(45, 0, 0, 20, clickx, clicky) 
+                        && isInDemiPlan(89, 20, 45, 0, clickx, clicky)
+                        && isInDemiPlan(0, 69, 45, 89, clickx, clicky)
+                        && isInDemiPlan(45, 89, 89, 69, clickx, clicky)
+                        && isInDemiPlan(0, 20, 0, 69, clickx, clicky) 
+                        && isInDemiPlan(89, 69, 89, 20, clickx, clicky)) {
                     return true;
                 } else {
                     return false;
@@ -428,43 +378,69 @@ public class Hexagon extends JLayeredPane {
         return false;
 
     }
-
+    
     /**
-     * <p>
+     * If the point is on the left side of the line, then it is in the demi-plane
      * 
-     * </p>
-     * @since1.0
+     * @param ax x coordinate of the first point of the line
+     * @param ay y coordinate of the first point of the line
+     * @param bx x coordinate of the first point of the line
+     * @param by y coordinate of the second point of the line
+     * @param clickx x coordinate of the click
+     * @param clicky the y coordinate of the click
+     * @return a boolean value.
      */
     public boolean isInDemiPlan(float ax, float ay, float bx, float by, float clickx, float clicky) {
         float d = (bx - ax) * (clicky - ay) - (by - ay) * (clickx - ax);
-
         if (d <= 0)
             return true;
         else
             return false;
     }
 
+    /**
+     * This function returns the line number of the current object
+     * 
+     * @return The line number of the error.
+     */
     public int getLine() {
         return line;
     }
 
+    /**
+     * This function returns the column of the current object
+     * 
+     * @return The column of the cell.
+     */
     public int getColumn() {
         return column;
     }
 
+    /**
+     * This function returns a boolean value that indicates whether the highlight is on or off
+     * 
+     * @return The value of the variable highlight.
+     */
     public boolean isHighlight() {
         return highlight;
     }
 
+    /**
+     * It sets the highlight of a tile to true or false, and if it's true, it sets the color of the
+     * highlight to the color passed in the function
+     * 
+     * @param resolution the size of the tile
+     * @param boardPane the JLayeredPane that contains the tiles
+     * @param highlight boolean, true if the tile should be highlighted, false if not
+     * @param color the color of the highlight
+     */
     public void setHighlight(int resolution, JLayeredPane boardPane, boolean highlight, String color) {
         this.highlight = highlight;
-
         remove(highlightLabel);
         revalidate();
         repaint();
 
         if (this.highlight) {
-            // boardPane.remove(highlightLabel);
             ImageIcon icone = null;
             Image scaleImage;
             if (color == "white") {
@@ -503,19 +479,26 @@ public class Hexagon extends JLayeredPane {
         }
     }
 
+    /**
+     * This function sets the highlight color of the hexagon
+     * 
+     * @param highlightColor The color of the highlight.
+     */
     public void setHighlightColor(String highlightColor) {
         this.highlightColor = highlightColor;
     }
 
+    /**
+     * This function returns the highlight color of the hexagon.
+     * 
+     * @return The highlightColor variable is being returned.
+     */
     public String getHighlightColor() {
         return highlightColor;
     }
 
     /**
-     * <p>
-     * Vide la case de tous ses pions
-     * </p>
-     * @since2.0
+     * It removes all pawns from the hexagon
      */
     public void removeAllPawn() {
         if (!this.explorerList.isEmpty()) {
@@ -537,10 +520,7 @@ public class Hexagon extends JLayeredPane {
     }
 
     /**
-     * <p>
-     * Affecte une tuile mer a un hexagone
-     * </p>
-     * @since2.0
+     * This function removes the tile from the hexagon and sets the type to sea
      */
     public void removeTile() {
         this.setTile(null);
@@ -548,10 +528,11 @@ public class Hexagon extends JLayeredPane {
     }
 
     /**
-     * <p>
-     * Renvois la pos x de la tuile
-     * </p>
-     * @since2.0
+     * It returns the x position of a hexagon on the screen, based on the resolution and
+     * the line and column of the hexagon
+     * 
+     * @param resolution the size of the hexagon
+     * @return The position of the hexagon in the x-axis.
      */
     public int returnPosX(int resolution) {
         if (this.line % 2 == 0) {
@@ -581,10 +562,11 @@ public class Hexagon extends JLayeredPane {
     }
 
     /**
-     * <p>
-     * Renvois la pos y de la tuile
-     * </p>
-     * @since2.0
+     * It returns the y position of a hexagon on the screen, based on the resolution and
+     * the line and column of the hexagon
+     * 
+     * @param resolution the resolution of the screen
+     * @return The position of the tile on the y axis.
      */
     public int returnPosY(int resolution) {
         if (this.line % 2 == 0) {
@@ -613,6 +595,11 @@ public class Hexagon extends JLayeredPane {
         return 0;
     }
 
+    /**
+     * It displays the pawns on the hexagon
+     * 
+     * @param board the board object
+     */
     public void displayPawns(Board board) {
         for (Pawn p : pawnsToDisplay) {
             remove(p);
@@ -620,7 +607,6 @@ public class Hexagon extends JLayeredPane {
         revalidate();
         repaint();
         pawnsToDisplay.clear();
-        // List<Pawn> pawnsToDisplay = new ArrayList<Pawn>();
         List<Integer> x = new ArrayList<Integer>();
         List<Integer> y = new ArrayList<Integer>();
         List<Integer> index = new ArrayList<Integer>();
@@ -756,10 +742,24 @@ public class Hexagon extends JLayeredPane {
         }
     }
 
+    /**
+     * "If the color is present in the list, return true, otherwise return false."
+     * 
+     * The function is called "containsExplorerColor" and it takes a single parameter, a color
+     * 
+     * @param color The color to check for
+     * @return A boolean value.
+     */
     public boolean containsExplorerColor(final Color color) {
         return explorerList.stream().filter(o -> o.getColor().equals(color)).findFirst().isPresent();
     }
 
+    /**
+     * This function returns the number of explorers with a given color
+     * 
+     * @param color the color of the explorers to count
+     * @return The number of explorers with the given color.
+     */
     public int nbExplorerColor(final Color color) {
         int nb = 0;
         for (Explorer e : explorerList) {
@@ -770,18 +770,16 @@ public class Hexagon extends JLayeredPane {
         return nb;
     }
 
-    /*
-     * public int getExplorerNbInList(final List<Explorer> list, final Color color){
-     * return list.stream().filter(o ->
-     * o.getColor().equals(color)).findFirst().isPresent();
-     * }
+    /**
+     * The function is called when a player wants to discover a tile. If there is a tile on the case,
+     * the tile is flipped.
+     * 
+     * @param p the player who is playing
+     * @param board the board object
      */
-
     public void discover(Player p, Board board) {
         if (this.tile != null) {
             this.tile.flipTile(this, p, board);
-        } else {
-            System.out.println("Aucune tuile sur la case choisie\n");
-        }
+        } 
     }
 }

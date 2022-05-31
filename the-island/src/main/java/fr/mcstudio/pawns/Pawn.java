@@ -17,51 +17,78 @@ import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
 @SuppressWarnings("serial")
+
+
+/**
+ * > A `Pawn` is a `JLayeredPane` that can move on the `Board`.
+ */
 public class Pawn extends JLayeredPane {
-    /**
-     * <p>
-     * Constructeur par d�faut.
-     * </p>
-     */
+
+    // The constructor of the class Pawn.
     public Pawn(int movePoint) {
     	this.setLayout(null);
     	this.setOpaque(false);
         this.movePoint = movePoint;
     }
 
+    // A variable that is used to display the index of the pawn.
     protected JLabel index;
 
+    // Creating a new JLabel object and assigning it to the variable image.
     protected JLabel image = new JLabel();
 
-	private int movePoint;
+	// A variable that is used to store the number of moves that the pawn can make.
+    private int movePoint;
 
+    /**
+     * This function returns the movePoint of the player
+     * 
+     * @return The movePoint variable is being returned.
+     */
     public int getMovePoint() {
         return this.movePoint;
     }
 
+    /**
+     * This function sets the movePoint variable to the value of the movePoint parameter
+     * 
+     * @param movePoint The number of points the player can move.
+     */
     public void setMovePoint(int movePoint) {
         this.movePoint = movePoint;
     }
 
     /**
+     * Move the pawn to the given hexagon from an old hexagon.
      * 
+     * @param oldPosition The hexagon that the unit is currently on.
+     * @param newPosition The new position of the piece.
      */
     public void move(Hexagon oldPosition, Hexagon newPosition) {
     }
 
     /**
+     * This function sets the bounds of the object to the given x and y coordinates, and the size of
+     * the object to the given size, but the size is scaled based on the resolution.
      * 
+     * @param x The x position of the button
+     * @param y The y position of the button
+     * @param resolution The resolution of the screen.
+     * @param size The size of the button in pixels.
      */
     public void setPosition(int x, int y, int resolution, int size) {
         this.setBounds(x, y, (int) (size * ((float) resolution / 90)), (int) (size * ((float) resolution / 90)));
     }
 
     /**
+     * It finds all the hexagons that are reachable from the actual position, and it stores them in a
+     * list
      * 
-     * @param actualPosition
-     * @param board
-     * @param distance
-     * @param listHexagon
+     * @param actualPosition The current position of the player
+     * @param board the board
+     * @param movePointLeft the number of moves left
+     * @param hexagonTripletList a list of hexagons, their distance from the starting hexagon, and
+     * their type (land, water, death)
      */
     public void findPath(Hexagon actualPosition, Board board, int movePointLeft, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList) {
         hexagonTripletList.clear();
@@ -99,15 +126,23 @@ public class Pawn extends JLayeredPane {
         hexagonTripletList.remove(0);
     }
 
+    
     /**
+     * It takes a hexagon, a board, a list of hexagons, and a distance, and adds to the list of
+     * hexagons all the hexagons that are adjacent to the given hexagon, and the distance to them
      * 
-     * @param actualPosition
-     * @param board
-     * @param listHexagon
+     * @param actualPosition The current position of the unit.
+     * @param board The board that the path is being found on.
+     * @param hexagonTripletList A list of hexagons, their distance from the starting hexagon, and the
+     * type of hexagon list they are in.
+     * @param distance the distance from the starting hexagon
      */
     public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
     }
 
+    /**
+     * It creates an image for the pawn, depending on its type
+     */
     public void createPawnImage() {
         ImageIcon icon = null;
         Image scaleImage;
@@ -135,17 +170,19 @@ public class Pawn extends JLayeredPane {
         	}
         }
         scaleImage = icon.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
-
-       	//this.index = new JLabel(Integer.toString(index));
-
         icon.setImage(scaleImage);
-
         this.image.setIcon(icon);
         this.add(this.image);
         this.image.setBounds(0, 0, this.getWidth(), this.getHeight());
     }
 
-	public void addIndex(int index, int size) {
+	/**
+     * This function adds a JLabel to the JPanel that contains the index of the pawn
+     * 
+     * @param index the index of the pawn
+     * @param size the size of the font
+     */
+    public void addIndex(int index, int size) {
 		this.index = new JLabel(Integer.toString(index));
 		this.index.setFont(new Font("Tahoma", Font.BOLD,  size/2));
 		this.index.setForeground(java.awt.Color.WHITE);
@@ -153,15 +190,24 @@ public class Pawn extends JLayeredPane {
 		int indexHeight = this.index.getFontMetrics(this.index.getFont()).getHeight();
 		this.index.setBounds(getWidth()/2 - indexWidth/2, getHeight()/2 - indexHeight/4, size/2, size/2);
 		this.setLayer(this.index, 2);
-		add(this.index);
-		
+		add(this.index);	
 	}
 
-	public JLabel getImage() {
-		return image;
+	/**
+     * Get the image of the pawn
+     * 
+     * @return The image of the pawn.
+     */
+    public JLabel getImage() {
+		return this.image;
 	}
 
-	public void setImage(JLabel image) {
+	/**
+     * This function sets the image of the pawn
+     * 
+     * @param image The image to be displayed
+     */
+    public void setImage(JLabel image) {
 		this.image = image;
 	}
 

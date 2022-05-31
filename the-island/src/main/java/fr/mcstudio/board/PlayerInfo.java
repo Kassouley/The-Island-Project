@@ -11,24 +11,15 @@ import fr.mcstudio.game.Game;
 import fr.mcstudio.game.Player;
 
 @SuppressWarnings("serial")
+
+
+/**
+ * It's a JLayeredPane that displays information about the current player.
+ */
 public class PlayerInfo extends JLayeredPane {
 
-	private JLabel playerInfoLabel = new JLabel();
-	private JPanel playerInfoPanel = new JPanel();
-
-	private JLabel avatarPlayer = new JLabel();
-	private List<JLabel> infosPlayer = new ArrayList<JLabel>();
-
-	private int[][] pos = {
-		{ 43, 50 },
-		{ 330, 50 },
-		{ 390, 50 },
-		{ 445, 50 },
-		{ 540, 50 },
-		{ 570, 50 },
-		{ 600, 50 },
-	};
-
+	
+	// It's creating a new PlayerInfo object.
 	public PlayerInfo(int resolution) {
 		super();
 		this.setLayer(this.playerInfoLabel, 0);
@@ -43,6 +34,7 @@ public class PlayerInfo extends JLayeredPane {
 		this.setLayer(playerInfoPanel, 1);
 		this.add(playerInfoPanel);
 
+		// It's creating a new Font object and assigning it to the variable sizedFont.
 		Font sizedFont = null;
 		try {
 			InputStream is = ActionInfo.class.getResourceAsStream("/Font/Treasuremap.ttf");
@@ -52,10 +44,16 @@ public class PlayerInfo extends JLayeredPane {
 			System.err.println("Not loaded");
 		}
 
+		// It's creating 7 JLabel objects and adding them to the ArrayList infosPlayer.
 		for (int i = 0; i < 7; i++) {
 			JLabel text = new JLabel("null", SwingConstants.CENTER);
 			text.setFont(sizedFont);
-			text.setBounds(0,this.pos[i][0] * resolution / 90 ,this.getWidth(), this.pos[i][0] * resolution / 90);
+			text.setBounds(
+				0,
+				this.pos[i][0] * resolution / 90,
+				this.getWidth(), 
+				this.pos[i][0] * resolution / 90
+			);
 			this.playerInfoPanel.add(text);
 			this.infosPlayer.add(text);
 		}
@@ -63,9 +61,38 @@ public class PlayerInfo extends JLayeredPane {
 		this.avatarPlayer.setBounds(15 * resolution / 90, 120 * resolution / 90,
 				256 * resolution / 90, 256 * resolution / 90);
 		this.playerInfoPanel.add(avatarPlayer);
-
 	}
 
+
+	// It's creating a new JLabel object and assigning it to the variable playerInfoLabel.
+	private JLabel playerInfoLabel = new JLabel();
+	
+	// It's creating a new JPanel object and assigning it to the variable playerInfoPanel.
+	private JPanel playerInfoPanel = new JPanel();
+
+	// It's creating a new JLabel object and assigning it to the variable avatarPlayer.
+	private JLabel avatarPlayer = new JLabel();
+
+	// It's creating a new ArrayList object and assigning it to the variable infosPlayer.
+	private List<JLabel> infosPlayer = new ArrayList<JLabel>();
+
+	// It's creating a new array of ints and assigning it to the variable pos.
+	private int[][] pos = {
+		{ 43, 50 },
+		{ 330, 50 },
+		{ 390, 50 },
+		{ 445, 50 },
+		{ 540, 50 },
+		{ 570, 50 },
+		{ 600, 50 },
+	};
+
+	/**
+	 * It displays the information of the current player in the GUI
+	 * 
+	 * @param game the game object
+	 * @param resolution the resolution of the screen
+	 */
 	public void displayPlayerInfo(Game game, int resolution) {
 
 		Player currentPlayer = game.getCurrentPlayer();
@@ -90,6 +117,11 @@ public class PlayerInfo extends JLayeredPane {
 		this.avatarPlayer.setIcon(currentPlayer.getAvatar());
 	}
 
+	/**
+	 * It sets the bounds of the panel based on the resolution
+	 * 
+	 * @param resolution The resolution
+	 */
 	private void setPanelBoundsFromResolution(int resolution) {
 		switch (resolution) {
 			case 70:
@@ -106,6 +138,10 @@ public class PlayerInfo extends JLayeredPane {
 		}
 	}
 
+	/**
+	 * It takes the image from the resource folder, scales it to the size of the JPanel, and then sets the
+	 * background to the scaled image
+	 */
 	private void setLabel() {
 		ImageIcon icone = new ImageIcon(PlayerInfo.class.getResource("/PlayerInfo.png"));
 		Image scaleImage = icone.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);

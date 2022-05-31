@@ -1,18 +1,32 @@
 package fr.mcstudio.enums;
 
+// Creating an enum of different ActionTurn.
 public enum ActionTurn {
     PLAY_TILE, MOVE_PAWNS, DISCOVER_TILE, MOVE_MONSTER;
 
+    // Creating an array of the enum values.
     private static ActionTurn[] vals = values();
 
+    /**
+     * "Return the next value in the enum"
+     * 
+     * @return The next value in the enum.
+     */
     public ActionTurn next() {
         return vals[(this.ordinal() + 1) % vals.length];
     }
 
+    /**
+     * "Return the title of the current state."
+     * 
+     * The function is a switch statement that returns a string depending on the current state
+     * 
+     * @return The title of the enum.
+     */
     public String getTitle() {
         switch (this) {
             case PLAY_TILE:
-                return "<html><center>Jouez une tuile</center></html>";
+                return "Jouez une tuile";
             case MOVE_PAWNS:
                 return "Déplacez vos pions";
             case DISCOVER_TILE:
@@ -25,6 +39,11 @@ public enum ActionTurn {
         return null;
     }
 
+    /**
+     * It returns a string that describes the current action
+     * 
+     * @return The description of the action.
+     */
     public String getDesc() {
         switch (this) {
             case PLAY_TILE:

@@ -1,14 +1,6 @@
 package fr.mcstudio.enums;
 
-/**
- * <p>
- * Énumeration des couleurs des types d'hexagone
- * </p>
- *
- * @version 1.0
- *
- * @author Lucas Neto
- */
+// It's creating an enum for the different hexagon type.
 public enum HexagonType {
     SEA, TILES, ISLAND, VOID
 }

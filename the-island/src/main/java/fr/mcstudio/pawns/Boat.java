@@ -1,15 +1,3 @@
-/*
- * Nom de classe : Boat
- *
- * Description   : Gestion des bateaux du jeu The Island 
- *
- * Version       : 2.0
- *
- * Date          : 07/05/2022
- * 
- * Copyright     : Lucas Neto
- */
-
 package fr.mcstudio.pawns;
 
 import java.awt.Image;
@@ -28,101 +16,79 @@ import fr.mcstudio.game.Player;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
-/**
- * <p>
- * Gestion des bateaux du jeu The Island
- * </p>
- *
- * @version 2.0
- *
- * @see Pawn.java
- * @author Lucas Neto
- */
 @SuppressWarnings("serial")
+
+/**
+ * It creates a class called Boat that extends the Pawn class.
+ */
 public class Boat extends Pawn {
 
-    /**
-     * <p>
-     * Constructeur par d�faut
-     * </p>
-     */
+    // A constructor.
     public Boat(int resolution) {
       super(3);
       this.createImage(resolution);
     }
+    
+    // Creating a new list of explorers.
+    private List<Explorer> explorerList = new ArrayList<Explorer>();
 
+    // A list of explorers to display.
+    private List<Explorer> explorerToDisplay = new ArrayList<Explorer>();
+
+    
     /**
-     * <p>
-     * Liste des explorateur pr�sent sur le bateau.
-     * </p>
+     * This function returns a list of explorers
      * 
-     * @see Explorer.java
+     * @return The list of explorers.
      */
-
     public List<Explorer> getExplorerList() {
         return explorerList;
     }
   
-    private List<Explorer> explorerList = new ArrayList<Explorer>();
-
-    private List<Explorer> explorerToDisplay = new ArrayList<Explorer>();
-
     /**
-     * <p>
-     * Ajoute un explorateur sur le bateau
-     * </p>
+     * This function adds an explorer to the list of explorers
      * 
-     * @param explorer l'explorateur � ajouter sur le bateau
-     * @since 1.0
-     * @see Explorer.java
+     * @param explorer The explorer to add to the list.
      */
     public void addExplorer(Explorer explorer) {
         this.explorerList.add(explorer);
     }
 
     /**
-     * <p>
-     * V�rifie si le bateau est plein ou non
-     * </p>
+     * This function removes an explorer from the list of explorers
      * 
-     * @return vrai si le nombre d'exploreur dessus est >= 3, faux sinon.
-     * @since 1.0
-     */
-    public boolean isFull() {
-        return (this.explorerList.size() >= 3);
-    }
-
-    public boolean isEmpty() {
-        return this.explorerList.isEmpty();
-    }
-
-    /**
-     * <p>
-     * Retire un explorateur du bateau.
-     * </p>
-     * 
-     * @param explorer l'explorateur � retirer du bateau.
-     * @since 1.0
-     * @see Explorer.java
+     * @param explorer The explorer to be removed from the list.
      */
     public void removeExplorer(Explorer explorer) {
         this.explorerList.remove(explorer);
     }
 
     /**
-     * <p>
-     * Permet de savoir qui peut controler le bateau.
-     * </p>
-     * <p>
-     * La m�thode compte le nombre d'explorateur d'un joueur sur le bateau.
-     * Si ce nombre est maximum alors il peut controler le bateau.
-     * </p>
+     * This function checks if the explorerList is full
      * 
-     * @param player joueur qui souhaite controler le bateau
-     * @return Vrai, si le nombre d'exploreur de la couleur du joueur est maximum,
-     *         faux sinon.
-     * @since 1.0
-     * @see Player.java
+     * @return The method isFull() returns a boolean value.
+     */
+    public boolean isFull() {
+        return (this.explorerList.size() >= 3);
+    }
+
+    /**
+     * This function returns true if the explorerList is empty, and false if it is not
+     * 
+     * @return The method isEmpty() is being returned.
+     */
+    public boolean isEmpty() {
+        return this.explorerList.isEmpty();
+    }
+    
+    /**
+     * "If the number of explorers of a given color is greater than or equal to the number of explorers
+     * of any other color, then the tile is owned by that color."
+     * 
+     * The function is a little more complicated than that, but that's the gist of it
+     * 
+     * @param player The player who is trying to claim the tile
+     * @return The method isOwnedBy() returns a boolean value.
      */
     public boolean isOwnedBy(Player player) {
         int[] colorCount = new int[4];
@@ -141,13 +107,13 @@ public class Boat extends Pawn {
     }
 
     /**
-     * <p>
-     * Fait couler un bateau choisit et retire tout les explorateurs � bord.
-     * </p>
+     * "When a boat sinks, all the explorers on board become swimmers and are placed on the hexagon
+     * where the boat sank."
      * 
-     * @param boatPosition Case o� se situe le bateau � retir� du jeu
-     * @since 2.0
-     * @see Explorer.java
+     * The function is called `sunk` and it takes a single parameter, `boatPosition`, which is the
+     * hexagon where the boat sank
+     * 
+     * @param boatPosition The hexagon that the boat is currently on.
      */
     public void sunk(Hexagon boatPosition) {
         for (Explorer explorer : this.explorerList) {
@@ -157,15 +123,12 @@ public class Boat extends Pawn {
         this.explorerList.clear();
         boatPosition.removePawn(this);
     }
-
+    
     /**
-     * <p>
-     * D�place le bateau d'une case vers une autre case.
-     * </p>
+     * The function move() is used to move a pawn from one hexagon to another.
      * 
-     * @param oldPosition case o� se trouvait le bateau.
-     * @param newPosition case vers laquel est d�plac� le bateau.
-     * @since 2.0
+     * @param oldPosition The hexagon the pawn is currently on
+     * @param newPosition Hexagon
      */
     public void move(Hexagon oldPosition, Hexagon newPosition) {
         oldPosition.removePawn(this);
@@ -180,7 +143,19 @@ public class Boat extends Pawn {
         }
     }
 
-    public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
+    /**
+     * It takes a hexagon, a board, a list of hexagons, and a distance, and adds the hexagon to the
+     * list of hexagons if it's not already in the list, and if it's a sea hexagon
+     * 
+     * @param actualPosition The current position of the explorer
+     * @param board the board
+     * @param hexagonTripletList a list of hexagons, their distance from the starting hexagon, and
+     * their type (normal or death)
+     * @param distance the distance from the starting point
+     */
+    public void findPathAux(Hexagon actualPosition, Board board, 
+            TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
+
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
         tmp.add(board.getTopLeft(actualPosition));
@@ -207,15 +182,21 @@ public class Boat extends Pawn {
         }
     }
 
-	public void displayBoatPawns(Boat boat, int resolution, int nbPawn, Hexagon hex) {
-		// TODO Auto-generated method stub
+	/**
+     * It displays the pawns on the boat
+     * 
+     * @param boat the boat to display
+     * @param resolution the size of the hexagon
+     * @param nbPawn the number of pawns on the boat
+     * @param hex the hexagon where the boat is
+     */
+    public void displayBoatPawns(Boat boat, int resolution, int nbPawn, Hexagon hex) {
 		List<Integer> x = new ArrayList<Integer>();
         List<Integer> y = new ArrayList<Integer>();
         explorerToDisplay.clear();
 		for(Explorer e : boat.explorerList) {
 			explorerToDisplay.add(new Explorer(e.getColor(), 0));
 		}
-		
 		switch (explorerToDisplay.size()) {
 		case 3:
             x.add((int) (0));
@@ -228,8 +209,6 @@ public class Boat extends Pawn {
             y.add((int) (3*this.getHeight()/10));
 		}
 		for (int i = 0; i < explorerToDisplay.size(); i++) {
-			
-
 			explorerToDisplay.get(i).setBounds(x.get(i),
 					y.get(i), 2*this.getWidth()/5, 2*this.getHeight()/5);
 
@@ -238,11 +217,14 @@ public class Boat extends Pawn {
             setLayer(explorerToDisplay.get(i), 4);
             add(explorerToDisplay.get(i));
 		}
-		
-		
 	}
 
-	private void createPawnBoatImage(Explorer e) {
+	/**
+     * It creates an image for a pawn in a boat, depending on its color
+     * 
+     * @param e Explorer
+     */
+    private void createPawnBoatImage(Explorer e) {
 		ImageIcon icon = null;
         Image scaleImage;
 		if((e).getColor() == Color.RED) {
@@ -256,18 +238,19 @@ public class Boat extends Pawn {
     	}
 
 		scaleImage = icon.getImage().getScaledInstance(e.getWidth(), e.getHeight(), Image.SCALE_SMOOTH);
-
-       	//this.index = new JLabel(Integer.toString(index));
-
         icon.setImage(scaleImage);
 
         e.getImage().setIcon(icon);
         e.add(e.getImage());
         e.getImage().setBounds(0, 0, e.getWidth(), e.getHeight());
-		
 	}
 	
-	public void createImage(int resolution) {
+	/**
+     * It creates an image icon for the boat, scales it, and then sets the image icon to the image
+     * 
+     * @param resolution the size of the image
+     */
+    public void createImage(int resolution) {
 
         ImageIcon icon = null;
         Image scaleImage;
@@ -279,10 +262,22 @@ public class Boat extends Pawn {
         this.image.setIcon(icon);
     }
 	
-	public boolean containsExplorerColor(final Color color) {
+	/**
+     * "Returns true if the explorerList contains an explorer with the given color."
+     * 
+     * @param color The color to check for
+     * @return A boolean value.
+     */
+    public boolean containsExplorerColor(final Color color) {
         return explorerList.stream().filter(o -> o.getColor().equals(color)).findFirst().isPresent();
     }
 
+   /**
+    * It returns the number of explorers of a given color
+    * 
+    * @param color the color of the explorer
+    * @return The number of explorers with the given color.
+    */
     public int nbExplorerColor(final Color color) {
         int nb = 0;
         for (Explorer e : explorerList) {

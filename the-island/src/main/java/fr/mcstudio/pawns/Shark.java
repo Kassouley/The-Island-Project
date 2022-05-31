@@ -26,39 +26,27 @@ import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
-/**
- * <p>
- * Gestion des requins du jeu The Island
- * </p>
- *
- * @version 2.0
- * 
- * @see EffectPawn.java
- * @author Lucas Neto
- */
 @SuppressWarnings("serial")
+
+/**
+ * It's a class that represents a shark that can kill explorers
+ */
 public class Shark extends EffectPawn {
 
-    private Board board;
-
-    /**
-     * <p>
-     * Constructeur par défaut
-     * </p>
-     */
+    // The constructor of the class Shark.
     public Shark(Board board) {
         super(2);
         this.board = board;
     }
 
+    // A variable board.
+    private Board board;
+
     /**
-     * <p>
-     * Réalise l'effet du requin et tue les explorateurs.
-     * </p>
+     * If the hexagon has explorers on it, then the board will display an animation and all the
+     * explorers on the hexagon will die
      * 
-     * @param hexagon Case dans laquel est réalisé l'effet.
-     * @since 1.0
-     * 
+     * @param hexagon the hexagon that the shark is on
      */
     public void makeEffect(Hexagon hexagon) {
         if (!hexagon.getExplorerList().isEmpty()) {
@@ -72,6 +60,17 @@ public class Shark extends EffectPawn {
         hexagon.getExplorerList().clear();
     }
 
+    /**
+     * It takes a hexagon, a board, a list of hexagons, and a distance, and adds all the hexagons
+     * around the given hexagon to the list of hexagons, if they are not already in the list, and if
+     * they are sea hexagons
+     * 
+     * @param actualPosition The current position of the explorer
+     * @param board the board
+     * @param hexagonTripletList a list of hexagons, their distance from the starting hexagon, and
+     * their type (NORMAL, DEATH, or START)
+     * @param distance the distance from the starting hexagon
+     */
     public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
@@ -95,8 +94,4 @@ public class Shark extends EffectPawn {
             }
         }
     }
-
-    /*public void setImage() {
-        this.setIcon(new ImageIcon(Pawn.class.getResource("/pion_requin.png")));
-    }*/
 }

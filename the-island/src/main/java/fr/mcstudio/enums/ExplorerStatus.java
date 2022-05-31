@@ -1,14 +1,6 @@
 package fr.mcstudio.enums;
 
-/**
- * <p>
- * Énumeration des status des explorateurs
- * </p>
- *
- * @version 1.0
- *
- * @author Lucas Neto
- */
+// Creating an enum of the different explorer status.
 public enum ExplorerStatus {
     NORMAL, SWIMMER, DEAD, SAVED, ONBOAT
 }

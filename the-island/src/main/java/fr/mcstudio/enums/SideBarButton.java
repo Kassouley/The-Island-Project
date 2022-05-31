@@ -1,5 +1,6 @@
 package fr.mcstudio.enums;
 
+// Defining a set of constants for the side bar buttons.
 public abstract interface SideBarButton {
     public static final int SKIP = 0;
     public static final int RULES = 1;

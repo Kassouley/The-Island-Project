@@ -1,15 +1,3 @@
-/*
- * Nom de classe : Explorer
- *
- * Description   : Gestion des explorateurs du jeu The Island 
- *
- * Version       : 2.0
- *
- * Date          : 07/05/2022
- * 
- * Copyright     : Lucas Neto
- */
-
 package fr.mcstudio.pawns;
 
 import java.util.ArrayList;
@@ -27,24 +15,15 @@ import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
-/**
- * <p>
- * Gestion des explorateurs du jeu The Island
- * </p>
- *
- * @version 2.0
- *
- * @see Pawn.java
- * @author Lucas Neto
- */
 @SuppressWarnings("serial")
+
+
+/**
+ * It creates a new class called Explorer that extends the Pawn class.
+ */
 public class Explorer extends Pawn {
 
-    /**
-     * <p>
-     * Constructeur par d�faut
-     * </p>
-     */
+    // The above code is creating a constructor for the Explorer class.
     public Explorer(Color color, int treasureValue) {
         super(3);
         this.color = color;
@@ -52,77 +31,56 @@ public class Explorer extends Pawn {
         this.status = ExplorerStatus.NORMAL;
     }
 
-    /**
-     * <p>
-     * Couleur de l'explorateur.
-     * </p>
-     * 
-     * @see Color.java
-     */
+    // Declaring a variable for the color of the pawn.
     private Color color;
 
-    /**
-     * <p>
-     * Valeur du tr�sor de l'explorateur.
-     * </p>
-     */
+    // Declaring a variable for the treasure value of the explorer.
     private int treasureValue;
 
-    /**
-     * <p>
-     * Status de l'explorateur
-     * </p>
-     * 
-     * @see ExplorerStatus.java
-     */
+    // Declaring a variable called status of type ExplorerStatus.
     private ExplorerStatus status;
 
     /**
-     * <p>
-     * Accesseur de la couleur de l'explorateur.
-     * </p>
+     * This function returns the color of the current object
+     * 
+     * @return The color of the explorer.
      */
     public Color getColor() {
         return this.color;
     }
 
     /**
-     * <p>
-     * Accesseur de la valeur de tr�sor de l'explorateur.
-     * </p>
+     * This function returns the value of the treasure
+     * 
+     * @return The treasure value of the explorer object.
      */
     public int getTreasureValue() {
         return this.treasureValue;
     }
 
     /**
-     * <p>
-     * Mutateur du status de l'explorateur.
-     * </p>
+     * This function sets the status of the explorer to the new status
+     * 
+     * @param newStatus The new status of the explorer.
      */
     public void setStatus(ExplorerStatus newStatus) {
         this.status = newStatus;
     }
 
     /**
-     * <p>
-     * Accesseur du status de l'explorateur.
-     * </p>
+     * This function returns the status of the explorer
      * 
-     * @since 1.0
+     * @return The status of the explorer.
      */
     public ExplorerStatus getStatus() {
         return this.status;
     }
-
+   
     /**
-     * <p>
-     * D�place l'explorateur d'une case vers une autre case.
-     * </p>
+     * The function is called when a pawn is moved from one hexagon to another
      * 
-     * @param oldPosition case o� se trouvait l'explorateur.
-     * @param newPosition case vers laquel est d�plac� l'explorateur.
-     * @since 2.0
+     * @param oldPosition Hexagon
+     * @param newPosition Hexagon
      */
     public void move(Hexagon oldPosition, Hexagon newPosition) {
         oldPosition.removePawn(this);
@@ -150,20 +108,16 @@ public class Explorer extends Pawn {
     }
 
     /**
-     * <p>
-     * D�place l'explorateur d'une case vers un bateau.
-     * </p>
+     * The function is called when an explorer is moved from one hexagon to a boat
      * 
-     * @param oldPosition  case o� se trouvait l'explorateur.
-     * @param boat         bateau sur lequel est d�plac� l'explorateur.
-     * @param boatPosition Case o� se situe le bateau destination.
-     * @since 2.0
+     * @param oldPosition the hexagon the explorer is currently on
+     * @param boat Boat object
+     * @param boatPosition the hexagon the boat is on
      */
     public void move(Hexagon oldPosition, Boat boat, Hexagon boatPosition) {
         oldPosition.removePawn(this);
         boat.addExplorer(this);
         this.status = ExplorerStatus.ONBOAT;
-        //this.setMovePoint(0);
         if (!boatPosition.getWhaleList().isEmpty()) {
             boatPosition.getWhaleList().get(0).makeEffect(boatPosition);
         }
@@ -173,13 +127,10 @@ public class Explorer extends Pawn {
     }
 
     /**
-     * <p>
-     * D�place l'explorateur d'un bateau vers une position.
-     * </p>
+     * The function move() is used to move an explorer from a boat to a hexagon
      * 
-     * @param boat        bateau dans lequel est retir� l'explorateur.
-     * @param newPosition case vers lequel est d�plac� l'explorateur.
-     * @since 1.0
+     * @param boat the boat the explorer is on
+     * @param newPosition Hexagon
      */
     public void move(Boat boat, Hexagon newPosition) {
         boat.removeExplorer(this);
@@ -209,14 +160,13 @@ public class Explorer extends Pawn {
     }
 
     /**
-     * <p>
-     * D�place l'explorateur d'un bateau vers un autre bateau.
-     * </p>
+     * This function removes the explorer from the old boat, adds the explorer to the new boat, and
+     * then checks if there are any whales or sea snakes on the new boat position. If there are, it
+     * makes the effect of the whale or sea snake on the new boat position
      * 
-     * @param oldBoat         bateau dans lequel est retir� l'explorateur.
-     * @param newBoat         bateau vers lequel se d�place l'explorateur.
-     * @param newBoatPosition Case o� se situe le bateau destination.
-     * @since 2.0
+     * @param oldBoat the boat the explorer is currently on
+     * @param newBoat The boat that the explorer is moving to
+     * @param newBoatPosition the hexagon the boat is moving to
      */
     public void move(Boat oldBoat, Boat newBoat, Hexagon newBoatPosition) {
         oldBoat.removeExplorer(this);
@@ -229,6 +179,15 @@ public class Explorer extends Pawn {
         }
     }
 
+    /**
+     * It finds all the hexagons that are reachable from the current hexagon, and adds them to a list
+     * 
+     * @param actualPosition The current position of the explorer
+     * @param board the board of the game
+     * @param movePointLeft the number of moves the explorer can make
+     * @param hexagonTripletList a list of hexagons, the distance from the starting hexagon, and the
+     * type of hexagon (normal, boat, death)
+     */
     public void findPath(Hexagon actualPosition, Board board, int movePointLeft, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList) {
         hexagonTripletList.clear();
         
@@ -297,6 +256,16 @@ public class Explorer extends Pawn {
         }
     }
 
+    /**
+     * It takes a hexagon, a board, a list of hexagons, and a distance, and adds to the list of
+     * hexagons all the hexagons that are adjacent to the given hexagon, and the distance to them
+     * 
+     * @param actualPosition The current position of the explorer
+     * @param board the board
+     * @param hexagonTripletList a list of Triplets, each containing a Hexagon, an Integer, and a
+     * HexagonListType.
+     * @param distance the distance from the starting hexagon
+     */
     public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
@@ -342,8 +311,12 @@ public class Explorer extends Pawn {
         }
     }
 
+    /**
+     * It creates an image for a pawn
+     * 
+     * @param resolution the size of the resolution
+     */
     public void createImage(int resolution) {
-
         ImageIcon icon = null;
         Image scaleImage;
 

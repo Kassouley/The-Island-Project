@@ -25,38 +25,13 @@ import fr.mcstudio.util.Pair;
 import fr.mcstudio.util.PairList;
 
 @SuppressWarnings("serial")
+
+/**
+ * It creates an ExternalPanel which is a JLayeredPane for the game.
+ */
 public class ExternalPanel extends JLayeredPane {
 
-	private Board board;
-	private JLabel backgroundPanel = new JLabel("");
-	private JPanel boatOrSeaPanel;
-	private JPanel pawnPanel;
-	private JPanel dicePanel;
-	private JPanel tilesEffectsRedPanel;
-	private JPanel tilesEffectsDefensePanel;
-	private JPanel animationPanel;
-	private JPanel boardingPanel;
-	private JPanel helpPanel;
-
-	private PairList<JButton, JLayeredPane> bPairList = new PairList<JButton, JLayeredPane>();
-	private PairList<AnimationType, JLabel> aPairList = new PairList<AnimationType, JLabel>();
-	private PairList<HelpType, JLabel> hPairList = new PairList<HelpType, JLabel>();
-	private List<Explorer> boardingpawns = new ArrayList<Explorer>();
-	private List<JLabel> seaSnakeList = new ArrayList<JLabel>();
-	private List<JLabel> sharkList = new ArrayList<JLabel>();
-	private List<JLabel> whaleList = new ArrayList<JLabel>();
-
-	private JLayeredPane selection = null;
-	private PawnType pawnType;
-	private Boolean choice = null;
-
-	private Hexagon clickedHex;
-	private AnimationType animationType;
-	private HelpType helpType;
-
-	private ExternalPanelState externalPanelState = ExternalPanelState.VOID;
-	private int resolution;
-
+	// Creating a new ExternalPanel object with the parameters board and resolution.
 	public ExternalPanel(Board board, int resolution) {
 		this.board = board;
 		this.resolution = resolution;
@@ -92,15 +67,106 @@ public class ExternalPanel extends JLayeredPane {
 		this.initHelpList();
 	}
 
+	// Creating a variable called board that is of type Board.
+	private Board board;
+
+	// Creating a new JLabel object called backgroundPanel.
+	private JLabel backgroundPanel = new JLabel("");
+	
+	// Creating a private variable called boatOrSeaPanel of type JPanel.
+	private JPanel boatOrSeaPanel;
+
+	// Declaring a variable called pawnPanel of type JPanel.
+	private JPanel pawnPanel;
+
+	// Creating a private variable called dicePanel of type JPanel.
+	private JPanel dicePanel;
+
+	// Declaring a private variable called tilesEffectsRedPanel of type JPanel.
+	private JPanel tilesEffectsRedPanel;
+
+	// Creating a private JPanel called tilesEffectsDefensePanel.
+	private JPanel tilesEffectsDefensePanel;
+
+	// Creating a JPanel object called animationPanel.
+	private JPanel animationPanel;
+
+	// Declaring a variable of type JPanel.
+	private JPanel boardingPanel;
+
+	// Declaring a variable called helpPanel of type JPanel.
+	private JPanel helpPanel;
+
+	// Creating a new PairList object that contains a JButton and a JLayeredPane.
+	private PairList<JButton, JLayeredPane> bPairList = new PairList<JButton, JLayeredPane>();
+
+	// Creating a new PairList object that is a list of pairs of AnimationType and JLabel objects.
+	private PairList<AnimationType, JLabel> aPairList = new PairList<AnimationType, JLabel>();
+
+	// Creating a new PairList object with the type parameters HelpType and JLabel.
+	private PairList<HelpType, JLabel> hPairList = new PairList<HelpType, JLabel>();
+	
+	// Creating a list of Explorer objects.
+	private List<Explorer> boardingpawns = new ArrayList<Explorer>();
+
+	// Creating a list of JLabels called seaSnakeList.
+	private List<JLabel> seaSnakeList = new ArrayList<JLabel>();
+
+	// Creating a new ArrayList of JLabels.
+	private List<JLabel> sharkList = new ArrayList<JLabel>();
+
+	// Creating a new ArrayList of JLabels.
+	private List<JLabel> whaleList = new ArrayList<JLabel>();
+
+	// Creating a variable called selection that is of type JLayeredPane.
+	private JLayeredPane selection = null;
+
+	// Declaring a variable called pawnType of type PawnType.
+	private PawnType pawnType;
+
+	// Declaring a variable of type Boolean and initializing it to null.
+	private Boolean choice = null;
+
+	// Creating a private variable called clickedHex of type Hexagon.
+	private Hexagon clickedHex;
+
+	// Declaring a variable called animationType of type AnimationType.
+	private AnimationType animationType;
+
+	// Declaring a variable of type HelpType.
+	private HelpType helpType;
+
+	// Declaring a variable of type ExternalPanelState and initializing it to the value VOID.
+	private ExternalPanelState externalPanelState = ExternalPanelState.VOID;
+	
+	// Declaring a variable called resolution.
+	private int resolution;
+
+	/**
+	 * > This function returns the current state of the external panel
+	 * 
+	 * @return The externalPanelState object.
+	 */
 	public ExternalPanelState getExternalPanelState() {
 		return externalPanelState;
 	}
 
+	/**
+	 * > This function sets the external panel state and displays the external panel
+	 * 
+	 * @param externalPanelState The state of the external panel.
+	 */
 	public void setExternalPanelState(ExternalPanelState externalPanelState) {
 		this.externalPanelState = externalPanelState;
 		displayExternalPanel(externalPanelState);
 	}
 
+	/**
+	 * It creates a JPanel, sets its bounds to the size of the JFrame, sets its layer to 1, adds it to the
+	 * JFrame, sets it to be transparent, and sets it to be invisible
+	 * 
+	 * @return A JPanel object.
+	 */
 	private JPanel createDisplayPanel() {
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, this.getWidth(), this.getHeight());
@@ -111,6 +177,11 @@ public class ExternalPanel extends JLayeredPane {
 		return panel;
 	}
 
+	/**
+	 * Display the external panel on the screen.
+	 * 
+	 * @param state the state of the external panel
+	 */
 	private void displayExternalPanel(ExternalPanelState state) {
 		this.setVisible(true);
 		switch (state) {
@@ -144,6 +215,10 @@ public class ExternalPanel extends JLayeredPane {
 		}
 	}
 
+	/**
+	 * It removes all components from the helpPanel, then adds the component that corresponds to the
+	 * helpType variable
+	 */
 	private void displayHelpPanel() {
 		helpPanel.removeAll();
 		this.helpPanel.setVisible(true);
@@ -180,7 +255,11 @@ public class ExternalPanel extends JLayeredPane {
 	}
 
 	
-
+	/**
+	 * It creates a panel with buttons that represent the explorers on the hex. When you click on a
+	 * button, it adds the explorer to a list and removes the button from the panel. When the list reaches
+	 * a certain size, it performs an action
+	 */
 	private void displayBoardingPanel() {
 		boardingPanel.removeAll();
 		bPairList.clear();
@@ -221,6 +300,9 @@ public class ExternalPanel extends JLayeredPane {
 		}
 	}
 
+	/**
+	 * It displays the animation panel
+	 */
 	private void displayAnimationPanel() {
 		animationPanel.removeAll();
 		this.animationPanel.setVisible(true);
@@ -255,13 +337,19 @@ public class ExternalPanel extends JLayeredPane {
 		});
 	}
 
+	/**
+	 * It displays the tiles of the current player that have a red effect when you click on the button "Voir mes tuiles"
+	 */
 	private void displayTileEffectRedPanel() {
 		tilesEffectsRedPanel.removeAll();
 		bPairList.clear();
 		this.tilesEffectsRedPanel.setVisible(true);
         for (Tile tile : board.getGame().getCurrentPlayer().getTileList()) {
         	if(tile.getEffect().getType() == "Rouge") {
-        		bPairList.add(new Pair<JButton,JLayeredPane>(new JButton(tile.getEffectLabel().getIcon()), tile));
+        		bPairList.add(new Pair<JButton,JLayeredPane>(
+					new JButton(tile.getEffectLabel().getIcon()), tile
+					)
+				);
         	}
         }
         
@@ -283,6 +371,10 @@ public class ExternalPanel extends JLayeredPane {
 		}
 	}
 	
+	/**
+	 * It displays a panel with two buttons (yes or no), and when one of the buttons is clicked, it sets a boolean to
+	 * true or false, and then calls a function in the game class
+	 */
 	private void displayTileEffectDefensePanel() {
 		tilesEffectsDefensePanel.removeAll();
 		this.tilesEffectsDefensePanel.setVisible(true);
@@ -321,6 +413,9 @@ public class ExternalPanel extends JLayeredPane {
 		});
 	}
 
+	/**
+	 * It displays a dice panel with a random animation of a sea snake, shark or whale
+	 */
 	private void displayDicePanel() {
 		this.dicePanel.setVisible(true);
 		dicePanel.removeAll();
@@ -344,9 +439,6 @@ public class ExternalPanel extends JLayeredPane {
 			default:
 				break;
 		}
-		// this.dicePanel.add(new JLabel(new
-		// ImageIcon(ExternalPanel.class.getResource("/Bateau.png"))),
-		// BorderLayout.NORTH);
 		dicePanel.addMouseListener(new MouseListener() {
 
 			public void mouseClicked(MouseEvent e) {
@@ -371,6 +463,9 @@ public class ExternalPanel extends JLayeredPane {
 		});
 	}
 
+	/**
+	 * It displays a button with a boat image and a button with a sea image to choose where a player want to go
+	 */
 	private void displayBoatOrSea() {
 		boatOrSeaPanel.removeAll();
 		bPairList.clear();
@@ -399,9 +494,11 @@ public class ExternalPanel extends JLayeredPane {
 				}
 			});
 		}
-
 	}
 
+	/**
+	 * It displays a panel of buttons that represent the pawns that are on the clicked hex
+	 */
 	private void displayPawnPanel() {
 		pawnPanel.removeAll();
 		bPairList.clear();
@@ -446,6 +543,9 @@ public class ExternalPanel extends JLayeredPane {
 		}
 	}
 
+	/**
+	 * It adds two gifs to each of the three lists
+	 */
 	private void initMonsterLists() {
 		this.seaSnakeList.add(new JLabel(new ImageIcon(ExternalPanel.class.getResource("/Animation/seaSnake/seaSnake1.gif"))));
 		this.seaSnakeList.add(new JLabel(new ImageIcon(ExternalPanel.class.getResource("/Animation/seaSnake/seaSnake2.gif"))));
@@ -455,6 +555,9 @@ public class ExternalPanel extends JLayeredPane {
 		this.whaleList.add(new JLabel(new ImageIcon(ExternalPanel.class.getResource("/Animation/whale/whale2.gif"))));
 	}
 
+	/**
+	 * It adds a bunch of animation to a list
+	 */
 	private void initAnimationList() {
 		this.aPairList.add(
 			new Pair<AnimationType,JLabel>(
@@ -597,28 +700,55 @@ public class ExternalPanel extends JLayeredPane {
 			);
 	}
 
+	/**
+	 * This function returns the hexagon that was clicked
+	 * 
+	 * @return The clickedHex variable is being returned.
+	 */
 	public Hexagon getClickedHex() {
 		return clickedHex;
 	}
 
+	/**
+	 * This function sets the clickedHex variable to the hexagon that was clicked
+	 * 
+	 * @param clickedHex The hexagon that was clicked
+	 */
 	public void setClickedHex(Hexagon clickedHex) {
 		this.clickedHex = clickedHex;
 	}
 
+	/**
+	 * This function returns the pawn type of the pawn
+	 * 
+	 * @return The pawnType variable is being returned.
+	 */
 	public PawnType getPawnType() {
 		return pawnType;
 	}
 
+	/**
+	 * This function sets the pawn type of the pawn
+	 * 
+	 * @param pawnType The type of pawn that the player is using.
+	 */
 	public void setPawnType(PawnType pawnType) {
 		this.pawnType = pawnType;
 	}
 
+	/**
+	 * This function sets the animation type of the current object
+	 * 
+	 * @param animationType The type of animation to use.
+	 */
 	public void setAnimationType(AnimationType animationType) {
 		this.animationType = animationType;
 	} 
 
+	/**
+	 * It hides all the panels of the external panel
+	 */
 	private void hideAllPanels() {
-
 		this.pawnPanel.setVisible(false);
 		this.boatOrSeaPanel.setVisible(false);
 		this.dicePanel.setVisible(false);
@@ -628,11 +758,14 @@ public class ExternalPanel extends JLayeredPane {
 		this.animationPanel.setVisible(false);
 		this.helpPanel.setVisible(false);
 		this.setVisible(false);
-
 	}
 
+	/**
+	 * It sets the bounds of the panel based on the resolution
+	 * 
+	 * @param resolution The resolution of the game.
+	 */
 	private void setPanelBoundsFromResolution(int resolution) {
-
 		switch (resolution) {
 			case 70:
 				setBounds(206, 180, 545, 409);
@@ -648,6 +781,9 @@ public class ExternalPanel extends JLayeredPane {
 		}
 	}
 
+	/**
+	 * It sets the background of the panel to an image
+	 */
 	private void setLabel() {
 		ImageIcon icone = new ImageIcon(Board.class.getResource("/Menu/ExternalPanel.png"));
 		Image scaleImage = icone.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
@@ -657,43 +793,56 @@ public class ExternalPanel extends JLayeredPane {
 		this.add(backgroundPanel);
 	}
 	
+	/**
+	 * This function sets the help type of the help request
+	 * 
+	 * @param helpType The type of help you want to display.
+	 */
 	public void setHelpType(HelpType helpType) {
 		this.helpType = helpType;
 	}
 
-	/*
-	 * public void getReturnedPawn() {
-	 * int bPairListLength = bPairList.size();
+	/**
+	 * This function returns the board
 	 * 
-	 * for (int i = 0; i < bPairListLength; i++) {
-	 * bPairList.get(i).getLeft().addActionListener( new ActionListener() {
-	 * 
-	 * @Override
-	 * public void actionPerformed(ActionEvent e) {
-	 * int index = bPairList.getLeftList().indexOf(e.getSource());
-	 * pawn = bPairList.get(index).getRight();
-	 * }
-	 * });
-	 * }
-	 * }
+	 * @return The board object.
 	 */
-
 	public Board getBoard() {
 		return board;
 	}
 
+	/**
+	 * This function returns the JLayeredPane object that is used to display the selection
+	 * 
+	 * @return The selection variable is being returned.
+	 */
 	public JLayeredPane getSelection() {
 		return selection;
 	}
 
+	/**
+	 * This function sets the selection to the JLayeredPane that is passed in
+	 * 
+	 * @param selection The JLayeredPane that is being selected.
+	 */
 	public void setSelection(JLayeredPane selection) {
 		this.selection = selection;
 	}
 
+	/**
+	 * This function returns the value of the choice variable
+	 * 
+	 * @return The choice variable is being returned.
+	 */
 	public Boolean getChoice() {
 		return choice;
 	}
 
+	/**
+	 * This function sets the value of the choice variable to the value of the choice parameter
+	 * 
+	 * @param choice This is the boolean value
+	 */
 	public void setChoice(Boolean choice) {
 		this.choice = choice;
 	}

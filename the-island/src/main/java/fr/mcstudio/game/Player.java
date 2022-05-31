@@ -1,15 +1,3 @@
-/*
- * Nom de classe : Player
- *
- * Description   : Gestion des joueurs du jeu The Island
- *
- * Version       : 1.0
- *
- * Date          : 05/05/2022
- * 
- * Copyright     : Lucas Neto
- */
-
 package fr.mcstudio.game;
 
 import java.util.ArrayList;
@@ -24,21 +12,12 @@ import fr.mcstudio.pawns.Boat;
 import fr.mcstudio.pawns.Explorer;
 
 /**
- * <p>
- * Gestion des joueurs du jeu The Island
- * </p>
- *
- * @version 1.0
- *
- * @author Lucas Neto
+ * The Player class is used to store information about the player, such as the player's name, color,
+ * and the number of moves left.
  */
 public class Player {
 
-    /**
-     * <p>
-     * Constructeur par défaut
-     * </p>
-     */
+    // The constructor of Player.
     public Player(String pseudo, Color color, boolean isBot, int resolution) {
         this.pseudo = pseudo;
         this.color = color;
@@ -51,191 +30,125 @@ public class Player {
         this.boatToSet.add(new Boat(resolution));
     }
 
-    /**
-     * 
-     */
+  
+    // A variable that stores the resolution of the game.
     private int resolution;
 
-    /**
-     * <p>
-     * Pseudo du joueur
-     * </p>
-     */
+    // Declaring a variable called pseudo.
     private String pseudo;
 
-    /**
-     * 
-     */
+    // A variable that stores the avatar of the player.
     private Icon avatar;
 
-    /**
-     * <p>
-     * Couleur du joueur
-     * </p>
-     */
+    // A variable that stores the color of the player.
     private Color color;
 
-    /**
-     * 
-     */
+    // A variable that stores the number of pawns on the board.
     private int pawnOnBoardNumber;
-    /**
-     * <p>
-     * Liste des explorateurs du joueur
-     * </p>
-     * 
-     * @see Color.java
-     */
+   
+    // Creating a new list of explorers.
     private List<Explorer> explorerList = new ArrayList<Explorer>();
-
     
+    // Creating a new list of boats.
     private List<Boat> boatToSet = new ArrayList<Boat>();
     
-    /**
-     * <p>
-     * Liste des explorateurs du joueur
-     * </p>
-     * 
-     * @see Color.java
-     */
+    // Creating a new list of explorers.
     private List<Explorer> currentExplorerList = new ArrayList<Explorer>();
 
-    /**
-     * <p>
-     * Liste des tuiles du joueur
-     * </p>
-     */
+    // A list of tiles that the player has.
     private List<Tile> tileList = new ArrayList<Tile>();
 
-    /**
-     * <p>
-     * Booléen ordinateur
-     * </p>
-     */
+    // A boolean variable that is true if the user is a bot, and false if the user is not a bot.
     private boolean isBot;
 
-    /**
-     * <p>
-     * Coup restant du joueur
-     * </p>
-     */
+    // A variable that stores the number of moves left for the player.
     private int moveLeft;
 
     /**
-     * <p>
-     * Mutateur du pseudo du joueur.
-     * </p>
+     * This function sets the pseudo of the user
+     * 
+     * @param pseudo The name of the user
      */
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
     }
 
-    /**
-     * <p>
-     * Accesseur du pseudo du joueur.
-     * </p>
-     */
+   /**
+    * This function returns the pseudo of the user
+    * 
+    * @return The pseudo of the user.
+    */
     public String getPseudo() {
         return this.pseudo;
     }
 
     /**
+     * This function sets the avatar of the user
      * 
-     * 
+     * @param avatar The icon.
      */
     public void setAvatar(Icon avatar) {
         this.avatar = avatar;
     }
 
     /**
+     * This function returns the avatar of the user
      * 
-     * 
+     * @return The avatar of the user.
      */
     public Icon getAvatar() {
         return this.avatar;
     }
 
     /**
-     * <p>
-     * Mutateur de la couleur du joueur.
-     * </p>
+     * This function returns the color of the current player
      * 
-     * @see Color.java
-     */
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    /**
-     * <p>
-     * Accesseur du pseudo du joueur.
-     * </p>
-     * 
-     * @see Color.java
+     * @return The color of the car.
      */
     public Color getColor() {
         return this.color;
     }
 
-    /**
-     * 
-     * 
-     */
+   /**
+    * This function returns the number of pawns on the board
+    * 
+    * @return The number of pawns on the board.
+    */
     public int getPawnOnBoardNumber() {
         return this.pawnOnBoardNumber;
     }
 
     /**
-     * 
-     * 
+     * This function increments the number of pawns on the board by one
      */
     public void addPawnOnBoardNumber() {
         this.pawnOnBoardNumber++;
     }
 
     /**
-     * <p>
-     * Mutateur du status ordinateur du joueur.
-     * </p>
+     * This function sets the boolean value of the isBot variable to the boolean value of the bool
+     * variable
+     * 
+     * @param bool Whether or not the user is a bot.
      */
     public void setBot(boolean bool) {
         this.isBot = bool;
     }
 
     /**
-     * <p>
-     * Accesseur du status ordinateur du joueur.
-     * </p>
+     * This function returns a boolean value that is true if the user is a bot, and false if the user
+     * is not a bot
+     * 
+     * @return The boolean value of isBot.
      */
     public boolean isBot() {
         return this.isBot;
     }
 
     /**
+     * This function creates a list of explorers, each with a different treasure value
      * 
-     */
-    public void returnChoosenHexagon() {
-        // TODO implement here
-    }
-
-    /**
-     * 
-     */
-    public void returnChoosenPawn() {
-        // TODO implement here
-    }
-
-    /**
-     * 
-     */
-    public void returnChoosenTile() {
-        // TODO implement here
-    }
-
-    /**
-     * <p>
-     * Initialise les explorateurs du joueur.
-     * </p>
+     * @return A list of explorers.
      */
     public List<Explorer> initPlayerExplorer() {
         List<Explorer> explorerList = new ArrayList<Explorer>();
@@ -250,9 +163,7 @@ public class Player {
     }
 
     /**
-     * <p>
-     * Retire un coup des coups restant du joueur.
-     * </p>
+     * This function removes one move from the moveLeft variable
      */
     public void removeOneMove() {
         if (this.moveLeft > 0) {
@@ -261,9 +172,9 @@ public class Player {
     }
 
     /**
-     * <p>
-     * Mutateur des coups restant du joueur.
-     * </p>
+     * This function sets the number of moves left for the player
+     * 
+     * @param moveLeft the number of moves left for the player
      */
     public void setMoveLeft(int moveLeft) {
         if (moveLeft >= 0) {
@@ -274,24 +185,36 @@ public class Player {
     }
 
     /**
-     * <p>
-     * Accesseur des coups restant du joueur.
-     * </p>
+     * This function returns the number of moves left
+     * 
+     * @return The moveLeft variable is being returned.
      */
     public int getMoveLeft() {
         return this.moveLeft;
     }
 
+    /**
+     * This function returns a list of explorers
+     * 
+     * @return The list of explorers.
+     */
     public List<Explorer> getExplorerList() {
         return explorerList;
     }
 
+    /**
+     * This function returns a list of boats that are not yet set on the board
+     * 
+     * @return The list of boats that are to be set.
+     */
     public List<Boat> getBoatToSet() {
         return boatToSet;
     }
 
     /**
+     * This function checks if there are any explorers on board that are not dead or saved
      * 
+     * @return A boolean value.
      */
     public boolean haveExplorerOnBoard() {
         for (Explorer e : this.currentExplorerList) {
@@ -304,14 +227,18 @@ public class Player {
     }
 
     /**
-     * @return the tileList
+     * This function returns the tileList
+     * 
+     * @return The list of tiles.
      */
     public List<Tile> getTileList() {
         return tileList;
     }
 
     /**
+     * This function returns the number of explorers that are alive
      * 
+     * @return The number of explorers that are alive.
      */
     public int getNumberExplorerAlive() {
         int cmpt = 0;
@@ -326,7 +253,9 @@ public class Player {
     }
 
     /**
+     * This function returns the number of explorers that have been saved
      * 
+     * @return The number of explorers saved.
      */
     public int getNumberExplorerSaved() {
         int cmpt = 0;
@@ -339,7 +268,9 @@ public class Player {
     }
 
     /**
+     * This function counts the number of explorers of the player that are dead
      * 
+     * @return The number of explorers that are dead.
      */
     public int getNumberExplorerDead() {
         int cmpt = 0;
@@ -351,10 +282,10 @@ public class Player {
         return cmpt;
     }
     
-    /**
-   	 * 
-   	 */
-   	public void resetMovePointExplorer() {
+   	/**
+    * This function resets the move points of all explorers in the current explorer list
+    */
+    public void resetMovePointExplorer() {
    		for(Explorer e : this.currentExplorerList) {
    			if(e.getStatus() == ExplorerStatus.SWIMMER) {
    				e.setMovePoint(1);
@@ -365,9 +296,11 @@ public class Player {
    	}
 
    	/**
-   	 * @return the currentExplorerList
-   	 */
-   	public List<Explorer> getCurrentExplorerList() {
+    * This function returns the current list of explorers of the player
+    * 
+    * @return The current explorer list.
+    */
+    public List<Explorer> getCurrentExplorerList() {
    		return currentExplorerList;
    	}
 

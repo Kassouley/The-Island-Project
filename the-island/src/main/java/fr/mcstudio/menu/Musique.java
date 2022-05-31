@@ -10,18 +10,16 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+/**
+ * Used to play music.
+ */
 public class Musique {
 	
-	Clip clip = null; 	            	
-	AudioInputStream audioStream;
-	float level = 2f; 
-	
-	public Musique(String url)
-	{  		
+	// The constructor of the class Musique. It is used to initialize the variables.
+	public Musique(String url) {  		
 		try {
 			clip = AudioSystem.getClip();
 		} catch (LineUnavailableException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} 
  
@@ -29,41 +27,53 @@ public class Musique {
 			audioStream = AudioSystem.getAudioInputStream(new File(url).getAbsoluteFile());
 			clip.open(audioStream);
 		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} 
-		((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(0);
-			
+		((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(0);	
 	}
 	
-	public void jouerMusique()
-	{
+	// A variable that is used to store the audio file.
+	Clip clip = null; 	     
+
+	// A variable that is used to store the audio file.
+	AudioInputStream audioStream;
+
+	// Setting the volume to 2.
+	float level = 2f; 
+	
+	/**
+	 * It plays the music
+	 */
+	public void jouerMusique() {
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
 		clip.start();
 		((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(0);
 	}
 	
-	public void arreterMusique()
-	{
+	/**
+	 * This function stops the music
+	 */
+	public void arreterMusique() {
 		clip.stop();
 	}
 	
-	public void augVolMusique()
-	{
+	/**
+	 * It increases the volume of the music by 2
+	 */
+	public void augVolMusique() {
 		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 		if(level<=5.9999995)
 			level = level+2 ;
 		gainControl.setValue(level);
-		
-
 	}
 	
-	public void dimVolMusique()
-	{
+	/**
+	 * This function is used to decrease the volume of the music
+	 */
+	public void dimVolMusique() {
 		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 		gainControl.setValue(level-2f);
 		level = level-2 ;
-		
 	}
 
 }

@@ -1,14 +1,6 @@
 package fr.mcstudio.enums;
 
-/**
- * <p>
- * Énumeration des couleurs des pions / joueurs
- * </p>
- *
- * @version 1.0
- *
- * @author Lucas Neto
- */
+// Creating an enum of the player color.
 public enum Color {
 	YELLOW, GREEN, BLUE, RED
 }

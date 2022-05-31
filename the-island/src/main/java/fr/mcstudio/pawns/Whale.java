@@ -37,26 +37,21 @@ import fr.mcstudio.util.TripletList;
 @SuppressWarnings("serial")
 public class Whale extends EffectPawn {
 
-    private Board board;
-
-    /**
-     * <p>
-     * Constructeur par défaut
-     * </p>
-     */
+    // The constructor of the class Whale. It takes a Board as a parameter, and calls the constructor
+    // of the superclass, EffectPawn, with the parameter 3.
     public Whale(Board board) {
         super(3);
         this.board = board;
     }
+    
+    // A variable that is used to store the board.
+    private Board board;
 
+   
     /**
-     * <p>
-     * Réalise l'effet de la baleine et coule les bateaux.
-     * </p>
+     * If the hexagon has a boat, and the boat has an explorer, then the boat is sunk
      * 
-     * @param hexagon Case dans laquel est réalisé l'effet.
-     * @since 1.0
-     * 
+     * @param hexagon the hexagon that the whale is on
      */
     public void makeEffect(Hexagon hexagon) {
         if (hexagon.getBoat() != null) {
@@ -72,6 +67,17 @@ public class Whale extends EffectPawn {
         }
     }
     
+    /**
+     * It takes a hexagon, a board, a list of hexagons, and a distance, and adds all the hexagons
+     * around the given hexagon to the list of hexagons, if they are not already in the list, and if
+     * they are sea hexagons
+     * 
+     * @param actualPosition The current position of the boat
+     * @param board the board
+     * @param hexagonTripletList A list of hexagons, their distance from the starting hexagon, and
+     * their type (NORMAL or DEATH).
+     * @param distance the distance from the starting point
+     */
     public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
@@ -95,5 +101,4 @@ public class Whale extends EffectPawn {
             }
         }
     }
-
 }

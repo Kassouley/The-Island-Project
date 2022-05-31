@@ -6,31 +6,45 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * It's a class that represents a choice of number of players.
+ */
 public class Choix {
 	
-	private Accueil accueil;
-	private static int nbJr ;
-	private JSlider slider;
-	private JTextField field;
-	private JButton button;
-	private JLabel text ;
-    
+    // A constructor.
     public Choix(Accueil accueil) {
     	this.accueil = accueil;
     }
 
+    // A reference to the parent object.
+    private Accueil accueil;
+
+	// A variable that is used to store the number of players.
+    private static int nbJr;
+
+	// Declaring a slider.
+    private JSlider slider;
+
+	// A variable that is used to store the JTextField object.
+    private JTextField field;
+
+	// Declaring a button.
+    private JButton button;
+
+	// A variable that is used to store the JLabel object.
+    private JLabel text ;
+
+    /**
+     * It displays a JSlider, a JTextField and a JButton on a JPanel
+     * 
+     * @param panel the JPanel that the elements are added to
+     * @param frame the JFrame
+     * @param resolution the resolution of the screen
+     */
     public void displayChoice(JPanel panel, JFrame frame, int resolution) {
         field = new JTextField(5);
         field.setEditable(false);

@@ -22,36 +22,49 @@ import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.pawns.Whale;
 
-/**
- * 
- */
 @SuppressWarnings("serial")
+
+/**
+ * Tile is a JLayeredPane that contains a JLabel for the type of tile and a JLabel for the effect of
+ * the tile
+ */
 public class Tile extends JLayeredPane {
 
-	private TilesType type = null;
-	private TilesEffect effect = null;
-	private int resolution;
-	private JLabel typeLabel = new JLabel();
-	private JLabel effectLabel = new JLabel();
-
-	/**
-	 * Default constructor
-	 */
+	// The constructor of Tile.
 	public Tile(int resolution) {
 		this.resolution = resolution;
 		this.typeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 	}
 
+	// Declaring a variable called `type` of type `TilesType` and initializing it to `null`.
+	private TilesType type = null;
+
+	// Declaring a variable called `effect` of type `TilesEffect` and initializing it to `null`.
+	private TilesEffect effect = null;
+
+	// A variable that is used to store the resolution of the tile.
+	private int resolution;
+
+	// Creating a new JLabel object and assigning it to the variable `typeLabel`.
+	private JLabel typeLabel = new JLabel();
+	
+	// Creating a new JLabel object and assigning it to the variable `effectLabel`.
+	private JLabel effectLabel = new JLabel();
+
 	/**
-	* 
-	*/
+	 * This function returns the type of the tile
+	 * 
+	 * @return The type of the tile.
+	 */
 	public TilesType getType() {
 			return this.type;
 	}
 
 	/**
-	* 
-	*/
+	 * It sets the type of the tile and changes the image of the tile accordingly
+	 * 
+	 * @param type the type of the tile
+	 */
 	public void setType(TilesType type) {
 		ImageIcon icone = null;
 		Image scaleImage;
@@ -64,22 +77,28 @@ public class Tile extends JLayeredPane {
 			icone = new ImageIcon(Tile.class.getResource("/Montagne.png"));
 		}
 		
-		scaleImage = icone.getImage().getScaledInstance(resolution, resolution,Image.SCALE_SMOOTH);
+		scaleImage = icone.getImage().getScaledInstance(resolution, 
+														resolution,
+														Image.SCALE_SMOOTH);
 		icone.setImage(scaleImage);
 		
 		this.typeLabel.setIcon(icone);
 	}
 
 	/**
-	* 
-	*/
+	 * This function returns the effect of the tile.
+	 * 
+	 * @return The effect of the tile.
+	 */
 	public TilesEffect getEffect() {
 		return this.effect;
 	}
 
 	/**
-	* 
-	*/
+	 * It sets the effect of the tile and create the corresponding label
+	 * 
+	 * @param effect the effect to be displayed on the tile
+	 */
 	public void setEffect(TilesEffect effect) {
 		ImageIcon icone = null;
 		Image scaleImage;
@@ -124,27 +143,29 @@ public class Tile extends JLayeredPane {
 				break;
 		}
 		
-		scaleImage = icone.getImage().getScaledInstance(resolution, resolution,Image.SCALE_SMOOTH);
+		scaleImage = icone.getImage().getScaledInstance(resolution, 
+														resolution,
+														Image.SCALE_SMOOTH);
 		icone.setImage(scaleImage);
 		
 		this.effectLabel.setIcon(icone);
 	}
 
-	/*
-	 * <p>
-	 * Retourne la tuile présente sur la case choisie de la map.
-	 * </p>
-	 * @since1.0
+	/**
+	 * It removes the tile from the hexagon, and then adds it to the player's tile list and all the explorers on the hexagon become swimmers
+	 * 
+	 * @param hexagon the hexagon that the player clicked on
+	 * @param p the player who is flipping the tile
+	 * @param board the board object
 	 */
 	public void flipTile(Hexagon hexagon, Player p, Board board) {
 		for(Explorer e : hexagon.getExplorerList()) {
 			e.setStatus(ExplorerStatus.SWIMMER);
 			e.setMovePoint(1);
 		}
-		if(hexagon.getTile().getEffect().getType() == "Verte"){
+		if(hexagon.getTile().getEffect().getType() == "Verte") {
 			hexagon.getTile().applyEffect(hexagon,board);
-		}
-		else {
+		} else {
 			  p.getTileList().add(hexagon.getTile());
 		}
 		
@@ -156,10 +177,11 @@ public class Tile extends JLayeredPane {
 	}
 	
 	/**
-	 * <p>
-	 * Applique l'effet de la tuile.
-	 * </p>
-	 * @since1.0
+	 * The function takes a hexagon and a board as parameters and applies the effect of the tile to the
+	 * hexagon
+	 * 
+	 * @param hex the hexagon that the player is on
+	 * @param board the board object
 	 */
 	public void applyEffect(Hexagon hex,Board board) {
 		switch(this.effect) {		
@@ -173,11 +195,12 @@ public class Tile extends JLayeredPane {
 	}
 	
 	/**
-	 * <p>
-	 * Ajoute un bateau sur la case de la tuile.
-	 * Tuile instantanée.
-	 * </p>
-	 * @param tilePosition Tuile actuelle
+	 * It creates a boat, adds it to the tile, and if there are more than 3 explorers on the tile, it
+	 * opens a panel to let the player choose which explorers to board the boat. If there are less than 3
+	 * explorers, it automatically boards all of them
+	 * 
+	 * @param tilePosition The hexagon that the boat is being summoned on.
+	 * @param board the board object
 	 */
 	public void boatEffect(Hexagon tilePosition, Board board) {
 		Boat b = new Boat(resolution);
@@ -199,13 +222,13 @@ public class Tile extends JLayeredPane {
 			}
 		}
 	}
-		
+
 	/**
-	 * <p>
-	 * Ajoute un requin sur la case de la tuile.
-	 * Tuile instantanée.
-	 * </p>
-	 * @param tilePosition Tuile actuelle
+	 * The sharkEffect function is called when a player flip a whale tile. It creates a new shark pawn
+	 * and adds it to the hexagon and set the animation
+	 * 
+	 * @param tilePosition The tile that the shark is being summoned on.
+	 * @param board The board object
 	 */
 	public void sharkEffect(Hexagon tilePosition, Board board) {
 		board.getExternalPanel().setAnimationType(AnimationType.SHARK_SUMMON);
@@ -214,28 +237,12 @@ public class Tile extends JLayeredPane {
 		Shark s = new Shark(board);
 		tilePosition.addPawn(s);
 	}
-	
+
 	/**
-	 * <p>
-	 * Tue le requin sur la tuile.
-	 * Tuile défense.
-	 * </p>
-	 * @param tilePosition Tuile actuelle
-	 */
-	public void sharkDeathEffect(Hexagon tilePosition, Board board) {
-		board.getExternalPanel().setAnimationType(AnimationType.SHARK_COUNTER);
-        board.setDisplayExternalPanel(true);
-        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
-		// a changer avec lucas
-		Shark s = new Shark(board);
-		tilePosition.removePawn(s);
-	}
-	
-	/**
-	 * <p>
-	 * Retire tout les pions sur les cases de mer aux alentours et sur cette tuile.
-	 * Tuile instantanée.
-	 * </p>
+	 * It removes all pawns from the hexagon and its sea neighbors
+	 * 
+	 * @param tilePosition the position of the tile that was clicked
+	 * @param board the board object
 	 */
 	public void whirlpoolEffect(Hexagon tilePosition,Board board) {
 		board.getExternalPanel().setAnimationType(AnimationType.WHIRLPOOL);
@@ -252,12 +259,12 @@ public class Tile extends JLayeredPane {
 			hexagons[hexagon.getLine()][hexagon.getColumn()].displayPawns(board);
 		}										
 	}
-	
+
 	/**
-	 * <p>
-	 * Fin de la partie.
-	 * Tuile instantanée.
-	 * </p>
+	 * The function sets the animation type to volcano, sets the external panel state to animation panel,
+	 * and ends the game
+	 * 
+	 * @param board The board object that the game is being played on.
 	 */
 	public void volcanoEffect(Board board) {
 		board.getExternalPanel().setAnimationType(AnimationType.VOLCANO);
@@ -269,14 +276,13 @@ public class Tile extends JLayeredPane {
         
 		//endgame
 	}
-	
+
 	/**
-	 * <p>
-	 * Ajoute un pion baleine sur la case choisie.
-	 * Tuile à effet instantanée.
-	 * </p>
-	 * @param tilePosition Tuile actuelle
-	 * @since1.0
+	 * The whaleEffect function is called when a player flip a whale tile. It creates a new whale pawn
+	 * and adds it to the hexagon and set the animation
+	 * 
+	 * @param tilePosition The tile that the whale will be placed on.
+	 * @param board the board object
 	 */
 	public void whaleEffect(Hexagon tilePosition, Board board) {
 		board.getExternalPanel().setAnimationType(AnimationType.WHALE_SUMMON);
@@ -287,39 +293,12 @@ public class Tile extends JLayeredPane {
 	}
 	
 	/**
-	 * <p>
-	 * Tue la baleine sur la tuile.
-	 * Tuile défense.
-	 * </p>
-	 * @param tilePosition Tuile actuelle
-	 * @since1.0
-	 */
-	public void whaleDeathEffect(Hexagon tilePosition, Board board) {
-		board.getExternalPanel().setAnimationType(AnimationType.WHALE_COUNTER);
-        board.setDisplayExternalPanel(true);
-        board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
-		//a changer avec lucas
-		Whale w = new Whale(board);
-		tilePosition.removePawn(w);
-	}
-	
-	/**
-	 * <p>
-	 * Déplace une baleine sur une case de mer vide.
-	 * Tuile en début de tour.
-	 * </p>
-	 */
-	public void whaleLostEffect() {
-		//a voir avec kevin pour la selection de case
-		//selectionner une baleine
-		//selectionne la case ou on veut la deplacer (mer inoccupÃ©e)
-	}
-
-	/**
-	 * <p>
-	 * Renvoie tous les voisins d'une tuile dans une liste
-	 * </p>
-	 * @since2.0
+	 * It returns a list of all the hexagons that are adjacent to the given hexagon, and are also sea
+	 * hexagons
+	 * 
+	 * @param actualPosition The current position of the ship
+	 * @param board the board object
+	 * @return A list of hexagons.
 	 */
 	public List<Hexagon> findNeighbors(Hexagon actualPosition, Board board) {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
@@ -341,17 +320,31 @@ public class Tile extends JLayeredPane {
 		return listHexagon;
     }
 
+	/**
+	 * This function returns the effectLabel
+	 * 
+	 * @return The effectLabel is being returned.
+	 */
 	public JLabel getEffectLabel() {
 		return effectLabel;
 	}
 	
+	/**
+	 * This function returns the typeLabel
+	 * 
+	 * @return The typeLabel is being returned.
+	 */
 	public JLabel getTypeLabel() {
 		return typeLabel;
 	}
 
 	/**
+	 * If the tile has an effect that requires a certain pawn to be on the board, then check if that
+	 * pawns is on the board
 	 * 
-	 * @return
+	 * @param board the board object
+	 * @param p the player who is playing the tile
+	 * @return A boolean value.
 	 */
 	public boolean checkPlayTile(Board board,Player p) {
 		switch(this.effect) {

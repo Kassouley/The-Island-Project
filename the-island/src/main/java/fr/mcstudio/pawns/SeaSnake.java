@@ -25,39 +25,26 @@ import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
-/**
- * <p>
- * Gestion des serpents de mer du jeu The Island
- * </p>
- *
- * @version 2.0
- * 
- * @see EffectPawn.java
- * @author Lucas Neto
- */
 @SuppressWarnings("serial")
+
+/**
+ * It's a class that represents a sea snake, which is a pawn that can kill explorers and sink boats
+ */
 public class SeaSnake extends EffectPawn {
 
-    private Board board;
-
-    /**
-     * <p>
-     * Constructeur par défaut
-     * </p>
-     */
+    // It's a constructor for SeaSnake.
     public SeaSnake(Board board) {
         super(1);
         this.board = board;
     }
 
+    // It's a private variable that is used to store the board of the game.
+    private Board board;
+
     /**
-     * <p>
-     * Réalise l'effet du serpent de mer, coule les bateaux et tue les explorateurs.
-     * </p>
+     * If there is a boat or an explorer on the hexagon, then the boat sinks and the explorer dies
      * 
-     * @param hexagon Case dans laquel est réalisé l'effet.
-     * @since 1.0
-     * 
+     * @param hexagon the hexagon that the sea snake is on
      */
     public void makeEffect(Hexagon hexagon) {
         if ((hexagon.getBoat() != null
@@ -79,6 +66,16 @@ public class SeaSnake extends EffectPawn {
     }
 
 
+    /**
+     * It takes a hexagon, a board, a list of hexagons, and a distance, and adds the hexagon to the
+     * list of hexagons if it's not already in the list, and if it's a sea hexagon
+     * 
+     * @param actualPosition The current position of the explorer
+     * @param board the board of the game
+     * @param hexagonTripletList a list of hexagons, their distance from the starting hexagon, and
+     * their type (NORMAL, DEATH, or START)
+     * @param distance the distance from the starting hexagon
+     */
     public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
@@ -103,9 +100,4 @@ public class SeaSnake extends EffectPawn {
             }
         }
     }
-
-    /*public void setImage() {
-        this.setIcon(new ImageIcon(Pawn.class.getResource("/pion_serpent_de_mer.png")));
-    }*/
-
 }

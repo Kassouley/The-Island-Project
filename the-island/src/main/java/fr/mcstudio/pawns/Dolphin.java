@@ -11,12 +11,25 @@ import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
 @SuppressWarnings("serial")
+
+// It's creating a new class called Dolphin, which is a subclass of Pawn.
 public class Dolphin extends Pawn {
     
+    // Default constructor : It's calling the constructor of the parent class, which is Pawn.
     public Dolphin() {
         super(3);
     }
 
+   /**
+    * It takes a hexagon, a board, a list of hexagons, and a distance, and adds the hexagon to the list
+    * of hexagons if it's not already in the list, and if it's a sea hexagon
+    * 
+    * @param actualPosition The current position of the player
+    * @param board the board
+    * @param hexagonTripletList A list of Triplets, which are a combination of a Hexagon, an Integer,
+    * and a HexagonListType.
+    * @param distance the distance from the starting point
+    */
     public void findPathAux(Hexagon actualPosition, Board board, TripletList<Hexagon,Integer,HexagonListType> hexagonTripletList, int distance) {
         List<Hexagon> tmp = new ArrayList<Hexagon>();
 
