@@ -294,7 +294,7 @@ public class Player {
      * 
      */
     public boolean haveExplorerOnBoard() {
-        for (Explorer e : this.explorerList) {
+        for (Explorer e : this.currentExplorerList) {
             if (e.getStatus() != ExplorerStatus.DEAD
                     || e.getStatus() != ExplorerStatus.SAVED) {
                 return true;

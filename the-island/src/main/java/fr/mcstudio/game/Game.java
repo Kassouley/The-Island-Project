@@ -57,7 +57,8 @@ public class Game {
      */
     private Board board;
     private PlayerInfo playerInfo;
-    private ActionInfo actionInfo;
+
+	private ActionInfo actionInfo;
     
 
 	private JPanel contentPane;
@@ -152,9 +153,13 @@ public class Game {
                 			ExternalPanelState.BOARDINGPANEL) {
 
         				board.setDisplayExternalPanel(false);
+                        actionInfo.displayActionInfo(getGame());
+                        playerInfo.displayPlayerInfo(getGame(), resolution);
+                        if(board.getExternalPanel().getExternalPanelState() != ExternalPanelState.ANIMATIONPANEL)
+                        	inGame(null);
         				board.getExternalPanel().setExternalPanelState(ExternalPanelState.VOID);
-        				inGame(null);
                 	} else if(!board.isDisplayExternalPanel()){
+
                 		for (int i = 0; i < 13; i++) {
                             for (int j = 0; j < 12; j++) {
                                 Hexagon hex = board.getHexagons()[i][j];
@@ -162,6 +167,8 @@ public class Game {
                                     if (hex.isInHexagonfloat(resolution, e.getX() - hex.getX(),
                                             e.getY() - hex.getY())) {
 
+                                        actionInfo.displayActionInfo(getGame());
+                                        playerInfo.displayPlayerInfo(getGame(), resolution);
                                         if (gameState == GameState.INITIALISATION) {
                                             setAllPawn(hex);
                                         } else if (gameState == GameState.PLAYING) {
@@ -173,8 +180,6 @@ public class Game {
                                             endGame();
                                         }
 
-                                        actionInfo.displayActionInfo(getGame());
-                                        playerInfo.displayPlayerInfo(getGame(), resolution);
                                     }
                                 }
                             }
@@ -350,6 +355,8 @@ public class Game {
         }
         if (exit == players.length) {
             gameState = GameState.PLAYING;
+            actionInfo.displayActionInfo(getGame());
+            playerInfo.displayPlayerInfo(getGame(), resolution);
             turnNumber = 0;
         }
           
@@ -751,7 +758,16 @@ public class Game {
                     pawnToMove = null;
                     destination = null;                  
                     if(getCurrentPlayer().getMoveLeft() == 0) {
-    					nextActionTurn();
+                    	 if(board.isDisplayExternalPanel()) {
+                             actionInfo.displayActionInfo(getGame());
+                             playerInfo.displayPlayerInfo(getGame(), resolution);
+                             nextActionTurn();
+                         }
+                         else {
+                             nextActionTurn();
+                         	actionInfo.displayActionInfo(getGame());
+                             playerInfo.displayPlayerInfo(getGame(), resolution);
+                         }
     				}
             	}
             }
@@ -787,7 +803,16 @@ public class Game {
                     hex.discover(getCurrentPlayer(), board);
 
                     // ActionTurn est le changement d'action, � mettre en commentaire pour test
-                    nextActionTurn();
+                    if(board.isDisplayExternalPanel()) {
+                        actionInfo.displayActionInfo(getGame());
+                        playerInfo.displayPlayerInfo(getGame(), resolution);
+                        nextActionTurn();
+                    }
+                    else {
+                        nextActionTurn();
+                    	actionInfo.displayActionInfo(getGame());
+                        playerInfo.displayPlayerInfo(getGame(), resolution);
+                    }
             	}
             }
         }
@@ -882,7 +907,17 @@ public class Game {
                     board.getExternalPanel().setPawnType(null);
 
                     // ActionTurn est le changement d'action, à mettre en commentaire pour test
-                    nextTurn();
+
+                    if(board.isDisplayExternalPanel()) {
+                        actionInfo.displayActionInfo(getGame());
+                        playerInfo.displayPlayerInfo(getGame(), resolution);
+                        nextTurn();
+                    }
+                    else {
+                        nextTurn();
+                    	actionInfo.displayActionInfo(getGame());
+                        playerInfo.displayPlayerInfo(getGame(), resolution);
+                    }
                 } else {
     				for(Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
     					p.getLeft().setHighlightColor(null);
@@ -908,10 +943,15 @@ public class Game {
 				}
 			}
 		}
+    }
     /**
 	 * @return the actionInfo
 	 */
 	public ActionInfo getActionInfo() {
 		return actionInfo;
+	}
+
+    public PlayerInfo getPlayerInfo() {
+		return playerInfo;
 	}
 }
