@@ -88,6 +88,8 @@ public class Game {
      * 
      */
     private ActionTurn actionTurn;
+    
+   
 
     private TripletList<Hexagon, Integer, HexagonListType> hexagonTripletList = new TripletList<Hexagon, Integer, HexagonListType>();
 
@@ -127,6 +129,16 @@ public class Game {
      * 
      */
     private Pawn pawnToMove;
+    
+    /**
+     * 
+     */
+    private boolean checkJ;
+    
+    /**
+     * 
+     */
+    private boolean playJ;
     
     private JLayeredPane destination;
     
@@ -994,7 +1006,7 @@ public class Game {
   *
   */
 	private void defWithTile(Hexagon hex) {
-		boolean checkJ1 = true,checkJ2 = true,checkJ3 = true,checkJ4 = true;
+		/*boolean checkJ1 = true,checkJ2 = true,checkJ3 = true,checkJ4 = true;
 		boolean playJ1 = false,playJ2 = false,playJ3 = false, playJ4 = false;
 		if(pawnToMove instanceof Shark ) {			
 			for(Player p : players) {			
@@ -1133,7 +1145,7 @@ public class Game {
 						
 				}
 			}
-		}
+		}*/
 	}
 
     public PlayerInfo getPlayerInfo() {
