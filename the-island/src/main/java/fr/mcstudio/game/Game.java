@@ -3,6 +3,8 @@ package fr.mcstudio.game;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -28,8 +30,6 @@ import fr.mcstudio.pawns.EffectPawn;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
-import fr.mcstudio.pawns.Shark;
-import fr.mcstudio.pawns.Whale;
 import fr.mcstudio.tiles.Tile;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
@@ -41,12 +41,12 @@ public class Game {
     /**
      * Default constructor
      */
-    public Game(int resolution, JPanel contentPane, Player[] players) {
+    public Game(int resolution, JPanel contentPane, ArrayList<Player> players) {
         this.resolution = resolution;
         this.contentPane = contentPane;
         this.players = players;
         this.turnNumber = 0;
-        this.turnOrder = (int) (Math.random() * players.length);
+        this.turnOrder = (int) (Math.random() * players.size());
 
         // A set comme vous voulez pour effectuer des test sur les differentes actions
 
@@ -72,7 +72,7 @@ public class Game {
     /**
      * 
      */
-    private Player[] players;
+    private ArrayList<Player> players;
 
     /**
      * 
@@ -88,6 +88,8 @@ public class Game {
      * 
      */
     private ActionTurn actionTurn;
+    
+   
 
     private TripletList<Hexagon, Integer, HexagonListType> hexagonTripletList = new TripletList<Hexagon, Integer, HexagonListType>();
 
@@ -127,6 +129,16 @@ public class Game {
      * 
      */
     private Pawn pawnToMove;
+    
+    /**
+     * 
+     */
+    private List<Boolean> checkJ = new ArrayList<Boolean>();
+    
+    /**
+     * 
+     */
+    private List<Boolean> playJ = new ArrayList<Boolean>();
     
     private JLayeredPane destination;
     
@@ -280,14 +292,14 @@ public class Game {
      * 
      * @param players
      */
-    public void setPlayers(Player[] players) {
+    public void setPlayers(ArrayList<Player> players) {
         this.players = players;
     }
 
     /**
      * 
      */
-    public Player[] getPlayers() {
+    public ArrayList<Player> getPlayers() {
         return this.players;
     }
 
@@ -308,14 +320,14 @@ public class Game {
      * 
      */
     public Player getCurrentPlayer() {
-        return this.players[(this.turnOrder + this.turnNumber) % players.length];
+        return this.players.get((this.turnOrder + this.turnNumber) % players.size());
     }
 
     /**
      * 
      */
     public int getCurrentPlayerIndex() {
-        return (this.turnOrder + this.turnNumber) % players.length;
+        return (this.turnOrder + this.turnNumber) % players.size();
     }
 
     /**
@@ -354,13 +366,13 @@ public class Game {
             getCurrentPlayer().getBoatToSet().remove(0);
             nextTurn();
 
-            for (int x = 0; x < players.length; x++) {
+            for (int x = 0; x < players.size(); x++) {
                 if (getCurrentPlayer().getBoatToSet().isEmpty()) {
                     exit++;
                 }
             }
         }
-        if (exit == players.length) {
+        if (exit == players.size()) {
             gameState = GameState.PLAYING;
             actionInfo.displayActionInfo(getGame());
             playerInfo.displayPlayerInfo(getGame(), resolution);
@@ -434,7 +446,7 @@ public class Game {
      * 
      */
     public int getRound() {
-        return this.turnNumber / players.length;
+        return this.turnNumber / players.size();
     }
 
     public Tile getUsedTile(){
@@ -498,7 +510,7 @@ public class Game {
      * 
      */
     public void endGame() {
-        // TODO
+        
     }
 
     private void inGamePlayTile(Hexagon hex) {
@@ -599,14 +611,10 @@ public class Game {
     		else if(firstClic == false  && pawnToMove != null ) {
     			if(hexagonTripletList.getLeftList().contains(hex)) {
         			pawnToMove.move(saveHexa, hex);
-        			
-        			//defWithTile(hex); 			
-        			if(!hex.getSharkList().isEmpty()) {
-        				hex.getSharkList().get(0).makeEffect(hex);
-        			}
-        			if(!hex.getWhaleList().isEmpty()) {
-        				hex.getWhaleList().get(0).makeEffect(hex);
-        			}
+
+                    checkJ.clear();
+                    playJ.clear();
+        			defWithTile(hex);
         			
         			
         			for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
@@ -752,13 +760,9 @@ public class Game {
                     				&& ((Explorer)pawnToMove).getStatus() != ExplorerStatus.ONBOAT)
                     		|| pawnToMove instanceof Boat)) {
                 		pawnToMove.move(saveHexa, hex);
-                		//defWithTile(hex,pawnToMove); 			
-            			if(!hex.getSharkList().isEmpty()) {
-            				hex.getSharkList().get(0).makeEffect(hex);
-            			}
-            			if(!hex.getWhaleList().isEmpty()) {
-            				hex.getWhaleList().get(0).makeEffect(hex);
-            			}
+                        checkJ.clear();
+                        playJ.clear();
+                		defWithTile(hex);
 
                     } else if(destination == hex 
                     		&& ((Explorer)pawnToMove).getStatus() == ExplorerStatus.ONBOAT) {
@@ -831,13 +835,8 @@ public class Game {
             			|| board.isNextToSea(hex)) {
                     board.decreaseNbTile(hex.getTile().getType());
                     hex.discover(getCurrentPlayer(), board);
-                  //defWithTile(hex,pawnToMove); 
-                    if(!hex.getSharkList().isEmpty()) {
-        				      hex.getSharkList().get(0).makeEffect(hex);
-        			      }
-                    if(!hex.getWhaleList().isEmpty()) {
-                      hex.getWhaleList().get(0).makeEffect(hex);
-                    }
+                    defWithTile(hex); 
+                    
                     // ActionTurn est le changement d'action, � mettre en commentaire pour test
                     if(board.isDisplayExternalPanel()) {
                         actionInfo.displayActionInfo(getGame());
@@ -931,13 +930,9 @@ public class Game {
             } else if (firstClic == false) {
                 if (hexagonTripletList.getLeftList().contains(hex)) {
                     pawnToMove.move(saveHexa, hex);
-                  //defWithTile(hex,pawnToMove); 			
-        			if(!hex.getSharkList().isEmpty()) {
-        				hex.getSharkList().get(0).makeEffect(hex);
-        			}
-        			if(!hex.getWhaleList().isEmpty()) {
-        				hex.getWhaleList().get(0).makeEffect(hex);
-        			}
+                    checkJ.clear();
+                    playJ.clear();
+                    defWithTile(hex); 
         			
                     for (Triplet<Hexagon, Integer, HexagonListType> p : hexagonTripletList) {
                         p.getLeft().setHighlightColor(null);
@@ -995,63 +990,101 @@ public class Game {
 		return actionInfo;
 	}
 	/**
-  *
-  */
-	private void defWithTile(Hexagon hex) {
-		boolean checkJ1 = true,checkJ2 = true,checkJ3 = true,checkJ4 = true;
-		boolean playJ1 = false,playJ2 = false,playJ3 = false, playJ4 = false;
-		if(pawnToMove instanceof Shark ) {			
-			for(Player p : players) {			
-				for(Tile t : p.getTileList()) {
-					if(t.getEffect() == TilesEffect.SHARK_DEATH) {
-						switch(p.getColor()) {				
-						case YELLOW : 
-							checkJ1 = false;
-							break;
-						case BLUE :
-							checkJ2 = false;
-							break;
-						case RED : 
-							checkJ3 = false;
-							break;
-						case GREEN :
-							checkJ4 = false;
-							break;
-						
-						default : break;
-						}
-					}
-				}				
+	 *
+	 */
+	@SuppressWarnings("removal")
+	public void defWithTile(Hexagon hex) {
+		if(checkJ.isEmpty() && playJ.isEmpty()) {
+			for(Player p : players) {
+				checkJ.add(new Boolean(true));
+				playJ.add(new Boolean(false));
 			}
-		}else if(pawnToMove instanceof Whale ) {					
-			for(Player p : players) {			
-				for(Tile t : p.getTileList()) {
-					if(t.getEffect() == TilesEffect.WHALE_DEATH) {
-						switch(p.getColor()) {				
-						case YELLOW : 
-							checkJ1 = false;
-							break;
-						case BLUE :
-							checkJ2 = false;
-							break;
-						case RED : 
-							checkJ3 = false;
-							break;
-						case GREEN :
-							checkJ4 = false;
-							break;
-						
-						default : break;
+			if(!hex.getExplorerList().isEmpty() 
+					&& !hex.getSharkList().isEmpty()) {
+				for(Player p : players) {
+					if(hex.containsExplorerColor(p.getColor())) {
+						for(Tile t : p.getTileList()) {
+							if(t.getEffect() == TilesEffect.SHARK_DEATH) {
+								System.out.println("haha counter !");
+								checkJ.set(players.indexOf(p), false);
+							}
+						}	
+					}			
+				}
+			}else if(hex.getBoat() != null 
+					&& !hex.getBoat().getExplorerList().isEmpty() 
+					&& !hex.getWhaleList().isEmpty()) {					
+				for(Player p : players) {	
+					if(hex.containsExplorerColor(p.getColor())) {
+						for(Tile t : p.getTileList()) {
+							if(t.getEffect() == TilesEffect.WHALE_DEATH) {
+								checkJ.set(players.indexOf(p), false);
+							}
 						}
 					}
-				}				
+				}
 			}
 		}
-		if(!checkJ1 || !checkJ2 || !checkJ3 || !checkJ4) {
+		
+		if(checkJ.stream().anyMatch(o -> o.booleanValue() == false) 
+				|| playJ.stream().anyMatch(o -> o.booleanValue() == true)) {
+			Boolean b = null;
+			if(checkJ.stream().anyMatch(o -> o.booleanValue() == false))
+					b = checkJ.stream().filter(o -> o.booleanValue() == false).findFirst().get();
+			if(!playJ.stream().anyMatch(o -> o.booleanValue() == true)) {
+				if (board.getExternalPanel().getChoice()!= null) {         	
+                    playJ.set(checkJ.indexOf(b), board.getExternalPanel().getChoice());
+                    checkJ.set(checkJ.indexOf(b), true);
+                    board.getExternalPanel().setChoice(null);
+            		board.getExternalPanel().setClickedHex(null);
+                    defWithTile(hex);
+                } else {
+                    board.setDisplayExternalPanel(true);
+            		board.getExternalPanel().setClickedHex(hex);
+                    board.getExternalPanel().setExternalPanelState(ExternalPanelState.TILEEFFECTDEFENSEPANEL);
+                }
+			} else {
+				if(!hex.getSharkList().isEmpty() && !hex.getExplorerList().isEmpty()) {
+					hex.getSharkList().clear();
+		            this.board.getExternalPanel().setAnimationType(AnimationType.SHARK_COUNTER);
+		            this.board.setDisplayExternalPanel(true);
+		            this.board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+				}
+	            if(!hex.getWhaleList().isEmpty() 
+	            		&& hex.getBoat() != null 
+	            		&& !hex.getBoat().getExplorerList().isEmpty()) {
+					hex.getWhaleList().clear();
+	                this.board.getExternalPanel().setAnimationType(AnimationType.WHALE_COUNTER);
+	                this.board.setDisplayExternalPanel(true);
+	                this.board.getExternalPanel().setExternalPanelState(ExternalPanelState.ANIMATIONPANEL);
+	            }
+	            hex.displayPawns(board);
+			}
+			
+			/*
+			}*/
+				
+				//ask tile
+				
+				/*
+				 * if yes
+				 * playJ.set(checkJ.indexOf(b),true)
+				 */
+			
+		} else {
+			if(!hex.getSharkList().isEmpty()) {
+		      hex.getSharkList().get(0).makeEffect(hex);
+			}
+            if(!hex.getWhaleList().isEmpty()) {
+              hex.getWhaleList().get(0).makeEffect(hex);
+            }
+            hex.displayPawns(board);
+		}
+		/*if(!checkJ.get|| !checkJ2 || !checkJ3 || !checkJ4) {
 			for(Explorer e : hex.getExplorerList()) {
-				if(checkJ1 == false && e.getColor() == Color.YELLOW) {
+				if(checkJ == false && e.getColor() == Color.YELLOW) {
 					//playJ1 = ask playing Tile ?
-					checkJ1 = true;
+					checkJ = true;
 				}
 				else if(checkJ2 == false && e.getColor() == Color.BLUE) {
 					// playJ2 = ask playing Tile ?
@@ -1137,7 +1170,7 @@ public class Game {
 						
 				}
 			}
-		}
+		}*/
 	}
 
     public PlayerInfo getPlayerInfo() {

@@ -46,7 +46,7 @@ public class ExternalPanel extends JLayeredPane {
 
 	private JLayeredPane selection = null;
 	private PawnType pawnType;
-	private boolean choice = false;
+	private Boolean choice = null;
 
 	private Hexagon clickedHex;
 	private AnimationType animationType;
@@ -244,6 +244,10 @@ public class ExternalPanel extends JLayeredPane {
 		
 		JButton yes = new JButton(new ImageIcon(ExternalPanel.class.getResource("/yes_button.png")));
 		JButton no = new JButton(new ImageIcon(ExternalPanel.class.getResource("/no_button.png")));
+		yes.setFocusPainted(false);
+		yes.setContentAreaFilled(false);
+		no.setFocusPainted(false);
+		no.setContentAreaFilled(false);
 		tilesEffectsDefensePanel.add(yes);
 		tilesEffectsDefensePanel.add(no);
 		
@@ -254,6 +258,7 @@ public class ExternalPanel extends JLayeredPane {
 				choice = true;
 				board.setDisplayExternalPanel(false);
                 setExternalPanelState(ExternalPanelState.VOID);
+                board.getGame().defWithTile(clickedHex);
 			}
 			
 		});
@@ -264,6 +269,7 @@ public class ExternalPanel extends JLayeredPane {
 				choice = false;
 				board.setDisplayExternalPanel(false);
                 setExternalPanelState(ExternalPanelState.VOID);
+                board.getGame().defWithTile(clickedHex);
 			}
 			
 		});
@@ -590,8 +596,12 @@ public class ExternalPanel extends JLayeredPane {
 		this.selection = selection;
 	}
 
-	public boolean isChoice() {
+	public Boolean getChoice() {
 		return choice;
+	}
+
+	public void setChoice(Boolean choice) {
+		this.choice = choice;
 	}
 
 }
