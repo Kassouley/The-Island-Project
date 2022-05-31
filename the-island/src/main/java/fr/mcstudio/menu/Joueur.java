@@ -1,27 +1,36 @@
 package fr.mcstudio.menu;
 
-import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.JButton;
-import javax.swing.JFrame;
+
+import fr.mcstudio.Main;
+import fr.mcstudio.enums.Color;
+import fr.mcstudio.game.Game;
+import fr.mcstudio.game.Player;
 
 public class Joueur {
 
-	private JTextField textField;
-	private boolean clic = false ;
+	private JLayeredPane layeredPane;
 	public String []tabJoueurs ; 
 	public boolean retour_bool = false ;
 	public int nbJr;
+	private ArrayList<Player> players= new ArrayList<Player>();
 
-	public Joueur(int nbJr) {
+	public Joueur(int nbJr, JLayeredPane layeredPane) {
 		this.nbJr = nbJr;
+		this.layeredPane = layeredPane;
 	}
 
 	public void displayPlayer(JPanel panel, JFrame frame, int resolution) {
@@ -39,7 +48,7 @@ public class Joueur {
 			
 			jlabels[i].setFont(new Font("Showcard Gothic", Font.PLAIN, 30 * resolution / 80));
 			//--------------------------------------------------------------------------- Font
-			jlabels[i].setForeground(Color.WHITE);
+			jlabels[i].setForeground(java.awt.Color.WHITE);
 			
 			textfield[i] = new JTextField();
 			textfield[i].setBounds(a+(200 * resolution / 80), b - 40 * resolution / 80, 200 * resolution / 80, 30 * resolution / 80);
@@ -59,7 +68,21 @@ public class Joueur {
         {
             public void mousePressed(MouseEvent e)
             {
-        		System.out.println(textfield[0].getText());
+            	layeredPane.removeAll();
+            	System.out.println(textfield[0].getText());
+            	for (int i = 0; i < nbJr; i++) {
+            		Player P = new Player(textfield[i].getText(), Color.values()[i], false, resolution);
+            		ImageIcon avatar = new ImageIcon(Main.class.getResource("/SideBar/avatar" + (i+1) + ".png"));
+            		Image scaleImage = avatar.getImage().getScaledInstance(avatar.getIconWidth() * resolution / 90,
+            				avatar.getIconHeight() * resolution / 90, Image.SCALE_SMOOTH);
+            		avatar.setImage(scaleImage);
+            		P.setAvatar(avatar);
+            		players.add(P);
+				}
+            	
+            	@SuppressWarnings("unused")
+				Game game = new Game(resolution, layeredPane, players);
+        		
             }
         });
 

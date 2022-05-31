@@ -82,7 +82,7 @@ public class Accueil {
 		this.layeredPane.add(backgroundLabel);
 
 		this.music = new Musique(Accueil.class.getClassLoader().getResource("Son/sample1.wav").getPath());
-    	this.music.jouerMusique();
+    	//this.music.jouerMusique();
 
 		// Bouton MUTE :
 		ImageIcon muteRed = new ImageIcon(Accueil.class.getResource("/Menu/Menu/images_80/mute_red.png"));
@@ -449,7 +449,7 @@ public class Accueil {
 		this.panel.add(titleLabel);
         
         // Menu Choix Nombre Joueurs :
-        Choix choice = new Choix();
+        Choix choice = new Choix(layeredPane);
 		choice.displayChoice(this.panel, this.frame, this.resolution);
 
 		JButton retour = new JButton("Retour");

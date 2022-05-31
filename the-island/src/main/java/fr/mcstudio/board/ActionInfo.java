@@ -1,21 +1,24 @@
 package fr.mcstudio.board;
 
-import java.awt.*;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
-import fr.mcstudio.game.Game;
-import fr.mcstudio.pawns.Shark;
-import fr.mcstudio.tiles.Tile;
 import fr.mcstudio.enums.ExternalPanelState;
 import fr.mcstudio.enums.GameState;
-import fr.mcstudio.enums.PawnType;
 import fr.mcstudio.enums.SideBarButton;
+import fr.mcstudio.game.Game;
 
 @SuppressWarnings("serial")
 public class ActionInfo extends JLayeredPane {

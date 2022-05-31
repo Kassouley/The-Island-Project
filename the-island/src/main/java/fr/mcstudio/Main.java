@@ -2,7 +2,6 @@ package fr.mcstudio;
 
 import java.awt.EventQueue;
 import java.awt.Image;
-import java.awt.List;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -10,7 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import fr.mcstudio.enums.Color;
-import fr.mcstudio.game.Game;
 import fr.mcstudio.game.Player;
 
 @SuppressWarnings("serial")
@@ -65,8 +63,7 @@ public class Main extends JFrame {
 			public void run() {
 				try {
 					Main main = new Main();
-					Game game = new Game(main.resolution, main.contentPane, main.players);
-					game.initializeBoard();
+					//Game game = new Game(main.resolution, main.contentPane, main.players);
 
 				} catch (Exception e) {
 					e.printStackTrace();

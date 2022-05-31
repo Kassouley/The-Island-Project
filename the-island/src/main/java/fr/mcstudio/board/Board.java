@@ -16,7 +16,6 @@ import fr.mcstudio.enums.TilesType;
 import fr.mcstudio.game.Game;
 import fr.mcstudio.game.Player;
 import fr.mcstudio.pawns.Explorer;
-import fr.mcstudio.tiles.Tile;
 
 @SuppressWarnings("serial")
 public class Board extends JLayeredPane{

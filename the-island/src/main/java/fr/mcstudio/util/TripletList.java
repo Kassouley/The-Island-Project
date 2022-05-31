@@ -3,6 +3,7 @@ package fr.mcstudio.util;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("serial")
 public class TripletList<Left,Middle,Right> extends ArrayList<Triplet<Left,Middle,Right>> {
     public TripletList() {
         super();

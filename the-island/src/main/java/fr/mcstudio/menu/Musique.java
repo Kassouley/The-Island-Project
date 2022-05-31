@@ -14,7 +14,7 @@ public class Musique {
 	
 	Clip clip = null; 	            	
 	AudioInputStream audioStream;
-	float level ; 
+	float level = 2f; 
 	
 	public Musique(String url)
 	{  		
@@ -32,14 +32,15 @@ public class Musique {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} 
+		((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(0);
 			
-		this.level = clip.getLevel() ; 
 	}
 	
 	public void jouerMusique()
 	{
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
 		clip.start();
+		((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(0);
 	}
 	
 	public void arreterMusique()

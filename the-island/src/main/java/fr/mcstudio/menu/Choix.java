@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -19,14 +20,15 @@ import javax.swing.event.ChangeListener;
 
 public class Choix {
 	
-	public static int nbJr ;
-	public JSlider slider;
-	public JTextField field;
-    public JButton button;
-    public JLabel text ;
-    public Joueur menuJ ;
+	private JLayeredPane layeredPane;
+	private static int nbJr ;
+	private JSlider slider;
+	private JTextField field;
+	private JButton button;
+	private JLabel text ;
     
-    public Choix() {
+    public Choix(JLayeredPane layeredPane) {
+    	this.layeredPane = layeredPane;
     }
 
     public void displayChoice(JPanel panel, JFrame frame, int resolution) {
@@ -72,7 +74,7 @@ public class Choix {
         		if (nbJr <= 1) {
         			JOptionPane.showMessageDialog(null, "Veuillez entrer le nombre de joueurs !" , "Attention",JOptionPane.WARNING_MESSAGE);
         		} else {
-        			Joueur menuJ = new Joueur(nbJr);
+        			Joueur menuJ = new Joueur(nbJr, layeredPane);
                     menuJ.displayPlayer(panel, frame, resolution);
                     slider.setEnabled(false);
         		}

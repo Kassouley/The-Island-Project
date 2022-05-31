@@ -12,9 +12,7 @@ import javax.swing.JLayeredPane;
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.Color;
-import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.HexagonListType;
-import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 

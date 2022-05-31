@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import fr.mcstudio.board.ActionInfo;
 import fr.mcstudio.board.Board;
 import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.board.PlayerInfo;
+import fr.mcstudio.board.Tile;
 import fr.mcstudio.enums.ActionTurn;
 import fr.mcstudio.enums.AnimationType;
 import fr.mcstudio.enums.Color;
@@ -30,7 +30,6 @@ import fr.mcstudio.pawns.EffectPawn;
 import fr.mcstudio.pawns.Explorer;
 import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
-import fr.mcstudio.tiles.Tile;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
@@ -41,9 +40,9 @@ public class Game {
     /**
      * Default constructor
      */
-    public Game(int resolution, JPanel contentPane, ArrayList<Player> players) {
+    public Game(int resolution, JLayeredPane layeredPane, ArrayList<Player> players) {
         this.resolution = resolution;
-        this.contentPane = contentPane;
+        this.contentPane = layeredPane;
         this.players = players;
         this.turnNumber = 0;
         this.turnOrder = (int) (Math.random() * players.size());
@@ -53,6 +52,7 @@ public class Game {
         this.actionTurn = ActionTurn.PLAY_TILE;
         this.gameState = GameState.INITIALISATION;
 
+        initializeBoard();
     }
 
     /**
@@ -64,7 +64,7 @@ public class Game {
 	private ActionInfo actionInfo;
     
 
-	private JPanel contentPane;
+	private JLayeredPane contentPane;
     private GameState gameState;
 
     private int resolution;
@@ -997,7 +997,7 @@ public class Game {
 	@SuppressWarnings("removal")
 	public void defWithTile(Hexagon hex) {
 		if(checkJ.isEmpty() && playJ.isEmpty()) {
-			for(Player p : players) {
+			for(@SuppressWarnings("unused") Player p : players) {
 				checkJ.add(new Boolean(true));
 				playJ.add(new Boolean(false));
 			}

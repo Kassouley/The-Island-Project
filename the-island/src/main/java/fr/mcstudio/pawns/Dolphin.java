@@ -10,6 +10,7 @@ import fr.mcstudio.enums.HexagonType;
 import fr.mcstudio.util.Triplet;
 import fr.mcstudio.util.TripletList;
 
+@SuppressWarnings("serial")
 public class Dolphin extends Pawn {
     
     public Dolphin() {

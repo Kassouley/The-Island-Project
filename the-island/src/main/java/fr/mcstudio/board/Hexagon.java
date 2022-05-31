@@ -19,7 +19,6 @@ import fr.mcstudio.pawns.Pawn;
 import fr.mcstudio.pawns.SeaSnake;
 import fr.mcstudio.pawns.Shark;
 import fr.mcstudio.pawns.Whale;
-import fr.mcstudio.tiles.Tile;
 
 @SuppressWarnings("serial")
 public class Hexagon extends JLayeredPane {

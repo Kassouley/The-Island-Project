@@ -1,5 +1,5 @@
 
-package fr.mcstudio.tiles;
+package fr.mcstudio.board;
 
 import java.awt.Image;
 import java.util.ArrayList;
@@ -10,8 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingConstants;
 
-import fr.mcstudio.board.Board;
-import fr.mcstudio.board.Hexagon;
 import fr.mcstudio.enums.AnimationType;
 import fr.mcstudio.enums.ExplorerStatus;
 import fr.mcstudio.enums.ExternalPanelState;

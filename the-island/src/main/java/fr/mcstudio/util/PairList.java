@@ -3,6 +3,7 @@ package fr.mcstudio.util;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("serial")
 public class PairList<Left,Right> extends ArrayList<Pair<Left,Right>> {
     public PairList() {
         super();
